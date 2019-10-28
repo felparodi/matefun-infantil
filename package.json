@@ -1,0 +1,31 @@
+{
+  "name": "minimal-react-webpack-babel-setup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --config ./webpack.config.js --mode development",
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "react-hot-loader": "^4.12.10",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "css-loader": "^3.2.0",
+    "react": "^16.8.6",
+    "react-bootstrap": "^1.0.0-beta.14",
+    "react-dom": "^16.8.6",
+    "style-loader": "^1.0.0"
+  }
+}
