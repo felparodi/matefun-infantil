@@ -1,3 +1,6 @@
+# proto2
+
+
 ## Installation
 
 * npm install
@@ -5,7 +8,7 @@
 * visit `http://localhost:8080/`
 
 
-# Seed project 
+## Seed project 
 
 [minimal-react-webpack-babel-setup](https://github.com/rwieruch/minimal-react-webpack-babel-setup)
 

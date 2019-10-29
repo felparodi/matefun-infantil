@@ -1,21 +1,45 @@
 import React from 'react';
-import { Button, Card } from 'react-bootstrap';
-import Cross from '../svg/Cross'
-import TopRight from '../svg/TopRight'
+import Cell from './Cell'
 
 export default class Board extends React.Component {
+
+    constructor() {
+        super();
+        this.state = {
+            content: this.initContent()
+        };
+        this.onDrop = this.onDrop.bind(this);
+    }
+
+    initContent() {
+        var rows = [];
+        for (let i = 0; i < 5; i++) {
+            let cells = []
+            for (let j = 0; j < 5; j++) {
+                cells.push("empty");
+            }
+            rows.push(cells)
+        }
+        return rows
+    }
+
+    onDrop(row, col, item) {
+        var content = this.state.content;
+        content[row][col] = item;
+        this.setState({
+            content: content
+        });
+        console.log(content);
+    }
 
     createRows() {
         let rows = []
 
-        // Outer loop to create parent
         for (let i = 0; i < 5; i++) {
             let cells = []
-            //Inner loop to create children
             for (let j = 0; j < 5; j++) {
-                cells.push(<td key={[i,j]} style={{border:"1px solid black",width:"80px",height:"80px"}}></td>)
+                cells.push(<Cell row={i} col={i} droppedItem={this.state.content[i][j]} onDrop={(item) => this.onDrop(i, j, item)}></Cell>);
             }
-            //Create the parent and add the children
             rows.push(<tr key={i}>{cells}</tr>)
         }
         return rows
@@ -23,7 +47,7 @@ export default class Board extends React.Component {
 
     render() {
         return (
-            <div style={{display:"inline-block"}}>
+            <div style={{ display: "inline-block" }}>
                 <table style={{ borderColor: "black" }}>
                     <tbody>
                         {this.createRows()}
