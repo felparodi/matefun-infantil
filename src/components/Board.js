@@ -29,7 +29,6 @@ export default class Board extends React.Component {
         this.setState({
             content: content
         });
-        console.log(content);
     }
 
     createRows() {

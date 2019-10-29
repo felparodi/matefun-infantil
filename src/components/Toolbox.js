@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Card } from 'react-bootstrap';
-import Cross from '../svg/Cross'
-import TopRight from '../svg/TopRight'
+import Pipe from './Pipe';
 
 export default class Toolbox extends React.Component {
 
@@ -16,25 +15,22 @@ export default class Toolbox extends React.Component {
                         <tr>
                             <td>
                                 <Button variant="outline-primary">
-                                    <Cross size="30px"></Cross>
+                                    <Pipe type="cross" size="30px"></Pipe>
                                 </Button>
                             </td>
                             <td>
                                 <Button variant="outline-primary">
-                                    <TopRight size="30px"></TopRight>
+                                    <Pipe type="top-right" size="30px"></Pipe>
                                 </Button>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <Button variant="outline-primary">
-                                    <Cross size="30px"></Cross>
+                                    <Pipe type="top-down" size="30px"></Pipe>
                                 </Button>
                             </td>
                             <td>
-                                <Button variant="outline-primary">
-                                    <TopRight size="30px"></TopRight>
-                                </Button>
                             </td>
                         </tr>
                     </tbody>
