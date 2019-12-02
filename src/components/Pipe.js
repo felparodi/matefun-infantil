@@ -7,7 +7,7 @@ import TopRight from '../svg/dummies/top-right.svg';
 import TopLeft from '../svg/dummies/top-left.svg';
 import BottomLeft from '../svg/dummies/bottom-left.svg';
 import BottomRight from '../svg/dummies/bottom-right.svg';
-
+import T from '../svg/t.svg';
 
 class Pipe extends React.Component {
 
@@ -18,6 +18,12 @@ class Pipe extends React.Component {
                 <div>
                     <Cross width={this.props.size} height={this.props.size}></Cross>
                 </div>  
+            )
+        } else if (type=="t"){
+            return connectDragSource(
+                <div>
+                    <T width={this.props.size} height={this.props.size}></T>
+                </div>
             )
         } else if (type=="vertical"){
             return connectDragSource(

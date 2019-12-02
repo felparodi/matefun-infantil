@@ -19,7 +19,9 @@ export default class Toolbox extends React.Component {
                                         </Button>
                                     </td>
                                     <td>
-                        
+                                        <Button variant="outline-primary">
+                                            <Pipe type="t" size="30px"></Pipe>
+                                        </Button>
                                     </td>
                                 </tr>
                                 <tr>
