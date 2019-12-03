@@ -90,4 +90,8 @@ export class Pipe {
     getType() {
         return PIPE_TYPES.UNDEFINED;
     }
+
+    clone() {
+        return Object.assign(Object.create(Object.getPrototypeOf(this)), this)
+    }
 }

@@ -11,7 +11,6 @@ describe("MatrixPipe class test", () => {
        const m = new MatrixPipe(5,5)
        m.addPipe(2,2, new ValPipe(3, DIRECTION.RIGHT))
        m.addPipe(2,3, new EndPipe(DIRECTION.LEFT));
-       let p = m.value(2,3);
        expect(m.processFunction()).toEqual("3")
     })
     it("create single value using dummy pipe matrix", () => { 
@@ -38,5 +37,14 @@ describe("MatrixPipe class test", () => {
         m.addPipe(2,2, new DummyPipe(DIRECTION.LEFT, DIRECTION.RIGHT))
         m.addPipe(2,3, new EndPipe(DIRECTION.LEFT))
         expect(m.processFunction()).toEqual("add(3, 2)")
+     })
+     it("create single value matrix clone", () => { 
+        const m = new MatrixPipe(5,5)
+        m.addPipe(2,2, new ValPipe(3, DIRECTION.RIGHT))
+        m.addPipe(2,3, new EndPipe(DIRECTION.LEFT));
+        const m2 = m.clone();
+        m2.addPipe(2,2, new ValPipe(2, DIRECTION.RIGHT))
+        expect(m.processFunction()).toEqual("3")
+        expect(m2.processFunction()).toEqual("2")
      })
 });
