@@ -1,14 +1,14 @@
 import React from 'react';
 import { DIRECTION } from '../constants/constants.js'
 
-import T from '../svg/t.svg';
+import EndTop from '../svg/end-top.svg';
 
 export class EndPipe extends React.Component {
 
     render() {
         const { pipe } = this.props;
         return (
-            <T width={this.props.size} height={this.props.size}></T>
+            <EndTop width={this.props.size} height={this.props.size}></EndTop>
         )
     }
 }

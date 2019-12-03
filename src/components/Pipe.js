@@ -30,6 +30,7 @@ class Pipe extends React.Component {
                 </div>
             )
         }
+        return null;
     }
 }
 

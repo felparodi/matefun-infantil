@@ -1,5 +1,5 @@
-import { END } from './pipe';
 import { DummyPipe } from './dummyPipe'
+import { PIPE_TYPES } from '../constants/constants';
 
 export class EndPipe extends DummyPipe {
     
@@ -13,6 +13,6 @@ export class EndPipe extends DummyPipe {
     }
 
     getType() {
-        return END;
+        return PIPE_TYPES.END;
     }
 }

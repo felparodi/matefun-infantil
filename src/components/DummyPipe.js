@@ -37,6 +37,7 @@ export class DummyPipe extends React.Component {
                 <BottomRight width={this.props.size} height={this.props.size}></BottomRight>
             )
         }
+        return null;
     }
 }
 
