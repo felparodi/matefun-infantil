@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --config ./webpack.config.js --mode development",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -14,7 +14,12 @@
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
+    "@testing-library/jest-dom": "^4.1.0",
+    "@testing-library/react": "^9.2.0",
     "babel-loader": "^8.0.6",
+    "jasmine": "^3.5.0",
+    "jest": "^24.9.0",
+    "jest-cli": "^24.9.0",
     "react-hot-loader": "^4.12.10",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.6",
