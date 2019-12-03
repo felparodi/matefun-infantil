@@ -1,81 +1,93 @@
-export const DUMMY = 'D'
-export const FUNCTION = 'F';
-export const VALUE = 'V';
-export const END = 'E';
-export const START = 'S';
-
+import { DIRECTION, PIPE_TYPES } from '../constants/constants';
 export class Pipe {
 
-    constructor() {
-        this.inTypes = new Array();
-        this.outTypes = new Array();
-        this.inPipes = new Array();
-        this.outPipes = new Array();
+    constructor(inDirections, outDirections) {
+        this.setInDirection(inDirections);
+        this.setOutDirections(outDirections); 
+        this.board = null;
+        this.posX = null;
+        this.posY = null;
     }
 
-    setInType(types) {
-        this.inTypes = types;
-        return this;
+    setInDirection(inDirections) {
+        this.inDirections = Array.isArray(inDirections) ? inDirections : new Array();
     }
 
-    setOutType(types) {
-        this.outTypes = types;
-        return this;
+    setOutDirections(outDirections) {
+        this.outDirections = Array.isArray(outDirections) ? outDirections : new Array();
     }
 
-    getOutType() {
-        return this.outTypes;
+    getInDirections() {
+        return this.inDirections;
     }
 
-    getInType() {
-        return this.inTypes;
+    getOutDirections() {
+        return this.outDirections;
     }
 
-    hasOutType() {
-        return true;
+
+    setPos(x, y) {
+        this.posX = x;
+        this.posY = y;
     }
 
-    hasInType() {
-        return true;
+    setBoard(board) {
+        this.board = board;
     }
-    
-    matchToIn(p) {
-        if (!this.hasInType() || !p.hasOutType()) return true;
-        const thisInType = this.getInType()
-        const otherOutType = p.getOutType();
-        if (thisInType.length === otherOutType.length) {
-           for (let i = 0; i < otherOutType.length; i++) {
-              if (thisInType[i] !== otherOutType[i]) return false;
-           }
-           return true;
+
+    getParents() {
+        //console.log('getParents.this', this);
+        if(this.board == null || this.posX === null || this.posY === null) {
+            return new Array();
         }
-        return false;
+        //console.log('getParents.getInDirections', this.getInDirections());
+        const parents = this.getInDirections().map((direction) => {
+            let before = null;
+            switch(direction) {
+                case DIRECTION.BOTTOM:
+                    return this.board.value(this.posX + 1, this.posY);
+                case DIRECTION.TOP: 
+                    return this.board.value(this.posX - 1, this.posY);
+                case DIRECTION.RIGHT:
+                    return this.board.value(this.posX, this.posY + 1);
+                case DIRECTION.LEFT:
+                    return this.board.value(this.posX, this.posY - 1);
+            }
+        });
+        //console.log('getParents.parents', parents);
+        return parents.filter(parent => parent !== null && parent !== undefined);
     }
 
-    matchToOut(p) {
-       return p.matchToIn(this)
+    getChildrens() {
+        if(this.board == null || this.posX === null || this.posY === null) {
+            return new Array();
+        }
+        const childrens = this.inDirections.map((direction) => {
+            let before = null;
+            switch(direction) {
+                case DIRECTION.BOTTOM:
+                    return this.board.value(this.posX + 1, this.posY);
+                case DIRECTION.TOP: 
+                    return this.board.value(this.posX + 1, this.posY);
+                case DIRECTION.RIGHT:
+                    return this.board.value(this.posX + 1, this.posY);
+                case DIRECTION.LEFT:
+                    return this.board.value(this.posX + 1, this.posY);
+            }
+        });
+        return childrens.filter(parent => parent !== null && parent !== undefined);
     }
 
     toStringArg() {
-        const arg = this.inPipes.map(p => p.toString())
-        return arg.join(', ')
+        const arg = this.getParents().map(p => p.toString())
+        return arg.map(e => e !== null ? e : '?').join(', ')
     }
 
     toString() {
         return `(???)`;
     }
 
-    joinIn(p, dir) {
-        if (this === p) throw new Error('Don\'t support cycles');
-        if (!this.matchToIn(p)) throw new Error('Not match IN Out Type');
-        this.inPipes.push(p)
-    }
-
-    joinOut(p) {
-        p.joinIn(this);
-    }
-
     getType() {
-        return '?';
+        return PIPE_TYPES.UNDEFINED;
     }
 }

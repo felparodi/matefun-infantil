@@ -3,13 +3,13 @@ import { DummyPipe } from './dummyPipe'
 
 export class EndPipe extends DummyPipe {
     
-    constructor() {
-        super();
+    constructor(inDirections) {
+        super(inDirections);
     }
 
     toString() {
         const arg = this.toStringArg();
-        return `${arg} : <${this.getOutType().join(',')}>`;
+        return `${arg}`;
     }
 
     getType() {

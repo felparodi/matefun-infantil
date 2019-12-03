@@ -1,22 +1,22 @@
-import { Pipe, DUMMY } from './pipe';
+import { PIPE_TYPES } from '../constants/constants';
+import { Pipe } from './pipe';
 
 export class DummyPipe extends Pipe {
 
-    constructor() {
-        super();
+    constructor(inDirection, outDirection) {
+        super([inDirection],[outDirection]);
     }
 
     getOutType() {
-        return this.inPipes.length > 0 ? this.inPipes[0].getOutType() : new Array();
+        const parents = this.getParents();
+        const inTypePerParent = parents.map(parent => parent.hasOutType() ? parent.getOutType() : new Array());
+        return new Array().concat(...inTypePerParent);
     }
 
     getInType() {
-        for(let i = 0; i < this.outPipes.length; i++) {
-            if (this.outPipes[i].hasInType()) {
-                return this.outPipes[i].getInType();
-            }
-        }
-        return new Array();
+        const childrens = this.getChildrens();
+        const inTypePerChildren = childrens.map(children => children.hasInType() ? children.getInType() : new Array());
+        return new Array().concat(...inTypePerChildren);
     }
 
     hasOutType() {
@@ -31,12 +31,7 @@ export class DummyPipe extends Pipe {
         return this.getInType().length > 0;
     }
 
-    joinIn(p) {
-        if(this.inPipes.length > 0) throw new Error("Max IN Pipe")   
-        super.joinIn(p)
-    }
-
     getType() {
-        return DUMMY;
+        return PIPE_TYPES.DUMMY;
     }
 }

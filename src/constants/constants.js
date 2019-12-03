@@ -1,5 +1,5 @@
 
-export const DIRECTION= Object.freeze({
+export const DIRECTION = Object.freeze({
     TOP: 'TOP',
     BOTTOM: 'BOTTOM',
     LEFT: 'LEFT',
@@ -10,7 +10,17 @@ export const PIPE_TYPES= Object.freeze({
     DUMMY: 'DUMMY',
     FUNCTION: 'FUNCTION',
     VALUE: 'VALUE',
-    END: 'END'    
+    END: 'END',
+    UNDEFINED: '?'
+})
+
+export const VALUES_TYPES= Object.freeze({
+    BOOLEAN: 'BOOLEAN',
+    STRING: 'STRING',
+    NUMBER: 'NUMBER',
+    ARRAY: 'ARRAY',
+    FUNCTION: 'FUNCTION',
+    OTHER: 'OTHER'
 })
 
 export default { DIRECTION, PIPE_TYPES };
