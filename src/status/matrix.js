@@ -66,4 +66,20 @@ export class MatrixPipe {
         return p.toString()
     }
 
+    clone() {
+        const m = new MatrixPipe(this.maxX, this.maxY);
+        for(let x = 0; x < this.maxX; x++) {
+            for(let y = 0; y < this.maxY; y++) {
+                const pipe = this.value(x,y);
+                if (pipe !== null) {
+                    m.addPipe(x, y, pipe.clone());
+                }
+            }
+        }
+        return m;
+    }
+
+    validateMatrix() {
+
+    }
 }
