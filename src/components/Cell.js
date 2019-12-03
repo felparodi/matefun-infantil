@@ -8,8 +8,8 @@ class Cell extends React.Component {
         const { isOver, canDrop, connectDropTarget, droppedItem } = this.props;
         return connectDropTarget(
             <td key={[this.props.row, this.props.col]} style={{ border: "1px solid black", width: "80px", height: "80px", backgroundColor: isOver ? "green" : "" }}>
-                {droppedItem && droppedItem.type &&
-                    <Pipe type={droppedItem.type} size="80px"></Pipe>
+                {droppedItem && droppedItem.pipe &&
+                    <Pipe pipe={droppedItem.pipe} size="80px"></Pipe>
                 }
             </td>
         )

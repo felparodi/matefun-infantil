@@ -3,28 +3,30 @@ import { DragSource } from 'react-dnd';
 import Cross from '../svg/cross.svg';
 import T from '../svg/t.svg';
 import { PIPE_TYPES, DIRECTION } from '../constants/constants.js'
-import DummyPipe from './DummyPipe.js'
+import { DummyPipe } from './DummyPipe.js'
+import { FuncPipe } from './FuncPipe.js'
+import { EndPipe } from './EndPipe.js'
 
 class Pipe extends React.Component {
 
     render() {
-        const { type, connectDragSource } = this.props;
-        if (type==PIPE_TYPES.FUNCTION){
+        const { pipe, connectDragSource } = this.props;
+        if (pipe.getType()==PIPE_TYPES.FUNCTION){
             return connectDragSource(
                 <div>
-                    <Cross width={this.props.size} height={this.props.size}></Cross>
+                    <FuncPipe {...(this.props)}/>
                 </div>
             )
-        } else if (type=="t"){
+        } else if (pipe.getType()==PIPE_TYPES.END){
             return connectDragSource(
                 <div>
-                    <T width={this.props.size} height={this.props.size}></T>
+                    <EndPipe {...(this.props)}/>
                 </div>
             )
-        } else if (type==PIPE_TYPES.DUMMY){
+        } else if (pipe.getType()==PIPE_TYPES.DUMMY){
             return connectDragSource(
                 <div>
-                    <DummyPipe></DummyPipe>
+                    <DummyPipe {...(this.props)}/>
                 </div>
             )
         }
@@ -39,7 +41,7 @@ function collect(connect, monitor) {
 
 const cardSource = {
     beginDrag(props, monitor, component) {
-        const item = { type: props.type };
+        const item = { pipe: props.pipe };
         return item;
     }
 };

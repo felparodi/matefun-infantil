@@ -3,8 +3,8 @@ import { DummyPipe } from './dummyPipe'
 
 export class EndPipe extends DummyPipe {
     
-    constructor(inDirections) {
-        super(inDirections);
+    constructor(inDirection) {
+        super([inDirection]);
     }
 
     toString() {
