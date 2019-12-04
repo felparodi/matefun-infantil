@@ -23,4 +23,8 @@ export const VALUES_TYPES= Object.freeze({
     OTHER: 'OTHER'
 })
 
+export const TOOLBOX_PIPE_SIZE= '30px';
+
+export const CELL_PIPE_SIZE= '80px';
+
 export default { DIRECTION, PIPE_TYPES };
