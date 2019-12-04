@@ -1,7 +1,6 @@
 import React from 'react';
-import { DIRECTION } from '../constants/constants.js'
 
-import T from '../svg/t.svg';
+import T from '../../svg/t.svg';
 
 export class FuncPipe extends React.Component {
 

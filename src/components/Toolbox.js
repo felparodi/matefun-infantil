@@ -1,10 +1,12 @@
 import React from 'react';
 import { Button, Card } from 'react-bootstrap';
-import Pipe from './Pipe';
-import { DummyPipe } from '../status/dummyPipe.js'
+import Pipe from './pipes/Pipe';
 import { DIRECTION, TOOLBOX_PIPE_SIZE } from '../constants/constants.js'
-import { FuncPipe } from '../status/funcPipe';
-import { EndPipe } from '../status/endPipe';
+import { FuncPipe } from '../objects/pipes/funcPipe';
+import { EndPipe } from '../objects/pipes/endPipe';
+import { ValPipe } from '../objects/pipes/valPipe';
+import { DummyPipe } from '../objects/pipes/dummyPipe.js'
+
 
 export default class Toolbox extends React.Component {
 
@@ -21,7 +23,17 @@ export default class Toolbox extends React.Component {
                                         <Button variant="outline-primary">
                                             <Pipe pipe={new FuncPipe('add', [DIRECTION.LEFT, DIRECTION.RIGHT], [DIRECTION.BOTTOM])} size={TOOLBOX_PIPE_SIZE}></Pipe>
                                         </Button>
-                                   </td>
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <Button variant="outline-primary">
+                                            <Pipe pipe={new ValPipe(DIRECTION.BOTTOM)} size={TOOLBOX_PIPE_SIZE}></Pipe>
+                                        </Button>
+                                    </td>
                                     <td>
                                         <Button variant="outline-primary">
                                             <Pipe pipe={new EndPipe(DIRECTION.TOP)} size={TOOLBOX_PIPE_SIZE}></Pipe>

@@ -1,11 +1,10 @@
 import React from 'react';
 import { DragSource } from 'react-dnd';
-import Cross from '../svg/cross.svg';
-import T from '../svg/t.svg';
-import { PIPE_TYPES, DIRECTION } from '../constants/constants.js'
+import { PIPE_TYPES, DIRECTION } from '../../constants/constants.js'
 import { DummyPipe } from './DummyPipe.js'
 import { FuncPipe } from './FuncPipe.js'
 import { EndPipe } from './EndPipe.js'
+import { ValPipe } from './ValPipe.js'
 
 class Pipe extends React.Component {
 
@@ -15,6 +14,12 @@ class Pipe extends React.Component {
             return connectDragSource(
                 <div>
                     <FuncPipe {...(this.props)}/>
+                </div>
+            )
+        } else if (pipe.getType()==PIPE_TYPES.VALUE){
+            return connectDragSource(
+                <div>
+                    <ValPipe {...(this.props)}/>
                 </div>
             )
         } else if (pipe.getType()==PIPE_TYPES.END){

@@ -1,7 +1,6 @@
 import React from 'react';
-import { DIRECTION } from '../constants/constants.js'
 
-import EndTop from '../svg/end-top.svg';
+import EndTop from '../../svg/end-top.svg';
 
 export class EndPipe extends React.Component {
 

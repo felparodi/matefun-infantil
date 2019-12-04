@@ -1,12 +1,12 @@
 import React from 'react';
-import { DIRECTION } from '../constants/constants.js'
+import { DIRECTION } from '../../constants/constants.js'
 
-import Vertical from '../svg/dummies/vertical.svg';
-import Horizontal from '../svg/dummies/horizontal.svg';
-import TopRight from '../svg/dummies/top-right.svg';
-import TopLeft from '../svg/dummies/top-left.svg';
-import BottomLeft from '../svg/dummies/bottom-left.svg';
-import BottomRight from '../svg/dummies/bottom-right.svg';
+import Vertical from '../../svg/dummies/vertical.svg';
+import Horizontal from '../../svg/dummies/horizontal.svg';
+import TopRight from '../../svg/dummies/top-right.svg';
+import TopLeft from '../../svg/dummies/top-left.svg';
+import BottomLeft from '../../svg/dummies/bottom-left.svg';
+import BottomRight from '../../svg/dummies/bottom-right.svg';
 
 export class DummyPipe extends React.Component {
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { DropTarget } from "react-dnd";
-import Pipe from './Pipe'
+import Pipe from './pipes/Pipe';
 import { CELL_PIPE_SIZE } from '../constants/constants.js'
 
 class Cell extends React.Component {

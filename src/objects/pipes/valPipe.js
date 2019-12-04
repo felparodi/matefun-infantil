@@ -1,4 +1,4 @@
-import { PIPE_TYPES, VALUES_TYPES } from '../constants/constants';
+import { PIPE_TYPES, VALUES_TYPES } from '../../constants/constants';
 import { Pipe } from './pipe';
 
 export class ValPipe extends Pipe {

@@ -1,5 +1,5 @@
-import { DummyPipe } from './dummyPipe'
-import { PIPE_TYPES } from '../constants/constants';
+import { DummyPipe } from './dummyPipe';
+import { PIPE_TYPES } from '../../constants/constants';
 
 export class EndPipe extends DummyPipe {
     
