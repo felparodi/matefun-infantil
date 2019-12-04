@@ -1,18 +1,30 @@
-import { END } from './pipe';
-import { DummyPipe } from './dummyPipe'
+import { PIPE_TYPES } from '../constants/constants';
+import { UnTypePipe } from './untypePipe';
 
-export class EndPipe extends DummyPipe {
+export class EndPipe extends UnTypePipe {
     
     constructor(inDirections) {
         super(inDirections);
     }
 
-    toString() {
-        const arg = this.toStringArg();
+    getInDirections() {
+        return this.inDirections;
+    }
+
+    getOutDirections() {
+        return this.outDirections;
+    }
+
+    toCode() {
+        const arg = this.toCodeArg();
         return `${arg}`;
     }
 
+    isDirectionDefined() {
+        return true;
+    }
+
     getType() {
-        return END;
+        return PIPE_TYPES.END;
     }
 }

@@ -23,4 +23,10 @@ export const VALUES_TYPES= Object.freeze({
     OTHER: 'OTHER'
 })
 
+export const ERROR = Object.freeze({
+    CODE: Object.freeze({
+        MISSING_PARENT: 'MISSING_PARENT'
+    })
+})
+
 export default { DIRECTION, PIPE_TYPES };

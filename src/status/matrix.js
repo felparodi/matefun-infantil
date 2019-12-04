@@ -1,4 +1,5 @@
-import {Pipe, DUMMY, END} from './pipe';
+import { PIPE_TYPES } from '../constants/constants';
+import {Pipe} from './pipe';
 import {DummyPipe} from './dummyPipe';
 
 export class MatrixPipe {
@@ -7,6 +8,24 @@ export class MatrixPipe {
         this.maxX = x;
         this.maxY = y;
         this.clean();
+    }
+
+    getAllPipes() {
+        const pipes = new Array();
+        for(let i = 0; i < this.maxX; i++) {
+            for(let j = 0; j < this.maxY; j++) {
+                const pipe = this.value(i,j);
+                if (pipe !== null && pipe !== undefined) {
+                    pipes.push(pipe);
+                }
+            }
+        }
+        return pipes;
+    }
+
+    getEndPipes() {
+        return this.getAllPipes()
+            .filter(pipe => pipe.getType() === PIPE_TYPES.END);
     }
 
     clean() {
@@ -45,9 +64,6 @@ export class MatrixPipe {
 
     addPipe(x, y, p) {
         if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") } 
-        if (p.getType() === END) {
-            this.ends.push([x,y])
-        }
         this.values[x][y] = p;
         p.setBoard(this);
         p.setPos(x, y);
@@ -59,11 +75,23 @@ export class MatrixPipe {
     }
 
     processFunction(x, y) {
-        if (!x && !y && this.ends.length  > 0) {
-            [x, y] = this.ends[0]
+        let p = null
+        if (x !== undefined && y !== undefined) {
+            p = this.value(x, y);
+        } else {
+            const ends = this.getEndPipes();
+            p = ends.length > 0 ? ends[0] : null;
         }
-        const p = this.value(x, y)
-        return p.toString()
+        if (p === null) {
+            throw 'Not Have valid init cell to process';
+        }
+        return p.toCode()
+    }
+
+    hasErrors() {
+       return this.getAllPipes()
+            .map(pipe => pipe.getError())
+            .filter(error => error !== null);
     }
 
     clone() {
