@@ -34,27 +34,14 @@ export default class Main extends React.Component {
         });
     }
 
-    createRows() {
-        let rows = []
-
-        for (let i = 0; i < 5; i++) {
-            let cells = []
-            for (let j = 0; j < 5; j++) {
-                cells.push(<Cell key={i + "-" + j} row={i} col={i} droppedItem={this.state.content[i][j]} onDrop={(item) => this.onDrop(i, j, item)}></Cell>);
-            }
-            rows.push(<tr key={i}>{cells}</tr>)
-        }
-        return rows
-    }
-
     render() {
         return (
             <div>
                 <Toolbox />
-                <Board />
+                <Board content={this.state.content} onDrop={this.onDrop}/>
                 <Card style={{ width: '50rem' }}>
                     <Card.Body>
-                        <Button variant="primary">Compilar</Button>
+                        <Button variant="primary">To Matefun String</Button>
                         <Form.Control as="textarea" rows="3" />
                     </Card.Body>
                 </Card>

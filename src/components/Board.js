@@ -3,32 +3,8 @@ import Cell from './Cell';
 
 export default class Board extends React.Component {
 
-    constructor() {
+    constructor(props) {
         super();
-        this.state = {
-            content: this.initContent()
-        };
-        this.onDrop = this.onDrop.bind(this);
-    }
-
-    initContent() {
-        var rows = [];
-        for (let i = 0; i < 5; i++) {
-            let cells = []
-            for (let j = 0; j < 5; j++) {
-                cells.push("empty");
-            }
-            rows.push(cells)
-        }
-        return rows
-    }
-
-    onDrop(row, col, item) {
-        var content = this.state.content;
-        content[row][col] = item;
-        this.setState({
-            content: content
-        });
     }
 
     createRows() {
@@ -37,7 +13,14 @@ export default class Board extends React.Component {
         for (let i = 0; i < 5; i++) {
             let cells = []
             for (let j = 0; j < 5; j++) {
-                cells.push(<Cell key={i+"-"+j} row={i} col={i} droppedItem={this.state.content[i][j]} onDrop={(item) => this.onDrop(i, j, item)}></Cell>);
+                cells.push(
+                    <Cell
+                        key={i + "-" + j}
+                        row={i}
+                        col={i}
+                        droppedItem={this.props.content[i][j]}
+                        onDrop={(item) => this.props.onDrop(i, j, item)}>
+                    </Cell>);
             }
             rows.push(<tr key={i}>{cells}</tr>)
         }
