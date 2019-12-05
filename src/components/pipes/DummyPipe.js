@@ -12,27 +12,33 @@ export class DummyPipe extends React.Component {
 
     render() {
         const { pipe } = this.props;
-        if (pipe.getInDirections()[0]==DIRECTION.TOP && pipe.getOutDirections()[0]==DIRECTION.BOTTOM) {
+        if ((pipe.getInDirections()[0]==DIRECTION.TOP && pipe.getOutDirections()[0]==DIRECTION.BOTTOM)
+            || (pipe.getInDirections()[0]==DIRECTION.BOTTOM && pipe.getOutDirections()[0]==DIRECTION.TOP)) {
             return (
                 <Vertical width={this.props.size} height={this.props.size}></Vertical>
             )
-        } else if (pipe.getInDirections()[0]==DIRECTION.TOP && pipe.getOutDirections()[0]==DIRECTION.RIGHT){
+        } else if ((pipe.getInDirections()[0]==DIRECTION.TOP && pipe.getOutDirections()[0]==DIRECTION.RIGHT)
+            || (pipe.getInDirections()[0]==DIRECTION.RIGHT && pipe.getOutDirections()[0]==DIRECTION.TOP)){
             return (
                 <TopRight width={this.props.size} height={this.props.size}></TopRight>
             )
-        } else if (pipe.getInDirections()[0]==DIRECTION.TOP && pipe.getOutDirections()[0]==DIRECTION.LEFT){
+        } else if ((pipe.getInDirections()[0]==DIRECTION.TOP && pipe.getOutDirections()[0]==DIRECTION.LEFT)
+            || (pipe.getInDirections()[0]==DIRECTION.LEFT && pipe.getOutDirections()[0]==DIRECTION.TOP)) {
             return (
                 <TopLeft width={this.props.size} height={this.props.size}></TopLeft>
             )
-        } else if (pipe.getInDirections()[0]==DIRECTION.LEFT && pipe.getOutDirections()[0]==DIRECTION.RIGHT){
+        } else if ((pipe.getInDirections()[0]==DIRECTION.LEFT && pipe.getOutDirections()[0]==DIRECTION.RIGHT) 
+            || (pipe.getInDirections()[0]==DIRECTION.RIGHT && pipe.getOutDirections()[0]==DIRECTION.LEFT)) {
             return (
                 <Horizontal width={this.props.size} height={this.props.size}></Horizontal>
             )
-        } else if (pipe.getInDirections()[0]==DIRECTION.BOTTOM && pipe.getOutDirections()[0]==DIRECTION.LEFT){
+        } else if ((pipe.getInDirections()[0]==DIRECTION.BOTTOM && pipe.getOutDirections()[0]==DIRECTION.LEFT)
+            || (pipe.getInDirections()[0]==DIRECTION.LEFT && pipe.getOutDirections()[0]==DIRECTION.BOTTOM)) {
             return (
                 <BottomLeft width={this.props.size} height={this.props.size}></BottomLeft>
             )
-        } else if (pipe.getInDirections()[0]==DIRECTION.BOTTOM && pipe.getOutDirections()[0]==DIRECTION.RIGHT){
+        } else if ((pipe.getInDirections()[0]==DIRECTION.BOTTOM && pipe.getOutDirections()[0]==DIRECTION.RIGHT)
+            || (pipe.getInDirections()[0]==DIRECTION.RIGHT && pipe.getOutDirections()[0]==DIRECTION.BOTTOM)) {
             return (
                 <BottomRight width={this.props.size} height={this.props.size}></BottomRight>
             )

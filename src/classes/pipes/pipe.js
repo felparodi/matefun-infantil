@@ -1,4 +1,4 @@
-import { DIRECTION, PIPE_TYPES, ERROR } from '../constants/constants';
+import { DIRECTION, PIPE_TYPES, ERROR } from '../../constants/constants';
 export class Pipe {
 
     constructor(inDirections, outDirections) {

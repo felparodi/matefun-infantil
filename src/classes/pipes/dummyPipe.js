@@ -1,4 +1,4 @@
-import { PIPE_TYPES, DIRECTION } from '../constants/constants';
+import { PIPE_TYPES, DIRECTION } from '../../constants/constants';
 import { UnTypePipe } from './untypePipe';
 
 export class DummyPipe extends UnTypePipe {
