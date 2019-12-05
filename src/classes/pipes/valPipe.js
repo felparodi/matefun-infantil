@@ -32,7 +32,7 @@ export class ValPipe extends Pipe {
         }
     }
 
-    toString() {
+    toCode(direction) {
         const thisOutType = this.getOutType();
         if(thisOutType.indexOf(VALUES_TYPES.STRING) === 0) return `"${this.value}"`;
         if(thisOutType.indexOf(VALUES_TYPES.NUMBER) === 0) return `${this.value}`;

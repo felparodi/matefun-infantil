@@ -8,6 +8,24 @@ export class MatrixPipe {
         this.clean();
     }
 
+    getAllPipes() {
+        const pipes = new Array();
+        for(let i = 0; i < this.maxX; i++) {
+            for(let j = 0; j < this.maxY; j++) {
+                const pipe = this.value(i,j);
+                if (pipe !== null && pipe !== undefined) {
+                    pipes.push(pipe);
+                }
+            }
+        }
+        return pipes;
+    }
+
+    getEndPipes() {
+        return this.getAllPipes()
+            .filter(pipe => pipe.getType() === PIPE_TYPES.END);
+    }
+
     clean() {
         this.values = new Array();
         this.ends = new Array();
@@ -43,10 +61,7 @@ export class MatrixPipe {
     }
 
     addPipe(x, y, p) {
-        if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") }
-        if (p.getType() === PIPE_TYPES.END) {
-            this.ends.push([x,y])
-        }
+        if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") } 
         this.values[x][y] = p;
         p.setBoard(this);
         p.setPos(x, y);
@@ -58,18 +73,23 @@ export class MatrixPipe {
     }
 
     processFunction(x, y) {
-        console.log('processFuncion');
-        if (!x && !y && this.ends.length  > 0) {
-            console.log('if');
-            [x, y] = this.ends[0]
-            console.log(x);
-            console.log(y);
+        let p = null
+        if (x !== undefined && y !== undefined) {
+            p = this.value(x, y);
+        } else {
+            const ends = this.getEndPipes();
+            p = ends.length > 0 ? ends[0] : null;
         }
-        console.log('a');
-        const p = this.value(x, y)
-        console.log(p);
-        //return p.toString()
-        console.log(p.toString());
+        if (p === null) {
+            throw 'Not Have valid init cell to process';
+        }
+        return p.toCode()
+    }
+
+    hasErrors() {
+       return this.getAllPipes()
+            .map(pipe => pipe.getError())
+            .filter(error => error !== null);
     }
 
     clone() {

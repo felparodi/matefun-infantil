@@ -1,30 +1,48 @@
-import { PIPE_TYPES } from '../../constants/constants';
-import { Pipe } from './pipe';
+import { PIPE_TYPES, DIRECTION } from '../constants/constants';
+import { UnTypePipe } from './untypePipe';
 
-export class DummyPipe extends Pipe {
+export class DummyPipe extends UnTypePipe {
 
-    constructor(inDirection, outDirection) {
-        super([inDirection],[outDirection]);
+    constructor(inDirections, outDirections) {
+        super(inDirections, outDirections);
     }
 
-    getOutType() {
-        const parents = this.getParents();
-        const inTypePerParent = parents.map(parent => parent.hasOutType() ? parent.getOutType() : new Array());
-        return new Array().concat(...inTypePerParent);
+    getInDirections() {
+        return this.inToOut ? this.inDirections : this.outDirections;
     }
 
-    getInType() {
-        const childrens = this.getChildrens();
-        const inTypePerChildren = childrens.map(children => children.hasInType() ? children.getInType() : new Array());
-        return new Array().concat(...inTypePerChildren);
+    getOutDirections() {
+        return !this.inToOut ? this.inDirections : this.outDirections;
     }
 
     hasOutType() {
         return this.getOutType().length > 0;
     }
 
-    toString() {
-        return this.toStringArg()
+    toCode(direction) {
+        this.setInToOut(direction);
+        return this.toCodeArg()
+    }
+
+    setInToOut(direction) {
+        switch(direction) {
+            case DIRECTION.BOTTOM:
+                this.inToOut = this.inDirections.indexOf(DIRECTION.TOP);
+            case DIRECTION.TOP:
+                this.inToOut = this.inDirections.indexOf(DIRECTION.BOTTOM);
+            case DIRECTION.RIGHT:
+                this.inToOut = this.inDirections.indexOf(DIRECTION.LEFT);
+            case DIRECTION.LEFT:
+                this.inToOut = this.inDirections.indexOf(DIRECTION.RIGHT);
+        }
+    }
+
+    isOutDirection(direction) {
+        return this.getOutDirections().indexOf(direction) || this.getInDirections().indexOf(direction);
+    }
+
+    isInDirection(direction) {
+        return this.isOutDirection(direction);
     }
 
     hasInType() {
@@ -33,5 +51,10 @@ export class DummyPipe extends Pipe {
 
     getType() {
         return PIPE_TYPES.DUMMY;
+    }
+
+    getErrorFlow(direction) {
+        this.setInToOut(direction);
+        return super.getErrorFlow(direction);
     }
 }

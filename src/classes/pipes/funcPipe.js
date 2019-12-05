@@ -9,8 +9,10 @@ export class FuncPipe extends ValPipe {
        this.setOutType(VALUES_TYPES.FUNCTION);
     }
 
-    toString() {
-        const arg = this.toStringArg();
+    toCode(direction) {
+        //console.log('FuncPipe.toCode.this', this)
+        //console.log('FuncPipe.toCode.getParents', this.getParents())
+        const arg = this.toCodeArg();
         return `${this.value}(${arg})`;
     }
 

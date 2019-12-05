@@ -27,4 +27,10 @@ export const TOOLBOX_PIPE_SIZE= '30px';
 
 export const CELL_PIPE_SIZE= '80px';
 
+export const ERROR = Object.freeze({
+    CODE: Object.freeze({
+        MISSING_PARENT: 'MISSING_PARENT'
+    })
+})
+
 export default { DIRECTION, PIPE_TYPES };
