@@ -41,7 +41,7 @@ export default class Main extends React.Component {
                 <Card style={{ width: '50rem' }}>
                     <Card.Body>
                         <Button variant="primary" onClick={this.toMFString}>To Matefun String</Button>
-                        <Form.Control as="textarea" rows="3" value={this.state.mfString}/>
+                        <Form.Control as="textarea" readOnly rows="3" value={this.state.mfString}/>
                     </Card.Body>
                 </Card>
             </div>
