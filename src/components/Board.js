@@ -14,13 +14,14 @@ export default class Board extends React.Component {
             let cells = []
             for (let j = 0; j < 5; j++) {
                 cells.push(
-                    <Cell
-                        key={i + "-" + j}
-                        row={i}
-                        col={i}
-                        droppedItem={this.props.content[i][j]}
-                        onDrop={(item) => this.props.onDrop(i, j, item)}>
-                    </Cell>);
+                    <Cell 
+                        key={i + "-" + j} 
+                        row={i} 
+                        col={i} 
+                        content={this.props.content.value(i,j)} 
+                        onDrop={(pipe)=> this.props.onDrop(i, j, pipe)}>
+                    </Cell>
+                );
             }
             rows.push(<tr key={i}>{cells}</tr>)
         }

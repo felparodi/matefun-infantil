@@ -1,5 +1,4 @@
-import {Pipe, DUMMY, END} from './pipe';
-import {DummyPipe} from './dummyPipe';
+import { PIPE_TYPES } from '../constants/constants';
 
 export class MatrixPipe {
 
@@ -44,8 +43,8 @@ export class MatrixPipe {
     }
 
     addPipe(x, y, p) {
-        if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") } 
-        if (p.getType() === END) {
+        if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") }
+        if (p.getType() === PIPE_TYPES.END) {
             this.ends.push([x,y])
         }
         this.values[x][y] = p;
@@ -59,11 +58,18 @@ export class MatrixPipe {
     }
 
     processFunction(x, y) {
+        console.log('processFuncion');
         if (!x && !y && this.ends.length  > 0) {
+            console.log('if');
             [x, y] = this.ends[0]
+            console.log(x);
+            console.log(y);
         }
+        console.log('a');
         const p = this.value(x, y)
-        return p.toString()
+        console.log(p);
+        //return p.toString()
+        console.log(p.toString());
     }
 
     clone() {

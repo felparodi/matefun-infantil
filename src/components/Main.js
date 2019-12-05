@@ -3,50 +3,48 @@ import Cell from './Cell'
 import Toolbox from './Toolbox.js'
 import Board from './Board.js'
 import { Button, Card, Form } from 'react-bootstrap';
+import { MatrixPipe } from '../classes/matrix'
 
 export default class Main extends React.Component {
 
     constructor() {
         super();
         this.state = {
-            content: this.initContent()
+            boardContent: new MatrixPipe(5,5),
+            mfString: ''
         };
         this.onDrop = this.onDrop.bind(this);
+        this.toMFString = this.toMFString.bind(this);
     }
 
-    initContent() {
-        var rows = [];
-        for (let i = 0; i < 5; i++) {
-            let cells = []
-            for (let j = 0; j < 5; j++) {
-                cells.push("empty");
-            }
-            rows.push(cells)
-        }
-        return rows
-    }
-
-    onDrop(row, col, item) {
-        var content = this.state.content;
-        content[row][col] = item;
+    onDrop(row, col, pipe) {
+        var boardContent = this.state.boardContent;
+        boardContent.addPipe(row, col, pipe);
         this.setState({
-            content: content
+            boardContent: boardContent
         });
+    }
+    
+    toMFString() {
+        var boardContent= this.state.boardContent;
+        var mfString= boardContent.processFunction();
+        this.setState({
+            mfString: mfString
+        })
     }
 
     render() {
         return (
             <div>
                 <Toolbox />
-                <Board content={this.state.content} onDrop={this.onDrop}/>
+                <Board content={this.state.boardContent} onDrop={this.onDrop}/>
                 <Card style={{ width: '50rem' }}>
                     <Card.Body>
-                        <Button variant="primary">To Matefun String</Button>
-                        <Form.Control as="textarea" rows="3" />
+                        <Button variant="primary" onClick={this.toMFString}>To Matefun String</Button>
+                        <Form.Control as="textarea" rows="3" value={this.state.mfString}/>
                     </Card.Body>
                 </Card>
             </div>
-
         )
     }
 }
