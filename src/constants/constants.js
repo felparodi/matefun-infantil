@@ -23,10 +23,6 @@ export const VALUES_TYPES= Object.freeze({
     OTHER: 'OTHER'
 })
 
-export const TOOLBOX_PIPE_SIZE= '30px';
-
-export const CELL_PIPE_SIZE= '80px';
-
 export const ERROR = Object.freeze({
     CODE: Object.freeze({
         MISSING_PARENT: 'MISSING_PARENT'
@@ -34,3 +30,10 @@ export const ERROR = Object.freeze({
 })
 
 export default { DIRECTION, PIPE_TYPES };
+
+export const BOARD_ROWS= 5;
+export const BOARD_COLS= 10;
+
+export const CELL_SIZE= '100px';
+
+export const TOOLBOX_BTN_SIZE= '50px';

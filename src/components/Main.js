@@ -4,13 +4,14 @@ import Toolbox from './Toolbox.js'
 import Board from './Board.js'
 import { Button, Card, Form } from 'react-bootstrap';
 import { MatrixPipe } from '../classes/matrix'
+import { BOARD_ROWS, BOARD_COLS } from '../constants/constants'
 
 export default class Main extends React.Component {
 
     constructor() {
         super();
         this.state = {
-            boardContent: new MatrixPipe(5,5),
+            boardContent: new MatrixPipe(BOARD_ROWS, BOARD_COLS),
             mfString: ''
         };
         this.onDrop = this.onDrop.bind(this);

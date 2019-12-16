@@ -1,6 +1,6 @@
 import React from 'react';
 import Cell from './Cell'
-const [h, w] = [10, 10]
+import { BOARD_ROWS, BOARD_COLS } from '../constants/constants'
 
 export default class Board extends React.Component {
 
@@ -10,10 +10,9 @@ export default class Board extends React.Component {
 
     createRows() {
         let rows = []
-
-        for (let i = 0; i < h; i++) {
+        for (let i = 0; i < BOARD_ROWS; i++) {
             let cells = []
-            for (let j = 0; j < 5; j++) {
+            for (let j = 0; j < BOARD_COLS; j++) {
                 cells.push(
                     <Cell 
                         key={i + "-" + j} 
