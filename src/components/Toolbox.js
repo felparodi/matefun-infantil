@@ -21,6 +21,7 @@ export default class Toolbox extends React.Component {
                                 <tr>
                                     <td>
                                         <Button variant="outline-primary">
+<<<<<<< HEAD
                                             <Pipe pipe={new FuncPipe('add', [DIRECTION.LEFT, DIRECTION.RIGHT], [DIRECTION.BOTTOM])} size={TOOLBOX_PIPE_SIZE}></Pipe>
                                         </Button>
                                     </td>
@@ -32,47 +33,78 @@ export default class Toolbox extends React.Component {
                                     <td>
                                         <Button variant="outline-primary">
                                             <Pipe pipe={new ValPipe(3, DIRECTION.BOTTOM)} size={TOOLBOX_PIPE_SIZE}></Pipe>
+=======
+                                            <Pipe type="cross" size="50px"></Pipe>
+>>>>>>> refactor-matirx
                                         </Button>
                                     </td>
                                     <td>
                                         <Button variant="outline-primary">
+<<<<<<< HEAD
                                             <Pipe pipe={new EndPipe(DIRECTION.TOP)} size={TOOLBOX_PIPE_SIZE}></Pipe>
+=======
+                                            <Pipe type="t" size="50px"></Pipe>
+>>>>>>> refactor-matirx
                                         </Button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <Button variant="outline-primary">
+<<<<<<< HEAD
                                             <Pipe pipe={new DummyPipe(DIRECTION.TOP, DIRECTION.BOTTOM)} size={TOOLBOX_PIPE_SIZE}></Pipe>
+=======
+                                            <Pipe type="vertical" size="50px"></Pipe>
+>>>>>>> refactor-matirx
                                         </Button>
                                     </td>
                                     <td>
                                         <Button variant="outline-primary">
+<<<<<<< HEAD
                                             <Pipe pipe={new DummyPipe(DIRECTION.LEFT, DIRECTION.RIGHT)} size={TOOLBOX_PIPE_SIZE}></Pipe>
+=======
+                                            <Pipe type="horizontal" size="50px"></Pipe>
+>>>>>>> refactor-matirx
                                         </Button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <Button variant="outline-primary">
+<<<<<<< HEAD
                                             <Pipe pipe={new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT)} size={TOOLBOX_PIPE_SIZE}></Pipe>
+=======
+                                            <Pipe type="top-left" size="50px"></Pipe>
+>>>>>>> refactor-matirx
                                         </Button>
                                     </td>
                                     <td>
                                         <Button variant="outline-primary">
+<<<<<<< HEAD
                                             <Pipe pipe={new DummyPipe(DIRECTION.TOP, DIRECTION.RIGHT)} size={TOOLBOX_PIPE_SIZE}></Pipe>
+=======
+                                            <Pipe type="top-right" size="50px"></Pipe>
+>>>>>>> refactor-matirx
                                         </Button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <Button variant="outline-primary">
+<<<<<<< HEAD
                                             <Pipe pipe={new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT)} size={TOOLBOX_PIPE_SIZE}></Pipe>
+=======
+                                            <Pipe type="bottom-left" size="50px"></Pipe>
+>>>>>>> refactor-matirx
                                         </Button>
                                     </td>
                                     <td>
                                         <Button variant="outline-primary">
+<<<<<<< HEAD
                                             <Pipe pipe={new DummyPipe(DIRECTION.BOTTOM, DIRECTION.RIGHT)} size={TOOLBOX_PIPE_SIZE}></Pipe>
+=======
+                                            <Pipe type="bottom-right" size="50px"></Pipe>
+>>>>>>> refactor-matirx
                                         </Button>
                                     </td>
                                 </tr>
