@@ -7,9 +7,9 @@ class Cell extends React.Component {
     render() {
         const { isOver, canDrop, connectDropTarget, droppedItem } = this.props;
         return connectDropTarget(
-            <td key={[this.props.row, this.props.col]} style={{ border: "1px solid black", width: "80px", height: "80px", backgroundColor: isOver ? "green" : "" }}>
+            <td key={[this.props.row, this.props.col]} style={{ border: "1px solid black", width: "40px", height: "40px", backgroundColor: isOver ? "green" : "" }}>
                 {droppedItem && droppedItem.type &&
-                    <Pipe type={droppedItem.type} size="80px"></Pipe>
+                    <Pipe type={droppedItem.type} size="40px"></Pipe>
                 }
             </td>
         )

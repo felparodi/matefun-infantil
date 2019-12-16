@@ -1,5 +1,6 @@
 import React from 'react';
 import Cell from './Cell'
+const [h, w] = [10, 10]
 
 export default class Board extends React.Component {
 
@@ -13,9 +14,9 @@ export default class Board extends React.Component {
 
     initContent() {
         var rows = [];
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < h; i++) {
             let cells = []
-            for (let j = 0; j < 5; j++) {
+            for (let j = 0; j < w; j++) {
                 cells.push("empty");
             }
             rows.push(cells)
@@ -34,9 +35,9 @@ export default class Board extends React.Component {
     createRows() {
         let rows = []
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < h; i++) {
             let cells = []
-            for (let j = 0; j < 5; j++) {
+            for (let j = 0; j < w; j++) {
                 cells.push(<Cell row={i} col={i} droppedItem={this.state.content[i][j]} onDrop={(item) => this.onDrop(i, j, item)}></Cell>);
             }
             rows.push(<tr key={i}>{cells}</tr>)
