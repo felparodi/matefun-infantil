@@ -30,13 +30,11 @@ export default class Board extends React.Component {
 
     render() {
         return (
-            <div style={{ display: "inline-block" }}>
-                <table style={{ borderColor: "black" }}>
-                    <tbody>
-                        {this.createRows()}
-                    </tbody>
-                </table>
-            </div>
+            <table>
+                <tbody>
+                    {this.createRows()}
+                </tbody>
+            </table>
         )
     }
 }
