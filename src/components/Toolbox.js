@@ -6,6 +6,7 @@ import { FuncPipe } from '../classes/pipes/funcPipe';
 import { EndPipe } from '../classes/pipes/endPipe';
 import { ValPipe } from '../classes/pipes/valPipe';
 import { DummyPipe } from '../classes/pipes/dummyPipe'
+import { VarPipe } from '../classes/pipes/varPipe'
 
 
 export default class Toolbox extends React.Component {
@@ -76,6 +77,11 @@ export default class Toolbox extends React.Component {
                                 <Col style={{padding:'2px',margin:'2px'}}>
                                     <Button variant="outline-primary">
                                         <Pipe pipe={new EndPipe(DIRECTION.TOP)} size={TOOLBOX_BTN_SIZE}></Pipe>
+                                    </Button>
+                                </Col>
+                                <Col style={{padding:'2px',margin:'2px'}}>
+                                    <Button variant="outline-primary">
+                                        <Pipe pipe={new VarPipe(DIRECTION.BOTTOM)} size={TOOLBOX_BTN_SIZE}></Pipe>
                                     </Button>
                                 </Col>
                                 <Col xs={12}>

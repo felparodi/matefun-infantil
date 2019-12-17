@@ -11,7 +11,8 @@ export const PIPE_TYPES= Object.freeze({
     FUNCTION: 'FUNCTION',
     VALUE: 'VALUE',
     END: 'END',
-    UNDEFINED: '?'
+    UNDEFINED: '?',
+    VARIABLE: 'VARIABLE'
 })
 
 export const VALUES_TYPES= Object.freeze({

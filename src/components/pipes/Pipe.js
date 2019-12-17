@@ -5,6 +5,7 @@ import { DummyPipe } from './DummyPipe.js'
 import { FuncPipe } from './FuncPipe.js'
 import { EndPipe } from './EndPipe.js'
 import { ValPipe } from './ValPipe.js'
+import { VarPipe } from './VarPipe.js';
 
 class Pipe extends React.Component {
 
@@ -32,6 +33,12 @@ class Pipe extends React.Component {
             return connectDragSource(
                 <div>
                     <DummyPipe {...(this.props)}/>
+                </div>
+            )
+        } else if (pipe.getType()==PIPE_TYPES.VARIABLE){
+            return connectDragSource(
+                <div>
+                    <VarPipe {...(this.props)}/>
                 </div>
             )
         }
