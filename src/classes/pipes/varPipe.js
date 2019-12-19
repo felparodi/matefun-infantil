@@ -18,6 +18,9 @@ export class VarPipe extends Pipe {
     }
 
     typeEval() {
+        if (this.value === null) {
+            return VALUES_TYPES.VAR
+        }
         switch(typeof this.value) {
             case 'boolean': return [VALUES_TYPES.BOOLEAN];
             case 'number': return [VALUES_TYPES.NUMBER];

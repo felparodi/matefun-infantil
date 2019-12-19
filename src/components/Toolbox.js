@@ -30,8 +30,8 @@ const PipeGroups = [
     ]
 ]
 
-const renderPipeCol = (pipe) => (
-    <Col style={{padding:'2px',margin:'2px'}}>
+const renderPipeCol = (pipe, index) => (
+    <Col key={index} style={{padding:'2px',margin:'2px'}}>
         <Button variant="outline-primary">
             <Pipe pipe={pipe} size={TOOLBOX_BTN_SIZE}></Pipe>
         </Button>
@@ -39,7 +39,7 @@ const renderPipeCol = (pipe) => (
 )
 
 const renderPipeGroup = (pipes, index, pipeGroups) => {
-    return <React.Fragment>
+    return <React.Fragment key={index}>
         {pipes.map(renderPipeCol)}
         { index + 1 < pipeGroups.length && 
             <Col xs={12}>

@@ -21,7 +21,8 @@ export const VALUES_TYPES= Object.freeze({
     NUMBER: 'NUMBER',
     ARRAY: 'ARRAY',
     FUNCTION: 'FUNCTION',
-    OTHER: 'OTHER'
+    OTHER: 'OTHER',
+    VAR: 'VAR'
 })
 
 export const ERROR = Object.freeze({
@@ -32,9 +33,9 @@ export const ERROR = Object.freeze({
 
 export default { DIRECTION, PIPE_TYPES };
 
-export const BOARD_ROWS= 5;
-export const BOARD_COLS= 10;
+export const BOARD_ROWS= 8;
+export const BOARD_COLS= 8;
 
-export const CELL_SIZE= '140px';
+export const CELL_SIZE=4;
 
 export const TOOLBOX_BTN_SIZE= '50px';

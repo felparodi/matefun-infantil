@@ -86,6 +86,23 @@ export class MatrixPipe {
         return p.toCode()
     }
 
+    isInstruction() {
+
+    }
+
+    isFunction() {
+        return this.getAllPipes()
+            .filter(pipe => pipe.getType() === PIPE_TYPES.VARIABLE).length > 0
+    }
+
+    getFunctionDefinition(name) {
+
+    }
+
+    getFunctionCode() {
+
+    }
+
     hasErrors() {
        return this.getAllPipes()
             .map(pipe => pipe.getError())

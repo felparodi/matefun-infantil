@@ -1,6 +1,6 @@
 import React from 'react';
 import Cell from './Cell'
-import { BOARD_ROWS, BOARD_COLS } from '../constants/constants'
+import { BOARD_ROWS, BOARD_COLS, CELL_SIZE } from '../constants/constants'
 
 export default class Board extends React.Component {
 
@@ -23,18 +23,16 @@ export default class Board extends React.Component {
                     </Cell>
                 );
             }
-            rows.push(<tr key={i}>{cells}</tr>)
+            rows.push(<div style={{ display: 'flex', flex: "1 0 0" }} key={i}>{cells}</div>)
         }
         return rows
     }
 
     render() {
         return (
-            <table>
-                <tbody>
-                    {this.createRows()}
-                </tbody>
-            </table>
+            <div style={{display: 'flex', flexDirection: 'column', width: `${CELL_SIZE * BOARD_COLS}rem`, height: `${CELL_SIZE * BOARD_ROWS}rem`}}>
+                {this.createRows()}
+            </div>
         )
     }
 }
