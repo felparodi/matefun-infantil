@@ -40,8 +40,8 @@ export const ERROR = Object.freeze({
 
 export default { DIRECTION, PIPE_TYPES };
 
-export const BOARD_ROWS= 5;
-export const BOARD_COLS= 5;
+export const BOARD_ROWS= 8;
+export const BOARD_COLS= 14;
 
 export const CELL_SIZE=3;
 
