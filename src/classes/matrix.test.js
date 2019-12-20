@@ -12,7 +12,7 @@ describe("MatrixPipe class test", () => {
        const m = new MatrixPipe(5,5)
        m.addPipe(2,2, new ValPipe(3, [DIRECTION.RIGHT]))
        m.addPipe(2,3, new EndPipe(DIRECTION.LEFT));
-       expect(m.processFunction()).toEqual("3")
+       expect(m.process()).toEqual("3")
     })
     //*/
     it("create single value using dummy pipe matrix", () => { 
@@ -21,7 +21,7 @@ describe("MatrixPipe class test", () => {
         m.addPipe(2,1, new DummyPipe(DIRECTION.LEFT, DIRECTION.RIGHT))
         m.addPipe(2,2, new DummyPipe(DIRECTION.LEFT, DIRECTION.RIGHT))
         m.addPipe(2,3, new EndPipe(DIRECTION.LEFT))
-        expect(m.processFunction()).toEqual("3")
+        expect(m.process()).toEqual("3")
      })
     //*/
     it("create single value using dummy pipe invert matrix", () => { 
@@ -30,7 +30,7 @@ describe("MatrixPipe class test", () => {
         m.addPipe(2,1, new DummyPipe(DIRECTION.RIGHT, DIRECTION.LEFT))
         m.addPipe(2,2, new DummyPipe(DIRECTION.LEFT, DIRECTION.RIGHT))
         m.addPipe(2,3, new EndPipe(DIRECTION.LEFT))
-        expect(m.processFunction()).toEqual("3")
+        expect(m.process()).toEqual("3")
     })
     //*/
     it("create single value using function pipe matrix", () => { 
@@ -39,7 +39,7 @@ describe("MatrixPipe class test", () => {
         m.addPipe(2,1, new FuncPipe('atoi',[DIRECTION.LEFT], [DIRECTION.RIGHT]))
         m.addPipe(2,2, new DummyPipe(DIRECTION.LEFT, DIRECTION.RIGHT))
         m.addPipe(2,3, new EndPipe(DIRECTION.LEFT))
-        expect(m.processFunction()).toEqual("atoi(3)")
+        expect(m.process()).toEqual("atoi(3)")
     })
     //*/
     it("create single value using function double arg pipe matrix", () => { 
@@ -49,7 +49,7 @@ describe("MatrixPipe class test", () => {
         m.addPipe(2,1, new FuncPipe('add', [DIRECTION.LEFT, DIRECTION.TOP], [DIRECTION.RIGHT]))
         m.addPipe(2,2, new DummyPipe(DIRECTION.LEFT, DIRECTION.RIGHT))
         m.addPipe(2,3, new EndPipe(DIRECTION.LEFT))
-        expect(m.processFunction()).toEqual("add(3, 2)")
+        expect(m.process()).toEqual("add(3, 2)")
     })
     //*/
     it("create single value matrix clone", () => { 
@@ -58,8 +58,8 @@ describe("MatrixPipe class test", () => {
         m.addPipe(2,3, new EndPipe(DIRECTION.LEFT));
         const m2 = m.clone();
         m2.addPipe(2,2, new ValPipe(2, DIRECTION.RIGHT))
-        expect(m.processFunction()).toEqual("3")
-        expect(m2.processFunction()).toEqual("2")
+        expect(m.process()).toEqual("3")
+        expect(m2.process()).toEqual("2")
     })
     //*/
     it("create single value using function double arg pipe matrix pending arg", () => { 
@@ -68,8 +68,8 @@ describe("MatrixPipe class test", () => {
         m.addPipe(2,1, new FuncPipe('add', [DIRECTION.LEFT, DIRECTION.TOP], [DIRECTION.RIGHT]))
         m.addPipe(2,2, new DummyPipe(DIRECTION.LEFT, DIRECTION.RIGHT))
         m.addPipe(2,3, new EndPipe(DIRECTION.LEFT))
-        expect(m.processFunction()).toEqual("add(3, ?)")
-        expect(m.processFunction()).toEqual("add(3, ?)")
+        expect(m.process()).toEqual("add(3, ?)")
+        expect(m.process()).toEqual("add(3, ?)")
     })
     //*/
 });

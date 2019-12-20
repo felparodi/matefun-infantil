@@ -20,7 +20,7 @@ export default class Main extends React.Component {
 
     onDrop(row, col, pipe) {
         var boardContent = this.state.boardContent;
-        boardContent.addPipe(row, col, pipe);
+        boardContent.addPipe(row, col, pipe.clone());
         this.setState({
             boardContent: boardContent
         });
@@ -28,7 +28,7 @@ export default class Main extends React.Component {
 
     toMFString() {
         var boardContent = this.state.boardContent;
-        var mfString = boardContent.processFunction();
+        var mfString = boardContent.process();
         this.setState({
             mfString: mfString
         })

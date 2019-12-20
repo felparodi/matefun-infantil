@@ -1,10 +1,20 @@
 import { PIPE_TYPES, DIRECTION } from '../../constants/constants';
 import { UnTypePipe } from './untypePipe';
+import { processNext } from './pipe';
 
 export class DummyPipe extends UnTypePipe {
 
     constructor(inDirections, outDirections) {
         super(inDirections, outDirections);
+    }
+
+    getAllDirection() {
+        const setDir = new Set()
+        this.inDirections.forEach((value) => setDir.add(value))
+        this.outDirections.forEach((value) => setDir.add(value))
+        const directionList = new Array()
+        setDir.forEach((value) => directionList.push(value))
+        return directionList;
     }
 
     getInDirections() {
@@ -19,9 +29,21 @@ export class DummyPipe extends UnTypePipe {
         return this.getOutType().length > 0;
     }
 
-    toCode(direction) {
+    toCode(direction, blockVars) {
         this.setInToOut(direction);
-        return this.toCodeArg()
+        return this.toCodeArg(direction, blockVars)
+    }
+
+    getParents(outDirections) {
+        //console.log('getParents.this', this);
+        if(this.board == null || this.posX === null || this.posY === null) {
+            return new Array();
+        }
+
+        //console.log('getParents.getInDirections', this.getInDirections());
+        return this.getAllDirection().filter(dir => dir !== outDirections).map(processNext(this));
+        //console.log('getParents.parents', parents);
+        //return parents.filter(parent => parent.pipe !== null && parent.pipe !== undefined);
     }
 
     setInToOut(direction) {
@@ -38,7 +60,8 @@ export class DummyPipe extends UnTypePipe {
     }
 
     isOutDirection(direction) {
-        return this.getOutDirections().indexOf(direction) || this.getInDirections().indexOf(direction);
+        return this.getOutDirections().indexOf(direction) >= 0 || 
+            this.getInDirections().indexOf(direction)  >= 0;
     }
 
     isInDirection(direction) {

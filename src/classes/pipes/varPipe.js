@@ -1,11 +1,11 @@
 import { PIPE_TYPES, VALUES_TYPES } from '../../constants/constants';
-import { Pipe } from './pipe';
+import { UnTypePipe } from './untypePipe';
 
-export class VarPipe extends Pipe {
+export class VarPipe extends UnTypePipe {
 
-    constructor(value, outDirections) {
+    constructor(outDirections) {
         super([], outDirections);
-        this.value = value;
+        this.value = undefined;
         this.setOutType(this.typeEval());
     }
 
@@ -17,8 +17,12 @@ export class VarPipe extends Pipe {
         return this.outTypes;
     }
 
+    setValue(value) {
+        this.getValue();
+    }
+
     typeEval() {
-        if (this.value === null) {
+        if (this.value === undefined) {
             return VALUES_TYPES.VAR
         }
         switch(typeof this.value) {
@@ -35,13 +39,8 @@ export class VarPipe extends Pipe {
         }
     }
 
-    toCode(direction) {
-        const thisOutType = this.getOutType();
-        if(thisOutType.indexOf(VALUES_TYPES.STRING) === 0) return `"${this.value}"`;
-        if(thisOutType.indexOf(VALUES_TYPES.NUMBER) === 0) return `${this.value}`;
-        if(thisOutType.indexOf(VALUES_TYPES.BOOLEAN) === 0) return `${this.value}`;
-        if(thisOutType.indexOf(VALUES_TYPES.ARRAY) === 0) return `[${this.value}]`;
-        return `{${this.value}}`;
+    toCode(direction, blockVar) {
+        return `${blockVar.vars[this.index].name}`;
     }
 
     getType() {

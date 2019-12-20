@@ -15,8 +15,8 @@ export class EndPipe extends UnTypePipe {
         return this.outDirections;
     }
 
-    toCode() {
-        const arg = this.toCodeArg();
+    toCode(blockVars) {
+        const arg = this.toCodeArg(this.inDirections[0], blockVars);
         return `${arg}`;
     }
 

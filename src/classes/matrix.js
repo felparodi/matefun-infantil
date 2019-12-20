@@ -5,14 +5,15 @@ export class MatrixPipe {
     constructor(x, y) {
         this.maxX = x;
         this.maxY = y;
+        this.vars = {};
         this.clean();
     }
 
     getAllPipes() {
         const pipes = new Array();
-        for(let i = 0; i < this.maxX; i++) {
-            for(let j = 0; j < this.maxY; j++) {
-                const pipe = this.value(i,j);
+        for(let i = 0; i < this.maxY; i++) {
+            for(let j = 0; j < this.maxX; j++) {
+                const pipe = this.value(j,i);
                 if (pipe !== null && pipe !== undefined) {
                     pipes.push(pipe);
                 }
@@ -72,22 +73,27 @@ export class MatrixPipe {
         this.values[x][y] = null
     }
 
-    processFunction(x, y) {
-        let p = null
-        if (x !== undefined && y !== undefined) {
-            p = this.value(x, y);
+    process() {
+        if (this.isFunction()) {
+            return this.processFunction('func')
         } else {
-            const ends = this.getEndPipes();
-            p = ends.length > 0 ? ends[0] : null;
+            return this.processInstruction()
         }
+    }
+
+    processFunction(name) {
+        const def = this.getFunctionDefinition(name)
+        const code = this.getFunctionCode(name)
+        return `${def}\n${code}`
+    }
+
+    processInstruction() {
+        const ends = this.getEndPipes();
+        const p = ends.length > 0 ? ends[0] : null;
         if (p === null) {
             throw 'Not Have valid init cell to process';
         }
         return p.toCode()
-    }
-
-    isInstruction() {
-
     }
 
     isFunction() {
@@ -96,11 +102,26 @@ export class MatrixPipe {
     }
 
     getFunctionDefinition(name) {
-
+        const varsPipes = this.getAllPipes().filter(pipe => pipe.getType() === PIPE_TYPES.VARIABLE);
+        const endPipe = this.getEndPipes();
+        const varsType = varsPipes.reduce((prev, v, index, vars) => index > 0 ? `${prev} x R` :`R`, '');
+        const endType = 'R';
+        return `${name} :: ${varsType} -> ${endType}`;
     }
 
-    getFunctionCode() {
-
+    getFunctionCode(name) {
+        const varsPipes = this.getAllPipes().filter(pipe => pipe.getType() === PIPE_TYPES.VARIABLE);
+        const endPipe = this.getEndPipes();
+        const functionDef = { name, vars:{} }
+        const varNameList = [];
+        varsPipes.forEach((pipe, index) => {
+            pipe.index = index
+            functionDef.vars[index] = { name: `x${index}`}
+            varNameList.push(functionDef.vars[index].name)
+        })
+        console.log(functionDef)
+        const code = endPipe[0].toCode(functionDef);
+        return `${name}(${varNameList.join(', ')}) = ${code}`
     }
 
     hasErrors() {
@@ -120,6 +141,17 @@ export class MatrixPipe {
             }
         }
         return m;
+    }
+
+    setPipeValue(x, y, value) {
+        if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") } 
+        const p = this.values[x][y];
+        if (p !== null && p !== undefined) {
+            const pipeType = p.getType();
+            if (pipeType === PIPE_TYPES.VALUE || pipeType === PIPE_TYPES.VARIABLE) {
+                
+            }
+        }
     }
 
     validateMatrix() {

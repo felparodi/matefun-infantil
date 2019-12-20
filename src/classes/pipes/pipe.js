@@ -1,4 +1,32 @@
 import { DIRECTION, PIPE_TYPES, ERROR } from '../../constants/constants';
+
+export function processNext(pipe) {
+    return (direction) => {
+        let before = null;
+        let nextDir = null;
+        switch(direction) {
+            case DIRECTION.BOTTOM:
+                nextDir = DIRECTION.TOP;
+                before = pipe.board.value(pipe.posX + 1, pipe.posY);
+                break;
+            case DIRECTION.TOP: 
+                nextDir = DIRECTION.BOTTOM;
+                before = pipe.board.value(pipe.posX - 1, pipe.posY);
+                break;
+            case DIRECTION.RIGHT:
+                nextDir = DIRECTION.LEFT;
+                before = pipe.board.value(pipe.posX, pipe.posY + 1);
+                break;
+            case DIRECTION.LEFT:
+                nextDir = DIRECTION.RIGHT;
+                before = pipe.board.value(pipe.posX, pipe.posY - 1);
+                break;
+        }
+        before = before !== null && before.isOutDirection(nextDir) ? before : null;
+        return { pipe: before, dir: direction, nextDir: nextDir};
+    }
+}
+
 export class Pipe {
 
     constructor(inDirections, outDirections) {
@@ -34,31 +62,13 @@ export class Pipe {
         this.board = board;
     }
 
-    getParents() {
+    getParents(outDirections) {
         //console.log('getParents.this', this);
         if(this.board == null || this.posX === null || this.posY === null) {
             return new Array();
         }
         //console.log('getParents.getInDirections', this.getInDirections());
-        return this.getInDirections().map((direction) => {
-            let before = null;
-            switch(direction) {
-                case DIRECTION.BOTTOM:
-                    before = this.board.value(this.posX + 1, this.posY);
-                    break;
-                case DIRECTION.TOP: 
-                    before = this.board.value(this.posX - 1, this.posY);
-                    break;
-                case DIRECTION.RIGHT:
-                    before = this.board.value(this.posX, this.posY + 1);
-                    break;
-                case DIRECTION.LEFT:
-                    before = this.board.value(this.posX, this.posY - 1);
-                    break;
-            }
-            before = before !== null && before.isOutDirection(direction) ? before : null;
-            return { pipe: before, dir: direction };
-        });
+        return this.getInDirections().map(processNext(this));
         //console.log('getParents.parents', parents);
         //return parents.filter(parent => parent.pipe !== null && parent.pipe !== undefined);
     }
@@ -85,12 +95,12 @@ export class Pipe {
         //return childrens.filter(children => children !== null && children !== undefined);
     }
 
-    toCodeArg() {
-        const arg = this.getParents().map(p => p.pipe !== null ? p.pipe.toCode(p.dir) : null)
+    toCodeArg(direction, blockVars) {
+        const arg = this.getParents(direction).map(p => p.pipe !== null ? p.pipe.toCode(p.nextDir, blockVars) : null)
         return arg.map(e => e !== null ? e : '?').join(', ')
     }
 
-    toCode(direction) {
+    toCode() {
         return `(???)`;
     }
 
@@ -103,11 +113,11 @@ export class Pipe {
     }
 
     isOutDirection(direction) {
-        return this.getOutDirections().indexOf(direction);
+        return this.getOutDirections().indexOf(direction) >= 0;
     }
 
     isInDirection(direction) {
-        return this.getInDirections().indexOf(direction);
+        return this.getInDirections().indexOf(direction) >= 0;
     }
 
     clone() {
