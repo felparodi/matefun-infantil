@@ -1,11 +1,28 @@
 import { PIPE_TYPES, DIRECTION } from '../../constants/constants';
 import { UnTypePipe } from './untypePipe';
-import { processNext } from './pipe';
+import { processNext, invertDirection } from './pipe';
+
+function dummyInFilter(pipe) {
+    return (dir) => {
+        const pipeDir =  processNext(pipe)(dir);
+        if(pipeDir.pipe === null) return false;
+        if(pipeDir.pipe.getType() === PIPE_TYPES.DUMMY) {
+            return pipeDir.pipe.isDummyOut(invertDirection(dir));
+        }
+        return true;
+    }
+}
 
 export class DummyPipe extends UnTypePipe {
 
     constructor(inDirections, outDirections) {
         super(inDirections, outDirections);
+    }
+
+    isDummyOut(direction) {
+        const otherDir = this.getAllDirection().filter(dir => dir !== direction)
+        const inDir = otherDir.filter(dummyInFilter(pipe));
+        return inDir.length > 0;
     }
 
     getAllDirection() {
@@ -18,11 +35,12 @@ export class DummyPipe extends UnTypePipe {
     }
 
     getInDirections() {
-        return this.inToOut ? this.inDirections : this.outDirections;
+        return this.getAllDirection().filter(dummyInFilter(this))
     }
 
     getOutDirections() {
-        return !this.inToOut ? this.inDirections : this.outDirections;
+        const inDirections = this.getInDirections();
+        return this.getAllDirection().fill(dir => inDirections.indexOf(dir) === -1)
     }
 
     hasOutType() {
@@ -41,7 +59,10 @@ export class DummyPipe extends UnTypePipe {
         }
 
         //console.log('getParents.getInDirections', this.getInDirections());
-        return this.getAllDirection().filter(dir => dir !== outDirections).map(processNext(this));
+        debugger
+        return this.getAllDirection()
+            .filter(dir => dir !== outDirections)
+            .map(processNext(this))
         //console.log('getParents.parents', parents);
         //return parents.filter(parent => parent.pipe !== null && parent.pipe !== undefined);
     }
@@ -60,8 +81,7 @@ export class DummyPipe extends UnTypePipe {
     }
 
     isOutDirection(direction) {
-        return this.getOutDirections().indexOf(direction) >= 0 || 
-            this.getInDirections().indexOf(direction)  >= 0;
+        return this.getAllDirection().indexOf(direction) >= 0;
     }
 
     isInDirection(direction) {
