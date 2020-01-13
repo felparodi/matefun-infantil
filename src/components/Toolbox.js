@@ -34,7 +34,17 @@ const PipeGroups = {
             new DummyPipe(DIRECTION.TOP, DIRECTION.RIGHT),
             new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT),
             new DummyPipe(DIRECTION.BOTTOM, DIRECTION.RIGHT),
-            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT)
+            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT),
+        ]
+    },
+    'dummyMult': {
+        label: 'Conetores M',
+        pipes: [
+            new DummyPipe(DIRECTION.BOTTOM, [DIRECTION.LEFT, DIRECTION.RIGHT]),
+            new DummyPipe(DIRECTION.TOP, [DIRECTION.LEFT, DIRECTION.RIGHT]),
+            new DummyPipe(DIRECTION.TOP, [DIRECTION.LEFT, DIRECTION.BOTTOM]),
+            new DummyPipe(DIRECTION.TOP, [DIRECTION.RIGHT, DIRECTION.BOTTOM]),
+            new DummyPipe(DIRECTION.BOTTOM, [DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.TOP]),
         ]
     }
 }
@@ -69,11 +79,7 @@ export default class Toolbox extends React.Component {
                 ) }
                 <Card.Body>
                     <Row>
-                        <Col sm={9}>
-                            <Row>
-                                { renderPipeGroup(PipeGroups[this.state.select].pipes) }
-                            </Row>
-                        </Col>
+                        { renderPipeGroup(PipeGroups[this.state.select].pipes) }
                     </Row>
                 </Card.Body>
             </Card>

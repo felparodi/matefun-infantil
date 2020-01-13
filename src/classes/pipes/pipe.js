@@ -32,8 +32,16 @@ export function processNext(pipe) {
         const [x, y] = directionMove(pipe.posX, pipe.posY, direction);
         let before = pipe.board.value(x, y);
         let nextDir = invertDirection(direction);
-        before = before !== null && before.isOutDirection(nextDir) ? before : null;
-        return { pipe: before, dir: direction, nextDir: nextDir};
+        const connected = before !== null ?  before.hasDirection(nextDir) : true;
+        const children = before !== null ?  before.isOutDirection(nextDir) : true;
+        return { pipe: before, dir: direction, connected, children };
+    }
+}
+
+function mapArg(blockVars) {
+    return (dirPipe) => {
+        const {pipe} = dirPipe
+        return pipe !== null ? pipe.toCode(pipe.nextDir, blockVars) : null
     }
 }
 
@@ -45,6 +53,19 @@ export class Pipe {
         this.board = null;
         this.posX = null;
         this.posY = null;
+    }
+
+    getAllDirection() {
+        const setDir = new Set()
+        this.inDirections.forEach((value) => setDir.add(value))
+        this.outDirections.forEach((value) => setDir.add(value))
+        const directionList = new Array()
+        setDir.forEach((value) => directionList.push(value))
+        return directionList;
+    }
+
+    hasDirection(dir) {
+        return this.getAllDirection().indexOf(dir) >= 0;
     }
 
     setInDirection(inDirections) {
@@ -82,7 +103,9 @@ export class Pipe {
             return new Array();
         }
         //console.log('getParents.getInDirections', this.getInDirections());
-        return this.getInDirections().map(processNext(this))
+        return this.getInDirections()
+            .map(processNext(this))
+            .filter(dirPipe => dirPipe.children)
         //console.log('getParents.parents', parents);
         //return parents.filter(parent => parent.pipe !== null && parent.pipe !== undefined);
     }
@@ -91,12 +114,14 @@ export class Pipe {
         if(!this.isInBoard()) {
             return new Array();
         }
-        return this.getOutDirections().map(processNext(this));
+        return this.getOutDirections()
+            .map(processNext(this))
+            .filter(dirPipe => !dirPipe.children)
         //return childrens.filter(children => children !== null && children !== undefined);
     }
 
     toCodeArg(direction, blockVars) {
-        const arg = this.getParents(direction).map(p => p.pipe !== null ? p.pipe.toCode(p.nextDir, blockVars) : null)
+        const arg = this.getParents(direction).map(mapArg(blockVars))
         return arg.map(e => e !== null ? e : '?').join(', ')
     }
 

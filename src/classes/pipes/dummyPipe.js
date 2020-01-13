@@ -3,13 +3,13 @@ import { UnTypePipe } from './untypePipe';
 import { processNext, invertDirection } from './pipe';
 
 function dummyInFilter(pipe) {
-    return (dir) => {
+    return (dir, index, list) => {
         const pipeDir =  processNext(pipe)(dir);
-        if(pipeDir.pipe === null) return false;
+        if(pipeDir.pipe === null) return true;
         if(pipeDir.pipe.getType() === PIPE_TYPES.DUMMY) {
             return pipeDir.pipe.isDummyOut(invertDirection(dir));
         }
-        return true;
+        return pipeDir.pipe.isOutDirection(invertDirection(dir));
     }
 }
 
@@ -20,22 +20,15 @@ export class DummyPipe extends UnTypePipe {
     }
 
     isDummyOut(direction) {
-        const otherDir = this.getAllDirection().filter(dir => dir !== direction)
-        const inDir = otherDir.filter(dummyInFilter(pipe));
+        const allDir = this.getAllDirection();
+        if (allDir.indexOf(direction) === -1) return false;
+        const otherDir = allDir.filter(dir => dir !== direction)
+        const inDir = otherDir.filter(dummyInFilter(this));
         return inDir.length > 0;
     }
 
-    getAllDirection() {
-        const setDir = new Set()
-        this.inDirections.forEach((value) => setDir.add(value))
-        this.outDirections.forEach((value) => setDir.add(value))
-        const directionList = new Array()
-        setDir.forEach((value) => directionList.push(value))
-        return directionList;
-    }
-
     getInDirections() {
-        return this.getAllDirection().filter(dummyInFilter(this))
+        return this.getAllDirection().filter(dummyInFilter(this)).slice(0,1)
     }
 
     getOutDirections() {
@@ -50,21 +43,6 @@ export class DummyPipe extends UnTypePipe {
     toCode(direction, blockVars) {
         this.setInToOut(direction);
         return this.toCodeArg(direction, blockVars)
-    }
-
-    getParents(outDirections) {
-        //console.log('getParents.this', this);
-        if(this.board == null || this.posX === null || this.posY === null) {
-            return new Array();
-        }
-
-        //console.log('getParents.getInDirections', this.getInDirections());
-        debugger
-        return this.getAllDirection()
-            .filter(dir => dir !== outDirections)
-            .map(processNext(this))
-        //console.log('getParents.parents', parents);
-        //return parents.filter(parent => parent.pipe !== null && parent.pipe !== undefined);
     }
 
     setInToOut(direction) {
@@ -88,8 +66,12 @@ export class DummyPipe extends UnTypePipe {
         return this.isOutDirection(direction);
     }
 
-    hasInType() {
-        return this.getInType().length > 0;
+    getInType() {
+        //@TODO es el mismo que el Out de su padre
+    }
+
+    getOutType() {
+        //@TODO es el mismo que el In de sus hijos
     }
 
     getType() {
