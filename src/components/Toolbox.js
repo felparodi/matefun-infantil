@@ -66,7 +66,7 @@ export default class Toolbox extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            select: 'val'
+            select: 'dummyMult'
         }
     }
 
