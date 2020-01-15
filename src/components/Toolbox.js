@@ -27,7 +27,7 @@ const PipeGroups = {
         ],
     },
     'dummy': {
-        label: 'Conetores',
+        label: 'Conectores',
         pipes: [
             new DummyPipe(DIRECTION.TOP, DIRECTION.BOTTOM),
             new DummyPipe(DIRECTION.LEFT, DIRECTION.RIGHT),

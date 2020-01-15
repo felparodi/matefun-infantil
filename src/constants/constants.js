@@ -43,6 +43,6 @@ export default { DIRECTION, PIPE_TYPES };
 export const BOARD_ROWS= 5;
 export const BOARD_COLS= 5;
 
-export const CELL_SIZE=3;
+export const CELL_SIZE=7;
 
 export const TOOLBOX_BTN_SIZE= '50px';
