@@ -53,11 +53,12 @@ export default class Main extends React.Component {
                     if (this.state.waitingForResult && message.tipo=="salida" && message.resultado.startsWith("OUT")){
                         var resultValue= message.resultado.substring(3);
                         
-                        //var boardContent= this.state.boardContent;
-                        //boardContent.setResultValue(resultValue);
+                        var boardContent= this.state.boardContent;
+                        boardContent.setResultValue(resultValue);
 
                         this.setState({ 
                             waitingForResult: false,
+                            boardContent: boardContent.clone()
                             //boardContent: boardContent
                         },()=>console.log('hey'))
                     }
