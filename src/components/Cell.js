@@ -5,15 +5,27 @@ import { CELL_SIZE } from '../constants/constants.js'
 
 class Cell extends React.Component {
 
+    constructor(props) {
+        super();
+    }
+
     render() {
+        console.log('render Cell')
+        //console.log(this.props)
         const { isOver, canDrop, connectDropTarget, content } = this.props;
-        return connectDropTarget(
-            <div key={[this.props.row, this.props.col]} style={{ border: "1px solid lightgray", width: `${CELL_SIZE}rem`, height: `${CELL_SIZE}rem`, backgroundColor: isOver ? "green" : "" }}>
-                {content &&
-                    <Pipe pipe={content} size={`${CELL_SIZE}rem`}></Pipe>
-                }
-            </div>
-        )
+
+        if (content == null) {
+            return connectDropTarget(
+                <div key={[this.props.row, this.props.col]} style={{ border: "1px solid lightgray", width: `${CELL_SIZE}rem`, height: `${CELL_SIZE}rem`, backgroundColor: isOver ? "green" : "" }} />
+            )
+        } else {
+            console.log('will be rendering pipe')
+            return (
+                <div key={[this.props.row, this.props.col]} style={{ border: "1px solid lightgray", width: `${CELL_SIZE}rem`, height: `${CELL_SIZE}rem`, backgroundColor: isOver ? "green" : "" }}>
+                    <Pipe pipe={content} size={`${CELL_SIZE}rem`} onChangeVarValue={this.props.onChangeVarValue} origin="board"></Pipe>
+                </div>
+            )
+        }
     }
 }
 

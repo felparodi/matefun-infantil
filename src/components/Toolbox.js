@@ -41,7 +41,7 @@ const PipeGroups = {
 const renderPipeCol = (pipe, index) => (
     <Col key={index} style={{padding:'2px',margin:'2px'}}>
         <Button variant="outline-primary">
-            <Pipe pipe={pipe} size={TOOLBOX_BTN_SIZE}></Pipe>
+            <Pipe pipe={pipe} size={TOOLBOX_BTN_SIZE} origin="toolbox"></Pipe>
         </Button>
     </Col>
 )

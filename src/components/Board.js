@@ -17,9 +17,10 @@ export default class Board extends React.Component {
                     <Cell 
                         key={i + "-" + j} 
                         row={i} 
-                        col={i} 
+                        col={j} 
                         content={this.props.content.value(i,j)} 
-                        onDrop={(pipe)=> this.props.onDrop(i, j, pipe)}>
+                        onDrop={(pipe)=> this.props.onDrop(i, j, pipe)}
+                        onChangeVarValue={this.props.onChangeVarValue}>
                     </Cell>
                 );
             }
@@ -29,6 +30,8 @@ export default class Board extends React.Component {
     }
 
     render() {
+        console.log('render Board')
+        //console.log(this.props)
         return (
             <div style={{display: 'flex', flexDirection: 'column', width: `${CELL_SIZE * BOARD_COLS}rem`, height: `${CELL_SIZE * BOARD_ROWS}rem`}}>
                 {this.createRows()}

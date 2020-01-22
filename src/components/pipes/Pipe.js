@@ -8,25 +8,43 @@ import { ValPipe } from './ValPipe.js'
 import { VarPipe } from './VarPipe.js';
 
 function SwitchPipe(pipe, props) {
-    if (pipe.getType()==PIPE_TYPES.FUNCTION){
-        return <FuncPipe {...(props)}/>
-    } else if (pipe.getType()==PIPE_TYPES.VALUE){
-        return <ValPipe {...(props)}/>
-    } else if (pipe.getType()==PIPE_TYPES.END){
-        return <EndPipe {...(props)}/>
-    } else if (pipe.getType()==PIPE_TYPES.DUMMY){
-        return <DummyPipe {...(props)}/>
-    } else if (pipe.getType()==PIPE_TYPES.VARIABLE){
-        return <VarPipe {...(props)}/>
+    if (pipe.getType() == PIPE_TYPES.FUNCTION) {
+        return <FuncPipe {...(props)} />
+    } else if (pipe.getType() == PIPE_TYPES.VALUE) {
+        return <ValPipe {...(props)} />
+    } else if (pipe.getType() == PIPE_TYPES.END) {
+        return <EndPipe {...(props)} />
+    } else if (pipe.getType() == PIPE_TYPES.DUMMY) {
+        return <DummyPipe {...(props)} />
+    } else if (pipe.getType() == PIPE_TYPES.VARIABLE) {
+        return <VarPipe {...(props)} />
     }
-    return null; 
+    return null;
 }
 
 class Pipe extends React.Component {
 
+    constructor(props) {
+        super();
+        this.state = {
+            test: false
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ test: true });
+    }
+
     render() {
-        const { pipe, connectDragSource } = this.props;
-        return connectDragSource(<div>{SwitchPipe(pipe, this.props)}</div>) ;
+
+        const { pipe, connectDragSource, origin } = this.props;
+
+        if (origin == "toolbox") {
+            return connectDragSource(<div>{SwitchPipe(pipe, this.props)}</div>);
+        } else if (origin == "board") {
+            console.log('render Pipe')
+            return <div>{SwitchPipe(pipe, this.props)}</div>;
+        }
     }
 }
 

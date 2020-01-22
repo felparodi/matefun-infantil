@@ -13,11 +13,15 @@ export default class Main extends React.Component {
         super();
         this.state = {
             boardContent: new MatrixPipe(BOARD_ROWS, BOARD_COLS),
-            mfString: ''
+            functionDeclaration: '',
+            functionEvaluation: '',
+            waitingForResult: false
         };
         this.onDrop = this.onDrop.bind(this);
-        this.toMFString = this.toMFString.bind(this);
-        this.trywebsocket = this.trywebsocket.bind(this);
+        this.process = this.process.bind(this);
+        this.evaluate = this.evaluate.bind(this);
+        this.onChangeVarValue = this.onChangeVarValue.bind(this);
+        this.setResult= this.setResult.bind(this);
     }
 
 
@@ -32,14 +36,6 @@ export default class Main extends React.Component {
                     (fileData) => {
 
                         this.setState({ fileData: fileData });
-
-                        fileData.contenido = 'fun :: R X R -> R↵fun (x,y,z)= x + y + z↵↵';
-
-                        services.editarArchivo(fileData,
-                            (response) => {
-                                console.log('end');
-                            })
-
                     });
 
                 // instance of websocket connection as a class property
@@ -54,8 +50,17 @@ export default class Main extends React.Component {
                 this.ws.onmessage = evt => {
                     // listen to data sent from the websocket server
                     const message = JSON.parse(evt.data)
-                    this.setState({ dataFromServer: message })
-                    console.log(message)
+                    if (this.state.waitingForResult && message.tipo=="salida" && message.resultado.startsWith("OUT")){
+                        var resultValue= message.resultado.substring(3);
+                        
+                        //var boardContent= this.state.boardContent;
+                        //boardContent.setResultValue(resultValue);
+
+                        this.setState({ 
+                            waitingForResult: false,
+                            //boardContent: boardContent
+                        },()=>console.log('hey'))
+                    }
                 }
 
                 this.ws.onclose = () => {
@@ -75,21 +80,62 @@ export default class Main extends React.Component {
         });
     }
 
-    trywebsocket() {
-        var userData = this.state.userData;
-        this.ws.send('{"token":"' + userData.token + '","load":11,"dependencias":[11]}'); // load file 11 (the one that defines the function 'fun')
-        this.ws.send('{"token":"'+userData.token+'","comando":"fun(3,4)"}'); //send data to the server
+    onChangeVarValue(x, y, value) {
+        var boardContent = this.state.boardContent;
+
+        boardContent.setPipeValue(x, y, value);
+
+        this.setState({
+            boardContent: boardContent
+        });
     }
 
-    toMFString() {
+    process() {
         var boardContent = this.state.boardContent;
-        var mfString = boardContent.process();
+
+        var functionDeclaration = boardContent.process();
         this.setState({
-            mfString: mfString
+            functionDeclaration: functionDeclaration
         })
+
+        var fileData = this.state.fileData;
+
+        fileData.contenido = functionDeclaration;
+
+        services.editarArchivo(fileData,
+            (response) => {
+
+                var userData = this.state.userData;
+
+                this.ws.send('{"token":"' + userData.token + '","load":' + fileData.id + ',"dependencias":[' + fileData.id + ']}');
+                console.log('end');
+            })
+    }
+
+    evaluate() {
+        var boardContent = this.state.boardContent;
+
+        var functionEvaluation = boardContent.evaluateFunction();
+        this.setState({
+            functionEvaluation: functionEvaluation,
+            waitingForResult: true
+        }, () => {
+            this.ws.send('{"token":"' + this.state.userData.token + '","comando":"' + functionEvaluation + '"}'); //send data to the server
+        })
+
+    }
+
+    setResult() {
+        var boardContent = this.state.boardContent;
+
+        boardContent.setResultValue(5);
+
+        this.setState({boardContent: boardContent});
     }
 
     render() {
+        console.log('render Main')
+        //console.log(this.state.boardContent)
         return (
             <div>
                 <Container style={{ maxWidth: '100%' }}>
@@ -111,14 +157,16 @@ export default class Main extends React.Component {
                         </Col>
                         <Col sm={10}>
                             <Row>
-                                <Board content={this.state.boardContent} onDrop={this.onDrop} />
+                                <Board content={this.state.boardContent} onDrop={this.onDrop} onChangeVarValue={this.onChangeVarValue} />
                             </Row>
                             <Row>
                                 <Card style={{ width: '50rem' }}>
                                     <Card.Body>
-                                        <Button variant="primary" onClick={this.toMFString}>To Matefun String</Button>
-                                        <Button variant="primary" onClick={this.trywebsocket}>Try websocket</Button>
-                                        <Form.Control as="textarea" readOnly rows="3" value={this.state.mfString} />
+                                        <Button variant="primary" onClick={this.process}>Procesar</Button>
+                                        <Form.Control as="textarea" readOnly rows="3" value={this.state.functionDeclaration} />
+                                        <Button variant="primary" onClick={this.evaluate}>Evaluar</Button>
+                                        <Form.Control as="textarea" readOnly rows="3" value={this.state.functionEvaluation} />
+                                        <Button variant="primary" onClick={this.setResult}>Set result</Button>
                                     </Card.Body>
                                 </Card>
                             </Row>

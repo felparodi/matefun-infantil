@@ -104,7 +104,7 @@ export class MatrixPipe {
     getFunctionDefinition(name) {
         const varsPipes = this.getAllPipes().filter(pipe => pipe.getType() === PIPE_TYPES.VARIABLE);
         const endPipe = this.getEndPipes();
-        const varsType = varsPipes.reduce((prev, v, index, vars) => index > 0 ? `${prev} x R` :`R`, '');
+        const varsType = varsPipes.reduce((prev, v, index, vars) => index > 0 ? `${prev} X R` :`R`, '');
         const endType = 'R';
         return `${name} :: ${varsType} -> ${endType}`;
     }
@@ -122,6 +122,17 @@ export class MatrixPipe {
         console.log(functionDef)
         const code = endPipe[0].toCode(functionDef);
         return `${name}(${varNameList.join(', ')}) = ${code}`
+    }
+
+    evaluateFunction() {
+        const name= 'func';
+
+        const varsPipes = this.getAllPipes().filter(pipe => pipe.getType() === PIPE_TYPES.VARIABLE);
+        const varValueList = [];
+        varsPipes.forEach((pipe, index) => {
+            varValueList.push(pipe.value)
+        })
+        return `${name}(${varValueList.join(', ')})`
     }
 
     hasErrors() {
@@ -149,9 +160,15 @@ export class MatrixPipe {
         if (p !== null && p !== undefined) {
             const pipeType = p.getType();
             if (pipeType === PIPE_TYPES.VALUE || pipeType === PIPE_TYPES.VARIABLE) {
-                
+                p.value= value;
+                console.log(this.values[x][y]);
             }
         }
+    }
+
+    setResultValue(value) {
+        const endPipe = this.getEndPipes()[0];
+        endPipe.value= value;
     }
 
     validateMatrix() {

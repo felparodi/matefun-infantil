@@ -58,6 +58,14 @@ export class Pipe {
         this.posY = y;
     }
 
+    getPosX(){
+        return this.posX;
+    }
+
+    getPosY(){
+        return this.posY;
+    }
+
     setBoard(board) {
         this.board = board;
     }
