@@ -11,6 +11,14 @@ export class FuncPipe extends ValPipe {
        this.setOutType(VALUES_TYPES.FUNCTION);
     }
 
+    setInTypes(types) {
+        
+    }
+
+    getInTypes() {
+
+    }
+
     setName(name) {
         this.name = name;
     }

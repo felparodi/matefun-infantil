@@ -11,30 +11,30 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/preset-react": "^7.0.0",
+    "@babel/core": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "@babel/preset-react": "^7.8.3",
     "@testing-library/jest-dom": "^4.1.0",
-    "@testing-library/react": "^9.2.0",
+    "@testing-library/react": "^9.4.0",
     "babel-loader": "^8.0.6",
     "jasmine": "^3.5.0",
     "jest": "^24.9.0",
     "jest-cli": "^24.9.0",
-    "react-hot-loader": "^4.12.10",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.6",
-    "webpack-dev-server": "^3.7.2"
+    "react-hot-loader": "^4.12.18",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
   },
   "dependencies": {
     "@svgr/webpack": "^4.3.3",
     "axios": "^0.19.1",
-    "bootstrap": "^4.3.1",
-    "css-loader": "^3.2.0",
-    "react": "^16.8.6",
-    "react-bootstrap": "^1.0.0-beta.14",
-    "react-dnd": "^9.4.0",
-    "react-dnd-html5-backend": "^9.4.0",
-    "react-dom": "^16.8.6",
-    "style-loader": "^1.0.0"
+    "bootstrap": "^4.4.1",
+    "css-loader": "^3.4.2",
+    "react": "^16.12.0",
+    "react-bootstrap": "^1.0.0-beta.16",
+    "react-dnd": "^9.5.1",
+    "react-dnd-html5-backend": "^9.5.1",
+    "react-dom": "^16.12.0",
+    "style-loader": "^1.1.3"
   }
 }

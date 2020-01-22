@@ -1,10 +1,10 @@
 import 'jasmine';
 import { DIRECTION } from '../constants/constants';
 import { MatrixPipe } from './matrix'
-import { ValPipe } from './valPipe'
-import { DummyPipe } from './dummyPipe'
-import { FuncPipe } from './funcPipe'
-import { EndPipe } from './endPipe'
+import { ValPipe } from './pipes/valPipe'
+import { DummyPipe } from './pipes/dummyPipe'
+import { FuncPipe } from './pipes/funcPipe'
+import { EndPipe } from './pipes/endPipe'
 
 describe("MatrixPipe class test", () => {
     //*/
