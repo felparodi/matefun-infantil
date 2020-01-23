@@ -1,11 +1,16 @@
 import { PIPE_TYPES } from '../constants/constants';
 
+/*
+* Attr:
+    maxY -> 
+    maxX ->
+    values -> 
+*/
 export class MatrixPipe {
 
     constructor(x, y) {
         this.maxX = x;
         this.maxY = y;
-        this.vars = {};
         this.clean();
     }
 
@@ -29,7 +34,6 @@ export class MatrixPipe {
 
     clean() {
         this.values = new Array();
-        this.ends = new Array();
         for(let i = 0; i < this.maxX; i++) {
             const column = new Array();
             for(let j = 0; j < this.maxY; j++) {

@@ -2,6 +2,16 @@ import { PIPE_TYPES, VALUES_TYPES } from '../../constants/constants';
 import {ValPipe} from './valPipe'
 import { METHOD_FUNCTION } from '../../constants/constants'
 
+/*
+* Attr:
+    name -> 
+    posY ->
+    board -> 
+    inDirections
+    outDirections
+*/
+
+
 export class FuncPipe extends ValPipe {
 
     constructor(name, inDirections, outDirections) {

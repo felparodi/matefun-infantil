@@ -45,6 +45,15 @@ function mapArg(blockVars) {
     }
 }
 
+/*
+* Attr:
+    posX -> 
+    posY ->
+    board -> 
+    inDirections
+    outDirections
+*/
+
 export class Pipe {
 
     constructor(inDirections, outDirections) {
