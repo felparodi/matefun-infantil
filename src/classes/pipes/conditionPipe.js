@@ -1,14 +1,16 @@
 import { PIPE_TYPES, VALUES_TYPES } from '../../constants/constants';
-import {ValPipe} from './valPipe'
+import { Pipe } from './pipe';
 import { METHOD_FUNCTION } from '../../constants/constants'
 import { DIRECTION } from '../../constants/constants.js'
 
-export class ConditionPipe extends Pipe {
+
+/*
+* @TODO: todo
+*/
+export class ConditionPipe extends FuncPipe {
 
     constructor() {
        super([DIRECTION.LEFT, DIRECTION.TOP, DIRECTION.RIGHT], DIRECTION.BOTTOM);
-       this.setInDirection(inDirections);
-       this.setOutType(VALUES_TYPES.FUNCTION);
     }
 
 

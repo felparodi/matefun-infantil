@@ -15,8 +15,8 @@ function dummyInFilter(pipe) {
 
 export class DummyPipe extends UnTypePipe {
 
-    constructor(inDirections, outDirections) {
-        super(inDirections, outDirections);
+    constructor(dir1, dir2, dir3, dir4) {
+        super([dir1], [dir2,dir3,dir4].filter(dir => dir != undefined));
     }
 
     isDummyOut(direction) {
@@ -64,14 +64,6 @@ export class DummyPipe extends UnTypePipe {
 
     isInDirection(direction) {
         return this.isOutDirection(direction);
-    }
-
-    getInType() {
-        //@TODO es el mismo que el Out de su padre
-    }
-
-    getOutType() {
-        //@TODO es el mismo que el In de sus hijos
     }
 
     getType() {
