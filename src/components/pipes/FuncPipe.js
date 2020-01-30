@@ -1,11 +1,13 @@
 import React from 'react';
 
-import Base from '../../svg/function-base.svg';
+import Base from './function-parts/Base';
 import InputRight from './function-parts/InputRight';
 import InputLeft from './function-parts/InputLeft';
 import InputTop from './function-parts/InputTop';
 import Output from './function-parts/Output';
 import { METHOD_FUNCTION } from '../../constants/constants'
+import PaintBucket from '../../icons/paint-bucket.svg'
+
 
 export class FuncPipe extends React.Component {
 
@@ -13,7 +15,7 @@ export class FuncPipe extends React.Component {
         const { pipe } = this.props;
         return (
             <svg width={this.props.size} height={this.props.size}>
-                <Base></Base>
+                <Base pipe={pipe}></Base>
                 <InputRight color="orange"></InputRight>
                 <InputLeft color="blue"></InputLeft>
                 <InputTop color="green"></InputTop>
@@ -24,6 +26,9 @@ export class FuncPipe extends React.Component {
                     {pipe.getName() == METHOD_FUNCTION.MUL && 'x'}
                     {pipe.getName() == METHOD_FUNCTION.DIV && '%'}
                 </text>
+                {pipe.getName()=='color' && 
+                    <PaintBucket></PaintBucket>
+                }
             </svg>
         )
     }

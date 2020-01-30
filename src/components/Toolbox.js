@@ -38,13 +38,21 @@ const PipeGroups = {
         ]
     },
     'dummyMult': {
-        label: 'Conetores M',
+        label: 'Conectores M',
         pipes: [
             new DummyPipe(DIRECTION.BOTTOM, [DIRECTION.LEFT, DIRECTION.RIGHT]),
             new DummyPipe(DIRECTION.TOP, [DIRECTION.LEFT, DIRECTION.RIGHT]),
             new DummyPipe(DIRECTION.TOP, [DIRECTION.LEFT, DIRECTION.BOTTOM]),
             new DummyPipe(DIRECTION.TOP, [DIRECTION.RIGHT, DIRECTION.BOTTOM]),
             new DummyPipe(DIRECTION.BOTTOM, [DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.TOP]),
+        ]
+    },
+    'color': {
+        label: 'Color',
+        pipes: [
+            new FuncPipe('color', [DIRECTION.LEFT, DIRECTION.RIGHT], [DIRECTION.BOTTOM])
+            //new FuncPipe(METHOD_FUNCTION.ADD, [DIRECTION.LEFT, DIRECTION.RIGHT], [DIRECTION.BOTTOM]),
+            //new FuncPipe(METHOD_FUNCTION.ADD, [DIRECTION.LEFT, DIRECTION.RIGHT], [DIRECTION.BOTTOM])
         ]
     }
 }
