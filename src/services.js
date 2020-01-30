@@ -9,10 +9,10 @@ export function loginInvitado(onSuccess) {
         cedula: "invitado",
         password: "invitado"
     }).then(res => {
-
         axios.defaults.headers.common = { 'Authorization': `Bearer ${res.data.token}` }
-
         onSuccess(res.data);
+    }).catch((e) => {
+        console.warn("Error:Login Invitado", e)
     })
 }
 
@@ -27,6 +27,8 @@ export function crearArchivo(onSuccess) {
         editable: true
     }).then(res => {
         onSuccess(res.data);
+    }).catch((e) => {
+        console.warn("Error:Crear Archivo", e)
     })
 }
 
@@ -36,5 +38,7 @@ export function editarArchivo(fileData, onSuccess) {
     axios.put(SERVICES_URL + `/archivo/` + fileData.id, fileData)
         .then(res => {
             onSuccess(res.data);
+        }).catch((e) => {
+            console.warn("Error:Editar Archivo", e)
         })
 }

@@ -11,6 +11,7 @@ export class MatrixPipe {
     constructor(x, y) {
         this.maxX = x;
         this.maxY = y;
+        this.funcName = 'func';
         this.clean();
     }
 
@@ -79,7 +80,7 @@ export class MatrixPipe {
 
     process() {
         if (this.isFunction()) {
-            return this.processFunction('func')
+            return this.processFunction(this.funcName)
         } else {
             return this.processInstruction()
         }
@@ -101,12 +102,11 @@ export class MatrixPipe {
     }
 
     isFunction() {
-        return this.getAllPipes()
-            .filter(pipe => pipe.getType() === PIPE_TYPES.VARIABLE).length > 0
+        return this.getAllVars().length > 0
     }
 
     getFunctionDefinition(name) {
-        const varsPipes = this.getAllPipes().filter(pipe => pipe.getType() === PIPE_TYPES.VARIABLE);
+        const varsPipes = this.getAllVars();
         const endPipe = this.getEndPipes();
         const varsType = varsPipes.reduce((prev, v, index, vars) => index > 0 ? `${prev} X R` :`R`, '');
         const endType = 'R';
@@ -114,12 +114,12 @@ export class MatrixPipe {
     }
 
     getFunctionCode(name) {
-        const varsPipes = this.getAllPipes().filter(pipe => pipe.getType() === PIPE_TYPES.VARIABLE);
+        const varsPipes = this.getAllVars();
         const endPipe = this.getEndPipes();
         const functionDef = { name, vars:{} }
         const varNameList = [];
         varsPipes.forEach((pipe, index) => {
-            pipe.index = index
+            pipe.setIndex(index);
             functionDef.vars[index] = { name: `x${index}`}
             varNameList.push(functionDef.vars[index].name)
         })
@@ -128,15 +128,14 @@ export class MatrixPipe {
         return `${name}(${varNameList.join(', ')}) = ${code}`
     }
 
-    evaluateFunction() {
-        const name= 'func';
+    getAllVars() {
+        return this.getAllPipes().filter(pipe => pipe.getType() === PIPE_TYPES.VARIABLE);
+    }
 
-        const varsPipes = this.getAllPipes().filter(pipe => pipe.getType() === PIPE_TYPES.VARIABLE);
-        const varValueList = [];
-        varsPipes.forEach((pipe, index) => {
-            varValueList.push(pipe.value)
-        })
-        return `${name}(${varValueList.join(', ')})`
+    evaluateFunction() {
+        const varsPipes = this.getAllVars();
+        const varValueList = varsPipes.map((pipe) => pipe.value);
+        return `${this.funcName}(${varValueList.join(', ')})`
     }
 
     hasErrors() {

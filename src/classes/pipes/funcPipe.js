@@ -1,32 +1,36 @@
-import { PIPE_TYPES, VALUES_TYPES } from '../../constants/constants';
-import {ValPipe} from './valPipe'
-import { METHOD_FUNCTION } from '../../constants/constants'
+import { PIPE_TYPES, VALUES_TYPES, METHOD_FUNCTION, DIRECTION } from '../../constants/constants';
+import { TypePipe } from './typePipe'
 
 /*
-* Attr:
-    name -> 
-    posY ->
-    board -> 
-    inDirections
-    outDirections
+* Retorna la lista de direciones que deberia tener una funcion segun la cantida de tipos de su entrada
+* Param: 
+* - inType: List<String>
+* Out: List<String>
 */
+function inTypesToDirections(inTypes) {
+    switch(inTypes.length) {
+        case 0: return []
+        case 1: return [DIRECTION.TOP]
+        case 2: return [DIRECTION.LEFT, DIRECTION.RIGHT]
+        case 3: return [DIRECTION.LEFT, DIRECTION.TOP, DIRECTION.RIGHT]
+        default: return []
+    }
+}
 
+/*
+* Intenta represantar una funcion de hasta 3 atributos de entrada y un unico tipo de retorno
+* Attr
+* - inTypes:List<String> Tipos Enteradas (deberian ser menos de 3)
+* - outType: String Tipos de salida (deberia ser 1)
+*/
+export class FuncPipe extends TypePipe {
 
-export class FuncPipe extends ValPipe {
-
-    constructor(name, inDirections, outDirections) {
-       super(name, outDirections);
+    constructor(name, inTypes, outType) {
+       super([], [DIRECTION.BOTTOM]);
+       this.setInTypes(inTypes);
+       this.setOutTypes([outType]);
        this.setName(name);
-       this.setInDirection(inDirections);
-       this.setOutType(VALUES_TYPES.FUNCTION);
-    }
-
-    setInTypes(types) {
-        
-    }
-
-    getInTypes() {
-
+       this.setInDirection(inTypesToDirections(inTypes));
     }
 
     setName(name) {
@@ -38,8 +42,6 @@ export class FuncPipe extends ValPipe {
     }
 
     toCode(direction, blockVars) {
-        //console.log('FuncPipe.toCode.this', this)
-        //console.log('FuncPipe.toCode.getParents', this.getParents())
         const arg = this.toCodeArg(direction, blockVars);
         const argv = arg.split(', ');
         switch(this.name) {

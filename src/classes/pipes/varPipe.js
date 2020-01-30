@@ -1,42 +1,23 @@
-import { PIPE_TYPES, VALUES_TYPES } from '../../constants/constants';
-import { UnTypePipe } from './untypePipe';
+import { PIPE_TYPES } from '../../constants/constants';
+import { ConstPipe } from './constPipe'
 
-export class VarPipe extends UnTypePipe {
+/*
+*   Attr
+*   - index: String
+*/
+export class VarPipe extends ConstPipe {
 
-    constructor(outDirections) {
-        super([], outDirections);
-        this.value = undefined;
-        this.setOutType(this.typeEval());
+    constructor(type, name) {
+        super(type);
+        this.index = undefined;
     }
 
-    setOutType(types) {
-        this.outTypes = types
+    setIndex(index) {
+        this.index = index;
     }
 
-    getOutType(types) {
-        return this.outTypes;
-    }
-
-    setValue(value) {
-        this.getValue();
-    }
-
-    typeEval() {
-        if (this.value === undefined) {
-            return VALUES_TYPES.VAR
-        }
-        switch(typeof this.value) {
-            case 'boolean': return [VALUES_TYPES.BOOLEAN];
-            case 'number': return [VALUES_TYPES.NUMBER];
-            case 'string': return [VALUES_TYPES.STRING];
-            case 'function': return [VALUES_TYPES.FUNCTION];
-            case 'object': {
-                if (Array.isArray(this.value)) {
-                    return [VALUES_TYPES.ARRAY];
-                }
-                return [VALUES_TYPES.OTHER];
-            }
-        }
+    getName(blockVar) {
+        return `${blockVar.vars[this.index].name}`
     }
 
     toCode(direction, blockVar) {

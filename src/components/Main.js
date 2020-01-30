@@ -15,7 +15,8 @@ export default class Main extends React.Component {
             boardContent: new MatrixPipe(BOARD_ROWS, BOARD_COLS),
             functionDeclaration: '',
             functionEvaluation: '',
-            waitingForResult: false
+            waitingForResult: false,
+            fileData: {},
         };
         this.onDrop = this.onDrop.bind(this);
         this.process = this.process.bind(this);
@@ -37,7 +38,7 @@ export default class Main extends React.Component {
 
                         this.setState({ fileData: fileData });
                     });
-
+                debugger
                 // instance of websocket connection as a class property
                 this.ws = new WebSocket('ws://localhost:8080/endpoint' + '/' + userData.cedula + '/' + userData.token + '/es');
                 // this.connection = new WebSocket(wsUrl+"/"+cedula+"/"+token+"/"+language);
@@ -108,7 +109,7 @@ export default class Main extends React.Component {
 
                 var userData = this.state.userData;
 
-                this.ws.send('{"token":"' + userData.token + '","load":' + fileData.id + ',"dependencias":[' + fileData.id + ']}');
+                this.ws = this.ws.send('{"token":"' + userData.token + '","load":' + fileData.id + ',"dependencias":[' + fileData.id + ']}');
                 console.log('end');
             })
     }
@@ -121,7 +122,8 @@ export default class Main extends React.Component {
             functionEvaluation: functionEvaluation,
             waitingForResult: true
         }, () => {
-            this.ws.send('{"token":"' + this.state.userData.token + '","comando":"' + functionEvaluation + '"}'); //send data to the server
+            debugger
+            this.ws && this.ws.send('{"token":"' + this.state.userData.token + '","comando":"' + functionEvaluation + '"}'); //send data to the server
         })
 
     }

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, Card, Tab, Nav, Row, Col } from 'react-bootstrap';
 import Pipe from './pipes/Pipe';
-import { DIRECTION, TOOLBOX_BTN_SIZE, METHOD_FUNCTION } from '../constants/constants'
+import { DIRECTION, TOOLBOX_BTN_SIZE, METHOD_FUNCTION, VALUES_TYPES } from '../constants/constants'
 import { FuncPipe } from '../classes/pipes/funcPipe';
 import { EndPipe } from '../classes/pipes/endPipe';
-import { ValPipe } from '../classes/pipes/valPipe';
+import { ConstPipe } from '../classes/pipes/constPipe';
 import { DummyPipe } from '../classes/pipes/dummyPipe'
 import { VarPipe } from '../classes/pipes/varPipe'
 
@@ -12,18 +12,18 @@ const PipeGroups = {
     'mat': {
         label: 'Matematica',
         pipes: [
-            new FuncPipe(METHOD_FUNCTION.ADD, [DIRECTION.LEFT, DIRECTION.RIGHT], [DIRECTION.BOTTOM]),
-            new FuncPipe(METHOD_FUNCTION.SUB, [DIRECTION.LEFT, DIRECTION.RIGHT], [DIRECTION.BOTTOM]),
-            new FuncPipe(METHOD_FUNCTION.MUL, [DIRECTION.LEFT, DIRECTION.RIGHT], [DIRECTION.BOTTOM]),
-            new FuncPipe(METHOD_FUNCTION.DIV, [DIRECTION.LEFT, DIRECTION.RIGHT], [DIRECTION.BOTTOM]),
+            new FuncPipe(METHOD_FUNCTION.ADD, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
+            new FuncPipe(METHOD_FUNCTION.SUB, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
+            new FuncPipe(METHOD_FUNCTION.MUL, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
+            new FuncPipe(METHOD_FUNCTION.DIV, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
          ]
     },
     'val': { 
         label: 'Valores',
         pipes: [
-            new ValPipe(3, DIRECTION.BOTTOM),
-            new EndPipe(DIRECTION.TOP),
-            new VarPipe(DIRECTION.BOTTOM),
+            new ConstPipe(null, 3),
+            new EndPipe(),
+            new VarPipe(),
         ],
     },
     'dummy': {
@@ -40,11 +40,11 @@ const PipeGroups = {
     'dummyMult': {
         label: 'Conectores M',
         pipes: [
-            new DummyPipe(DIRECTION.BOTTOM, [DIRECTION.LEFT, DIRECTION.RIGHT]),
-            new DummyPipe(DIRECTION.TOP, [DIRECTION.LEFT, DIRECTION.RIGHT]),
-            new DummyPipe(DIRECTION.TOP, [DIRECTION.LEFT, DIRECTION.BOTTOM]),
-            new DummyPipe(DIRECTION.TOP, [DIRECTION.RIGHT, DIRECTION.BOTTOM]),
-            new DummyPipe(DIRECTION.BOTTOM, [DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.TOP]),
+            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT),
+            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT, DIRECTION.RIGHT),
+            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT, DIRECTION.BOTTOM),
+            new DummyPipe(DIRECTION.TOP, DIRECTION.RIGHT, DIRECTION.BOTTOM),
+            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.TOP),
         ]
     },
     'color': {
