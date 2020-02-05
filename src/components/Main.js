@@ -38,7 +38,6 @@ export default class Main extends React.Component {
 
                         this.setState({ fileData: fileData });
                     });
-                debugger
                 // instance of websocket connection as a class property
                 this.ws = new WebSocket('ws://localhost:8080/endpoint' + '/' + userData.cedula + '/' + userData.token + '/es');
                 // this.connection = new WebSocket(wsUrl+"/"+cedula+"/"+token+"/"+language);
@@ -109,8 +108,7 @@ export default class Main extends React.Component {
 
                 var userData = this.state.userData;
 
-                this.ws = this.ws.send('{"token":"' + userData.token + '","load":' + fileData.id + ',"dependencias":[' + fileData.id + ']}');
-                console.log('end');
+                this.ws.send('{"token":"' + userData.token + '","load":' + fileData.id + ',"dependencias":[' + fileData.id + ']}');
             })
     }
 
@@ -118,12 +116,12 @@ export default class Main extends React.Component {
         var boardContent = this.state.boardContent;
 
         var functionEvaluation = boardContent.evaluateFunction();
+        
         this.setState({
             functionEvaluation: functionEvaluation,
             waitingForResult: true
         }, () => {
-            debugger
-            this.ws && this.ws.send('{"token":"' + this.state.userData.token + '","comando":"' + functionEvaluation + '"}'); //send data to the server
+            this.ws.send('{"token":"' + this.state.userData.token + '","comando":"' + functionEvaluation + '"}'); //send data to the server
         })
 
     }

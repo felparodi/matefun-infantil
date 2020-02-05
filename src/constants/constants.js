@@ -29,7 +29,9 @@ export const VALUES_TYPES= Object.freeze({
     ARRAY: 'ARRAY',
     FUNCTION: 'FUNCTION',
     OTHER: 'OTHER',
-    VAR: 'VAR'
+    VAR: 'VAR',
+    COLOR: 'COLOR',
+    FIGURE: 'FIGURE'
 })
 
 export const ERROR = Object.freeze({
