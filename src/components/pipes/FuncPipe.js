@@ -11,6 +11,9 @@ import Rotar from '../../icons/rotar.svg'
 import Circ from '../../icons/circ.svg'
 import Escalar from '../../icons/escalar.svg'
 import Rect from '../../icons/rect.svg'
+import Linea from '../../icons/linea.svg'
+import Poli from '../../icons/poli.svg'
+
 
 function getTypeColor(type) {
     switch (type) {
@@ -20,7 +23,7 @@ function getTypeColor(type) {
             return "blue";
         case VALUES_TYPES.COLOR:
             return "orange";
-        case VALUES_TYPES.VAR:
+        case VALUES_TYPES.POINT:
             return "red";
     }
 }
@@ -39,19 +42,28 @@ export class FuncPipe extends React.Component {
                 {leftType &&
                     <InputLeft color={getTypeColor(leftType)}></InputLeft>
                 }
-                {rightType && 
+                {rightType &&
                     <InputRight color={getTypeColor(rightType)}></InputRight>
                 }
-                {topType && 
+                {topType &&
                     <InputTop color={getTypeColor(topType)}></InputTop>
                 }
                 <Output color={getTypeColor(bottomType)}></Output>
-                <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fontSize={(this.props.origin == "toolbox") ? "20px" : "50px"} fill='white'>
-                    {pipe.getName() == METHOD_FUNCTION.ADD && '+'}
-                    {pipe.getName() == METHOD_FUNCTION.SUB && '-'}
-                    {pipe.getName() == METHOD_FUNCTION.MUL && 'x'}
-                    {pipe.getName() == METHOD_FUNCTION.DIV && '%'}
-                </text>
+                {(pipe.getName() == METHOD_FUNCTION.ADD ||
+                    pipe.getName() == METHOD_FUNCTION.SUB ||
+                    pipe.getName() == METHOD_FUNCTION.MUL ||
+                    pipe.getName() == METHOD_FUNCTION.DIV ||
+                    pipe.getName() == 'juntar' ||
+                    pipe.getName() == 'mover') &&
+                    <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fontSize={(this.props.origin == "toolbox") ? "20px" : "50px"} fill='white'>
+                        {pipe.getName() == METHOD_FUNCTION.ADD && '+'}
+                        {pipe.getName() == METHOD_FUNCTION.SUB && '-'}
+                        {pipe.getName() == METHOD_FUNCTION.MUL && 'x'}
+                        {pipe.getName() == METHOD_FUNCTION.DIV && '%'}
+                        {pipe.getName() == 'juntar' && 'juntar'}
+                        {pipe.getName() == 'mover' && 'mover'}
+                    </text>
+                }
                 {pipe.getName() == 'color' &&
                     <Color></Color>
                 }
@@ -63,6 +75,12 @@ export class FuncPipe extends React.Component {
                 }
                 {pipe.getName() == 'rect' &&
                     <Rect></Rect>
+                }
+                {pipe.getName() == 'linea' &&
+                    <Linea></Linea>
+                }
+                {pipe.getName() == 'poli' &&
+                    <Poli></Poli>
                 }
                 {pipe.getName() == 'escalar' &&
                     <Escalar></Escalar>

@@ -31,7 +31,8 @@ export const VALUES_TYPES= Object.freeze({
     OTHER: 'OTHER',
     VAR: 'VAR',
     COLOR: 'COLOR',
-    FIGURE: 'FIGURE'
+    FIGURE: 'FIGURE',
+    POINT: 'POINT'
 })
 
 export const ERROR = Object.freeze({
