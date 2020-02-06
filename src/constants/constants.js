@@ -32,6 +32,7 @@ export const VALUES_TYPES= Object.freeze({
     VAR: 'VAR',
     COLOR: 'COLOR',
     FIGURE: 'FIGURE'
+    UNDEFINED: 'UNDEFINED',
 })
 
 export const ERROR = Object.freeze({
