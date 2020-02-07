@@ -38,22 +38,14 @@ export function processNext(pipe) {
     }
 }
 
-function mapArg(blockVars) {
-    return (dirPipe) => {
-        const {pipe} = dirPipe
-        return pipe !== null ? pipe.toCode(pipe.nextDir, blockVars) : null
-    }
-}
-
 /*
 * Attr:
-    posX -> 
-    posY ->
-    board -> 
-    inDirections
-    outDirections
+    posX -> Int
+    posY -> Int
+    board -> Matrix
+    inDirections -> Array[String]
+    outDirections -> Array[String]
 */
-
 export class Pipe {
 
     constructor(inDirections, outDirections) {
@@ -114,17 +106,13 @@ export class Pipe {
         return !(this.board == null || this.posX === null || this.posY === null)
     }
 
-    getParents(outDirections) {
-        //console.log('getParents.this', this);
+    getParents() {
         if(!this.isInBoard()) {
             return new Array();
         }
-        //console.log('getParents.getInDirections', this.getInDirections());
         return this.getInDirections()
             .map(processNext(this))
             .filter(dirPipe => dirPipe.children)
-        //console.log('getParents.parents', parents);
-        //return parents.filter(parent => parent.pipe !== null && parent.pipe !== undefined);
     }
 
     getChildrens() {
@@ -134,11 +122,11 @@ export class Pipe {
         return this.getOutDirections()
             .map(processNext(this))
             .filter(dirPipe => !dirPipe.children)
-        //return childrens.filter(children => children !== null && children !== undefined);
     }
 
-    toCodeArg(direction, blockVars) {
-        const arg = this.getParents(direction).map(mapArg(blockVars))
+    toCodeArg() {
+        const arg = this.getParents()
+            .map((dirPipe) => dirPipe.pipe !== null ? dirPipe.pipe.toCode(dirPipe.dir) : null)
         return arg.map(e => e !== null ? e : '?').join(', ')
     }
 
@@ -150,8 +138,8 @@ export class Pipe {
         return PIPE_TYPES.UNDEFINED;
     }
 
-    getStatus() {
-
+    hasError() {
+        return false;
     }
 
     isOutDirection(direction) {

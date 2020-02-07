@@ -21,7 +21,7 @@ const PipeGroups = {
     'val': { 
         label: 'Valores',
         pipes: [
-            new ConstPipe(null, 3),
+            new ConstPipe(3),
             new EndPipe(),
             new VarPipe(),
         ],
@@ -35,11 +35,6 @@ const PipeGroups = {
             new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT),
             new DummyPipe(DIRECTION.BOTTOM, DIRECTION.RIGHT),
             new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT),
-        ]
-    },
-    'dummyMult': {
-        label: 'Conectores M',
-        pipes: [
             new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT),
             new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT, DIRECTION.RIGHT),
             new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT, DIRECTION.BOTTOM),
@@ -77,7 +72,7 @@ export default class Toolbox extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            select: 'dummyMult'
+            select: 'mat'
         }
     }
 

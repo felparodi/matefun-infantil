@@ -1,14 +1,15 @@
-import { PIPE_TYPES } from '../../constants/constants';
-import { ConstPipe } from './constPipe'
+import { PIPE_TYPES, DIRECTION } from '../../constants/constants';
+import { Pipe } from './pipe';
 
 /*
 *   Attr
 *   - index: String
 */
-export class VarPipe extends ConstPipe {
+export class VarPipe extends Pipe {
 
-    constructor(type, name) {
-        super(type);
+    constructor(type) {
+        super([], [DIRECTION.BOTTOM]);
+        this.type = type;
         this.index = undefined;
     }
 
@@ -16,12 +17,27 @@ export class VarPipe extends ConstPipe {
         this.index = index;
     }
 
-    getName(blockVar) {
-        return `${blockVar.vars[this.index].name}`
+    getIndex(index) {
+        return this.index;
+    }
+
+    getOutType() {
+        console.log('VarPipe.getOutType')
+        if (this.type) {
+            return this.type;
+        }
+        const childrens = this.getChildrens();
+        const inTypePerChildren = childrens.map(children => children.hasInType() ? children.getInType() : new Array());
+        console.log(inTypePerChildren);
+        return new Array().concat(...inTypePerChildren);
+    }
+
+    getName() {
+        return `x${this.index}`
     }
 
     toCode(direction, blockVar) {
-        return `${blockVar.vars[this.index].name}`;
+        return `${this.getName()}`;
     }
 
     getType() {

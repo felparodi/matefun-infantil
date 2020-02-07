@@ -31,8 +31,17 @@ export const VALUES_TYPES= Object.freeze({
     OTHER: 'OTHER',
     VAR: 'VAR',
     COLOR: 'COLOR',
-    FIGURE: 'FIGURE'
+    FIGURE: 'FIGURE',
     UNDEFINED: 'UNDEFINED',
+    LIST_NUMBER: 'LIST_NUMBER',
+})
+
+export const MATEFUN_TYPE= Object.freeze({
+    NUMBER: 'R',
+    FIGURE: 'Fig',
+    COLOR: 'Color',
+    POINT: '(R x R)',
+    LIST_NUMBER: 'R*',
 })
 
 export const ERROR = Object.freeze({

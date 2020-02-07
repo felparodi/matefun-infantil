@@ -1,5 +1,5 @@
 import { PIPE_TYPES, VALUES_TYPES, DIRECTION} from '../../constants/constants';
-import { TypePipe } from './typePipe';
+import { Pipe } from './pipe';
 
 export function evalValueType(value) {
     switch(typeof value) {
@@ -13,26 +13,33 @@ export function evalValueType(value) {
             }
             return VALUES_TYPES.OTHER;
         }
+        default:
+            return null;
     }
 }
 
-export class ConstPipe extends TypePipe {
-    constructor(type, value) {
+export class ConstPipe extends Pipe {
+
+    constructor(value, type) {
         super([], [DIRECTION.BOTTOM]);
-        if(type !== undefined && type !== null) {
-            this.setOutTypes([type])
-        }
+        this.setOutType(type);
         this.setValue(value)
     }
 
+    setOutType(type) {
+        this.outType = type ? type : null;
+    }
+
+    getOutType() {
+        return this.outType;
+    }
+
     setValue(value) {
+        console.log('ConstPipe.setValue');
         const type = evalValueType(value);
-        const thisTypes = this.getOutTypes();
-        if(this.getOutTypes() === undefined 
-            || this.getOutTypes() === null 
-            || this.getOutTypes().length === 0) {
-            this.setOutTypes([type]);
-        } else if(this.getOutTypes()[0] !== type) {
+        if(!this.getOutType()) {
+            this.setOutType(type);
+        } else if(this.getOutType() !== type) {
             throw new Error("Error de tipos") 
         }
         this.value = value;
@@ -42,16 +49,12 @@ export class ConstPipe extends TypePipe {
         return this.value;
     }
 
-    getOutType(types) {
-        return this.outTypes;
-    }
-
-    toCode(direction) {
-        const thisOutType = this.getOutTypes();
-        if(thisOutType.indexOf(VALUES_TYPES.STRING) === 0) return `"${this.getValue()}"`;
-        if(thisOutType.indexOf(VALUES_TYPES.NUMBER) === 0) return `${this.getValue()}`;
-        if(thisOutType.indexOf(VALUES_TYPES.BOOLEAN) === 0) return `${this.getValue()}`;
-        if(thisOutType.indexOf(VALUES_TYPES.ARRAY) === 0) return `[${this.getValue()}]`;
+    toCode() {
+        const type = this.getOutType();
+        if(type === VALUES_TYPES.STRING) return `"${this.getValue()}"`;
+        if(type === VALUES_TYPES.NUMBER) return `${this.getValue()}`;
+        if(type === VALUES_TYPES.BOOLEAN) return `${this.getValue()}`;
+        if(type === VALUES_TYPES.ARRAY) return `[${this.getValue()}]`;
         return `{${this.getValue()}}`;
     }
 

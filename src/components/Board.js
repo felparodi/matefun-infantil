@@ -30,7 +30,7 @@ export default class Board extends React.Component {
     }
 
     render() {
-        console.log('render Board')
+        //console.log('render Board')
         //console.log(this.props)
         return (
             <div style={{display: 'flex', flexDirection: 'column', width: `${CELL_SIZE * BOARD_COLS}rem`, height: `${CELL_SIZE * BOARD_ROWS}rem`}}>

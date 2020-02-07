@@ -106,6 +106,7 @@ export class MatrixPipe {
     }
 
     getFunctionDefinition(name) {
+        console.log('Matrix.getFunctionDefinition')
         const varsPipes = this.getAllVars();
         const endPipe = this.getEndPipes();
         const varsType = varsPipes.reduce((prev, v, index, vars) => index > 0 ? `${prev} X R` :`R`, '');
@@ -116,16 +117,12 @@ export class MatrixPipe {
     getFunctionCode(name) {
         const varsPipes = this.getAllVars();
         const endPipe = this.getEndPipes();
-        const functionDef = { name, vars:{} }
-        const varNameList = [];
+        //Set Vars index
         varsPipes.forEach((pipe, index) => {
             pipe.setIndex(index);
-            functionDef.vars[index] = { name: `x${index}`}
-            varNameList.push(functionDef.vars[index].name)
         })
-        console.log(functionDef)
-        const code = endPipe[0].toCode(functionDef);
-        return `${name}(${varNameList.join(', ')}) = ${code}`
+        const code = endPipe[0].toCode();
+        return `${name}(${varsPipes.map(pipe => pipe.getName()).join(', ')}) = ${code}`
     }
 
     getAllVars() {
@@ -164,7 +161,6 @@ export class MatrixPipe {
             const pipeType = p.getType();
             if (pipeType === PIPE_TYPES.VALUE || pipeType === PIPE_TYPES.VARIABLE) {
                 p.value= value;
-                console.log(this.values[x][y]);
             }
         }
     }

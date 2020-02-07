@@ -40,22 +40,8 @@ export class DummyPipe extends UnTypePipe {
         return this.getOutType().length > 0;
     }
 
-    toCode(direction, blockVars) {
-        this.setInToOut(direction);
-        return this.toCodeArg(direction, blockVars)
-    }
-
-    setInToOut(direction) {
-        switch(direction) {
-            case DIRECTION.BOTTOM:
-                this.inToOut = this.inDirections.indexOf(DIRECTION.TOP);
-            case DIRECTION.TOP:
-                this.inToOut = this.inDirections.indexOf(DIRECTION.BOTTOM);
-            case DIRECTION.RIGHT:
-                this.inToOut = this.inDirections.indexOf(DIRECTION.LEFT);
-            case DIRECTION.LEFT:
-                this.inToOut = this.inDirections.indexOf(DIRECTION.RIGHT);
-        }
+    toCode() {
+        return this.toCodeArg();
     }
 
     isOutDirection(direction) {
@@ -68,6 +54,10 @@ export class DummyPipe extends UnTypePipe {
 
     getType() {
         return PIPE_TYPES.DUMMY;
+    }
+
+    hasError() {
+
     }
 
     getErrorFlow(direction) {

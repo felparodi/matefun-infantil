@@ -14,18 +14,14 @@ class Cell extends React.Component {
         //console.log(this.props)
         const { isOver, canDrop, connectDropTarget, content } = this.props;
 
-        if (content == null) {
-            return connectDropTarget(
-                <div key={[this.props.row, this.props.col]} style={{ border: "1px solid lightgray", width: `${CELL_SIZE}rem`, height: `${CELL_SIZE}rem`, backgroundColor: isOver ? "green" : "" }} />
-            )
-        } else {
-            console.log('will be rendering pipe')
-            return (
-                <div key={[this.props.row, this.props.col]} style={{ border: "1px solid lightgray", width: `${CELL_SIZE}rem`, height: `${CELL_SIZE}rem`, backgroundColor: isOver ? "green" : "" }}>
-                    <Pipe pipe={content} size={`${CELL_SIZE}rem`} onChangeVarValue={this.props.onChangeVarValue} origin="board"></Pipe>
-                </div>
-            )
-        }
+        return connectDropTarget(
+            content == null ?
+            <div key={[this.props.row, this.props.col]} style={{ border: "1px solid lightgray", width: `${CELL_SIZE}rem`, height: `${CELL_SIZE}rem`, backgroundColor: isOver ? "green" : "" }} />
+            :
+            <div key={[this.props.row, this.props.col]} style={{ border: "1px solid lightgray", width: `${CELL_SIZE}rem`, height: `${CELL_SIZE}rem`, backgroundColor: isOver ? "green" : "" }}>
+                <Pipe pipe={content} size={`${CELL_SIZE}rem`} onChangeVarValue={this.props.onChangeVarValue} origin="board"></Pipe>
+            </div>
+        )
     }
 }
 

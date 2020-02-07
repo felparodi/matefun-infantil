@@ -1,5 +1,5 @@
 import { PIPE_TYPES, VALUES_TYPES, METHOD_FUNCTION, DIRECTION } from '../../constants/constants';
-import { TypePipe } from './typePipe'
+import { Pipe } from './pipe'
 
 /*
 * Retorna la lista de direciones que deberia tener una funcion segun la cantida de tipos de su entrada
@@ -23,12 +23,12 @@ function inTypesToDirections(inTypes) {
 * - inTypes:List<String> Tipos Enteradas (deberian ser menos de 3)
 * - outType: String Tipos de salida (deberia ser 1)
 */
-export class FuncPipe extends TypePipe {
+export class FuncPipe extends Pipe {
 
     constructor(name, inTypes, outType) {
        super([], [DIRECTION.BOTTOM]);
-       this.setInTypes(inTypes);
-       this.setOutTypes([outType]);
+       this.inTypes = inTypes;
+       this.outType = outType
        this.setName(name);
        this.setInDirection(inTypesToDirections(inTypes));
     }
@@ -41,8 +41,8 @@ export class FuncPipe extends TypePipe {
         return this.name;
     }
 
-    toCode(direction, blockVars) {
-        const arg = this.toCodeArg(direction, blockVars);
+    toCode(direction) {
+        const arg = this.toCodeArg(direction);
         const argv = arg.split(', ');
         switch(this.name) {
             case METHOD_FUNCTION.ADD:
@@ -56,6 +56,32 @@ export class FuncPipe extends TypePipe {
             default:
                 return `${this.name}(${arg})`;
         }
+    }
+
+    setInTypes(inTypes) {
+        this.inTypes = inTypes;
+    }
+
+    getInTypes() {
+        return this.inTypes ? this.inTypes : [];
+    }
+
+    setOutTypes(outType) {
+        this.outType = outType;
+    }
+
+    getOutTypes() {
+        return this.outType;
+     }
+
+    getInType(direction) {
+        const dirPos = this.getInDirections().indexOf(direction);
+        return dirPos > -1 ? this.getInTypes()[dirPos] : null;
+    }
+
+    getOutType(direction) {
+        const dirPos = this.getOutDirections().indexOf(direction);
+        return dirPos > -1 ? this.getOutTypes()[dirPos] : null;
     }
 
     getType() {

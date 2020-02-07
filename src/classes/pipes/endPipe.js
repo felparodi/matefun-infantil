@@ -7,8 +7,8 @@ export class EndPipe extends UnTypePipe {
         super([DIRECTION.TOP], []);
     }
 
-    toCode(blockVars) {
-        const arg = this.toCodeArg(this.inDirections[0], blockVars);
+    toCode() {
+        const arg = this.toCodeArg(this.getInDirections()[0]);
         return `${arg}`;
     }
 
