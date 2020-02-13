@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const SERVICES_URL = 'http://localhost:8080/servicios';
 
+//axios.defaults.withCredentials = true;
 
 export function loginInvitado(onSuccess) {
 

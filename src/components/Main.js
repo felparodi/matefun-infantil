@@ -44,7 +44,7 @@ export default class Main extends React.Component {
 
                 this.ws.onopen = () => {
                     // on connecting, do nothing but log it to the console
-                    //console.log('connected')
+                    console.log('connected')
                 }
 
                 this.ws.onmessage = evt => {
@@ -65,7 +65,7 @@ export default class Main extends React.Component {
                 }
 
                 this.ws.onclose = () => {
-                    //console.log('disconnected')
+                    console.warn('disconnected')
                     // automatically try to reconnect on connection loss
 
                 }
