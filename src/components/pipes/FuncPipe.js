@@ -13,6 +13,7 @@ import Escalar from '../../icons/escalar.svg'
 import Rect from '../../icons/rect.svg'
 import Linea from '../../icons/linea.svg'
 import Poli from '../../icons/poli.svg'
+import Mover from '../../icons/mover.svg'
 
 
 function getTypeColor(type) {
@@ -61,7 +62,6 @@ export class FuncPipe extends React.Component {
                         {pipe.getName() == METHOD_FUNCTION.MUL && 'x'}
                         {pipe.getName() == METHOD_FUNCTION.DIV && '%'}
                         {pipe.getName() == 'juntar' && 'juntar'}
-                        {pipe.getName() == 'mover' && 'mover'}
                     </text>
                 }
                 {pipe.getName() == 'color' &&
@@ -84,6 +84,9 @@ export class FuncPipe extends React.Component {
                 }
                 {pipe.getName() == 'escalar' &&
                     <Escalar></Escalar>
+                }
+                 {pipe.getName() == 'mover' &&
+                    <Mover></Mover>
                 }
             </svg>
         )
