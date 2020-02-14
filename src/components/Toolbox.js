@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Card, Tab, Nav, Row, Col } from 'react-bootstrap';
+import classNames from 'classnames';
 import Pipe from './pipes/Pipe';
 import { DIRECTION, TOOLBOX_BTN_SIZE, METHOD_FUNCTION, VALUES_TYPES } from '../constants/constants'
 import { FuncPipe } from '../classes/pipes/funcPipe';
@@ -7,6 +8,7 @@ import { EndPipe } from '../classes/pipes/endPipe';
 import { ConstPipe } from '../classes/pipes/constPipe';
 import { DummyPipe } from '../classes/pipes/dummyPipe'
 import { VarPipe } from '../classes/pipes/varPipe'
+import './Toolbox.scss';
 
 const PipeGroups = {
     'mat': {
@@ -55,43 +57,45 @@ const PipeGroups = {
             new FuncPipe('escalar', [VALUES_TYPES.FIGURE, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
             new FuncPipe('mover', [VALUES_TYPES.FIGURE, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE)
         ]
+    },
+    'custom': {
+        label: 'Custom',
+        pipes: []
     }
 }
 const renderPipeCol = (pipe, index) => (
-    <Col key={index} style={{padding:'2px',margin:'2px'}}>
-        <Button variant="outline-primary">
-            <Pipe pipe={pipe} size={TOOLBOX_BTN_SIZE} origin="toolbox"></Pipe>
+        <Button key={index} className="pipe-button" variant="outline-primary">
+            <Pipe pipe={pipe} size={TOOLBOX_BTN_SIZE} origin="toolbox"/>
         </Button>
-    </Col>
 )
-
-const renderPipeGroup = (pipes, index, pipeGroups) => {
-    return <React.Fragment key={index}>
-        {pipes.map(renderPipeCol)}
-    </React.Fragment>
-}
 
 export default class Toolbox extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            select: 'mat'
+            select:  Object.keys(PipeGroups)[0]
         }
     }
 
     render() {
+        const {select} = this.state;
         return (
-            <Card>
-                <Card.Header as="h5">Toolbox</Card.Header>
-                { Object.keys(PipeGroups).map(name => 
-                    <Button key={name} onClick={()=> this.setState({select: name})}>{PipeGroups[name].label}</Button>
-                ) }
-                <Card.Body>
-                    <Row>
-                        { renderPipeGroup(PipeGroups[this.state.select].pipes) }
-                    </Row>
-                </Card.Body>
-            </Card>
+            <div className="Toolbox">
+                <div className="toolbox-header">
+                { 
+                    Object.keys(PipeGroups).map((name, index) => (
+                        <Button key={index}
+                            className={classNames("button-group", {'selected': select === name })}
+                            onClick={()=> this.setState({select: name})}>
+                            <span>{PipeGroups[name].label}</span>
+                        </Button>
+                    )) 
+                }
+                </div>
+                <div className="toolbox-body">
+                    { PipeGroups[this.state.select].pipes.map(renderPipeCol) }
+                </div>
+            </div>
         )
     }
 }

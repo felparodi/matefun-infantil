@@ -1,7 +1,7 @@
 import React from 'react';
 import Cell from './Cell'
-import { BOARD_ROWS, BOARD_COLS, CELL_SIZE } from '../constants/constants'
-
+import { BOARD_ROWS, BOARD_COLS } from '../constants/constants'
+import './Board.scss';
 export default class Board extends React.Component {
 
     constructor(props) {
@@ -16,24 +16,21 @@ export default class Board extends React.Component {
                 cells.push(
                     <Cell 
                         key={i + "-" + j} 
-                        row={i} 
-                        col={j} 
                         content={this.props.content.value(i,j)} 
-                        onDrop={(pipe)=> this.props.onDrop(i, j, pipe)}
+                        onDrop={(pipe) => this.props.onDrop(i, j, pipe)}
                         onChangeVarValue={this.props.onChangeVarValue}>
                     </Cell>
                 );
             }
-            rows.push(<div style={{ display: 'flex', flex: "1 0 0" }} key={i}>{cells}</div>)
+            rows.push(<div className="board-row" key={i}>{cells}</div>)
         }
         return rows
     }
 
     render() {
-        //console.log('render Board')
-        //console.log(this.props)
+
         return (
-            <div style={{display: 'flex', flexDirection: 'column', width: `${CELL_SIZE * BOARD_COLS}rem`, height: `${CELL_SIZE * BOARD_ROWS}rem`}}>
+            <div className="Board" >
                 {this.createRows()}
             </div>
         )

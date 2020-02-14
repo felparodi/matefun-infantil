@@ -1,0 +1,9 @@
+$CELL_SIZE: 7rem;
+.Cell {
+    border: 1px solid lightgray;
+    width: $CELL_SIZE;
+    height: $CELL_SIZE;
+    &.over {
+        background-color: green;
+    }
+}

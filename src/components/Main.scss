@@ -1,0 +1,41 @@
+.Main {
+    height: 100vh;
+    .container {
+        position: relative;
+        max-width: none;
+        .body {
+            display: flex;
+            height: 90vh;
+            .board-container {
+                margin-left: 1rem;
+                border: 2px solid gray;
+                height: 100%;
+                max-width: 100%;
+                overflow: scroll;
+            }
+            .board-container::-webkit-scrollbar {
+                -webkit-appearance: none;
+            }
+            
+            .board-container::-webkit-scrollbar:vertical {
+                width: 11px;
+            }
+            
+            .board-container::-webkit-scrollbar:horizontal {
+                height: 11px;
+            }
+            
+            .board-container::-webkit-scrollbar-thumb {
+                border-radius: 8px;
+                border: 2px solid white; /* should match background, can't be transparent */
+                background-color: rgba(0, 0, 0, .5);
+            }
+        }
+    }
+    .actions {
+        position: absolute;
+        top: -15px;
+        right: 0;
+        margin-right: 3rem;;
+    }
+}

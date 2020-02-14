@@ -1,7 +1,8 @@
 import React from 'react';
+import classNames from 'classnames';
 import { DropTarget } from "react-dnd";
 import Pipe from './pipes/Pipe';
-import { CELL_SIZE } from '../constants/constants.js'
+import './Cell.scss';
 
 class Cell extends React.Component {
 
@@ -10,16 +11,10 @@ class Cell extends React.Component {
     }
 
     render() {
-        console.log('render Cell')
-        //console.log(this.props)
-        const { isOver, canDrop, connectDropTarget, content } = this.props;
-
+        const { isOver, connectDropTarget, content, onChangeVarValue } = this.props;
         return connectDropTarget(
-            content == null ?
-            <div key={[this.props.row, this.props.col]} style={{ border: "1px solid lightgray", width: `${CELL_SIZE}rem`, height: `${CELL_SIZE}rem`, backgroundColor: isOver ? "green" : "" }} />
-            :
-            <div key={[this.props.row, this.props.col]} style={{ border: "1px solid lightgray", width: `${CELL_SIZE}rem`, height: `${CELL_SIZE}rem`, backgroundColor: isOver ? "green" : "" }}>
-                <Pipe pipe={content} size={`${CELL_SIZE}rem`} onChangeVarValue={this.props.onChangeVarValue} origin="board"></Pipe>
+            <div className={classNames('Cell', { 'over': isOver })}>
+                { content &&  <Pipe pipe={content} onChangeVarValue={onChangeVarValue} origin="board"></Pipe>}
             </div>
         )
     }
@@ -31,6 +26,7 @@ const spec = {
         props.onDrop(item.pipe);
     }
 };
+
 function collect(connect, monitor) {
     return {
         connectDropTarget: connect.dropTarget(),

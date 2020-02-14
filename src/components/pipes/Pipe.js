@@ -6,6 +6,7 @@ import { FuncPipe } from './FuncPipe.js'
 import { EndPipe } from './EndPipe.js'
 import { ValPipe } from './ValPipe.js'
 import { VarPipe } from './VarPipe.js';
+import './Pipe.scss';
 
 function SwitchPipe(pipe, props) {
     if (pipe.getType() == PIPE_TYPES.FUNCTION) {
@@ -26,23 +27,16 @@ class Pipe extends React.Component {
 
     constructor(props) {
         super();
-        this.state = {
-            test: false
-        };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({ test: true });
     }
 
     render() {
 
         const { pipe, connectDragSource, origin } = this.props;
-
+        const p = (<div className="Pipe">{SwitchPipe(pipe, this.props)}</div>);
         if (origin == "toolbox") {
-            return connectDragSource(<div>{SwitchPipe(pipe, this.props)}</div>);
+            return connectDragSource(p);
         } else if (origin == "board") {
-            return <div>{SwitchPipe(pipe, this.props)}</div>;
+            return p;
         }
     }
 }

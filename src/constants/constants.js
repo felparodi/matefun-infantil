@@ -10,7 +10,14 @@ export const METHOD_FUNCTION = Object.freeze({
     ADD: 'ADD',
     MUL: 'MUL',
     SUB: 'SUB',
-    DIV: 'DIV'
+    DIV: 'DIV',
+    COLOR: 'color',
+    ROTAR: 'rotar',
+    RECT: 'rect',
+    LINEA: 'linea',
+    POLI:'poli',
+    ESCALAR: 'escalar',
+    MOVER: 'mover',
 })
 
 export const PIPE_TYPES= Object.freeze({
@@ -53,8 +60,8 @@ export const ERROR = Object.freeze({
 
 export default { DIRECTION, PIPE_TYPES };
 
-export const BOARD_ROWS= 8;
-export const BOARD_COLS= 14;
+export const BOARD_ROWS= 20;
+export const BOARD_COLS= 20;
 
 export const CELL_SIZE=7;
 

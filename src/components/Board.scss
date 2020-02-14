@@ -1,0 +1,10 @@
+.Board {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: fit-content;
+    .board-row {
+        display: flex;
+        flex: 1 0 0; 
+    }
+}

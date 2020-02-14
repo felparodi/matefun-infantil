@@ -29,6 +29,41 @@ function getTypeColor(type) {
     }
 }
 
+const TextIcon = (props) => (
+    <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fontSize="20px" fill='white'>
+        { props.text }
+    </text>
+);
+
+const FunctionIcon = (props) => {
+    switch(props.name) {
+        case METHOD_FUNCTION.COLOR:
+            return <Color/>;
+        case METHOD_FUNCTION.ROTAR:
+            return <Rotar/>;
+        case METHOD_FUNCTION.RECT:
+            return <Rect/>;
+        case METHOD_FUNCTION.LINEA:
+            return <Linea/>
+        case METHOD_FUNCTION.POLI:
+            return <Poli/>;
+        case METHOD_FUNCTION.ESCALAR:
+            return <Escalar/>;
+        case METHOD_FUNCTION.MOVER: 
+            return <Mover/>;
+        case METHOD_FUNCTION.ADD:
+            return <TextIcon text="+"/>;
+        case METHOD_FUNCTION.SUB:
+            return <TextIcon text="-"/>;
+        case METHOD_FUNCTION.MUL:
+            return <TextIcon text="x"/>;
+        case METHOD_FUNCTION.DIV:
+            return <TextIcon text="%"/>;
+        default:
+            return <TextIcon text={props.name}/>;
+    }
+}
+
 export class FuncPipe extends React.Component {
 
     render() {
@@ -36,58 +71,15 @@ export class FuncPipe extends React.Component {
         var leftType = pipe.getInType(DIRECTION.LEFT);
         var rightType = pipe.getInType(DIRECTION.RIGHT);
         var topType = pipe.getInType(DIRECTION.TOP);
-        var bottomType = pipe.getOutType(DIRECTION.BOTTOM);
+        var bottomType = pipe.getOutType();
         return (
-            <svg viewBox="0 0 40 40" width={this.props.size} height={this.props.size}>
+            <svg viewBox="0 0 40 40">
                 <Base pipe={pipe}></Base>
-                {leftType &&
-                    <InputLeft color={getTypeColor(leftType)}></InputLeft>
-                }
-                {rightType &&
-                    <InputRight color={getTypeColor(rightType)}></InputRight>
-                }
-                {topType &&
-                    <InputTop color={getTypeColor(topType)}></InputTop>
-                }
+                { leftType && <InputLeft color={getTypeColor(leftType)}></InputLeft> }
+                { rightType && <InputRight color={getTypeColor(rightType)}></InputRight> }
+                { topType && <InputTop color={getTypeColor(topType)}></InputTop> }
                 <Output color={getTypeColor(bottomType)}></Output>
-                {(pipe.getName() == METHOD_FUNCTION.ADD ||
-                    pipe.getName() == METHOD_FUNCTION.SUB ||
-                    pipe.getName() == METHOD_FUNCTION.MUL ||
-                    pipe.getName() == METHOD_FUNCTION.DIV ||
-                    pipe.getName() == 'juntar' ||
-                    pipe.getName() == 'mover') &&
-                    <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fontSize={(this.props.origin == "toolbox") ? "20px" : "50px"} fill='white'>
-                        {pipe.getName() == METHOD_FUNCTION.ADD && '+'}
-                        {pipe.getName() == METHOD_FUNCTION.SUB && '-'}
-                        {pipe.getName() == METHOD_FUNCTION.MUL && 'x'}
-                        {pipe.getName() == METHOD_FUNCTION.DIV && '%'}
-                        {pipe.getName() == 'juntar' && 'juntar'}
-                    </text>
-                }
-                {pipe.getName() == 'color' &&
-                    <Color></Color>
-                }
-                {pipe.getName() == 'rotar' &&
-                    <Rotar></Rotar>
-                }
-                {pipe.getName() == 'circ' &&
-                    <Circ></Circ>
-                }
-                {pipe.getName() == 'rect' &&
-                    <Rect></Rect>
-                }
-                {pipe.getName() == 'linea' &&
-                    <Linea></Linea>
-                }
-                {pipe.getName() == 'poli' &&
-                    <Poli></Poli>
-                }
-                {pipe.getName() == 'escalar' &&
-                    <Escalar></Escalar>
-                }
-                 {pipe.getName() == 'mover' &&
-                    <Mover></Mover>
-                }
+                <FunctionIcon name={pipe.getName()}/>
             </svg>
         )
     }

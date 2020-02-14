@@ -70,18 +70,13 @@ export class FuncPipe extends Pipe {
         this.outType = outType;
     }
 
-    getOutTypes() {
+    getOutType() {
         return this.outType;
      }
 
     getInType(direction) {
         const dirPos = this.getInDirections().indexOf(direction);
         return dirPos > -1 ? this.getInTypes()[dirPos] : null;
-    }
-
-    getOutType(direction) {
-        const dirPos = this.getOutDirections().indexOf(direction);
-        return dirPos > -1 ? this.getOutTypes()[dirPos] : null;
     }
 
     getType() {

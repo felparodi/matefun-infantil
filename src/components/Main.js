@@ -2,10 +2,13 @@ import React from 'react';
 import Cell from './Cell'
 import Toolbox from './Toolbox.js'
 import Board from './Board.js'
+import classNames from 'classnames';
 import { Container, Navbar, Nav, Row, Col, Button, Card, Form, FormControl } from 'react-bootstrap';
+import Header from './Header';
 import { MatrixPipe } from '../classes/matrix'
 import { BOARD_ROWS, BOARD_COLS } from '../constants/constants'
 import * as services from '../services';
+import './Main.scss';
 
 export default class Main extends React.Component {
 
@@ -67,13 +70,13 @@ export default class Main extends React.Component {
                 this.ws.onclose = () => {
                     console.warn('disconnected')
                     // automatically try to reconnect on connection loss
-
                 }
 
             });
     }
 
     onDrop(row, col, pipe) {
+        console.log('onDrop', Date.now());
         var boardContent = this.state.boardContent;
         boardContent.addPipe(row, col, pipe.clone());
         this.setState({
@@ -135,45 +138,32 @@ export default class Main extends React.Component {
     }
 
     render() {
-        //console.log('render Main')
-        //console.log(this.state.boardContent)
         return (
-            <div>
-                <Container style={{ maxWidth: '100%' }}>
-                    <Navbar bg="primary" variant="dark" style={{ marginBottom: '15px' }}>
-                        <Navbar.Brand href="#home">Matefun Infantil</Navbar.Brand>
-                        <Nav className="mr-auto">
-                            <Nav.Link href="#home">Home</Nav.Link>
-                            <Nav.Link href="#features">Features</Nav.Link>
-                            <Nav.Link href="#pricing">Pricing</Nav.Link>
-                        </Nav>
-                        <Form inline>
-                            <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                            <Button variant="outline-light">Search</Button>
-                        </Form>
-                    </Navbar>
-                    <Row>
-                        <Col sm={2}>
+            <div className="Main">
+                <Header/>
+                <div className="container">
+                    <div className="body">
+                        <div className="toolbox-container">
                             <Toolbox />
-                        </Col>
-                        <Col sm={10}>
-                            <Row>
-                                <Board content={this.state.boardContent} onDrop={this.onDrop} onChangeVarValue={this.onChangeVarValue} />
-                            </Row>
-                            <Row>
-                                <Card style={{ width: '50rem' }}>
-                                    <Card.Body>
-                                        <Button variant="primary" onClick={this.process}>Procesar</Button>
-                                        <Form.Control as="textarea" readOnly rows="3" value={this.state.functionDeclaration} />
-                                        <Button variant="primary" onClick={this.evaluate}>Evaluar</Button>
-                                        <Form.Control as="textarea" readOnly rows="3" value={this.state.functionEvaluation} />
-                                        <Button variant="primary" onClick={this.setResult}>Set result</Button>
-                                    </Card.Body>
-                                </Card>
-                            </Row>
-                        </Col>
-                    </Row>
-                </Container>
+                        </div>
+                        <div className="board-container">
+                            <Board content={this.state.boardContent} onDrop={this.onDrop} onChangeVarValue={this.onChangeVarValue} />
+                        </div>
+                    </div>
+                    <div className="actions">
+                        <div className="actions-button">
+                            <Button variant="primary" onClick={this.process}>Procesar</Button>
+                            <Button variant="primary" onClick={this.evaluate}>Evaluar</Button>
+                            <Button variant="primary" onClick={this.setResult}>Set result</Button>
+                        </div>
+                        <div className="actions-info">
+                            <p>Procesar</p>
+                            <Form.Control as="textarea" readOnly rows="3" value={this.state.functionDeclaration} />
+                            <p>Evaluar</p>
+                            <Form.Control as="textarea" readOnly rows="3" value={this.state.functionEvaluation} />
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
