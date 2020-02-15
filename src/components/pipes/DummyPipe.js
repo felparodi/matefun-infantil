@@ -17,7 +17,7 @@ export class DummyPipe extends React.Component {
 
     render() {
         const { pipe } = this.props;
-        const allDirection = pipe.getAllDirection();
+        const allDirection = pipe.allDirections;
         if (allDirection.indexOf(DIRECTION.TOP) >= 0) {
             if (allDirection.indexOf(DIRECTION.BOTTOM) >= 0) {
                 if (allDirection.indexOf(DIRECTION.RIGHT) >= 0) {

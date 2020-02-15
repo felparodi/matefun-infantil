@@ -30,6 +30,7 @@ export function invertDirection(direction) {
 export function processNext(pipe) {
     return (direction) => {
         const [x, y] = directionMove(pipe.posX, pipe.posY, direction);
+        if (!pipe.board) { return null; }
         let before = pipe.board.value(x, y);
         let nextDir = invertDirection(direction);
         const connected = before !== null ?  before.hasDirection(nextDir) : true;
@@ -177,4 +178,15 @@ export class Pipe {
         }
         return null;
     }
+    
+    snapshot() {
+        return {
+            type: this.getType(),
+            posX: this.getPosX(),
+            posY: this.getPosY(),
+            inDirections: this.getInDirections(),
+            outDirections: this.getOutDirections(),
+        }
+    }
+
 }

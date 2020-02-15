@@ -1,5 +1,25 @@
-import { PIPE_TYPES } from '../constants/constants';
+import { PIPE_TYPES, DIRECTION } from '../constants/constants';
+import { FuncPipe } from './pipes/funcPipe';
+import { EndPipe } from './pipes/endPipe';
+import { ConstPipe } from './pipes/constPipe';
+import { DummyPipe } from './pipes/dummyPipe'
+import { VarPipe } from './pipes/varPipe'
 
+export function createPipe(snapshot) {
+    console.log('createPipe', snapshot);
+    switch(snapshot.type) {
+        case PIPE_TYPES.END:
+            return new EndPipe();
+        case PIPE_TYPES.DUMMY:
+            return new DummyPipe(...snapshot.allDirections);
+        case PIPE_TYPES.FUNCTION:
+            return new FuncPipe(snapshot.name, snapshot.inTypes.list, snapshot.outType);
+        case PIPE_TYPES.VARIABLE:
+            return new VarPipe()
+        case PIPE_TYPES.VALUE:
+            return new ConstPipe(snapshot.value);
+    }
+}
 /*
 * Attr:
     maxY -> 
@@ -141,6 +161,7 @@ export class MatrixPipe {
             .filter(error => error !== null);
     }
 
+    //@deprecate
     clone() {
         const m = new MatrixPipe(this.maxX, this.maxY);
         for(let x = 0; x < this.maxX; x++) {
@@ -152,6 +173,19 @@ export class MatrixPipe {
             }
         }
         return m;
+    }
+
+    snapshot() {
+        const snap = Array(this.maxX).fill([]).map(() => Array(this.maxY));
+        for(let x = 0; x < this.maxX; x++) {
+            for(let y = 0; y < this.maxY; y++) {
+                const pipe = this.value(x,y);
+                if (pipe !== null) {
+                    snap[x][y] = pipe.snapshot();
+                }
+            }
+        }
+        return snap;
     }
 
     setPipeValue(x, y, value) {

@@ -9,18 +9,20 @@ import { VarPipe } from './VarPipe.js';
 import './Pipe.scss';
 
 function SwitchPipe(pipe, props) {
-    if (pipe.getType() == PIPE_TYPES.FUNCTION) {
-        return <FuncPipe {...(props)} />
-    } else if (pipe.getType() == PIPE_TYPES.VALUE) {
-        return <ValPipe {...(props)} />
-    } else if (pipe.getType() == PIPE_TYPES.END) {
-        return <EndPipe {...(props)} />
-    } else if (pipe.getType() == PIPE_TYPES.DUMMY) {
-        return <DummyPipe {...(props)} />
-    } else if (pipe.getType() == PIPE_TYPES.VARIABLE) {
-        return <VarPipe {...(props)} />
+    switch(pipe.type) {
+        case PIPE_TYPES.FUNCTION:
+            return <FuncPipe {...(props)} />;
+        case PIPE_TYPES.VALUE:
+            return <ValPipe {...(props)} />;
+        case PIPE_TYPES.END:
+            return <EndPipe {...(props)} />;
+        case PIPE_TYPES.DUMMY:
+            return <DummyPipe {...(props)} />;
+        case PIPE_TYPES.VARIABLE:
+            return <VarPipe {...(props)} />;
+        default:
+            return null;   
     }
-    return null;
 }
 
 class Pipe extends React.Component {
@@ -30,7 +32,6 @@ class Pipe extends React.Component {
     }
 
     render() {
-
         const { pipe, connectDragSource, origin } = this.props;
         const p = (<div className="Pipe">{SwitchPipe(pipe, this.props)}</div>);
         if (origin == "toolbox") {

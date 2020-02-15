@@ -14,48 +14,48 @@ const PipeGroups = {
     'mat': {
         label: 'Matematica',
         pipes: [
-            new FuncPipe(METHOD_FUNCTION.ADD, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
-            new FuncPipe(METHOD_FUNCTION.SUB, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
-            new FuncPipe(METHOD_FUNCTION.MUL, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
-            new FuncPipe(METHOD_FUNCTION.DIV, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
+            new FuncPipe(METHOD_FUNCTION.ADD, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER).snapshot(),
+            new FuncPipe(METHOD_FUNCTION.SUB, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER).snapshot(),
+            new FuncPipe(METHOD_FUNCTION.MUL, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER).snapshot(),
+            new FuncPipe(METHOD_FUNCTION.DIV, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER).snapshot(),
          ]
     },
     'val': { 
         label: 'Valores',
         pipes: [
-            new ConstPipe(3),
-            new EndPipe(),
-            new VarPipe(),
+            new ConstPipe(3).snapshot(),
+            new EndPipe().snapshot(),
+            new VarPipe().snapshot(),
         ],
     },
     'dummy': {
         label: 'Conectores',
         pipes: [
-            new DummyPipe(DIRECTION.TOP, DIRECTION.BOTTOM),
-            new DummyPipe(DIRECTION.LEFT, DIRECTION.RIGHT),
-            new DummyPipe(DIRECTION.TOP, DIRECTION.RIGHT),
-            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT),
-            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.RIGHT),
-            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT),
-            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT),
-            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT, DIRECTION.RIGHT),
-            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT, DIRECTION.BOTTOM),
-            new DummyPipe(DIRECTION.TOP, DIRECTION.RIGHT, DIRECTION.BOTTOM),
-            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.TOP),
+            new DummyPipe(DIRECTION.TOP, DIRECTION.BOTTOM).snapshot(),
+            new DummyPipe(DIRECTION.LEFT, DIRECTION.RIGHT).snapshot(),
+            new DummyPipe(DIRECTION.TOP, DIRECTION.RIGHT).snapshot(),
+            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT).snapshot(),
+            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.RIGHT).snapshot(),
+            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT).snapshot(),
+            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT).snapshot(),
+            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT, DIRECTION.RIGHT).snapshot(),
+            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT, DIRECTION.BOTTOM).snapshot(),
+            new DummyPipe(DIRECTION.TOP, DIRECTION.RIGHT, DIRECTION.BOTTOM).snapshot(),
+            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.TOP).snapshot(),
         ]
     },
     'figures': {
         label: 'Figuras',
         pipes: [
-            new FuncPipe('circ', [VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
-            new FuncPipe('rect', [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
-            new FuncPipe('linea', [VALUES_TYPES.POINT, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE),
-            new FuncPipe('poli', [VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
-            new FuncPipe('color', [VALUES_TYPES.FIGURE, VALUES_TYPES.COLOR], VALUES_TYPES.FIGURE),
-            new FuncPipe('rotar', [VALUES_TYPES.FIGURE, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
-            new FuncPipe('juntar', [VALUES_TYPES.FIGURE, VALUES_TYPES.FIGURE], VALUES_TYPES.FIGURE),
-            new FuncPipe('escalar', [VALUES_TYPES.FIGURE, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
-            new FuncPipe('mover', [VALUES_TYPES.FIGURE, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE)
+            new FuncPipe('circ', [VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE).snapshot(),
+            new FuncPipe('rect', [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE).snapshot(),
+            new FuncPipe('linea', [VALUES_TYPES.POINT, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE).snapshot(),
+            new FuncPipe('poli', [VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE).snapshot(),
+            new FuncPipe('color', [VALUES_TYPES.FIGURE, VALUES_TYPES.COLOR], VALUES_TYPES.FIGURE).snapshot(),
+            new FuncPipe('rotar', [VALUES_TYPES.FIGURE, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE).snapshot(),
+            new FuncPipe('juntar', [VALUES_TYPES.FIGURE, VALUES_TYPES.FIGURE], VALUES_TYPES.FIGURE).snapshot(),
+            new FuncPipe('escalar', [VALUES_TYPES.FIGURE, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE).snapshot(),
+            new FuncPipe('mover', [VALUES_TYPES.FIGURE, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE).snapshot()
         ]
     },
     'custom': {

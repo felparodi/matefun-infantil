@@ -5,21 +5,21 @@ import Board from './Board.js'
 import classNames from 'classnames';
 import { Button } from 'react-bootstrap';
 import Header from './Header';
-import { MatrixPipe } from '../classes/matrix'
+import { MatrixPipe, createPipe } from '../classes/matrix'
 import { BOARD_ROWS, BOARD_COLS } from '../constants/constants'
 import * as services from '../services';
 import './Main.scss';
 
 
 const debugMode = localStorage.getItem('debug-mode') === 'true';
-
+const matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
 
 export default class Main extends React.Component {
 
     constructor() {
         super();
         this.state = {
-            boardContent: new MatrixPipe(BOARD_ROWS, BOARD_COLS),
+            boardContent: matrix.snapshot(),
             functionDeclaration: '',
             evaluationInstruction: '',
             loadScriptField: '',
@@ -84,27 +84,21 @@ export default class Main extends React.Component {
 
     onDrop(row, col, pipe) {
         console.log('onDrop', Date.now());
-        var boardContent = this.state.boardContent;
-        boardContent.addPipe(row, col, pipe.clone());
+        matrix.addPipe(row, col, createPipe(pipe));
         this.setState({
-            boardContent: boardContent
+            boardContent: matrix.snapshot(),
         });
     }
 
     onChangeVarValue(x, y, value) {
-        var boardContent = this.state.boardContent;
-
-        boardContent.setPipeValue(x, y, value);
-
+        matrix.setPipeValue(x, y, value);
         this.setState({
-            boardContent: boardContent
+            boardContent: matrix.snapshot()
         });
     }
 
     process() {
-        var boardContent = this.state.boardContent;
-
-        var functionDeclaration = boardContent.process();
+        var functionDeclaration = matrix.process();
         this.setState({
             functionDeclaration: functionDeclaration
         })
@@ -123,10 +117,7 @@ export default class Main extends React.Component {
     }
 
     evaluate() {
-        var boardContent = this.state.boardContent;
-
-        var evaluationInstruction = boardContent.evaluateFunction();
-        
+        var evaluationInstruction = matrix.evaluateFunction();
         this.setState({
             evaluationInstruction: evaluationInstruction,
             waitingForResult: true
@@ -137,11 +128,8 @@ export default class Main extends React.Component {
     }
 
     setResult() {
-        var boardContent = this.state.boardContent;
-
-        boardContent.setResultValue(5);
-
-        this.setState({boardContent: boardContent});
+        matrix.setResultValue(5);
+        this.setState({boardContent: matrix.snapshot()});
     }
 
     render() {

@@ -68,10 +68,10 @@ export class FuncPipe extends React.Component {
 
     render() {
         const { pipe } = this.props;
-        var leftType = pipe.getInType(DIRECTION.LEFT);
-        var rightType = pipe.getInType(DIRECTION.RIGHT);
-        var topType = pipe.getInType(DIRECTION.TOP);
-        var bottomType = pipe.getOutType();
+        var leftType = pipe.inTypes.left;
+        var rightType = pipe.inTypes.right;
+        var topType = pipe.inTypes.top;
+        var bottomType = pipe.outType;
         return (
             <svg viewBox="0 0 40 40">
                 <Base pipe={pipe}></Base>
@@ -79,7 +79,7 @@ export class FuncPipe extends React.Component {
                 { rightType && <InputRight color={getTypeColor(rightType)}></InputRight> }
                 { topType && <InputTop color={getTypeColor(topType)}></InputTop> }
                 <Output color={getTypeColor(bottomType)}></Output>
-                <FunctionIcon name={pipe.getName()}/>
+                <FunctionIcon name={pipe.name}/>
             </svg>
         )
     }

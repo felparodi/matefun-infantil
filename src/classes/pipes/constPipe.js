@@ -61,4 +61,12 @@ export class ConstPipe extends Pipe {
     getType() {
         return PIPE_TYPES.VALUE;
     }
+
+    snapshot() {
+        return {
+            ...(super.snapshot()),
+            outType: this.getOutType(),
+            value: this.getValue(),
+        }
+    }
 }

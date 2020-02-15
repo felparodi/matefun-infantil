@@ -7,7 +7,7 @@ export class ValPipe extends React.Component {
     render() {
         const { pipe } = this.props;
         return (
-            <ValueBottom width={this.props.size} height={this.props.size}/>
+            <ValueBottom/>
         )
     }
 }

@@ -5,6 +5,7 @@ import { processNext, invertDirection } from './pipe';
 function dummyInFilter(pipe) {
     return (dir, index, list) => {
         const pipeDir =  processNext(pipe)(dir);
+        if (!pipeDir) return false;
         if(pipeDir.pipe === null) return true;
         if(pipeDir.pipe.getType() === PIPE_TYPES.DUMMY) {
             return pipeDir.pipe.isDummyOut(invertDirection(dir));
@@ -63,5 +64,12 @@ export class DummyPipe extends UnTypePipe {
     getErrorFlow(direction) {
         this.setInToOut(direction);
         return super.getErrorFlow(direction);
+    }
+    
+    snapshot() {
+        return {
+            ...(super.snapshot()),
+            allDirections: this.getAllDirection(),
+        }
     }
 }

@@ -14,15 +14,16 @@ export class ConditionPipe extends FuncPipe {
     }
 
     getInTypes() {
-        //@TODO
+        //@TODO Si son distintos izaquierd  derecha no se que hacer
         const inType = VALUES_TYPES.UNDEFINED;
         return [inType, VALUES_TYPES.BOOLEAN, inType];
     }
 
-    getOutTypes() {
-        //@TODO
-        const outType = VALUES_TYPES.UNDEFINED;
-        return [outType];
+    getOutType() {
+        //@TODO Si son distintos izaquierd  derecha no se que hacer
+        const leftType = this.getInType(DIRECTION.LEFT);
+        const rightType = this.getInType(DIRECTION.RIGHT);
+        return leftType === rightType ? leftType : DIRECTION.UNDEFINED;
     }
 
     toCode() {
@@ -35,5 +36,4 @@ export class ConditionPipe extends FuncPipe {
     getType() {
         return PIPE_TYPES.CONDITION;
     }
-
 }

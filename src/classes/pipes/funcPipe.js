@@ -83,4 +83,18 @@ export class FuncPipe extends Pipe {
         return PIPE_TYPES.FUNCTION;
     }
 
+    snapshot() {
+        return  {
+            ...(super.snapshot()),
+            name: this.getName(),
+            inTypes: {
+                top: this.getInType(DIRECTION.TOP),
+                left: this.getInType(DIRECTION.LEFT),
+                right: this.getInType(DIRECTION.RIGHT),
+                list: this.getInTypes(),
+            },
+            outType: this.getOutType()
+        }
+    }
+
 }

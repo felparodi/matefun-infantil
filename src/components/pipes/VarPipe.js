@@ -42,7 +42,7 @@ export class VarPipe extends React.Component {
         const { value } = e.target;
         const { pipe, onChangeVarValue } = this.props;
         this.setState({ isOpen: value !== '', editingValue: false });
-        this.props.onChangeVarValue(this.props.pipe.getPosX(), this.props.pipe.getPosY(), value)
+        onChangeVarValue(pipe.posX, pipe.posY, value);
     }
 
     setDoorState(isOpen) {
