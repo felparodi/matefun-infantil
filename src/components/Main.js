@@ -3,12 +3,16 @@ import Cell from './Cell'
 import Toolbox from './Toolbox.js'
 import Board from './Board.js'
 import classNames from 'classnames';
-import { Container, Navbar, Nav, Row, Col, Button, Card, Form, FormControl } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import Header from './Header';
 import { MatrixPipe } from '../classes/matrix'
 import { BOARD_ROWS, BOARD_COLS } from '../constants/constants'
 import * as services from '../services';
 import './Main.scss';
+
+
+const debugMode = localStorage.getItem('debug-mode') === 'true';
+
 
 export default class Main extends React.Component {
 
@@ -17,9 +21,12 @@ export default class Main extends React.Component {
         this.state = {
             boardContent: new MatrixPipe(BOARD_ROWS, BOARD_COLS),
             functionDeclaration: '',
-            functionEvaluation: '',
+            evaluationInstruction: '',
+            loadScriptField: '',
+            evaluationResult: '',
             waitingForResult: false,
             fileData: {},
+            openConsole: false,
         };
         this.onDrop = this.onDrop.bind(this);
         this.process = this.process.bind(this);
@@ -111,20 +118,20 @@ export default class Main extends React.Component {
 
                 var userData = this.state.userData;
 
-                this.ws.send('{"token":"' + userData.token + '","load":' + fileData.id + ',"dependencias":[' + fileData.id + ']}');
+                this.ws && this.ws.send('{"token":"' + userData.token + '","load":' + fileData.id + ',"dependencias":[' + fileData.id + ']}');
             })
     }
 
     evaluate() {
         var boardContent = this.state.boardContent;
 
-        var functionEvaluation = boardContent.evaluateFunction();
+        var evaluationInstruction = boardContent.evaluateFunction();
         
         this.setState({
-            functionEvaluation: functionEvaluation,
+            evaluationInstruction: evaluationInstruction,
             waitingForResult: true
         }, () => {
-            this.ws.send('{"token":"' + this.state.userData.token + '","comando":"' + functionEvaluation + '"}'); //send data to the server
+            this.ws.send('{"token":"' + this.state.userData.token + '","comando":"' + evaluationInstruction + '"}'); //send data to the server
         })
 
     }
@@ -138,6 +145,10 @@ export default class Main extends React.Component {
     }
 
     render() {
+        const { boardContent, openConsole, 
+            functionDeclaration, evaluationInstruction, 
+            loadScriptField, evaluationResult 
+        } = this.state;
         return (
             <div className="Main">
                 <Header/>
@@ -147,21 +158,27 @@ export default class Main extends React.Component {
                             <Toolbox />
                         </div>
                         <div className="board-container">
-                            <Board content={this.state.boardContent} onDrop={this.onDrop} onChangeVarValue={this.onChangeVarValue} />
+                            <Board content={boardContent} onDrop={this.onDrop} onChangeVarValue={this.onChangeVarValue} />
                         </div>
                     </div>
                     <div className="actions">
                         <div className="actions-button">
-                            <Button variant="primary" onClick={this.process}>Procesar</Button>
                             <Button variant="primary" onClick={this.evaluate}>Evaluar</Button>
-                            <Button variant="primary" onClick={this.setResult}>Set result</Button>
+                            <Button variant="primary" onClick={this.process}>Procesar</Button>
+                        { debugMode && <Button variant="primary" onClick={() => {this.setState({openConsole:!openConsole})}}>Consola</Button> }
                         </div>
-                        <div className="actions-info">
-                            <p>Procesar</p>
-                            <Form.Control as="textarea" readOnly rows="3" value={this.state.functionDeclaration} />
-                            <p>Evaluar</p>
-                            <Form.Control as="textarea" readOnly rows="3" value={this.state.functionEvaluation} />
-                        </div>
+                        { debugMode &&
+                             <div className={classNames("actions-info", {'hidden':!openConsole})}>
+                                <p>Evaluar</p>
+                                <textarea className="info evaluation" readOnly value={evaluationInstruction}/>
+                                <p>Funcion</p>
+                                <textarea className="info function" readOnly value={functionDeclaration}/>
+                                <p>Archivo</p>
+                                <textarea className="info file" readOnly value={loadScriptField} />
+                                <p>Resultado</p>
+                                <textarea className="info result" readOnly value={evaluationResult}/>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

@@ -34,8 +34,44 @@
     }
     .actions {
         position: absolute;
-        top: -15px;
+        top: -10px;
         right: 0;
-        margin-right: 3rem;;
+        .actions-button {
+            margin-right: 3rem;
+            .btn {
+                margin: 0 0.2rem;
+            }
+        }
+        .actions-info {
+            &.hidden{
+                display: none;
+            }
+            margin-top: 0.2rem;
+            padding: 0.3rem;
+            border: solid 1px;
+            border-radius: 10px;
+            background-color: white;
+            height: 85vh;
+            overflow: scroll;
+            p {
+                margin-bottom: 0.5rem;
+            }
+            .info {
+                width: 100%;
+                padding: .375rem .75rem;
+                border: 1px solid #ced4da;
+                border-radius: .25rem;
+                background-color: #e9ecef;
+                min-height: 2.5rem;
+                overflow-y: scroll;
+                margin: 0.5rem 0;
+                &.function {
+                    height: 8rem;
+                }
+                &.file {
+                    height: 14rem;
+                }
+            }
+        }
     }
 }
