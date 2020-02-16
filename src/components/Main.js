@@ -99,29 +99,32 @@ export default class Main extends React.Component {
 
     process() {
         var functionDeclaration = matrix.process();
-        this.setState({
-            functionDeclaration: functionDeclaration
-        })
-
-        var fileData = this.state.fileData;
-
-        fileData.contenido = functionDeclaration;
-
-        services.editarArchivo(fileData,
-            (response) => {
-
-                var userData = this.state.userData;
-
-                this.ws && this.ws.send('{"token":"' + userData.token + '","load":' + fileData.id + ',"dependencias":[' + fileData.id + ']}');
-            })
+        if (functionDeclaration.isFunction) {
+            this.setState({ functionDeclaration: functionDeclaration.body })
+            var fileData = this.state.fileData;
+            fileData.contenido = functionDeclaration.body;
+            services.editarArchivo(fileData,
+                (response) => {
+                    var userData = this.state.userData;
+                    this.ws && this.ws.send('{"token":"' + userData.token + '","load":' + fileData.id + ',"dependencias":[' + fileData.id + ']}');
+                }
+            );
+        } else {
+            this.setState({ evaluationInstruction: functionDeclaration.body },() =>
+            this.ws &&
+            this.ws.send('{"token":"' + this.state.userData.token + '","comando":"' + functionDeclaration.body + '"}')
+        );
+        }
     }
 
     evaluate() {
+        //@TODO Cuando no es funcion
         var evaluationInstruction = matrix.evaluateFunction();
         this.setState({
             evaluationInstruction: evaluationInstruction,
             waitingForResult: true
         }, () => {
+            this.ws &&
             this.ws.send('{"token":"' + this.state.userData.token + '","comando":"' + evaluationInstruction + '"}'); //send data to the server
         })
 

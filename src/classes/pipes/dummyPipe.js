@@ -21,52 +21,54 @@ export class DummyPipe extends Pipe {
     }
 
     clean() {
+        super.clean();
         this.tempType = VALUES_TYPES.UNDEFINED;
         this.inProcess = false;
         this.tempInDirection = undefined;
     }
 
     //@TODO Loops
-    calc(context, board, path) {
-        debugger;
+    calc(context, board, path) {;
         if(!isMarked(context, this)) {
             const inPath =  invertDirection(path);
             this.inProcess = true;
             super.calc(context, this);
-            const dirs = this.getAllDirection().filter((d) => d !== inPath);
-            const nexts = dirs.map((dir) => processNext(this, board)(dir));
-            this.tempType = nexts
-                .map(next => {
-                    if(!next.pipe) {
-                        this.addWarning(`No coneccion ${next.dir}`);
-                        return VALUES_TYPES.UNDEFINED;
+            const dirs = this.getAllDirection();
+            const nexts = dirs.map((dir) => processNext(this, board)(dir))
+                .sort((n1, n2) =>
+                        n1.pipe && n1.pipe.getType() === PIPE_TYPES.DUMMY ? 1 :
+                        n2.pipe && n2.pipe.getType() === PIPE_TYPES.DUMMY ? -1 : 0);
+
+            nexts.forEach(next => {
+                if(!next.pipe) { this.addWarning(`No coneccion1 ${next.dir}`); return; }
+                if(this.errors && this.errors.length > 0) return VALUES_TYPES.UNDEFINED;
+                if(next.dir !== inPath) next.pipe.calc(context, board, next.dir);
+                let type;
+                if (next.dir === DIRECTION.TOP) {
+                    if ((next.pipe.getType() !== PIPE_TYPES.DUMMY) 
+                        || (next.pipe.isDummyOut(invertDirection(next.dir)))) {
+                            this.tempInDirection = next.dir
                     }
-                    if(this.errors && this.errors.length > 0) return VALUES_TYPES.UNDEFINED;
-                    next.pipe.calc(context, board, next.dir);
-                    let type;
-                    if (next.dir === DIRECTION.TOP) {
-                        if ((next.pipe.getType() !== PIPE_TYPES.DUMMY) 
-                            || (!next.pipe.isInDirection(invertDirection(next.dir)))) {
-                                this.tempInDirection = next.dir
-                        }
-                        type = next.pipe.getOutType();
-                    } else {
-                        if (!next.pipe.isInDirection(invertDirection(next.dir))) {
-                            this.tempInDirection = next.dir;
-                        }
-                        type = next.pipe.getInType(invertDirection(next.dir));
+                    type = next.pipe.getOutType();
+                } else {
+                    if (next.pipe.getType() === PIPE_TYPES.DUMMY 
+                        && next.pipe.isDummyOut(invertDirection(next.dir))) {
+                        this.tempInDirection = next.dir;
                     }
-                    if (!type) { this.addWarning(`No coneccion ${next.dir}`) }
-                    return type;
-                })
-                .reduce((ac, ty) => {
-                    if (ty !== VALUES_TYPES.UNDEFINED) {
-                        if(ac !== VALUES_TYPES.UNDEFINED && ac !== ty) this.addError('No machean tipos')
-                        return ty
-                    }
-                    return ac;
-                }, VALUES_TYPES.UNDEFINED);
-                this.inProcess = false;
+                    type = next.pipe.getInType(invertDirection(next.dir));
+                }
+                if (!type) { this.addWarning(`No coneccion2 ${next.dir}`); return; }
+                
+                if (this.tempType !== VALUES_TYPES.UNDEFINED &&
+                    type !== VALUES_TYPES.UNDEFINED &&
+                    this.tempType !== type) {
+                        this.addError('No machean tipos')
+                }
+                if(this.tempType === VALUES_TYPES.UNDEFINED) {
+                    this.tempType = type;
+                }
+            });
+            this.inProcess = false;
         } else if(this.inProcess) {
             this.addError('Loop');
         }
