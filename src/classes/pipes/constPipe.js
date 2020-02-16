@@ -1,5 +1,5 @@
 import { PIPE_TYPES, VALUES_TYPES, DIRECTION} from '../../constants/constants';
-import { Pipe, isMarked, processNext, validateOutType, invertDirection } from './pipe';
+import { Pipe, isMarked, processNext, validateOutType, invertDirection, matchTypes } from './pipe';
 
 export function evalValueType(value) {
     switch(typeof value) {
@@ -8,14 +8,28 @@ export function evalValueType(value) {
         case 'string': return VALUES_TYPES.STRING;
         case 'function': return VALUES_TYPES.FUNCTION;
         case 'object': {
+            if(value === null) return VALUES_TYPES.UNDEFINED;
+            if(value.x !== undefined && value.y !== undefined)  return VALUES_TYPES.POINT;
+            if(value.color) return VALUES_TYPES.COLOR;
             if (Array.isArray(value)) {
+                //TODO array of number
                 return VALUES_TYPES.ARRAY;
             }
             return VALUES_TYPES.OTHER;
         }
         default:
-            return null;
+            return VALUES_TYPES.UNDEFINED;
     }
+}
+
+export const valueToString = (value, type) => {
+    if(value === null || value == undefined) return '?';
+    if(type === VALUES_TYPES.STRING) return `"${value}"`;
+    if(type === VALUES_TYPES.NUMBER) return `${value}`;
+    if(type === VALUES_TYPES.BOOLEAN) return `${value}`;
+    if(type === VALUES_TYPES.COLOR) return `${value.color}`;
+    if(type === VALUES_TYPES.POINT) return `[${value.x}, ${value.y}]`
+    return `${JSON.stringify(value)}`;
 }
 
 export class ConstPipe extends Pipe {
@@ -42,7 +56,7 @@ export class ConstPipe extends Pipe {
     }
 
     setOutType(type) {
-        this.outType = type ? type : null;
+        this.outType = type ? type : VALUES_TYPES.UNDEFINED;
     }
 
     getOutType() {
@@ -52,10 +66,11 @@ export class ConstPipe extends Pipe {
     setValue(value) {
         console.log('ConstPipe.setValue');
         const type = evalValueType(value);
-        if(!this.getOutType()) {
-            this.setOutType(type);
-        } else if(this.getOutType() !== type) {
-            throw new Error("Error de tipos") 
+        if(!matchTypes(this.getOutType(), type)) {
+            throw new Error('No se puede asiganar el valor ya que es de otro tipo')
+        }
+        if(type !== VALUES_TYPES.UNDEFINED) {
+            this.outType = type;
         }
         this.value = value;
     }
@@ -65,12 +80,7 @@ export class ConstPipe extends Pipe {
     }
 
     toCode(dir, board) {
-        const type = this.getOutType();
-        if(type === VALUES_TYPES.STRING) return `"${this.getValue()}"`;
-        if(type === VALUES_TYPES.NUMBER) return `${this.getValue()}`;
-        if(type === VALUES_TYPES.BOOLEAN) return `${this.getValue()}`;
-        if(type === VALUES_TYPES.ARRAY) return `[${this.getValue()}]`;
-        return `{${this.getValue()}}`;
+        return valueToString(this.getValue(), this.getOutType());
     }
 
     getType() {
@@ -82,6 +92,7 @@ export class ConstPipe extends Pipe {
             ...(super.snapshot()),
             outType: this.getOutType(),
             value: this.getValue(),
+            valueText: this.toCode(),
         }
     }
 }

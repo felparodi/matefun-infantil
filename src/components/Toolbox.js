@@ -14,6 +14,7 @@ const PipeGroups = {
     'mat': {
         label: 'Matematica',
         pipes: [
+            new ConstPipe(0).snapshot(),
             new FuncPipe(METHOD_FUNCTION.ADD, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER).snapshot(),
             new FuncPipe(METHOD_FUNCTION.SUB, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER).snapshot(),
             new FuncPipe(METHOD_FUNCTION.MUL, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER).snapshot(),
@@ -23,7 +24,6 @@ const PipeGroups = {
     'val': { 
         label: 'Valores',
         pipes: [
-            new ConstPipe(3).snapshot(),
             new EndPipe().snapshot(),
             new VarPipe().snapshot(),
         ],
@@ -47,6 +47,8 @@ const PipeGroups = {
     'figures': {
         label: 'Figuras',
         pipes: [
+            new ConstPipe({color:'rojo'}, VALUES_TYPES.COLOR).snapshot(),
+            new ConstPipe({x:0, y:0}, VALUES_TYPES.POINT).snapshot(),
             new FuncPipe('circ', [VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE).snapshot(),
             new FuncPipe('rect', [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE).snapshot(),
             new FuncPipe('linea', [VALUES_TYPES.POINT, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE).snapshot(),

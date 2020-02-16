@@ -62,15 +62,12 @@ export default class Main extends React.Component {
                     const message = JSON.parse(evt.data)
                     if (this.state.waitingForResult && message.tipo=="salida" && message.resultado.startsWith("OUT")){
                         var resultValue= message.resultado.substring(3);
-                        
-                        var boardContent= this.state.boardContent;
-                        boardContent.setResultValue(resultValue);
-
+                        matrix.setResultValue(resultValue);
                         this.setState({ 
                             waitingForResult: false,
-                            boardContent: boardContent.clone()
+                            boardContent: matrix.snapshot()
                             //boardContent: boardContent
-                        },()=>console.log('hey'))
+                        }, ()=>console.log('hey'))
                     }
                 }
 
@@ -149,13 +146,13 @@ export default class Main extends React.Component {
                             <Toolbox />
                         </div>
                         <div className="board-container">
-                            <Board content={boardContent} onDrop={this.onDrop} onChangeVarValue={this.onChangeVarValue} />
+                            <Board content={boardContent.board} onDrop={this.onDrop} onChangeVarValue={this.onChangeVarValue} />
                         </div>
                     </div>
                     <div className="actions">
                         <div className="actions-button">
-                            <Button variant="primary" onClick={this.evaluate}>Evaluar</Button>
-                            <Button variant="primary" onClick={this.process}>Procesar</Button>
+                            <Button variant="primary" disabled={!boardContent.canProcess || (boardContent.isFunction && !boardContent.canFuncEval)} onClick={this.evaluate}>Evaluar</Button>
+                            <Button variant="primary" disabled={!boardContent.canProcess || !boardContent.isFunction} onClick={this.process}>Procesar</Button>
                         { debugMode && <Button variant="primary" onClick={() => {this.setState({openConsole:!openConsole})}}>Consola</Button> }
                         </div>
                         { debugMode &&

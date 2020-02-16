@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { DragSource } from 'react-dnd';
 import { PIPE_TYPES, DIRECTION } from '../../constants/constants.js'
 import { DummyPipe } from './DummyPipe.js'
@@ -33,7 +34,14 @@ class Pipe extends React.Component {
 
     render() {
         const { pipe, connectDragSource, origin } = this.props;
-        const p = (<div className="Pipe">{SwitchPipe(pipe, this.props)}</div>);
+        
+        const p = (
+            <div className={classNames("Pipe", { 
+                'error':pipe.errors && pipe.errors.length > 0,
+                'warning': pipe.warnings && pipe.warnings.length > 0
+                })}>
+                    {SwitchPipe(pipe, this.props)}
+            </div>);
         if (origin == "toolbox") {
             return connectDragSource(p);
         } else if (origin == "board") {

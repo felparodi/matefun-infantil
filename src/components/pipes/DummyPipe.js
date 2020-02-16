@@ -22,37 +22,37 @@ export class DummyPipe extends React.Component {
             if (allDirection.indexOf(DIRECTION.BOTTOM) >= 0) {
                 if (allDirection.indexOf(DIRECTION.RIGHT) >= 0) {
                     if (allDirection.indexOf(DIRECTION.LEFT) >= 0) {
-                        return (<Cross width={this.props.size} height={this.props.size}></Cross>)
+                        return (<Cross className={pipe.valueType}></Cross>)
                     } else {
-                        return (<UBR width={this.props.size} height={this.props.size}/>)
+                        return (<UBR className={pipe.valueType}/>)
                     }
                 } else if (allDirection.indexOf(DIRECTION.LEFT) >= 0) {
-                    return (<UBL width={this.props.size} height={this.props.size}/>)
+                    return (<UBL className={pipe.valueType}/>)
                 } else {
-                    return (<Vertical width={this.props.size} height={this.props.size}/>)
+                    return (<Vertical className={pipe.valueType}/>)
                 }
             } else if (allDirection.indexOf(DIRECTION.RIGHT) >= 0) {
                 if (allDirection.indexOf(DIRECTION.LEFT) >= 0) {
-                    return (<URL width={this.props.size} height={this.props.size}/>)
+                    return (<URL className={pipe.valueType}/>)
                 } else {
-                    return (<TopRight width={this.props.size} height={this.props.size}/>)
+                    return (<TopRight className={pipe.valueType}/>)
                 }
             } else if(allDirection.indexOf(DIRECTION.LEFT) >= 0) {
-                return (<TopLeft width={this.props.size} height={this.props.size}/>)
+                return (<TopLeft className={pipe.valueType}/>)
             }
         } else if (allDirection.indexOf(DIRECTION.LEFT) >= 0) {
             if (allDirection.indexOf(DIRECTION.RIGHT) >= 0) {
                 if (allDirection.indexOf(DIRECTION.BOTTOM) >= 0) {
-                    return (<BRL width={this.props.size} height={this.props.size}/>)
+                    return (<BRL className={pipe.valueType}/>)
                 } else {
-                    return (<Horizontal width={this.props.size} height={this.props.size}/>)
+                    return (<Horizontal className={pipe.valueType}/>)
                 }
             } else if (allDirection.indexOf(DIRECTION.BOTTOM) >= 0) {
-                return (<BottomLeft width={this.props.size} height={this.props.size}/>)
+                return (<BottomLeft className={pipe.valueType}/>)
             }
         } else if (allDirection.indexOf(DIRECTION.BOTTOM) >= 0) {
             if (allDirection.indexOf(DIRECTION.RIGHT) >= 0) {
-                return (<BottomRight width={this.props.size} height={this.props.size}/>)
+                return (<BottomRight className={pipe.valueType}/>)
             }
         }
         return null;

@@ -1,6 +1,6 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES  } from '../../constants/constants';
-import { Pipe, processNext, isMarked, validateOutType } from './pipe';
-
+import { Pipe, processNext, isMarked, validateOutType, matchTypes } from './pipe';
+import { evalValueType, valueToString } from './constPipe'
 /*
 *   Attr
 *   - index: String
@@ -11,6 +11,20 @@ export class VarPipe extends Pipe {
         super([], [DIRECTION.BOTTOM]);
         this.type = type || VALUES_TYPES.UNDEFINED;
         this.index = undefined;
+        this.value = undefined;
+    }
+
+    setValue(value) {
+        const type = evalValueType(value);
+        if(!matchTypes(this.getOutType(), type)) {
+            throw new Error('No se puede asiganar el valor ya que es de otro tipo')
+        }
+        this.value = value;
+        this.type = type;
+    }
+
+    getValue() {
+        return this.value;
     }
 
     clean() {
@@ -49,7 +63,7 @@ export class VarPipe extends Pipe {
     }
 
     getOutType() {
-        return this.tempType;;
+        return this.value ? this.type : this.tempType;
     }
 
     getName() {
@@ -65,10 +79,15 @@ export class VarPipe extends Pipe {
     }
 
     snapshot() {
+        const value = this.getValue();
+        const outType = this.getOutType();
         return {
             ...(super.snapshot()),
+            index: this.index,
             name: this.getName(),
-            outType: this.getOutType(),  
+            outType,  
+            value,
+            valueText: valueToString(value, outType)
         }
     }
 }

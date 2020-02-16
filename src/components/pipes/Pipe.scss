@@ -1,5 +1,26 @@
 .Pipe {
+    &.error, &.error.warning {
+        background-color: #ff000061;
+    }
+    &.warning {
+        background-color: #ffff004f;
+    }
     svg {
         width: 100%;
+    }
+    .UNDEFINED {
+        fill: black;
+    }
+    .NUMBER {
+        fill: green;
+    }
+    .FIGURE {
+        fill: blue;
+    }
+    .COLOR {
+        fill: yellow;
+    }
+    .POINT {
+        fill:orange;
     }
 }

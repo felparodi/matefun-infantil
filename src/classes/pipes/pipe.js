@@ -192,10 +192,6 @@ export class Pipe {
         return this.getInDirections().indexOf(direction) >= 0;
     }
 
-    clone() {
-        return Object.assign(Object.create(Object.getPrototypeOf(this)), this)
-    }
-
     getError() {
         const parents = this.getParents();
         for(let i = 0; i < parents.length; i++) {

@@ -36,6 +36,7 @@ export const VALUES_TYPES= Object.freeze({
     ARRAY: 'ARRAY',
     FUNCTION: 'FUNCTION',
     OTHER: 'OTHER',
+    POINT: 'POINT',
     VAR: 'VAR',
     COLOR: 'COLOR',
     FIGURE: 'FIGURE',

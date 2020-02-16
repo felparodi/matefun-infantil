@@ -1,4 +1,4 @@
-import { PIPE_TYPES, DIRECTION } from '../constants/constants';
+import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../constants/constants';
 import { FuncPipe } from './pipes/funcPipe';
 import { EndPipe } from './pipes/endPipe';
 import { ConstPipe } from './pipes/constPipe';
@@ -65,6 +65,7 @@ export class MatrixPipe {
     }
 
     value(x, y) {
+        if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position")} 
         return this.values[x][y];
     }
 
@@ -74,16 +75,6 @@ export class MatrixPipe {
 
     isValidRange(x, y) {
         return x < 0 || x >= this.maxX || y < 0 || y >= this.maxY
-    }
-
-    validateRange(x, y) {
-        if (this.isValidRange(x,y)) {
-            throw new Error("Out of range")
-        }
-    }
-    validateAddPipe(x, y, p) {
-        this.validateRange(x, y)
-        //@TODO Ver que el tubo puede ser agregado
     }
 
     addPipe(x, y, p) {
@@ -151,9 +142,12 @@ export class MatrixPipe {
     }
 
     evaluateFunction() {
-        const varsPipes = this.getAllVars();
-        const varValueList = varsPipes.map((pipe) => pipe.value);
-        return `${this.funcName}(${varValueList.join(', ')})`
+        if(this.isFunction()) {
+            const varsPipes = this.getAllVars();
+            const varValueList = varsPipes.map((pipe) => pipe.value);
+            return `${this.funcName}(${varValueList.join(', ')})`
+        }
+        return this.processInstruction();
     }
 
     hasErrors() {
@@ -162,42 +156,31 @@ export class MatrixPipe {
             .filter(error => error !== null);
     }
 
-    //@deprecate
-    clone() {
-        const m = new MatrixPipe(this.maxX, this.maxY);
-        for(let x = 0; x < this.maxX; x++) {
-            for(let y = 0; y < this.maxY; y++) {
-                const pipe = this.value(x,y);
-                if (pipe !== null) {
-                    m.addPipe(x, y, pipe.clone());
-                }
-            }
-        }
-        return m;
-    }
-
     snapshot() {
+        let canProcess =  this.getEndPipes().length === 1;
+   
         const snap = Array(this.maxX).fill([]).map(() => Array(this.maxY));
         for(let x = 0; x < this.maxX; x++) {
             for(let y = 0; y < this.maxY; y++) {
                 const pipe = this.value(x,y);
                 if (pipe !== null) {
                     snap[x][y] = pipe.snapshot();
+                    canProcess = canProcess && !snap[x][y].errors
                 }
             }
         }
-        console.log(snap);
-        return snap;
+        const canFuncEval = this.getAllVars().reduce((hasValue, pipe) => hasValue && !!pipe.getValue(), true);
+        console.log( { board:snap,  isFunction: this.isFunction(), canProcess, canFuncEval });
+        return { board:snap,  isFunction: this.isFunction(), canProcess, canFuncEval };
     }
 
     setPipeValue(x, y, value) {
-        if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") } 
-        const p = this.values[x][y];
-        if (p !== null && p !== undefined) {
-            const pipeType = p.getType();
-            if (pipeType === PIPE_TYPES.VALUE || pipeType === PIPE_TYPES.VARIABLE) {
-                p.value= value;
-            }
+        
+        const p = this.value(x, y);
+        if (p !== null && p !== undefined && p.setValue) {
+                p.setValue(value);
+        } else {
+            throw new Error("No se le puede asiganr valor a el pipe")
         }
     }
 

@@ -1,14 +1,14 @@
 import React from 'react';
-import DoorClosed from '../../svg/door-closed.svg';
 import { Form } from 'react-bootstrap';
+import Output from './function-parts/Output';
 import './VarPipe.scss';
 
 export const DoorOpen = (props) => { 
-    const { value, onClickDoor, onClickValue } = props;
+    const { pipe, onClickDoor, onClickValue } = props;
     return (
         <svg viewBox="0 0 40 40">
             <g onClick={onClickDoor}>
-                <path id="p1" d="M 10 30 L 10 40 L 30 40 L 30 30 Z" style={{'fill': 'black'}}/>
+                <path id="p1" d="M 10 30 L 10 34 L 30 34 L 30 30 Z" className={pipe.outType}/>
                 <path id="p1" d="M 5 5 L 0 10 L 0 35 L 5 30 Z" style={{'fill': 'saddlebrown', 'stroke': 'black', 'strokeWidth': 0.3 }}/>
                 <path id="p1" d="M 5 5 L 5 30 L 35 30 L 35 5 Z" style={{'fill': '#000000d6', 'stroke': 'black', 'strokeWidth': 0.3 }}/>
                 <path id="p1" d="M 35 5 L 40 10 L 40 35 L 35 30 Z" style={{ 'fill': 'saddlebrown', 'stroke': 'black', 'strokeWidth' :0.3 }}/>
@@ -19,8 +19,26 @@ export const DoorOpen = (props) => {
                 fontSize="20" 
                 onClick={onClickValue}
                 fill='white'>
-                {value}
+                {pipe.valueText}
             </text>
+            <Output className={pipe.outType}></Output>
+        </svg>
+    );
+}
+
+export const DoorClosed = (props) => { 
+    const { pipe, onClickDoor } = props;
+    return (
+        <svg viewBox="0 0 40 40">
+            <g  onClick={onClickDoor} >
+                <path id="p1" d="M 5 5 L 5 30 L 35 30 L 35 5 Z" style={
+                    {'fill': 'saddlebrown', 'stroke': 'black', 'strokeWidth': 0.3}}/>      
+                <line x1="20" y1="5" x2="20" y2="30" style={{'stroke':'black', 'strokeWidth':0.3}}/>
+                <circle cx="18.6" cy="17" r="0.5" stroke="black" fill="red" strokeWidth="1"/>
+                <circle cx="21.4" cy="17" r="0.5" stroke="black" fill="red" strokeWidth="1"/>
+                <path id="p1" d="M 10 30 L 10 34 L 30 34 L 30 30 Z" className={pipe.outType}/>
+            </g>
+            <Output className={pipe.outType}></Output>
         </svg>
     );
 }
@@ -30,7 +48,6 @@ export class VarPipe extends React.Component {
     constructor() {
         super();
         this.state = {
-            isOpen: false,
             editingValue: true,
         }
         this.leaveEditing = this.leaveEditing.bind(this);
@@ -41,12 +58,16 @@ export class VarPipe extends React.Component {
     leaveEditing(e) {
         const { value } = e.target;
         const { pipe, onChangeVarValue } = this.props;
-        this.setState({ isOpen: value !== '', editingValue: false });
+        this.setState({ isOpen: !!value, editingValue: false });
         onChangeVarValue(pipe.posX, pipe.posY, value);
     }
 
     setDoorState(isOpen) {
-        this.setState({ isOpen: isOpen });
+        const { pipe, onChangeVarValue } = this.props;
+        this.setState({ isOpen: isOpen, editingValue: isOpen });
+        if(!isOpen) {
+            onChangeVarValue(pipe.posX, pipe.posY, null);
+        }
     }
 
     setEditingValue(value) {
@@ -56,17 +77,17 @@ export class VarPipe extends React.Component {
     render() {
         const { isOpen, editingValue } = this.state;
         const { pipe } = this.props;
-        if (isOpen) {
+        if (pipe.value || isOpen) {
             return (
                 <div className="VarPipe">
                     { editingValue && <input className="form-control" onBlur={this.leaveEditing} type="text"/> }
-                    <DoorOpen value={pipe.value} 
+                    <DoorOpen pipe={pipe}
                         onClickValue={() => this.setEditingValue(true)} 
                         onClickDoor={() => this.setDoorState(false)}/>
                 </div>
             )
         }
-        return (<DoorClosed onClick={() => this.setDoorState(true)} />);
+        return (<DoorClosed pipe={pipe} onClickDoor={() => this.setDoorState(true)} />);
     }
 }
 
