@@ -1,5 +1,5 @@
 import { PIPE_TYPES, VALUES_TYPES, DIRECTION} from '../../constants/constants';
-import { Pipe } from './pipe';
+import { Pipe, isMarked, processNext, validateOutType, invertDirection } from './pipe';
 
 export function evalValueType(value) {
     switch(typeof value) {
@@ -26,6 +26,21 @@ export class ConstPipe extends Pipe {
         this.setValue(value)
     }
 
+    calc(context, board, path) {
+        if(!isMarked(context, this)) {
+            super.calc(context, board);
+            const next = processNext(this, board)(DIRECTION.BOTTOM);
+            if (next.pipe) {
+                next.pipe.calc(context, board, invertDirection(next.dir));
+                const status = validateOutType(this.outType, next);
+                if (status.warning) this.addWarning(status.warning);
+                if (status.error) this.addError(status.error);
+            } else {
+                this.addWarning('No esta conectado');
+            }
+        }
+    }
+
     setOutType(type) {
         this.outType = type ? type : null;
     }
@@ -49,7 +64,7 @@ export class ConstPipe extends Pipe {
         return this.value;
     }
 
-    toCode() {
+    toCode(dir, board) {
         const type = this.getOutType();
         if(type === VALUES_TYPES.STRING) return `"${this.getValue()}"`;
         if(type === VALUES_TYPES.NUMBER) return `${this.getValue()}`;

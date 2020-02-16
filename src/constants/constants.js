@@ -41,6 +41,9 @@ export const VALUES_TYPES= Object.freeze({
     FIGURE: 'FIGURE',
     UNDEFINED: 'UNDEFINED',
     LIST_NUMBER: 'LIST_NUMBER',
+    GENERIC: 'GENERIC',
+    GENERIC2: 'GENERIC2',
+    GENERIC3: 'GENERIC3',
 })
 
 export const MATEFUN_TYPE= Object.freeze({
@@ -60,9 +63,5 @@ export const ERROR = Object.freeze({
 
 export default { DIRECTION, PIPE_TYPES };
 
-export const BOARD_ROWS= 20;
-export const BOARD_COLS= 20;
-
-export const CELL_SIZE=7;
-
-export const TOOLBOX_BTN_SIZE= '50px';
+export const BOARD_ROWS= 10;
+export const BOARD_COLS= 10;

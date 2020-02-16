@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Card, Tab, Nav, Row, Col } from 'react-bootstrap';
 import classNames from 'classnames';
 import Pipe from './pipes/Pipe';
-import { DIRECTION, TOOLBOX_BTN_SIZE, METHOD_FUNCTION, VALUES_TYPES } from '../constants/constants'
+import { DIRECTION, METHOD_FUNCTION, VALUES_TYPES } from '../constants/constants'
 import { FuncPipe } from '../classes/pipes/funcPipe';
 import { EndPipe } from '../classes/pipes/endPipe';
 import { ConstPipe } from '../classes/pipes/constPipe';
@@ -65,7 +65,7 @@ const PipeGroups = {
 }
 const renderPipeCol = (pipe, index) => (
         <Button key={index} className="pipe-button" variant="outline-primary">
-            <Pipe pipe={pipe} size={TOOLBOX_BTN_SIZE} origin="toolbox"/>
+            <Pipe pipe={pipe} origin="toolbox"/>
         </Button>
 )
 

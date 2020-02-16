@@ -1,5 +1,5 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES  } from '../../constants/constants';
-import { Pipe } from './pipe';
+import { Pipe, processNext, isMarked, validateOutType } from './pipe';
 
 /*
 *   Attr
@@ -9,8 +9,35 @@ export class VarPipe extends Pipe {
 
     constructor(type) {
         super([], [DIRECTION.BOTTOM]);
-        this.type = type;
+        this.type = type || VALUES_TYPES.UNDEFINED;
         this.index = undefined;
+    }
+
+    clean() {
+        super.clean();
+        this.index = undefined
+        this.tempType = this.type;
+    }
+
+    calc(context, board) {
+        if (!isMarked(context, this)) {
+            super.calc(context);
+            this.index = this.index || context.index++;
+            const next = processNext(this, board)(DIRECTION.BOTTOM)
+            if (next.pipe) {
+                if (!next.pipe.inProcess) {
+                    next.pipe.calc(context, board, DIRECTION.BOTTOM);
+                    const status = validateOutType(this.type, next);
+                    this.tempType = status.type || this.type;
+                    if (status.warning) this.addWarning(status.warning);
+                    if (status.error) this.addError(status.error);
+                } else {
+                   context.marks[this.getPosX()][this.getPosY()] = false; 
+                }
+            } else {
+                this.addWarning('No esta conectado a nada ')
+            }
+        }
     }
 
     setIndex(index) {
@@ -22,20 +49,7 @@ export class VarPipe extends Pipe {
     }
 
     getOutType() {
-        console.log('VarPipe.getOutType')
-        if (this.type) {
-            return this.type;
-        }
-        const childrens = this.getChildrens();
-        const exist = {}
-        const inChildrenTypes = childrens.map(children => children.hasInType() ? children.getInType() : null)
-            .fill((t) => {
-                if (!!t || exist[t]) return false;
-                exist[t] = true;
-                return true;
-            });
-        //@TODO Si es mayor a 1 deberia aver un wanring
-        return inChildrenTypes.length > 0 ? inChildrenTypes[0] : VALUES_TYPES.UNDEFINED;
+        return this.tempType;;
     }
 
     getName() {

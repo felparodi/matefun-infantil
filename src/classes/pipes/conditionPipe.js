@@ -10,23 +10,10 @@ import { DIRECTION } from '../../constants/constants.js'
 export class ConditionPipe extends FuncPipe {
 
     constructor() {
-       super([DIRECTION.LEFT, DIRECTION.TOP, DIRECTION.RIGHT], [DIRECTION.BOTTOM]);
+       super('IF', [VALUES_TYPES.GENERIC, VALUES_TYPES.BOOLEAN, VALUES_TYPES.GENERIC], [VALUES_TYPES.GENERIC]);
     }
 
-    getInTypes() {
-        //@TODO Si son distintos izaquierd  derecha no se que hacer
-        const inType = VALUES_TYPES.UNDEFINED;
-        return [inType, VALUES_TYPES.BOOLEAN, inType];
-    }
-
-    getOutType() {
-        //@TODO Si son distintos izaquierd  derecha no se que hacer
-        const leftType = this.getInType(DIRECTION.LEFT);
-        const rightType = this.getInType(DIRECTION.RIGHT);
-        return leftType === rightType ? leftType : DIRECTION.UNDEFINED;
-    }
-
-    toCode() {
+    toCode(dir, board) {
         const left = processNext(this)(DIRECTION.LEFT).toCode();
         const up = processNext(this)(DIRECTION.TOP).toCode();
         const right = processNext(this)(DIRECTION.RIGHT).toCode();

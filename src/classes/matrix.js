@@ -6,7 +6,6 @@ import { DummyPipe } from './pipes/dummyPipe'
 import { VarPipe } from './pipes/varPipe'
 
 export function createPipe(snapshot) {
-    console.log('createPipe', snapshot);
     switch(snapshot.type) {
         case PIPE_TYPES.END:
             return new EndPipe();
@@ -87,10 +86,17 @@ export class MatrixPipe {
     }
 
     addPipe(x, y, p) {
-        if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") } 
+        if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") }
         this.values[x][y] = p;
         p.setBoard(this);
         p.setPos(x, y);
+        this.updateMatrix();
+    }
+
+    updateMatrix() {
+        this.getAllPipes().forEach(op => op.clean());
+        const context = { marks:  Array(this.maxX).fill([]).map(() => Array(this.maxY).fill(false)), index: 0 };
+        this.getAllPipes().forEach(op => op.calc(context, this));
     }
 
     removePipe(x, y) {
@@ -100,9 +106,9 @@ export class MatrixPipe {
 
     process() {
         if (this.isFunction()) {
-            return this.processFunction(this.funcName)
+            return { isFunction: true, body:this.processFunction(this.funcName) };
         } else {
-            return this.processInstruction()
+            return { isFunction: false, body:this.processInstruction() };
         }
     }
 
@@ -115,10 +121,8 @@ export class MatrixPipe {
     processInstruction() {
         const ends = this.getEndPipes();
         const p = ends.length > 0 ? ends[0] : null;
-        if (p === null) {
-            throw 'Not Have valid init cell to process';
-        }
-        return p.toCode()
+        if (p === null)  throw new Error('Not Have valid init cell to process');
+        return p.toCode(null, this);
     }
 
     isFunction() {
@@ -137,10 +141,6 @@ export class MatrixPipe {
     getFunctionCode(name) {
         const varsPipes = this.getAllVars();
         const endPipe = this.getEndPipes();
-        //Set Vars index
-        varsPipes.forEach((pipe, index) => {
-            pipe.setIndex(index);
-        })
         const code = endPipe[0].toCode();
         return `${name}(${varsPipes.map(pipe => pipe.getName()).join(', ')}) = ${code}`
     }
@@ -185,6 +185,7 @@ export class MatrixPipe {
                 }
             }
         }
+        console.log(snap);
         return snap;
     }
 

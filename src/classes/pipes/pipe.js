@@ -1,4 +1,13 @@
-import { DIRECTION, PIPE_TYPES, ERROR } from '../../constants/constants';
+import { DIRECTION, PIPE_TYPES, ERROR, VALUES_TYPES } from '../../constants/constants';
+
+export function isMarked(context, pipe) {
+    return context.marks[pipe.getPosX()][pipe.getPosY()];
+}
+
+export function matchTypes(type1, type2) {
+    const {UNDEFINED} = VALUES_TYPES;
+    return type1 === UNDEFINED || type2 === UNDEFINED || type1 === type2;
+}
 
 export function directionMove(x, y, direction) {
     switch(direction) {
@@ -33,10 +42,23 @@ export function processNext(pipe) {
         if (!pipe.board) { return null; }
         let before = pipe.board.value(x, y);
         let nextDir = invertDirection(direction);
-        const connected = before !== null ?  before.hasDirection(nextDir) : true;
-        const children = before !== null ?  before.isOutDirection(nextDir) : true;
+        const connected = before ?  before.hasDirection(nextDir) : true;
+        const children = before ?  before.isOutDirection(nextDir) : true;
         return { pipe: before, dir: direction, connected, children };
     }
+}
+
+export function validateOutType(outType, next) {
+    if (next.pipe.getInType) {
+        const type = next.pipe.getInType(invertDirection(next.dir));
+        if (type) {
+            if (!matchTypes(outType, type)) {
+                return { valid: false, error: 'Tipos no conciden', type }
+            } 
+            return { valid: true, type }
+        }
+    } 
+    return { valid: false, warning: 'Connecion Obstuida' }
 }
 
 /*
@@ -55,6 +77,25 @@ export class Pipe {
         this.board = null;
         this.posX = null;
         this.posY = null;
+    }
+
+    clean() {
+        this.warnings = undefined;
+        this.errors = undefined;
+    }
+
+    calc(context, board) {
+        context.marks[this.posX][this.posY] = true;
+    }
+
+    addError(e) {
+        if (!this.errors) this.errors = [];
+        this.errors.push(e); 
+    }
+
+    addWarning(e) {
+        if (!this.warnings) this.warnings = [];
+        this.warnings.push(e); 
     }
 
     getAllDirection() {
@@ -186,6 +227,8 @@ export class Pipe {
             posY: this.getPosY(),
             inDirections: this.getInDirections(),
             outDirections: this.getOutDirections(),
+            errors: this.errors,
+            warnings: this.warnings,
         }
     }
 

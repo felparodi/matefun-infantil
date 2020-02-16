@@ -27,10 +27,21 @@ export class FuncPipe extends Pipe {
 
     constructor(name, inTypes, outType) {
        super([], [DIRECTION.BOTTOM]);
-       this.inTypes = inTypes;
-       this.outType = outType
+       this.inTypes = inTypes || [];
+       this.outType = outType || VALUES_TYPES.UNDEFINED;
        this.setName(name);
        this.setInDirection(inTypesToDirections(inTypes));
+       this.clean();
+    }
+
+    clean() {
+        this.tempInTypes = [...(this.inTypes)];
+        this.tempOutType = this.outType
+    }
+
+    //@TODO GENERIC
+    calc(context) {
+        super.calc(context)
     }
 
     setName(name) {
@@ -41,8 +52,8 @@ export class FuncPipe extends Pipe {
         return this.name;
     }
 
-    toCode(direction) {
-        const arg = this.toCodeArg(direction);
+    toCode(direction, board) {
+        const arg = this.toCodeArg(direction, board);
         const argv = arg.split(', ');
         switch(this.name) {
             case METHOD_FUNCTION.ADD:
@@ -63,7 +74,7 @@ export class FuncPipe extends Pipe {
     }
 
     getInTypes() {
-        return this.inTypes ? this.inTypes : [];
+        return this.tempInTypes ? this.tempInTypes : [];
     }
 
     setOutTypes(outType) {
@@ -71,7 +82,7 @@ export class FuncPipe extends Pipe {
     }
 
     getOutType() {
-        return this.outType;
+        return this.tempOutType;
      }
 
     getInType(direction) {
