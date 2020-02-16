@@ -3,7 +3,8 @@ import { FuncPipe } from './pipes/funcPipe';
 import { EndPipe } from './pipes/endPipe';
 import { ConstPipe } from './pipes/constPipe';
 import { DummyPipe } from './pipes/dummyPipe'
-import { VarPipe } from './pipes/varPipe'
+import { VarPipe } from './pipes/varPipe';
+import { isMarked } from './pipes/pipe';
 
 export function createPipe(snapshot) {
     switch(snapshot.type) {
@@ -94,9 +95,9 @@ export class MatrixPipe {
     }
 
     updateMatrix() {
-        this.getAllPipes().forEach(op => op.clean());
+        this.getAllPipes().forEach(p => p.clean());
         const context = { marks:  Array(this.maxX).fill([]).map(() => Array(this.maxY).fill(false)), index: 0 };
-        this.getAllPipes().forEach(op => op.calc(context, this));
+        this.getAllPipes().forEach(p => p.calc(context, this));
     }
 
     removePipe(x, y) {

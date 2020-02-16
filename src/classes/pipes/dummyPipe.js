@@ -23,8 +23,10 @@ export class DummyPipe extends Pipe {
     clean() {
         this.tempType = VALUES_TYPES.UNDEFINED;
         this.inProcess = false;
+        this.tempInDirection = undefined;
     }
 
+    //@TODO Loops
     calc(context, board, path) {
         debugger;
         if(!isMarked(context, this)) {
@@ -33,14 +35,27 @@ export class DummyPipe extends Pipe {
             super.calc(context, this);
             const dirs = this.getAllDirection().filter((d) => d !== inPath);
             const nexts = dirs.map((dir) => processNext(this, board)(dir));
-
             this.tempType = nexts
-                .filter(n => n.pipe)
                 .map(next => {
+                    if(!next.pipe) {
+                        this.addWarning(`No coneccion ${next.dir}`);
+                        return VALUES_TYPES.UNDEFINED;
+                    }
+                    if(this.errors && this.errors.length > 0) return VALUES_TYPES.UNDEFINED;
                     next.pipe.calc(context, board, next.dir);
-                    const type = next.dir === DIRECTION.TOP ? 
-                        next.pipe.getOutType() : 
-                        next.pipe.getInType(invertDirection(next.dir));
+                    let type;
+                    if (next.dir === DIRECTION.TOP) {
+                        if ((next.pipe.getType() !== PIPE_TYPES.DUMMY) 
+                            || (!next.pipe.isInDirection(invertDirection(next.dir)))) {
+                                this.tempInDirection = next.dir
+                        }
+                        type = next.pipe.getOutType();
+                    } else {
+                        if (!next.pipe.isInDirection(invertDirection(next.dir))) {
+                            this.tempInDirection = next.dir;
+                        }
+                        type = next.pipe.getInType(invertDirection(next.dir));
+                    }
                     if (!type) { this.addWarning(`No coneccion ${next.dir}`) }
                     return type;
                 })
@@ -51,23 +66,19 @@ export class DummyPipe extends Pipe {
                     }
                     return ac;
                 }, VALUES_TYPES.UNDEFINED);
-                
+                this.inProcess = false;
         } else if(this.inProcess) {
             this.addError('Loop');
         }
-        this.inProcess = false;
+        
     }
 
     isDummyOut(direction) {
-        const allDir = this.getAllDirection();
-        if (allDir.indexOf(direction) === -1) return false;
-        const otherDir = allDir.filter(dir => dir !== direction)
-        const inDir = otherDir.filter(dummyInFilter(this));
-        return inDir.length > 0;
+        return this.tempInDirection !== direction;
     }
 
     getInDirections() {
-        return this.getAllDirection().filter(dummyInFilter(this)).slice(0,1)
+        return this.tempInDirection ? [this.tempInDirection] : [];
     }
 
     getOutDirections() {
