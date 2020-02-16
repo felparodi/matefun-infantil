@@ -12,6 +12,7 @@ import './Pipe.scss';
 function SwitchPipe(pipe, props) {
     switch(pipe.type) {
         case PIPE_TYPES.FUNCTION:
+        case PIPE_TYPES.CONDITION:
             return <FuncPipe {...(props)} />;
         case PIPE_TYPES.VALUE:
             return <ValPipe {...(props)} />;
@@ -34,14 +35,15 @@ class Pipe extends React.Component {
 
     render() {
         const { pipe, connectDragSource, origin } = this.props;
-        
-        const p = (
+ 
+        const p = pipe ? (
             <div className={classNames("Pipe", { 
                 'error':pipe.errors && pipe.errors.length > 0,
                 'warning': pipe.warnings && pipe.warnings.length > 0
                 })}>
                     {SwitchPipe(pipe, this.props)}
-            </div>);
+            </div>) :
+            <div className="Pipe"/>
         if (origin == "toolbox") {
             return connectDragSource(p);
         } else if (origin == "board") {

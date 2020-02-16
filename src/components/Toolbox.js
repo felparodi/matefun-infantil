@@ -7,7 +7,8 @@ import { FuncPipe } from '../classes/pipes/funcPipe';
 import { EndPipe } from '../classes/pipes/endPipe';
 import { ConstPipe } from '../classes/pipes/constPipe';
 import { DummyPipe } from '../classes/pipes/dummyPipe'
-import { VarPipe } from '../classes/pipes/varPipe'
+import { VarPipe } from '../classes/pipes/varPipe';
+import { ConditionPipe } from '../classes/pipes/conditionPipe';
 import './Toolbox.scss';
 
 const PipeGroups = {
@@ -19,13 +20,16 @@ const PipeGroups = {
             new FuncPipe(METHOD_FUNCTION.SUB, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER).snapshot(),
             new FuncPipe(METHOD_FUNCTION.MUL, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER).snapshot(),
             new FuncPipe(METHOD_FUNCTION.DIV, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER).snapshot(),
-         ]
+            null,
+        ]
     },
     'val': { 
         label: 'Valores',
         pipes: [
             new EndPipe().snapshot(),
             new VarPipe().snapshot(),
+            new ConditionPipe().snapshot(),
+            null,
         ],
     },
     'dummy': {
@@ -57,12 +61,14 @@ const PipeGroups = {
             new FuncPipe('rotar', [VALUES_TYPES.FIGURE, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE).snapshot(),
             new FuncPipe('juntar', [VALUES_TYPES.FIGURE, VALUES_TYPES.FIGURE], VALUES_TYPES.FIGURE).snapshot(),
             new FuncPipe('escalar', [VALUES_TYPES.FIGURE, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE).snapshot(),
-            new FuncPipe('mover', [VALUES_TYPES.FIGURE, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE).snapshot()
+            new FuncPipe('mover', [VALUES_TYPES.FIGURE, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE).snapshot(),
         ]
     },
     'custom': {
         label: 'Custom',
-        pipes: []
+        pipes: [
+            null,
+        ]
     }
 }
 const renderPipeCol = (pipe, index) => (
@@ -75,7 +81,7 @@ export default class Toolbox extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            select:  Object.keys(PipeGroups)[0]
+            select:  Object.keys(PipeGroups)[1]
         }
     }
 

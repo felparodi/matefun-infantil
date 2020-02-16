@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import Output from './function-parts/Output';
+import { InputType, castValue } from './ValPipe'
 import './VarPipe.scss';
 
 export const DoorOpen = (props) => { 
@@ -56,9 +57,9 @@ export class VarPipe extends React.Component {
     }
 
     leaveEditing(e) {
-        const { value } = e.target;
         const { pipe, onChangeVarValue } = this.props;
-        this.setState({ isOpen: !!value, editingValue: false });
+        const value = castValue(e.target.value, pipe.outType);
+        this.setState({ editingValue: false });
         onChangeVarValue(pipe.posX, pipe.posY, value);
     }
 
@@ -80,7 +81,7 @@ export class VarPipe extends React.Component {
         if (pipe.value || isOpen) {
             return (
                 <div className="VarPipe">
-                    { editingValue && <input className="form-control" onBlur={this.leaveEditing} type="text"/> }
+                    { editingValue && <InputType type={pipe.outType} onBlur={this.leaveEditing}/> }
                     <DoorOpen pipe={pipe}
                         onClickValue={() => this.setEditingValue(true)} 
                         onClickDoor={() => this.setDoorState(false)}/>

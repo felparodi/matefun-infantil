@@ -2,7 +2,8 @@ import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../constants/constants';
 import { FuncPipe } from './pipes/funcPipe';
 import { EndPipe } from './pipes/endPipe';
 import { ConstPipe } from './pipes/constPipe';
-import { DummyPipe } from './pipes/dummyPipe'
+import { DummyPipe } from './pipes/dummyPipe';
+import { ConditionPipe } from './pipes/conditionPipe';
 import { VarPipe } from './pipes/varPipe';
 import { isMarked } from './pipes/pipe';
 
@@ -18,6 +19,8 @@ export function createPipe(snapshot) {
             return new VarPipe()
         case PIPE_TYPES.VALUE:
             return new ConstPipe(snapshot.value);
+        case PIPE_TYPES.CONDITION:
+            return new ConditionPipe();
     }
 }
 /*
@@ -92,8 +95,8 @@ export class MatrixPipe {
     }
 
     removePipe(x, y) {
-        //@TODO Remove to ends list in case to remove pipe is end pipe
         this.values[x][y] = null
+        this.updateMatrix();
     }
 
     process() {

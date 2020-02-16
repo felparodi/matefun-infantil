@@ -35,6 +35,7 @@ export class FuncPipe extends Pipe {
     }
 
     clean() {
+        super.clean();
         this.tempInTypes = [...(this.inTypes)];
         this.tempOutType = this.outType
     }

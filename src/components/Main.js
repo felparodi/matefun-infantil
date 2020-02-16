@@ -81,7 +81,12 @@ export default class Main extends React.Component {
 
     onDrop(row, col, pipe) {
         console.log('onDrop', Date.now());
-        matrix.addPipe(row, col, createPipe(pipe));
+        debugger;
+        if (pipe) {
+            matrix.addPipe(row, col, createPipe(pipe));
+        } else {
+            matrix.removePipe(row, col);
+        }
         this.setState({
             boardContent: matrix.snapshot(),
         });
