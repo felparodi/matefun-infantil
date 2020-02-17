@@ -139,7 +139,7 @@ export default class Main extends React.Component {
     renderConsole() {
         const { 
             functionDeclaration, evaluationInstruction, 
-            loadScriptField, evaluationResult 
+            loadScriptField, evaluationResult, openConsole
         } = this.state;
         return (
             <div className={classNames("actions-info", {'hidden':!openConsole})}>

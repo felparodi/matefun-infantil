@@ -5,8 +5,17 @@ export function isMarked(context, pipe) {
 }
 
 export function matchTypes(type1, type2) {
-    const {UNDEFINED} = VALUES_TYPES;
-    return type1 === UNDEFINED || type2 === UNDEFINED || type1 === type2;
+    return !isDefined(type1) || !isDefined(type2) || type1 === type2;
+}
+
+export function isGeneric(type) {
+    const { GENERIC, GENERIC2, GENERIC3} = VALUES_TYPES;
+    return type === GENERIC || type === GENERIC2 || type === GENERIC3;
+}
+
+export function isDefined(type) {
+    const { UNDEFINED } = VALUES_TYPES;
+    return type !== UNDEFINED && !isGeneric(type);
 }
 
 export function directionMove(x, y, direction) {

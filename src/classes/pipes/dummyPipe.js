@@ -1,5 +1,5 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../../constants/constants';
-import { Pipe, processNext, invertDirection, isMarked } from './pipe';
+import { Pipe, processNext, invertDirection, isMarked, matchTypes, isDefined } from './pipe';
 
 function dummyInFilter(pipe) {
     return (dir) => {
@@ -32,7 +32,7 @@ export class DummyPipe extends Pipe {
         if(!isMarked(context, this)) {
             const inPath =  invertDirection(path);
             this.inProcess = true;
-            super.calc(context, this);
+            super.calc(context, board, path);
             const dirs = this.getAllDirection();
             const nexts = dirs.map((dir) => processNext(this, board)(dir))
                 .sort((n1, n2) =>
@@ -41,9 +41,10 @@ export class DummyPipe extends Pipe {
 
             nexts.forEach(next => {
                 if(!next.pipe) { this.addWarning(`No coneccion1 ${next.dir}`); return; }
-                if(this.errors && this.errors.length > 0) return VALUES_TYPES.UNDEFINED;
+                if(this.errors && this.errors.length > 0) return;
                 if(next.dir !== inPath) next.pipe.calc(context, board, next.dir);
                 let type;
+
                 if (next.dir === DIRECTION.TOP) {
                     if ((next.pipe.getType() !== PIPE_TYPES.DUMMY) 
                         || (next.pipe.isDummyOut(invertDirection(next.dir)))) {
@@ -57,14 +58,10 @@ export class DummyPipe extends Pipe {
                     }
                     type = next.pipe.getInType(invertDirection(next.dir));
                 }
-                if (!type) { this.addWarning(`No coneccion2 ${next.dir}`); return; }
-                
-                if (this.tempType !== VALUES_TYPES.UNDEFINED &&
-                    type !== VALUES_TYPES.UNDEFINED &&
-                    this.tempType !== type) {
-                        this.addError('No machean tipos')
-                }
-                if(this.tempType === VALUES_TYPES.UNDEFINED) {
+
+                if (!type) { this.addWarning(`No coneccion ${next.dir}`); return; }
+                if (!matchTypes(this.tempType, type)) { this.addError('No machean tipos') }
+                if (!isDefined(this.tempType)) {
                     this.tempType = type;
                 }
             });

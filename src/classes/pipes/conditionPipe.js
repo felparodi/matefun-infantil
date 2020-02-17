@@ -11,7 +11,7 @@ import { DIRECTION } from '../../constants/constants.js'
 export class ConditionPipe extends FuncPipe {
 
     constructor() {
-       super('IF', [VALUES_TYPES.GENERIC, VALUES_TYPES.BOOLEAN, VALUES_TYPES.GENERIC], [VALUES_TYPES.GENERIC]);
+       super('IF', [VALUES_TYPES.GENERIC, VALUES_TYPES.BOOLEAN, VALUES_TYPES.GENERIC], VALUES_TYPES.GENERIC);
     }
 
     toCode(dir, board) {
