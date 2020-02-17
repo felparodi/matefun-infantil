@@ -80,6 +80,7 @@ export class ConstPipe extends Pipe {
     }
 
     toCode(dir, board) {
+        debugger;
         return valueToString(this.getValue(), this.getOutType());
     }
 

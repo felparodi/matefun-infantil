@@ -55,6 +55,7 @@ export class FuncPipe extends Pipe {
 
     toCode(direction, board) {
         const arg = this.toCodeArg(direction, board);
+        debugger;
         const argv = arg.split(', ');
         switch(this.name) {
             case METHOD_FUNCTION.ADD:

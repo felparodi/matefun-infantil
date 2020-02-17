@@ -178,10 +178,10 @@ export class MatrixPipe {
     }
 
     setPipeValue(x, y, value) {
-        
         const p = this.value(x, y);
         if (p !== null && p !== undefined && p.setValue) {
-                p.setValue(value);
+            p.setValue(value);
+            this.updateMatrix();
         } else {
             throw new Error("No se le puede asiganr valor a el pipe")
         }

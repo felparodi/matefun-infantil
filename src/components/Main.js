@@ -137,11 +137,27 @@ export default class Main extends React.Component {
         this.setState({boardContent: matrix.snapshot()});
     }
 
-    render() {
-        const { boardContent, openConsole, 
+    renderConsole() {
+        const { 
             functionDeclaration, evaluationInstruction, 
             loadScriptField, evaluationResult 
         } = this.state;
+        return (
+            <div className={classNames("actions-info", {'hidden':!openConsole})}>
+            <p>Evaluar</p>
+            <textarea className="info evaluation" readOnly value={evaluationInstruction}/>
+            <p>Funcion</p>
+            <textarea className="info function" readOnly value={functionDeclaration}/>
+            <p>Archivo</p>
+            <textarea className="info file" readOnly value={loadScriptField} />
+            <p>Resultado</p>
+            <textarea className="info result" readOnly value={evaluationResult}/>
+        </div>
+        )
+    }
+
+    render() {
+        const { boardContent, openConsole } = this.state;
         return (
             <div className="Main">
                 <Header/>
@@ -160,18 +176,7 @@ export default class Main extends React.Component {
                             <Button variant="primary" disabled={!boardContent.canProcess || !boardContent.isFunction} onClick={this.process}>Procesar</Button>
                         { debugMode && <Button variant="primary" onClick={() => {this.setState({openConsole:!openConsole})}}>Consola</Button> }
                         </div>
-                        { debugMode &&
-                             <div className={classNames("actions-info", {'hidden':!openConsole})}>
-                                <p>Evaluar</p>
-                                <textarea className="info evaluation" readOnly value={evaluationInstruction}/>
-                                <p>Funcion</p>
-                                <textarea className="info function" readOnly value={functionDeclaration}/>
-                                <p>Archivo</p>
-                                <textarea className="info file" readOnly value={loadScriptField} />
-                                <p>Resultado</p>
-                                <textarea className="info result" readOnly value={evaluationResult}/>
-                            </div>
-                        }
+                        { debugMode && this.renderConsole() }
                     </div>
                 </div>
             </div>

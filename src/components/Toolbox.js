@@ -72,9 +72,9 @@ const PipeGroups = {
     }
 }
 const renderPipeCol = (pipe, index) => (
-        <Button key={index} className="pipe-button" variant="outline-primary">
-            <Pipe pipe={pipe} origin="toolbox"/>
-        </Button>
+    <Button key={index} className="pipe-button" variant="outline-primary">
+        <Pipe pipe={pipe} origin="toolbox"/>
+    </Button>
 )
 
 export default class Toolbox extends React.Component {

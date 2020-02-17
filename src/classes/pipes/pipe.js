@@ -167,6 +167,7 @@ export class Pipe {
     }
 
     toCodeArg() {
+        debugger;
         const arg = this.getParents()
             .map((dirPipe) => dirPipe.pipe !== null ? dirPipe.pipe.toCode(dirPipe.dir) : null)
         return arg.map(e => e !== null ? e : '?').join(', ')
