@@ -1,5 +1,5 @@
 import { PIPE_TYPES, VALUES_TYPES, METHOD_FUNCTION, DIRECTION } from '../../constants/constants';
-import { Pipe, isMarked, invertDirection, matchTypes, isDefined, isGeneric, processNext } from './pipe'
+import { Pipe, isMarked, invertDirection, matchTypes, isDefined, isGeneric, processNext, sortPipe} from './pipe'
 
 /*
 * Retorna la lista de direciones que deberia tener una funcion segun la cantida de tipos de su entrada
@@ -41,6 +41,7 @@ export class FuncPipe extends Pipe {
     }
 
     calcTempTypes(dir, nextType) {
+        debugger;
         if(isDefined(nextType)) {
             const type = this.getDirType(dir);
             if(isDefined(type)) {
@@ -61,31 +62,30 @@ export class FuncPipe extends Pipe {
         if(!isMarked(context, this)) {
             super.calc(context, board, path);
             const inPath =  invertDirection(path);
-            this.getInDirections().forEach((dir, index) => {
-                const next = processNext(this, board)(dir)
-                if(next.pipe) {
-                    if (next.dir !== inPath) next.pipe.calc(context, board, dir);
-                    const nextType = next.pipe.getOutType();
-                    this.calcTempTypes(dir, nextType);
-                } else {
-                    this.addWarning(`No connectado ${dir}`)
-                }
-            });
-            if (inPath !== DIRECTION.BOTTOM) {
-                debugger;
-                const next = processNext(this, board)(DIRECTION.BOTTOM);
-                if(next.pipe) {
-                    next.pipe.calc(context, board, DIRECTION.BOTTOM);
-                    const nextType = next.pipe.getInType(DIRECTION.TOP);
-                    this.calcTempTypes(DIRECTION.BOTTOM, nextType);
-                }
-            }
+            this.getAllDirections().map(processNext(this, board))
+                .sort((n1, n2) => sortPipe(n1.pipe, n2.pipe))
+                .forEach((next) => {
+                    debugger;
+                    if (next.error) { this.addError(next.error); return }
+                    if (next.pipe) {
+                        if (next.dir !== inPath) next.pipe.calc(context, board, next.dir);
+                        const nextInvDir = invertDirection(next.dir);
+                        const nextType = next.pipe.getDirType(nextInvDir);
+                        this.calcTempTypes(next.dir, nextType);
+                    } else {
+                        this.addWarning(`No connectado ${next.dir}`)
+                    }
+                });
             //Re intenatr si se marco por un dummy en proceso
             const prev = processNext(this, board)(inPath)
             if (prev.pipe && prev.pipe.inProcess) {
-               context.marks[this.getPosX()][this.getPosY()] = false; 
+                context.marks[this.getPosX()][this.getPosY()] = false; 
             }
         }
+    }
+
+    getAllDirections() {
+        return [...(this.getInDirections()), DIRECTION.BOTTOM]
     }
 
     setName(name) {
@@ -103,11 +103,25 @@ export class FuncPipe extends Pipe {
             case METHOD_FUNCTION.ADD:
                 return `(${argv[0]} + ${argv[1]})`;
             case METHOD_FUNCTION.SUB:
-                return `(${argv[0]} - ${argv[1]})`
+                return `(${argv[0]} - ${argv[1]})`;
             case METHOD_FUNCTION.MUL:
-                return `(${argv[0]} * ${argv[1]})`
+                return `(${argv[0]} * ${argv[1]})`;
             case METHOD_FUNCTION.DIV:
-                return `(${argv[0]} / ${argv[1]})`
+                return `(${argv[0]} / ${argv[1]})`;
+            case METHOD_FUNCTION.EQUAL:
+                return `(${argv[0]} == ${argv[1]})`;
+            case METHOD_FUNCTION.N_EQUAL:
+                return `(${argv[0]} /= ${argv[1]})`;
+            case METHOD_FUNCTION.GREAT:
+                return `(${argv[0]} > ${argv[1]})`;
+            case METHOD_FUNCTION.E_GREAT:
+                return `(${argv[0]} >= ${argv[1]})`;
+            case METHOD_FUNCTION.LEST:
+                return `(${argv[0]} < ${argv[1]})`;
+            case METHOD_FUNCTION.E_LEST:
+                return `(${argv[0]} =< ${argv[1]})`;
+            case METHOD_FUNCTION.OR:
+                return `(${argv[0]} , ${argv[1]})`;
             default:
                 return `${this.name}(${arg})`;
         }
@@ -134,7 +148,9 @@ export class FuncPipe extends Pipe {
             this.tempOutType = type;
         } else {
             const dirPos = this.getInDirections().indexOf(direction);
-            this.tempInTypes[dirPos] = type;
+            if(dirPos >= 0) {
+                this.tempInTypes[dirPos] = type;
+            }
         }
     }
 
@@ -152,6 +168,14 @@ export class FuncPipe extends Pipe {
 
     getType() {
         return PIPE_TYPES.FUNCTION;
+    }
+
+    isOutDir(dir) {
+        return dir === DIRECTION.BOTTOM;
+    }
+
+    isInDir(dir) {
+        return this.getInDirections().indexOf(dir) > 0;
     }
 
     snapshot() {

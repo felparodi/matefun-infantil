@@ -1,5 +1,5 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES  } from '../../constants/constants';
-import { Pipe, processNext, isMarked, validateOutType, matchTypes } from './pipe';
+import { Pipe, processNext, isMarked, validateDirType, matchTypes, invertDirection } from './pipe';
 import { evalValueType, valueToString } from './constPipe'
 /*
 *   Attr
@@ -33,20 +33,21 @@ export class VarPipe extends Pipe {
         this.tempType = this.type;
     }
 
-    calc(context, board) {
+    calc(context, board, path) {
         if (!isMarked(context, this)) {
-            super.calc(context);
+            super.calc(context, board, path);
             this.index = this.index || context.index++;
+            const inPipe = invertDirection(path);
             const next = processNext(this, board)(DIRECTION.BOTTOM)
+            if (next.error) { this.addError(next.error); return }
             if (next.pipe) {
-                if (!next.pipe.inProcess) {
-                    next.pipe.calc(context, board, DIRECTION.BOTTOM);
-                    const status = validateOutType(this.type, next);
-                    this.tempType = status.type || this.type;
-                    if (status.warning) this.addWarning(status.warning);
-                    if (status.error) this.addError(status.error);
-                } else {
-                   context.marks[this.getPosX()][this.getPosY()] = false; 
+                if (next.dir !== inPipe) next.pipe.calc(context, board, next.dir);
+                const status = validateDirType(this, next);
+                this.tempType = status.type || this.type;
+                if (status.warning) { this.addWarning(status.warning); }
+                if (status.error) { this.addError(status.error); return; }
+                if (next.pipe.inProcess) {
+                    context.marks[this.getPosX()][this.getPosY()] = false; 
                 }
             } else {
                 this.addWarning('No esta conectado a nada ')
@@ -76,6 +77,21 @@ export class VarPipe extends Pipe {
 
     getType() {
         return PIPE_TYPES.VARIABLE;
+    }
+
+    setDirType(direction, type) {
+        if(direction === DIRECTION.BOTTOM) {
+            this.tempType = type;
+        }
+    }
+
+
+    getDirType(direction) {
+        return direction === DIRECTION.BOTTOM ? this.getOutType() : null;
+    }
+
+    isOutDir(dir) {
+        return dir === DIRECTION.BOTTOM;
     }
 
     snapshot() {

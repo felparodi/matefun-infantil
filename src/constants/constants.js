@@ -19,12 +19,13 @@ export const METHOD_FUNCTION = Object.freeze({
     ESCALAR: 'ESCALAR',
     MOVER: 'MOVER',
     GREAT: 'GREAT',
-    EGREAT: 'EGREAT',
+    E_GREAT: 'EGREAT',
     LEST: 'LEST',
-    ELEST: 'ELEST',
+    E_LEST: 'E_LEST',
     EQUAL: 'EQUAL',
-    NEQUAL: 'EQUAL',
+    N_EQUAL: 'N_EQUAL',
     NOT: 'NOT',
+    OR: 'OR',
 })
 
 export const PIPE_TYPES= Object.freeze({

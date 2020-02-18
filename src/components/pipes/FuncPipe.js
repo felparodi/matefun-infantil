@@ -59,6 +59,20 @@ const FunctionIcon = (props) => {
             return <TextIcon text="x"/>;
         case METHOD_FUNCTION.DIV:
             return <TextIcon text="%"/>;
+        case METHOD_FUNCTION.EQUAL:
+            return <TextIcon text="=="/>;
+        case METHOD_FUNCTION.N_EQUAL:
+            return <TextIcon text="/="/>;
+        case METHOD_FUNCTION.GREAT:
+            return <TextIcon text=">"/>;
+        case METHOD_FUNCTION.E_GREAT:
+            return <TextIcon text=">="/>;
+        case METHOD_FUNCTION.LEST:
+            return <TextIcon text="<"/>;
+        case METHOD_FUNCTION.E_LEST:
+            return <TextIcon text="<="/>;
+        case METHOD_FUNCTION.NOT:
+                return <TextIcon text="!"/>;
         default:
             return <TextIcon text={props.name}/>;
     }

@@ -1,17 +1,5 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../../constants/constants';
-import { Pipe, processNext, invertDirection, isMarked, matchTypes, isDefined } from './pipe';
-
-function dummyInFilter(pipe) {
-    return (dir) => {
-        const pipeDir =  processNext(pipe)(dir);
-        if (!pipeDir) return false;
-        if(pipeDir.pipe === null) return true;
-        if(pipeDir.pipe.getType() === PIPE_TYPES.DUMMY) {
-            return pipeDir.pipe.isDummyOut(invertDirection(dir));
-        }
-        return pipeDir.pipe.isOutDirection(invertDirection(dir));
-    }
-}
+import { Pipe, processNext, invertDirection, isMarked, sortPipe, matchTypes, isDefined } from './pipe';
 
 export class DummyPipe extends Pipe {
 
@@ -25,56 +13,69 @@ export class DummyPipe extends Pipe {
         this.tempType = VALUES_TYPES.UNDEFINED;
         this.inProcess = false;
         this.tempInDirection = undefined;
+        this.tempOutDirs = [];
     }
 
     //@TODO Loops
     calc(context, board, path) {;
         if(!isMarked(context, this)) {
-            debugger;
             const inPath =  invertDirection(path);
             this.inProcess = true;
             super.calc(context, board, path);
             const dirs = this.getAllDirection();
             const nexts = dirs.map((dir) => processNext(this, board)(dir))
-                .sort((n1, n2) =>
-                        n1.pipe && n1.pipe.getType() === PIPE_TYPES.DUMMY ? 1 :
-                        n2.pipe && n2.pipe.getType() === PIPE_TYPES.DUMMY ? -1 : 0);
+                .sort((n1, n2) => sortPipe(n1.pipe, n2.pipe));
 
             nexts.forEach(next => {
-                if(!next.pipe) { this.addWarning(`No coneccion1 ${next.dir}`); return; }
-                if(this.errors && this.errors.length > 0) return;
+                //if(this.errors && this.errors.length > 0) return;
+                if(next.error) { this.addError(next.error); return }
+                if(!next.pipe) { this.addWarning(`No coneccion ${next.dir}`); return; }
                 if(next.dir !== inPath) next.pipe.calc(context, board, next.dir);
-                let type;
 
-                if (next.dir === DIRECTION.TOP) {
-                    if ((next.pipe.getType() !== PIPE_TYPES.DUMMY) 
-                        || (next.pipe.isDummyOut(invertDirection(next.dir)))) {
-                            this.tempInDirection = next.dir
+                const nextInvDir = invertDirection(next.dir);
+                const type = next.pipe.getDirType(nextInvDir);
+                if (!type) { this.addWarning(`No coneccion ${next.dir}`); return; }
+
+                const allDirections =  this.getAllDirection();
+
+                if (next.pipe.isOutDir(nextInvDir)) {
+                    if (!next.pipe.isInDir(nextInvDir)) {
+                        if(!this.tempInDirection && this.tempOutDirs.indexOf(next.dir) < 0) {
+                            this.tempInDirection = next.dir;
+                            this.tempOutDirs = allDirections.filter((dir) => dir !== next.dir);
+                        } else if(this.tempInDirection !== next.dir) {
+                            this.addError('Loop'); 
+                            return;
+                        }
                     }
-                    type = next.pipe.getOutType();
                 } else {
-                    if (next.pipe.getType() === PIPE_TYPES.DUMMY 
-                        && next.pipe.isDummyOut(invertDirection(next.dir))) {
-                        this.tempInDirection = next.dir;
+                    if (next.pipe.isInDir(nextInvDir)) {
+                        if (this.tempInDirection === next.dir) {
+                            this.addError('Loop');
+                            return;
+                        } else if(this.tempOutDirs.indexOf(next.dir) < 0) {
+                            this.tempOutDirs.push(next.dir)
+                            if(this.tempOutDirs.length === allDirections.length) {
+                                this.addError('Loop'); 
+                                return;
+                            } else if((this.tempOutDirs.length + 1) ===  allDirections.length) {
+                                this.tempInDirection = allDirections.find((dir) => this.tempOutDirs.indexOf(dir) < 0);
+                            }
+                        }
                     }
-                    type = next.pipe.getInType(invertDirection(next.dir));
                 }
 
-                if (!type) { this.addWarning(`No coneccion ${next.dir}`); return; }
                 if (!matchTypes(this.tempType, type)) { this.addError('No machean tipos') }
-                if (!isDefined(this.tempType)) {
+                if (!isDefined(this.tempType) && type !== VALUES_TYPES.UNDEFINED) {
                     this.tempType = type;
                 }
             });
+            
+            if(!this.tempInDirection && this.tempOutDirs.length === 0) {
+                this.addWarning('Unconected'); 
+            }
             this.inProcess = false;
-        } else if(this.inProcess) {
-            this.addError('Loop');
         }
-        
-    }
-
-    isDummyOut(direction) {
-        return this.tempInDirection !== direction;
     }
 
     getInDirections() {
@@ -86,20 +87,12 @@ export class DummyPipe extends Pipe {
         return this.getAllDirection().filter(dir => inDirections.indexOf(dir) === -1)
     }
 
-    hasOutType() {
-        return this.getOutType().length > 0;
-    }
-
     toCode(dir, board) {
         return this.toCodeArg(dir, board);
     }
 
     isOutDirection(direction) {
         return this.getAllDirection().indexOf(direction) >= 0;
-    }
-
-    isInDirection(direction) {
-        return this.isOutDirection(direction);
     }
 
     getType() {
@@ -110,12 +103,27 @@ export class DummyPipe extends Pipe {
         return this.tempType;
     }
 
-    getInType() {
+    getValueType() {
         return this.tempType;
     }
 
-    getValueType() {
-        return this.tempType;
+    isInDir(dir) {
+        return !this.tempInDirection || this.tempInDirection === dir;
+    }
+
+    isOutDir(dir) {
+        
+        return (this.getAllDirection().length - 1) > this.tempOutDirs.length || this.tempOutDirs.indexOf(dir) >= 0;
+    }
+
+    setDirType(direction, type) {
+        if(this.getAllDirection().indexOf(direction) >= 0) {
+            this.tempType = type;
+        }
+    }
+
+    getDirType(direction) {
+        return this.getAllDirection().indexOf(direction) >= 0 ? this.tempType : null;
     }
 
     snapshot() {

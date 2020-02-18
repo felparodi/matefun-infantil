@@ -5,7 +5,7 @@ import { ConstPipe } from './pipes/constPipe';
 import { DummyPipe } from './pipes/dummyPipe';
 import { ConditionPipe } from './pipes/conditionPipe';
 import { VarPipe } from './pipes/varPipe';
-import { isMarked } from './pipes/pipe';
+import { isMarked, sortPipe } from './pipes/pipe';
 
 export function createPipe(snapshot) {
     switch(snapshot.type) {
@@ -91,7 +91,8 @@ export class MatrixPipe {
     updateMatrix() {
         this.getAllPipes().forEach(p => p.clean());
         const context = { marks:  Array(this.maxX).fill([]).map(() => Array(this.maxY).fill(false)), index: 0 };
-        this.getAllPipes().forEach(p => p.calc(context, this));
+        this.getAllPipes().sort(sortPipe).forEach(p => p.calc(context, this));
+        //this.getAllPipes().filter((p) => !isMarked(context, p)).forEach((p) => p.addWarning('No procesado'))
     }
 
     removePipe(x, y) {
@@ -121,7 +122,11 @@ export class MatrixPipe {
     }
 
     isFunction() {
-        return this.getAllVars().length > 0
+        return [...this.getAllVars(), ...this.getAllConditions()].length > 0;
+    }
+
+    getAllConditions() {
+        return this.getAllPipes().filter((pipe) => pipe.getType() === PIPE_TYPES.CONDITION);
     }
 
     //private
@@ -172,15 +177,8 @@ export class MatrixPipe {
         return this.processInstruction();
     }
 
-    hasErrors() {
-       return this.getAllPipes()
-            .map(pipe => pipe.getError())
-            .filter(error => error !== null);
-    }
-
     snapshot() {
         let canProcess =  this.getEndPipes().length === 1;
-   
         const snap = Array(this.maxX).fill([]).map(() => Array(this.maxY));
         for(let x = 0; x < this.maxX; x++) {
             for(let y = 0; y < this.maxY; y++) {

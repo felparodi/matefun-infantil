@@ -21,7 +21,7 @@ export class ConditionPipe extends FuncPipe {
         const up = upNext.pipe ? upNext.pipe.toCode() : '?';
         const rightNext = processNext(this, board)(DIRECTION.RIGHT);
         const right = rightNext.pipe ? rightNext.pipe.toCode() : '?';
-        return `${left} si ${up} \n o ${right}`;
+        return `${left} si ${up} \n\t o ${right}`;
     }
 
     getType() {

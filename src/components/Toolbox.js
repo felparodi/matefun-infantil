@@ -29,9 +29,14 @@ const PipeGroups = {
             new EndPipe().snapshot(),
             new VarPipe().snapshot(),
             new ConditionPipe().snapshot(),
+            new FuncPipe(METHOD_FUNCTION.OR, [VALUES_TYPES.BOOLEAN, VALUES_TYPES.BOOLEAN], VALUES_TYPES.BOOLEAN).snapshot(),
             new FuncPipe(METHOD_FUNCTION.EQUAL, [VALUES_TYPES.GENERIC, VALUES_TYPES.GENERIC], VALUES_TYPES.BOOLEAN).snapshot(),
-            new FuncPipe(METHOD_FUNCTION.NEQUAL, [VALUES_TYPES.GENERIC, VALUES_TYPES.GENERIC], VALUES_TYPES.BOOLEAN).snapshot(),
-            //new FuncPipe(METH)
+            new FuncPipe(METHOD_FUNCTION.N_EQUAL, [VALUES_TYPES.GENERIC, VALUES_TYPES.GENERIC], VALUES_TYPES.BOOLEAN).snapshot(),
+            new FuncPipe(METHOD_FUNCTION.GREAT, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN).snapshot(),
+            new FuncPipe(METHOD_FUNCTION.E_GREAT, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN).snapshot(),
+            new FuncPipe(METHOD_FUNCTION.LEST, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN).snapshot(),
+            new FuncPipe(METHOD_FUNCTION.E_LEST, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN).snapshot(),
+            new FuncPipe(METHOD_FUNCTION.NOT, [VALUES_TYPES.BOOLEAN], VALUES_TYPES.BOOLEAN).snapshot(),
             null,
         ],
     },
@@ -74,6 +79,7 @@ const PipeGroups = {
         ]
     }
 }
+
 const renderPipeCol = (pipe, index) => (
     <Button key={index} className="pipe-button" variant="outline-primary">
         <Pipe pipe={pipe} origin="toolbox"/>

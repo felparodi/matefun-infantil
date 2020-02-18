@@ -1,5 +1,5 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../../constants/constants';
-import { Pipe, processNext, isMarked, invertDirection } from './pipe';
+import { Pipe, processNext, isMarked, invertDirection, validateDirType } from './pipe';
 
 export class EndPipe extends Pipe {
     
@@ -11,12 +11,19 @@ export class EndPipe extends Pipe {
     calc(context, board, path) {
         if (!isMarked(context,this)) {
             super.calc(context, board);
+            const inPath = invertDirection(path);
             const next = processNext(this, board)(DIRECTION.TOP);
+            const nextInvDir = invertDirection(next.dir);
+            if (next.error) { this.addError(next.error); return }
             if (next.pipe) {
-                if (!next.pipe.inProcess) {
-                    next.pipe.calc(context, board, DIRECTION.TOP);
-                    this.tempType = next.pipe.getOutType();
-                } else {
+                if(next.dir !== inPath) next.pipe.calc(context, board, next.dir);
+                const status = validateDirType(this, next);
+                if(status.warning) { this.addWarning(status.warning); }
+                if(status.error) { this.addError(status.error); }
+                if(status.valid) {
+                    this.tempType = status.type;
+                }
+                if (next.pipe.inProcess) {
                     context.marks[this.getPosX()][this.getPosY()] = false; 
                 }
             } else {
@@ -43,8 +50,18 @@ export class EndPipe extends Pipe {
         return PIPE_TYPES.END;
     }
 
-    getInType() {
-        return this.tempType;
+    isInDir(dir) {
+        return dir.TOP === dir;
+    }
+
+    setDirType(direction, type) {
+        if(direction === DIRECTION.TOP) {
+            this.tempType = type;
+        }
+    }
+
+    getDirType(direction) {
+        return direction === DIRECTION.TOP ? this.tempType : null;
     }
 
     snapshot() {

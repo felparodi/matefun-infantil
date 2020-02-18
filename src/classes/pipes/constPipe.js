@@ -1,5 +1,5 @@
 import { PIPE_TYPES, VALUES_TYPES, DIRECTION} from '../../constants/constants';
-import { Pipe, isMarked, processNext, validateOutType, invertDirection, matchTypes } from './pipe';
+import { Pipe, isMarked, processNext, validateDirType, invertDirection, matchTypes } from './pipe';
 
 export function evalValueType(value) {
     switch(typeof value) {
@@ -44,9 +44,11 @@ export class ConstPipe extends Pipe {
         if(!isMarked(context, this)) {
             super.calc(context, board);
             const next = processNext(this, board)(DIRECTION.BOTTOM);
+            const inPath = invertDirection(path);
+            if (next.error) { this.addError(next.error); return }
             if (next.pipe) {
-                next.pipe.calc(context, board, invertDirection(next.dir));
-                const status = validateOutType(this.outType, next);
+                if(next.dir !== inPath) next.pipe.calc(context, board, invertDirection(next.dir));
+                const status = validateDirType(this, next);
                 if (status.warning) this.addWarning(status.warning);
                 if (status.error) this.addError(status.error);
             } else {
@@ -63,8 +65,17 @@ export class ConstPipe extends Pipe {
         return this.outType;
     }
 
+    setDirType(direction, type) {
+        if(direction === DIRECTION.BOTTOM) {
+            this.outType = type;
+        }
+    }
+
+    getDirType(direction) {
+        return direction === DIRECTION.BOTTOM  ? this.getOutType() : null;
+    }
+
     setValue(value) {
-        console.log('ConstPipe.setValue');
         const type = evalValueType(value);
         if(!matchTypes(this.getOutType(), type)) {
             throw new Error('No se puede asiganar el valor ya que es de otro tipo')
@@ -85,6 +96,10 @@ export class ConstPipe extends Pipe {
 
     getType() {
         return PIPE_TYPES.VALUE;
+    }
+
+    isOutDir(dir) {
+        return dir === DIRECTION.BOTTOM;
     }
 
     snapshot() {

@@ -32,6 +32,31 @@ export function directionMove(x, y, direction) {
     return [x, y]
 }
 
+export function sortPipe(p1, p2) {
+    if(p1 && p2) {
+        const t1 = p1.getType();
+        const t2 = p2.getType();
+        if(t1 === t2) return 0;
+        if(t1 === PIPE_TYPES.VALUE) return -1;
+        if(t2 === PIPE_TYPES.VALUE) return 1;
+        if(t1 === PIPE_TYPES.FUNCTION) return -1;
+        if(t2 === PIPE_TYPES.FUNCTION) return 1;
+        if(t1 === PIPE_TYPES.CONDITION) return -1;
+        if(t2 === PIPE_TYPES.CONDITION) return 1;
+        if(t1 === PIPE_TYPES.VARIABLE) return -1;
+        if(t2 === PIPE_TYPES.VARIABLE) return 1;
+        if(t1 === PIPE_TYPES.END) return -1;
+        if(t2 === PIPE_TYPES.END) return 1;
+        if(t1 === PIPE_TYPES.DUMMY) return -1;
+        return 1
+    } else if (!p1) {
+        return 1;
+    } else if (!p2) {
+        return -1;
+    }
+    return 0
+}
+
 export function invertDirection(direction) {
     switch(direction) {
         case DIRECTION.BOTTOM:
@@ -47,25 +72,37 @@ export function invertDirection(direction) {
 
 export function processNext(pipe) {
     return (direction) => {
-        const [x, y] = directionMove(pipe.posX, pipe.posY, direction);
-        if (!pipe.board) { return null; }
-        let before = pipe.board.value(x, y);
-        let nextDir = invertDirection(direction);
-        const connected = before ?  before.hasDirection(nextDir) : true;
-        const children = before ?  before.isOutDirection(nextDir) : true;
-        return { pipe: before, dir: direction, connected, children };
+        try {
+            const [x, y] = directionMove(pipe.posX, pipe.posY, direction);
+            if (!pipe.board) { return null; }
+            let next = pipe.board.value(x, y);
+            let nextDir = invertDirection(direction);
+            const connected = next ?  next.hasDirection(nextDir) : true;
+            const children = next ?  next.isOutDirection(nextDir) : true;
+            return { pipe: next, dir: direction, connected, children };
+        } catch(e) {
+            return { error: e.message, dir: direction };
+        }
     }
 }
 
-export function validateOutType(outType, next) {
-    if (next.pipe.getInType) {
-        const type = next.pipe.getInType(invertDirection(next.dir));
-        if (type) {
-            if (!matchTypes(outType, type)) {
-                return { valid: false, error: 'Tipos no conciden', type }
-            } 
-            return { valid: true, type }
-        }
+export function typeCompare(t1, t2) {
+    if(isDefined(t1)) { return t1; }
+    if(isDefined(t2)) { return t2; }
+    if(isGeneric(t1)) { return t1; }
+    if(isGeneric(t2)) { return t2; }
+    return VALUES_TYPES.UNDEFINED;
+}
+
+export function validateDirType(pipe, next) {
+    const nextInvDir = invertDirection(next.dir);
+    const nextType = next.pipe.getDirType(nextInvDir);
+    if (nextType) {
+        const pipeDirType = pipe.getDirType(next.dir);
+        if (!matchTypes(pipeDirType, nextType)) {
+            return { valid: false, error: 'Tipos no conciden' }
+        } 
+        return { valid: true, type:typeCompare(pipeDirType, nextType) }
     } 
     return { valid: false, warning: 'Connecion Obstuida' }
 }
@@ -166,15 +203,6 @@ export class Pipe {
             .filter(dirPipe => dirPipe.children)
     }
 
-    getChildrens() {
-        if(!this.isInBoard()) {
-            return new Array();
-        }
-        return this.getOutDirections()
-            .map(processNext(this))
-            .filter(dirPipe => !dirPipe.children)
-    }
-
     toCodeArg() {
         const arg = this.getParents()
             .map((dirPipe) => dirPipe.pipe !== null ? dirPipe.pipe.toCode(dirPipe.dir) : null)
@@ -182,47 +210,31 @@ export class Pipe {
     }
 
     toCode() {
-        return `(???)`;
+        return `???`;
     }
 
     getType() {
         return PIPE_TYPES.UNDEFINED;
     }
 
-    hasError() {
-        return false;
-    }
-
     isOutDirection(direction) {
         return this.getOutDirections().indexOf(direction) >= 0;
     }
 
-    isInDirection(direction) {
-        return this.getInDirections().indexOf(direction) >= 0;
+    isOutDir(dir) {
+        return false;
     }
 
-    getError() {
-        const parents = this.getParents();
-        for(let i = 0; i < parents.length; i++) {
-            const parent = parents[i];
-            if(parent.pipe === null) {
-                return { pipe: this, type: ERROR.CODE.MISSING_PARENT }
-            }
-        }
-        return null;
+    isInDir(dir) {
+        return false;
     }
 
-    getErrorFlow() {
-        let error = this.getError();
-        if (error !== null) { return error }
-        const parents = this.getParents();
-        for(let i = 0; i < parents.length; i++) {
-            let error = parent.pipe.getErrorFlow(parent.dir);
-            if (error != null) {
-                return error;
-            }
-        }
-        return null;
+    setDirType(direction, type) {
+
+    }
+
+    getDirType(direction) {
+        return VALUES_TYPES.UNDEFINED;
     }
     
     snapshot() {
