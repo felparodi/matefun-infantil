@@ -65,7 +65,7 @@ const toolboxGroups = [
         value: 'figures',
         label: 'Figuras',
         pipes: [
-            new ConstPipe({color:'rojo'}, VALUES_TYPES.COLOR),
+            new ConstPipe({color:'Rojo'}, VALUES_TYPES.COLOR),
             new ConstPipe({x:0, y:0}, VALUES_TYPES.POINT),
             new FuncPipe('circ', [VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
             new FuncPipe('rect', [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),

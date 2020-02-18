@@ -1,4 +1,4 @@
-.ValPipe {
+.ValPipe, .VarPipe {
     height:100%; 
     width:100%;
     position: relative;
@@ -6,5 +6,16 @@
         position: absolute;
         height: 40%;
         top: 30%;
+        &[type=number] {
+            text-align: center;
+        }
+        &.point {
+            display: flex;
+            padding: 0;
+            .number {
+                min-width: 50%;
+             
+            }
+        }
     }
 }

@@ -28,7 +28,7 @@ export const valueToString = (value, type) => {
     if(type === VALUES_TYPES.NUMBER) return `${value}`;
     if(type === VALUES_TYPES.BOOLEAN) return `${value}`;
     if(type === VALUES_TYPES.COLOR) return `${value.color}`;
-    if(type === VALUES_TYPES.POINT) return `[${value.x}, ${value.y}]`
+    if(type === VALUES_TYPES.POINT) return `(${value.x}, ${value.y})`;
     return `${JSON.stringify(value)}`;
 }
 

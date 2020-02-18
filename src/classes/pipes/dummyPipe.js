@@ -19,6 +19,7 @@ export class DummyPipe extends Pipe {
     //@TODO Loops
     calc(context, board, path) {;
         if(!isMarked(context, this)) {
+            debugger;
             const inPath =  invertDirection(path);
             this.inProcess = true;
             super.calc(context, board, path);
@@ -70,7 +71,7 @@ export class DummyPipe extends Pipe {
                     this.tempType = type;
                 }
             });
-            
+
             if(!this.tempInDirection && this.tempOutDirs.length === 0) {
                 this.addWarning('Unconected'); 
             }

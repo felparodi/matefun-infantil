@@ -41,7 +41,6 @@ export class FuncPipe extends Pipe {
     }
 
     calcTempTypes(dir, nextType) {
-        debugger;
         if(isDefined(nextType)) {
             const type = this.getDirType(dir);
             if(isDefined(type)) {
@@ -62,10 +61,9 @@ export class FuncPipe extends Pipe {
         if(!isMarked(context, this)) {
             super.calc(context, board, path);
             const inPath =  invertDirection(path);
-            this.getAllDirections().map(processNext(this, board))
-                .sort((n1, n2) => sortPipe(n1.pipe, n2.pipe))
-                .forEach((next) => {
-                    debugger;
+            const nexts =this.getAllDirections().map(processNext(this, board))
+                .sort((n1, n2) => sortPipe(n1.pipe, n2.pipe));
+            nexts.forEach((next) => {
                     if (next.error) { this.addError(next.error); return }
                     if (next.pipe) {
                         if (next.dir !== inPath) next.pipe.calc(context, board, next.dir);

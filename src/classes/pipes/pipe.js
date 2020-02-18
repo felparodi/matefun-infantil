@@ -36,9 +36,14 @@ export function sortPipe(p1, p2) {
     if(p1 && p2) {
         const t1 = p1.getType();
         const t2 = p2.getType();
-        if(t1 === t2) return 0;
+        if(t1 === t2 && t1 !== PIPE_TYPES.DUMMY && t1 !== PIPE_TYPES.VARIABLE) return 0;
         if(t1 === PIPE_TYPES.VALUE) return -1;
         if(t2 === PIPE_TYPES.VALUE) return 1;
+        if(t1 === PIPE_TYPES.DUMMY && isDefined(p1.getValueType())) return -1;
+        if(t2 === PIPE_TYPES.DUMMY && isDefined(p2.getValueType())) return 1;
+        if(t1 === PIPE_TYPES.VARIABLE && isDefined(p1.getOutType())) return -1;
+        if(t2 === PIPE_TYPES.VARIABLE && isDefined(p2.getOutType())) return 1;
+        if(t1 === t2) return 0;
         if(t1 === PIPE_TYPES.FUNCTION) return -1;
         if(t2 === PIPE_TYPES.FUNCTION) return 1;
         if(t1 === PIPE_TYPES.CONDITION) return -1;
