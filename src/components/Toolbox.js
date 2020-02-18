@@ -11,73 +11,89 @@ import { VarPipe } from '../classes/pipes/varPipe';
 import { ConditionPipe } from '../classes/pipes/conditionPipe';
 import './Toolbox.scss';
 
-const PipeGroups = {
-    'mat': {
+
+
+const toolboxGroups = [
+    {
+        value: 'mat',
         label: 'Matematica',
         pipes: [
-            new ConstPipe(0).snapshot(),
-            new FuncPipe(METHOD_FUNCTION.ADD, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER).snapshot(),
-            new FuncPipe(METHOD_FUNCTION.SUB, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER).snapshot(),
-            new FuncPipe(METHOD_FUNCTION.MUL, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER).snapshot(),
-            new FuncPipe(METHOD_FUNCTION.DIV, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER).snapshot(),
+            new ConstPipe(0),
+            new FuncPipe(METHOD_FUNCTION.ADD, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
+            new FuncPipe(METHOD_FUNCTION.SUB, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
+            new FuncPipe(METHOD_FUNCTION.MUL, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
+            new FuncPipe(METHOD_FUNCTION.DIV, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
             null,
         ]
     },
-    'val': { 
+    { 
+        value: 'val',
         label: 'Valores',
         pipes: [
-            new EndPipe().snapshot(),
-            new VarPipe().snapshot(),
-            new ConditionPipe().snapshot(),
-            new FuncPipe(METHOD_FUNCTION.OR, [VALUES_TYPES.BOOLEAN, VALUES_TYPES.BOOLEAN], VALUES_TYPES.BOOLEAN).snapshot(),
-            new FuncPipe(METHOD_FUNCTION.EQUAL, [VALUES_TYPES.GENERIC, VALUES_TYPES.GENERIC], VALUES_TYPES.BOOLEAN).snapshot(),
-            new FuncPipe(METHOD_FUNCTION.N_EQUAL, [VALUES_TYPES.GENERIC, VALUES_TYPES.GENERIC], VALUES_TYPES.BOOLEAN).snapshot(),
-            new FuncPipe(METHOD_FUNCTION.GREAT, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN).snapshot(),
-            new FuncPipe(METHOD_FUNCTION.E_GREAT, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN).snapshot(),
-            new FuncPipe(METHOD_FUNCTION.LEST, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN).snapshot(),
-            new FuncPipe(METHOD_FUNCTION.E_LEST, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN).snapshot(),
-            new FuncPipe(METHOD_FUNCTION.NOT, [VALUES_TYPES.BOOLEAN], VALUES_TYPES.BOOLEAN).snapshot(),
+            new EndPipe(),
+            new VarPipe(),
+            new ConditionPipe(),
+            new FuncPipe(METHOD_FUNCTION.OR, [VALUES_TYPES.BOOLEAN, VALUES_TYPES.BOOLEAN], VALUES_TYPES.BOOLEAN),
+            new FuncPipe(METHOD_FUNCTION.EQUAL, [VALUES_TYPES.GENERIC, VALUES_TYPES.GENERIC], VALUES_TYPES.BOOLEAN),
+            new FuncPipe(METHOD_FUNCTION.N_EQUAL, [VALUES_TYPES.GENERIC, VALUES_TYPES.GENERIC], VALUES_TYPES.BOOLEAN),
+            new FuncPipe(METHOD_FUNCTION.GREAT, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN),
+            new FuncPipe(METHOD_FUNCTION.E_GREAT, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN),
+            new FuncPipe(METHOD_FUNCTION.LEST, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN),
+            new FuncPipe(METHOD_FUNCTION.E_LEST, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN),
+            new FuncPipe(METHOD_FUNCTION.NOT, [VALUES_TYPES.BOOLEAN], VALUES_TYPES.BOOLEAN),
             null,
         ],
     },
-    'dummy': {
+    {
+        value: 'dummy',
         label: 'Conectores',
         pipes: [
-            new DummyPipe(DIRECTION.TOP, DIRECTION.BOTTOM).snapshot(),
-            new DummyPipe(DIRECTION.LEFT, DIRECTION.RIGHT).snapshot(),
-            new DummyPipe(DIRECTION.TOP, DIRECTION.RIGHT).snapshot(),
-            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT).snapshot(),
-            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.RIGHT).snapshot(),
-            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT).snapshot(),
-            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT).snapshot(),
-            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT, DIRECTION.RIGHT).snapshot(),
-            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT, DIRECTION.BOTTOM).snapshot(),
-            new DummyPipe(DIRECTION.TOP, DIRECTION.RIGHT, DIRECTION.BOTTOM).snapshot(),
-            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.TOP).snapshot(),
+            new DummyPipe(DIRECTION.TOP, DIRECTION.BOTTOM),
+            new DummyPipe(DIRECTION.LEFT, DIRECTION.RIGHT),
+            new DummyPipe(DIRECTION.TOP, DIRECTION.RIGHT),
+            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT),
+            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.RIGHT),
+            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT),
+            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT),
+            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT, DIRECTION.RIGHT),
+            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT, DIRECTION.BOTTOM),
+            new DummyPipe(DIRECTION.TOP, DIRECTION.RIGHT, DIRECTION.BOTTOM),
+            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.TOP),
         ]
     },
-    'figures': {
+    {
+        value: 'figures',
         label: 'Figuras',
         pipes: [
-            new ConstPipe({color:'rojo'}, VALUES_TYPES.COLOR).snapshot(),
-            new ConstPipe({x:0, y:0}, VALUES_TYPES.POINT).snapshot(),
-            new FuncPipe('circ', [VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE).snapshot(),
-            new FuncPipe('rect', [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE).snapshot(),
-            new FuncPipe('linea', [VALUES_TYPES.POINT, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE).snapshot(),
-            new FuncPipe('poli', [VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE).snapshot(),
-            new FuncPipe('color', [VALUES_TYPES.FIGURE, VALUES_TYPES.COLOR], VALUES_TYPES.FIGURE).snapshot(),
-            new FuncPipe('rotar', [VALUES_TYPES.FIGURE, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE).snapshot(),
-            new FuncPipe('juntar', [VALUES_TYPES.FIGURE, VALUES_TYPES.FIGURE], VALUES_TYPES.FIGURE).snapshot(),
-            new FuncPipe('escalar', [VALUES_TYPES.FIGURE, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE).snapshot(),
-            new FuncPipe('mover', [VALUES_TYPES.FIGURE, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE).snapshot(),
+            new ConstPipe({color:'rojo'}, VALUES_TYPES.COLOR),
+            new ConstPipe({x:0, y:0}, VALUES_TYPES.POINT),
+            new FuncPipe('circ', [VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
+            new FuncPipe('rect', [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
+            new FuncPipe('linea', [VALUES_TYPES.POINT, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE),
+            new FuncPipe('poli', [VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
+            new FuncPipe('color', [VALUES_TYPES.FIGURE, VALUES_TYPES.COLOR], VALUES_TYPES.FIGURE),
+            new FuncPipe('rotar', [VALUES_TYPES.FIGURE, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
+            new FuncPipe('juntar', [VALUES_TYPES.FIGURE, VALUES_TYPES.FIGURE], VALUES_TYPES.FIGURE),
+            new FuncPipe('escalar', [VALUES_TYPES.FIGURE, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
+            new FuncPipe('mover', [VALUES_TYPES.FIGURE, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE),
         ]
     },
-    'custom': {
+    {
+        value: 'custom',
         label: 'Custom',
         pipes: [
             null,
         ]
     }
+];
+
+function toolboxPipeSnapshot(toolboxPipe) {
+    return toolboxPipe.map(group => ({
+            value: group.value,
+            label: group.label,
+            pipes: group.pipes.map((pipe) => pipe ? pipe.snapshot() : null)
+        })
+    );
 }
 
 const renderPipeCol = (pipe, index) => (
@@ -90,27 +106,28 @@ export default class Toolbox extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            select:  Object.keys(PipeGroups)[1]
+            select: toolboxGroups[1].value,
+            pipeToolsGroup: toolboxPipeSnapshot(toolboxGroups)
         }
     }
 
     render() {
-        const {select} = this.state;
+        const {select, pipeToolsGroup} = this.state;
         return (
             <div className="Toolbox">
                 <div className="toolbox-header">
                 { 
-                    Object.keys(PipeGroups).map((name, index) => (
+                    pipeToolsGroup.map((toolbar, index) => (
                         <Button key={index}
-                            className={classNames("button-group", {'selected': select === name })}
-                            onClick={()=> this.setState({select: name})}>
-                            <span>{PipeGroups[name].label}</span>
+                            className={classNames("button-group", {'selected': select === toolbar.value })}
+                            onClick={()=> this.setState({select: toolbar.value})}>
+                            <span>{toolbar.label}</span>
                         </Button>
                     )) 
                 }
                 </div>
                 <div className="toolbox-body">
-                    { PipeGroups[this.state.select].pipes.map(renderPipeCol) }
+                    { pipeToolsGroup.find((toolbar) => toolbar.value === select).pipes.map(renderPipeCol) }
                 </div>
             </div>
         )

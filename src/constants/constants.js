@@ -11,13 +11,14 @@ export const METHOD_FUNCTION = Object.freeze({
     MUL: 'MUL',
     SUB: 'SUB',
     DIV: 'DIV',
-    COLOR: 'COLOR',
-    ROTAR: 'ROTAR',
-    RECT: 'REACT',
-    LINEA: 'LINEA',
-    POLI:'POLI',
-    ESCALAR: 'ESCALAR',
-    MOVER: 'MOVER',
+    COLOR: 'color',
+    ROTAR: 'rotar',
+    CIRC: 'circ',
+    RECT: 'rect',
+    LINEA: 'linea',
+    POLI:'poli',
+    ESCALAR: 'escalar',
+    MOVER: 'mover',
     GREAT: 'GREAT',
     E_GREAT: 'EGREAT',
     LEST: 'LEST',
@@ -70,7 +71,5 @@ export const ERROR = Object.freeze({
     })
 })
 
-export default { DIRECTION, PIPE_TYPES };
-
 export const BOARD_ROWS= 10;
-export const BOARD_COLS= 10;
+export const BOARD_COLS= 15;
