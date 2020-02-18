@@ -10,8 +10,8 @@ export class VarPipe extends Pipe {
     constructor(type) {
         super([], [DIRECTION.BOTTOM]);
         this.type = type || VALUES_TYPES.UNDEFINED;
-        this.index = undefined;
         this.value = undefined;
+        this.clean();
     }
 
     setValue(value) {
@@ -28,6 +28,7 @@ export class VarPipe extends Pipe {
     }
 
     clean() {
+        debugger;
         super.clean();
         this.index = undefined
         this.tempType = this.type;
@@ -43,9 +44,9 @@ export class VarPipe extends Pipe {
             if (next.pipe) {
                 if (next.dir !== inPipe) next.pipe.calc(context, board, next.dir);
                 const status = validateDirType(this, next);
-                this.tempType = status.type || this.type;
-                if (status.warning) { this.addWarning(status.warning); }
                 if (status.error) { this.addError(status.error); return; }
+                if (status.valid) { this.tempType = status.type; }
+                if (status.warning) { this.addWarning(status.warning); }
                 if (next.pipe.inProcess) {
                     context.marks[this.getPosX()][this.getPosY()] = false; 
                 }
@@ -64,7 +65,7 @@ export class VarPipe extends Pipe {
     }
 
     getOutType() {
-        return this.value ? this.type : this.tempType;
+        return this.tempType;
     }
 
     getName() {

@@ -32,6 +32,16 @@ const toolboxGroups = [
         pipes: [
             new EndPipe(),
             new VarPipe(),
+            new VarPipe(VALUES_TYPES.NUMBER),
+            new VarPipe(VALUES_TYPES.POINT),
+            new VarPipe(VALUES_TYPES.COLOR),
+            null,
+        ],
+    },
+    {  
+        value: 'cond',
+        label: 'Condiciones',
+        pipes: [
             new ConditionPipe(),
             new FuncPipe(METHOD_FUNCTION.OR, [VALUES_TYPES.BOOLEAN, VALUES_TYPES.BOOLEAN], VALUES_TYPES.BOOLEAN),
             new FuncPipe(METHOD_FUNCTION.EQUAL, [VALUES_TYPES.GENERIC, VALUES_TYPES.GENERIC], VALUES_TYPES.BOOLEAN),
@@ -41,8 +51,8 @@ const toolboxGroups = [
             new FuncPipe(METHOD_FUNCTION.LEST, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN),
             new FuncPipe(METHOD_FUNCTION.E_LEST, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN),
             new FuncPipe(METHOD_FUNCTION.NOT, [VALUES_TYPES.BOOLEAN], VALUES_TYPES.BOOLEAN),
-            null,
-        ],
+        ]
+
     },
     {
         value: 'dummy',

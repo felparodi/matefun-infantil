@@ -16,7 +16,7 @@ export function createPipe(snapshot) {
         case PIPE_TYPES.FUNCTION:
             return new FuncPipe(snapshot.name, snapshot.inTypes.list, snapshot.outType);
         case PIPE_TYPES.VARIABLE:
-            return new VarPipe()
+            return new VarPipe(snapshot.outType);
         case PIPE_TYPES.VALUE:
             return new ConstPipe(snapshot.value);
         case PIPE_TYPES.CONDITION:
