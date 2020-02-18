@@ -29,6 +29,9 @@ const PipeGroups = {
             new EndPipe().snapshot(),
             new VarPipe().snapshot(),
             new ConditionPipe().snapshot(),
+            new FuncPipe(METHOD_FUNCTION.EQUAL, [VALUES_TYPES.GENERIC, VALUES_TYPES.GENERIC], VALUES_TYPES.BOOLEAN).snapshot(),
+            new FuncPipe(METHOD_FUNCTION.NEQUAL, [VALUES_TYPES.GENERIC, VALUES_TYPES.GENERIC], VALUES_TYPES.BOOLEAN).snapshot(),
+            //new FuncPipe(METH)
             null,
         ],
     },

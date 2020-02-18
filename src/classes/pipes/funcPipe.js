@@ -61,10 +61,10 @@ export class FuncPipe extends Pipe {
         if(!isMarked(context, this)) {
             super.calc(context, board, path);
             const inPath =  invertDirection(path);
-            this.getInDirections().filter(dir => dir !== inPath).forEach((dir, index) => {
+            this.getInDirections().forEach((dir, index) => {
                 const next = processNext(this, board)(dir)
                 if(next.pipe) {
-                    next.pipe.calc(context, board, dir);
+                    if (next.dir !== inPath) next.pipe.calc(context, board, dir);
                     const nextType = next.pipe.getOutType();
                     this.calcTempTypes(dir, nextType);
                 } else {

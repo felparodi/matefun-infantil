@@ -30,6 +30,7 @@ export class DummyPipe extends Pipe {
     //@TODO Loops
     calc(context, board, path) {;
         if(!isMarked(context, this)) {
+            debugger;
             const inPath =  invertDirection(path);
             this.inProcess = true;
             super.calc(context, board, path);
