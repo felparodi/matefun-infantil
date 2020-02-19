@@ -1,11 +1,12 @@
 import React from 'react';
 
-export default class InputRight extends React.Component {
+const InputRight = (props) => (
+    <g className={props.className}>
+        <path d="M 33 10 L 33 30 L 40 30 L 40 10"/>
+        <path className="border" d="M 33 10 L 33 15 L 40 15 L 40 10"/>
+        <path className="border" d="M 33 25 L 33 30 L 40 30 L 40 25"/>
+    </g>
+);
 
-    render() {
-        return (
-            <path d="M 33 10 L 33 30 L 40 30 L 40 10" className={this.props.className} />
-        )
-    }
-}
 
+export default InputRight;

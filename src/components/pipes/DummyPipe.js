@@ -1,17 +1,17 @@
 import React from 'react';
-import { DIRECTION } from '../../constants/constants.js'
+import { DIRECTION } from '../../constants/constants'
 
-import Vertical from '../../svg/dummies/vertical.svg';
-import Horizontal from '../../svg/dummies/horizontal.svg';
-import TopRight from '../../svg/dummies/top-right.svg';
-import TopLeft from '../../svg/dummies/top-left.svg';
-import BottomLeft from '../../svg/dummies/bottom-left.svg';
-import BottomRight from '../../svg/dummies/bottom-right.svg';
-import Cross from '../../svg/dummies/cross.svg';
-import UBR from '../../svg/dummies/ubr.svg';
-import UBL from '../../svg/dummies/ubl.svg';
-import URL from '../../svg/dummies/url.svg';
-import BRL from '../../svg/dummies/brl.svg';
+import Vertical from './dummies/Vertical';
+import Horizontal from './dummies/Horizontal';
+import TopRight from './dummies/TopRight';
+import TopLeft from  './dummies/TopLeft';
+import BottomLeft from './dummies/BottomLeft';
+import BottomRight from './dummies/BottomRight';
+import Cross from './dummies/Cross';
+import UBR from './dummies/UBR';
+import UBL from './dummies/UBL';
+import URL from './dummies/URL';
+import BRL from './dummies/BRL';
 
 export class DummyPipe extends React.Component {
 
