@@ -77,7 +77,8 @@ export class VarPipe extends React.Component {
 
     render() {
         const { isOpen, editingValue } = this.state;
-        const { pipe } = this.props;
+        const { pipe, origin } = this.props;
+        debugger;
         if (pipe.value || isOpen) {
             return (
                 <div className="VarPipe">
@@ -88,7 +89,7 @@ export class VarPipe extends React.Component {
                 </div>
             )
         }
-        return (<DoorClosed pipe={pipe} onClickDoor={() => this.setDoorState(true)} />);
+        return (<DoorClosed pipe={pipe} onClickDoor={() => origin !== 'toolbox' && this.setDoorState(true)} />);
     }
 }
 

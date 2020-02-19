@@ -10,7 +10,7 @@ import { isMarked, sortPipe } from './pipes/pipe';
 export function createPipe(snapshot) {
     switch(snapshot.type) {
         case PIPE_TYPES.END:
-            return new EndPipe();
+            return new EndPipe(snapshot.valueType);
         case PIPE_TYPES.DUMMY:
             return new DummyPipe(...snapshot.allDirections);
         case PIPE_TYPES.FUNCTION:

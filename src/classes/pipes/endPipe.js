@@ -3,9 +3,11 @@ import { Pipe, processNext, isMarked, invertDirection, validateDirType } from '.
 
 export class EndPipe extends Pipe {
     
-    constructor() {
+    constructor(type) {
         super([DIRECTION.TOP], []);
+        this.type = type || VALUES_TYPES.UNDEFINED;
         this.value = undefined;
+        this.clean();
     }
 
     calc(context, board, path) {
@@ -34,7 +36,7 @@ export class EndPipe extends Pipe {
 
     clean() {
         super.clean();
-        this.tempType = VALUES_TYPES.UNDEFINED;
+        this.tempType = this.type;
     }
 
     toCode(dir, board) {

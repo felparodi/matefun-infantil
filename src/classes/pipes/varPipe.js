@@ -28,7 +28,6 @@ export class VarPipe extends Pipe {
     }
 
     clean() {
-        debugger;
         super.clean();
         this.index = undefined
         this.tempType = this.type;
