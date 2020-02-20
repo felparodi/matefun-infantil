@@ -208,9 +208,9 @@ export class Pipe {
             .filter(dirPipe => dirPipe.children)
     }
 
-    toCodeArg() {
+    toCodeArg(board) {
         const arg = this.getParents()
-            .map((dirPipe) => dirPipe.pipe !== null ? dirPipe.pipe.toCode(dirPipe.dir) : null)
+            .map((dirPipe) => dirPipe.pipe !== null ? dirPipe.pipe.toCode(dirPipe.dir, board) : null)
         return arg.map(e => e !== null ? e : '?').join(', ')
     }
 

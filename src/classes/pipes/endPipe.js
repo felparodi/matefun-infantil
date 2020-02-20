@@ -44,10 +44,6 @@ export class EndPipe extends Pipe {
         return `${arg}`;
     }
 
-    isDirectionDefined() {
-        return true;
-    }
-
     getType() {
         return PIPE_TYPES.END;
     }
