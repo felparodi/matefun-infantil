@@ -54,7 +54,6 @@ export const MATEFUN_TYPE= Object.freeze({
     COLOR: 'Color',
     POINT: '(R x R)',
     LIST_NUMBER: 'R*',
-    POINT: 'POINT'
 })
 
 export const ERROR = Object.freeze({

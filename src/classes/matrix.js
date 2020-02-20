@@ -1,4 +1,4 @@
-import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../constants/constants';
+import { PIPE_TYPES, DIRECTION, VALUES_TYPES, MATEFUN_TYPE } from '../constants/constants';
 import { FuncPipe } from './pipes/funcPipe';
 import { EndPipe } from './pipes/endPipe';
 import { ConstPipe } from './pipes/constPipe';
@@ -124,12 +124,31 @@ export class MatrixPipe {
         return this.getAllVars().length > 0
     }
 
+    //private
+    getMatefunType(v) {
+        var matefunType;
+        switch (v.tempType) {
+            case VALUES_TYPES.NUMBER:
+                matefunType = MATEFUN_TYPE.NUMBER;
+                break;
+            case VALUES_TYPES.FIGURE:
+                // code block
+                matefunType = MATEFUN_TYPE.FIGURE;
+                break;
+            default:
+                matefunType = "?";
+        }
+        return matefunType;
+    }
+
     getFunctionDefinition(name) {
         console.log('Matrix.getFunctionDefinition')
         const varsPipes = this.getAllVars();
-        const endPipe = this.getEndPipes();
-        const varsType = varsPipes.reduce((prev, v, index, vars) => index > 0 ? `${prev} X R` :`R`, '');
-        const endType = 'R';
+        const endPipe = this.getEndPipes()[0];
+        const varsType = varsPipes.reduce(
+            (prev, v, index, vars) => index > 0 ? `${prev} X ${this.getMatefunType(v)}` :`${this.getMatefunType(v)}`, ''
+        );
+        const endType = this.getMatefunType(endPipe);
         return `${name} :: ${varsType} -> ${endType}`;
     }
 

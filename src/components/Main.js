@@ -81,7 +81,6 @@ export default class Main extends React.Component {
 
     onDrop(row, col, pipe) {
         console.log('onDrop', Date.now());
-        debugger;
         if (pipe) {
             matrix.addPipe(row, col, createPipe(pipe));
         } else {
