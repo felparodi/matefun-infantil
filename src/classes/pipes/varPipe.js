@@ -67,6 +67,10 @@ export class VarPipe extends Pipe {
         return this.tempType;
     }
 
+    getValueType() {
+        return this.getOutType();
+    }
+
     getName() {
         return `x${this.index}`
     }

@@ -86,7 +86,6 @@ export class VarPipe extends React.Component {
     render() {
         const { isOpen, editingValue } = this.state;
         const { pipe, origin } = this.props;
-        debugger;
         if (pipe.value || isOpen) {
             return (
                 <div className="VarPipe">

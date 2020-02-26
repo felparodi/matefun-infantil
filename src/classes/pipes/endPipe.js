@@ -62,10 +62,14 @@ export class EndPipe extends Pipe {
         return direction === DIRECTION.TOP ? this.tempType : null;
     }
 
+    getValueType() {
+        return this.tempType;
+    }
+
     snapshot() {
         return {
             ...(super.snapshot()),
-            valueType: this.tempType,
+            valueType: this.getValueType(),
             value: this.value
         }
     }

@@ -51,6 +51,8 @@ const FunctionIcon = (props) => {
             return <Escalar/>;
         case METHOD_FUNCTION.MOVER: 
             return <Mover/>;
+        case METHOD_FUNCTION.CIRC:
+            return <Circ/>
         case METHOD_FUNCTION.ADD:
             return <TextIcon text="+"/>;
         case METHOD_FUNCTION.SUB:
@@ -72,7 +74,7 @@ const FunctionIcon = (props) => {
         case METHOD_FUNCTION.E_LEST:
             return <TextIcon text="<="/>;
         case METHOD_FUNCTION.NOT:
-                return <TextIcon text="!"/>;
+            return <TextIcon text="!"/>;
         default:
             return <TextIcon text={props.name}/>;
     }

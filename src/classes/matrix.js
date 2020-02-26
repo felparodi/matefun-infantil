@@ -23,6 +23,19 @@ export function createPipe(snapshot) {
             return new ConditionPipe();
     }
 }
+
+function getMateFunType(v) {
+    const type = v.getValueType();
+    switch (type) {
+        case VALUES_TYPES.NUMBER:
+            return MATEFUN_TYPE.NUMBER;
+        case VALUES_TYPES.FIGURE:
+            return MATEFUN_TYPE.FIGURE;
+        default:
+            return "?";
+    }
+}
+
 /*
 * Attr:
     maxY -> 
@@ -129,31 +142,14 @@ export class MatrixPipe {
         return this.getAllPipes().filter((pipe) => pipe.getType() === PIPE_TYPES.CONDITION);
     }
 
-    //private
-    getMatefunType(v) {
-        var matefunType;
-        switch (v.tempType) {
-            case VALUES_TYPES.NUMBER:
-                matefunType = MATEFUN_TYPE.NUMBER;
-                break;
-            case VALUES_TYPES.FIGURE:
-                // code block
-                matefunType = MATEFUN_TYPE.FIGURE;
-                break;
-            default:
-                matefunType = "?";
-        }
-        return matefunType;
-    }
-
     getFunctionDefinition(name) {
         console.log('Matrix.getFunctionDefinition')
         const varsPipes = this.getAllVars();
         const endPipe = this.getEndPipes()[0];
         const varsType = varsPipes.reduce(
-            (prev, v, index, vars) => index > 0 ? `${prev} X ${this.getMatefunType(v)}` :`${this.getMatefunType(v)}`, ''
+            (prev, v, index) => index > 0 ? `${prev} X ${getMateFunType(v)}` :`${getMateFunType(v)}`, ''
         );
-        const endType = this.getMatefunType(endPipe);
+        const endType = getMateFunType(endPipe);
         return `${name} :: ${varsType} -> ${endType}`;
     }
 
