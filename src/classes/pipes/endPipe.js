@@ -1,8 +1,12 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../../constants/constants';
-import { Pipe, processNext, isMarked, invertDirection, validateDirType, pipeTypeDefined } from './pipe';
+import { Pipe, processNext, pipeDirValueType, pipeTypeDefined, matchTypes, typeCompare } from './pipe';
 
 export class EndPipe extends Pipe {
-    
+    //Vars
+    type // ValueType
+    value //Value
+    tempType //ValueType
+
     constructor(type) {
         super([DIRECTION.TOP], []);
         this.type = type || VALUES_TYPES.UNDEFINED;
@@ -10,21 +14,27 @@ export class EndPipe extends Pipe {
         this.clean();
     }
 
+    //Calcula los tipos y informacion del estado del funcion   
     calc(context, board, path) {
         if (!context.isMark(this.getPos())) {
             super.calc(context, board);
             const next = processNext(this, board)(DIRECTION.TOP);
+            //Manejo de errores
             if (next.error) { this.addError(next.error); return }
             if (!next.pipe || !next.connected) { this.addWarning("No esta conectado a nada"); return; }
-            
+            //Process Next
             if(next.dir !== path) next.pipe.calc(context, board, next.inDir);
-
+            //Setea Valores
             const type = pipeDirValueType(next.pipe, next.inDir);
             if (matchTypes(this.tempType, type)) {
                 this.tempType = typeCompare(this.tempType, type);
             } else { 
                 this.addError('No machean tipos');
                 return;
+            }
+            //Post Process
+            if(!this.errors && !pipeDirValueType(this)) {
+                context.unMark(this.getPos());
             }
         }
     }

@@ -1,5 +1,5 @@
 import { PIPE_TYPES, VALUES_TYPES, DIRECTION} from '../../constants/constants';
-import { Pipe, isMarked, processNext, validateDirType, invertDirection, matchTypes } from './pipe';
+import { Pipe, processNext, validateDirType, matchTypes } from './pipe';
 
 export function evalValueType(value) {
     switch(typeof value) {
@@ -44,18 +44,15 @@ export class ConstPipe extends Pipe {
         if(!context.isMark(this.getPos())) {
             context.mark(this.getPos());
             const next = processNext(this, board)(DIRECTION.BOTTOM);
+            
             if (next.error) { this.addError(next.error); return }
-            if (next.pipe) {
-                if(next.inDir !== path) { 
-                    next.pipe.calc(context, board, next.inDir);
-                }
+            if (!next.pipe || next.connected) { this.addWarning('No esta conectado'); return;}
+            
+            if(next.inDir !== path) { next.pipe.calc(context, board, next.inDir); }
 
-                const status = validateDirType(this, next);
-                if (status.warning) this.addWarning(status.warning);
-                if (status.error) this.addError(status.error);
-            } else {
-                this.addWarning('No esta conectado');
-            }
+            const status = validateDirType(this, next);
+            if (status.warning) this.addWarning(status.warning);
+            if (status.error) this.addError(status.error);
         }
     }
 

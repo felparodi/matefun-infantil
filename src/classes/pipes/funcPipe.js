@@ -60,20 +60,23 @@ export class FuncPipe extends Pipe {
     calc(context, board, path) {
         if(!context.isMark(this.getPos())) {
             context.mark(this.getPos());
-            const nextPipes =this.getAllDirections().map(processNext(this, board))
+            const nextPipes = this.getAllDirections().map(processNext(this, board))
                 .sort((n1, n2) => sortPipe(n1.pipe, n2.pipe));
             nextPipes.forEach((next) => {
+                //Manejo de errores
                 if (this.errors) { return; }
                 if (next.error) { this.addError(next.error); return; }
                 if (!next.pipe || !next.connected) { this.addWarning(`No connectado ${next.dir}`); return; }
+                //Process next pipe
                 if (next.dir !== path) next.pipe.calc(context, board, next.inDir);
-             
+                //Setea Valores
                 if (pipeTypeDefined(next.pipe)) {
                     const nextType = pipeDirValueType(next.pipe, next.inDir);
                     this.calcTempTypes(next.dir, nextType);
                 }
+
             });
-            if (!pipeTypeDefined(this)) {
+            if (!this.errors && !pipeTypeDefined(this)) {
                 context.unMark(this.getPos());
             }
         }
@@ -92,7 +95,9 @@ export class FuncPipe extends Pipe {
     }
 
     toCode(direction, board) {
+        
         const arg = this.toCodeArg(direction, board);
+
         switch(this.name) {
             case METHOD_FUNCTION.ADD:
                 return `(${arg[0]} + ${arg[1]})`;
