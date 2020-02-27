@@ -1,7 +1,7 @@
 import React from 'react';
 import Cell from './Cell'
-import Toolbox from './Toolbox.js'
-import Board from './Board.js'
+import Toolbox from './Toolbox'
+import Board from './Board'
 import classNames from 'classnames';
 import { Button, Modal } from 'react-bootstrap';
 import Header from './Header';

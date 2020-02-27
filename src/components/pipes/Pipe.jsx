@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DragSource } from 'react-dnd';
-import { PIPE_TYPES, DIRECTION } from '../../constants/constants.js'
-import { DummyPipe } from './DummyPipe.js'
-import { FuncPipe } from './FuncPipe.js'
-import { EndPipe } from './EndPipe.js'
-import { ValPipe } from './ValPipe.js'
-import { VarPipe } from './VarPipe.js';
+import { PIPE_TYPES, DIRECTION } from '../../constants/constants'
+import { DummyPipe } from './DummyPipe'
+import { FuncPipe } from './FuncPipe'
+import { EndPipe } from './EndPipe'
+import { ValPipe } from './ValPipe'
+import { VarPipe } from './VarPipe';
 import './Pipe.scss';
 
 function SwitchPipe(pipe, props) {

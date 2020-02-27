@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Tab, Nav, Row, Col } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 import Pipe from './pipes/Pipe';
 import { DIRECTION, METHOD_FUNCTION, VALUES_TYPES } from '../constants/constants'
