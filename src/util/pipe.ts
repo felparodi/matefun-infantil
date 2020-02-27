@@ -16,7 +16,7 @@ export function isDefined(type: ValueType) : boolean {
 export function pipeFuncDefined(pipe:IPipeMultiType) : boolean {
     for(let dir in Direction) {
         if (pipe.hasDirection(dir) 
-            && !isDefined(pipe.getDirType(dir))) {
+            && !isDefined(pipe.getDirValueType(dir))) {
             return false;
         }
     }

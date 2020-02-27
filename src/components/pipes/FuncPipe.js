@@ -84,10 +84,10 @@ export class FuncPipe extends React.Component {
 
     render() {
         const { pipe } = this.props;
-        var leftType = pipe.inTypes.left;
-        var rightType = pipe.inTypes.right;
-        var topType = pipe.inTypes.top;
-        var bottomType = pipe.outType;
+        const leftType = pipe.dir.left;
+        const rightType = pipe.dir.right;
+        const topType = pipe.dir.top;
+        const bottomType = pipe.dir.bottom;
         return (
             <svg viewBox="0 0 40 40">
                 <Base pipe={pipe}></Base>

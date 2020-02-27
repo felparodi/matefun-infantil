@@ -1,5 +1,5 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../../constants/constants';
-import { Pipe, processNext, isMarked, invertDirection, validateDirType } from './pipe';
+import { Pipe, processNext, isMarked, invertDirection, validateDirType, pipeTypeDefined } from './pipe';
 
 export class EndPipe extends Pipe {
     
@@ -11,25 +11,20 @@ export class EndPipe extends Pipe {
     }
 
     calc(context, board, path) {
-        if (!isMarked(context,this)) {
+        if (!context.isMark(this.getPos())) {
             super.calc(context, board);
-            const inPath = invertDirection(path);
             const next = processNext(this, board)(DIRECTION.TOP);
-            const nextInvDir = invertDirection(next.dir);
             if (next.error) { this.addError(next.error); return }
-            if (next.pipe) {
-                if(next.dir !== inPath) next.pipe.calc(context, board, next.dir);
-                const status = validateDirType(this, next);
-                if(status.warning) { this.addWarning(status.warning); }
-                if(status.error) { this.addError(status.error); }
-                if(status.valid) {
-                    this.tempType = status.type;
-                }
-                if (next.pipe.inProcess) {
-                    context.marks[this.getPosX()][this.getPosY()] = false; 
-                }
-            } else {
-                this.addWarning('No esta conectado a nada')
+            if (!next.pipe || !next.connected) { this.addWarning("No esta conectado a nada"); return; }
+            
+            if(next.dir !== path) next.pipe.calc(context, board, next.inDir);
+
+            const type = pipeDirValueType(next.pipe, next.inDir);
+            if (matchTypes(this.tempType, type)) {
+                this.tempType = typeCompare(this.tempType, type);
+            } else { 
+                this.addError('No machean tipos');
+                return;
             }
         }
     }
@@ -41,7 +36,7 @@ export class EndPipe extends Pipe {
 
     toCode(dir, board) {
         const arg = this.toCodeArg(DIRECTION.TOP, board);
-        return `${arg}`;
+        return `${arg[0]}`;
     }
 
     getType() {
@@ -49,28 +44,32 @@ export class EndPipe extends Pipe {
     }
 
     isInDir(dir) {
-        return dir.TOP === dir;
+        return DIRECTION.TOP === dir;
     }
 
-    setDirType(direction, type) {
-        if(direction === DIRECTION.TOP) {
-            this.tempType = type;
-        }
+    getValue() {
+        return this.value;
     }
 
-    getDirType(direction) {
-        return direction === DIRECTION.TOP ? this.tempType : null;
+    setValue(value) {
+        this.value = value;
     }
 
     getValueType() {
         return this.tempType;
     }
 
+    setValueType(type) {
+        this.type = type;
+    }
+
     snapshot() {
         return {
             ...(super.snapshot()),
-            valueType: this.getValueType(),
-            value: this.value
+            dir: {
+                top: this.getValueType()
+            },
+            value: this.getValue()
         }
     }
 }

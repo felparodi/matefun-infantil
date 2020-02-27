@@ -1,5 +1,5 @@
 import { PIPE_TYPES, VALUES_TYPES, METHOD_FUNCTION, DIRECTION } from '../../constants/constants';
-import { Pipe, isMarked, invertDirection, matchTypes, isDefined, isGeneric, processNext, sortPipe} from './pipe'
+import { Pipe, isMarked, invertDirection, matchTypes, isDefined, isGeneric, processNext, sortPipe, pipeDirValueType, pipeTypeDefined} from './pipe'
 
 /*
 * Retorna la lista de direciones que deberia tener una funcion segun la cantida de tipos de su entrada
@@ -42,7 +42,7 @@ export class FuncPipe extends Pipe {
 
     calcTempTypes(dir, nextType) {
         if(isDefined(nextType)) {
-            const type = this.getDirType(dir);
+            const type = this.getDirValueType(dir);
             if(isDefined(type)) {
                 if(!matchTypes(type, nextType)) {
                     this.addError('No machea tipo');
@@ -58,26 +58,23 @@ export class FuncPipe extends Pipe {
     }
     //@TODO GENERIC
     calc(context, board, path) {
-        if(!isMarked(context, this)) {
-            super.calc(context, board, path);
-            const inPath =  invertDirection(path);
-            const nexts =this.getAllDirections().map(processNext(this, board))
+        if(!context.isMark(this.getPos())) {
+            context.mark(this.getPos());
+            const nextPipes =this.getAllDirections().map(processNext(this, board))
                 .sort((n1, n2) => sortPipe(n1.pipe, n2.pipe));
-            nexts.forEach((next) => {
-                    if (next.error) { this.addError(next.error); return }
-                    if (next.pipe) {
-                        if (next.dir !== inPath) next.pipe.calc(context, board, next.dir);
-                        const nextInvDir = invertDirection(next.dir);
-                        const nextType = next.pipe.getDirType(nextInvDir);
-                        this.calcTempTypes(next.dir, nextType);
-                    } else {
-                        this.addWarning(`No connectado ${next.dir}`)
-                    }
-                });
-            //Re intenatr si se marco por un dummy en proceso
-            const prev = processNext(this, board)(inPath)
-            if (prev.pipe && prev.pipe.inProcess) {
-                context.marks[this.getPosX()][this.getPosY()] = false; 
+            nextPipes.forEach((next) => {
+                if (this.errors) { return; }
+                if (next.error) { this.addError(next.error); return; }
+                if (!next.pipe || !next.connected) { this.addWarning(`No connectado ${next.dir}`); return; }
+                if (next.dir !== path) next.pipe.calc(context, board, next.inDir);
+             
+                if (pipeTypeDefined(next.pipe)) {
+                    const nextType = pipeDirValueType(next.pipe, next.inDir);
+                    this.calcTempTypes(next.dir, nextType);
+                }
+            });
+            if (!pipeTypeDefined(this)) {
+                context.unMark(this.getPos());
             }
         }
     }
@@ -96,50 +93,34 @@ export class FuncPipe extends Pipe {
 
     toCode(direction, board) {
         const arg = this.toCodeArg(direction, board);
-        const argv = arg.split(', ');
         switch(this.name) {
             case METHOD_FUNCTION.ADD:
-                return `(${argv[0]} + ${argv[1]})`;
+                return `(${arg[0]} + ${arg[1]})`;
             case METHOD_FUNCTION.SUB:
-                return `(${argv[0]} - ${argv[1]})`;
+                return `(${arg[0]} - ${arg[1]})`;
             case METHOD_FUNCTION.MUL:
-                return `(${argv[0]} * ${argv[1]})`;
+                return `(${arg[0]} * ${arg[1]})`;
             case METHOD_FUNCTION.DIV:
-                return `(${argv[0]} / ${argv[1]})`;
+                return `(${arg[0]} / ${arg[1]})`;
             case METHOD_FUNCTION.EQUAL:
-                return `(${argv[0]} == ${argv[1]})`;
+                return `(${arg[0]} == ${arg[1]})`;
             case METHOD_FUNCTION.N_EQUAL:
-                return `(${argv[0]} /= ${argv[1]})`;
+                return `(${arg[0]} /= ${arg[1]})`;
             case METHOD_FUNCTION.GREAT:
-                return `(${argv[0]} > ${argv[1]})`;
+                return `(${arg[0]} > ${arg[1]})`;
             case METHOD_FUNCTION.E_GREAT:
-                return `(${argv[0]} >= ${argv[1]})`;
+                return `(${arg[0]} >= ${arg[1]})`;
             case METHOD_FUNCTION.LEST:
-                return `(${argv[0]} < ${argv[1]})`;
+                return `(${arg[0]} < ${arg[1]})`;
             case METHOD_FUNCTION.E_LEST:
-                return `(${argv[0]} =< ${argv[1]})`;
+                return `(${arg[0]} =< ${arg[1]})`;
             case METHOD_FUNCTION.OR:
-                return `(${argv[0]} , ${argv[1]})`;
+                return `(${arg[0]} , ${arg[1]})`;
             default:
-                return `${this.name}(${arg})`;
+                return `${this.name}(${arg.join(', ')})`;
         }
     }
 
-    setInTypes(inTypes) {
-        this.inTypes = inTypes;
-    }
-
-    getInTypes() {
-        return this.tempInTypes ? this.tempInTypes : [];
-    }
-
-    setOutTypes(outType) {
-        this.outType = outType;
-    }
-
-    getOutType() {
-        return this.tempOutType;
-     }
     //Private
     setDirType(direction, type) {
         if (direction === DIRECTION.BOTTOM) {
@@ -152,7 +133,7 @@ export class FuncPipe extends Pipe {
         }
     }
 
-    getDirType(direction) {
+    getDirValueType(direction) {
         if (direction === DIRECTION.BOTTOM) {
            return this.tempOutType;
         }
@@ -161,7 +142,7 @@ export class FuncPipe extends Pipe {
 
     getInType(direction) {
         const dirPos = this.getInDirections().indexOf(direction);
-        return dirPos > -1 ? this.getInTypes()[dirPos] : null;
+        return dirPos > -1 ? this.tempInTypes[dirPos] : null;
     }
 
     getType() {
@@ -180,13 +161,12 @@ export class FuncPipe extends Pipe {
         return  {
             ...(super.snapshot()),
             name: this.getName(),
-            inTypes: {
-                top: this.getInType(DIRECTION.TOP),
-                left: this.getInType(DIRECTION.LEFT),
-                right: this.getInType(DIRECTION.RIGHT),
-                list: this.getInTypes(),
-            },
-            outType: this.getOutType()
+            dir: {
+                top: this.getDirValueType(DIRECTION.TOP),
+                bottom: this.getDirValueType(DIRECTION.BOTTOM),
+                right: this.getDirValueType(DIRECTION.RIGHT),
+                left: this.getDirValueType(DIRECTION.LEFT)
+            }
         }
     }
 

@@ -16,7 +16,7 @@ export const DoorOpen = (props) => {
     const { pipe, onClickDoor, onClickValue } = props;
     return (
         <svg viewBox="0 0 40 40">
-            <JoinOutput className={pipe.outType}/>
+            <JoinOutput className={pipe.dir.bottom}/>
             <g onClick={onClickDoor}>
                 <path d="M 5 5 L 0 10 L 0 35 L 5 30 Z" style={{'fill': 'saddlebrown', 'stroke': 'black', 'strokeWidth': 0.3 }}/>
                 <path d="M 5 5 L 5 30 L 35 30 L 35 5 Z" style={{'fill': '#000000d6', 'stroke': 'black', 'strokeWidth': 0.3 }}/>
@@ -30,7 +30,7 @@ export const DoorOpen = (props) => {
                 fill='white'>
                 {pipe.valueText}
             </text>
-            <Output className={pipe.outType}></Output>
+            <Output className={pipe.dir.bottom}></Output>
         </svg>
     );
 }
@@ -39,7 +39,7 @@ export const DoorClosed = (props) => {
     const { pipe, onClickDoor } = props;
     return (
         <svg viewBox="0 0 40 40">
-            <JoinOutput className={pipe.outType}/>
+            <JoinOutput className={pipe.dir.bottom}/>
             <g  onClick={onClickDoor} >
                 <path id="p1" d="M 5 5 L 5 30 L 35 30 L 35 5 Z" style={
                     {'fill': 'saddlebrown', 'stroke': 'black', 'strokeWidth': 0.3}}/>      
@@ -47,7 +47,7 @@ export const DoorClosed = (props) => {
                 <circle cx="18.6" cy="17" r="0.5" stroke="black" fill="red" strokeWidth="1"/>
                 <circle cx="21.4" cy="17" r="0.5" stroke="black" fill="red" strokeWidth="1"/>
             </g>
-            <Output className={pipe.outType}></Output>
+            <Output className={pipe.dir.bottom}></Output>
         </svg>
     );
 }

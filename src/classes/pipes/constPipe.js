@@ -36,18 +36,20 @@ export class ConstPipe extends Pipe {
 
     constructor(value, type) {
         super([], [DIRECTION.BOTTOM]);
-        this.setOutType(type);
+        this.setValueType(type);
         this.setValue(value)
     }
 
     calc(context, board, path) {
-        if(!isMarked(context, this)) {
-            super.calc(context, board);
+        if(!context.isMark(this.getPos())) {
+            context.mark(this.getPos());
             const next = processNext(this, board)(DIRECTION.BOTTOM);
-            const inPath = invertDirection(path);
             if (next.error) { this.addError(next.error); return }
             if (next.pipe) {
-                if(next.dir !== inPath) next.pipe.calc(context, board, invertDirection(next.dir));
+                if(next.inDir !== path) { 
+                    next.pipe.calc(context, board, next.inDir);
+                }
+
                 const status = validateDirType(this, next);
                 if (status.warning) this.addWarning(status.warning);
                 if (status.error) this.addError(status.error);
@@ -57,29 +59,21 @@ export class ConstPipe extends Pipe {
         }
     }
 
-    setOutType(type) {
+    setValueType(type) {
         this.outType = type ? type : VALUES_TYPES.UNDEFINED;
     }
 
-    getOutType() {
+    getValueType() {
         return this.outType;
-    }
-
-    setDirType(direction, type) {
-        if(direction === DIRECTION.BOTTOM) {
-            this.outType = type;
-        }
-    }
-
-    getDirType(direction) {
-        return direction === DIRECTION.BOTTOM  ? this.getOutType() : null;
     }
 
     setValue(value) {
         const type = evalValueType(value);
-        if(!matchTypes(this.getOutType(), type)) {
+        const myType = this.getValueType();
+        if(!matchTypes(myType, type)) {
             throw new Error('No se puede asiganar el valor ya que es de otro tipo')
         }
+        //Ver aca sis se puede mejorar
         if(type !== VALUES_TYPES.UNDEFINED) {
             this.outType = type;
         }
@@ -91,7 +85,7 @@ export class ConstPipe extends Pipe {
     }
 
     toCode(dir, board) {
-        return valueToString(this.getValue(), this.getOutType());
+        return valueToString(this.getValue(), this.getValueType());
     }
 
     getType() {
@@ -105,7 +99,9 @@ export class ConstPipe extends Pipe {
     snapshot() {
         return {
             ...(super.snapshot()),
-            outType: this.getOutType(),
+            dir: {
+                bottom: this.getValueType()
+            },
             value: this.getValue(),
             valueText: this.toCode(),
         }

@@ -1,5 +1,5 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES  } from '../../constants/constants';
-import { Pipe, processNext, isMarked, validateDirType, matchTypes, invertDirection } from './pipe';
+import { Pipe, processNext, isMarked, validateDirType, matchTypes, invertDirection, pipeTypeDefined } from './pipe';
 import { evalValueType, valueToString } from './constPipe'
 /*
 *   Attr
@@ -34,41 +34,35 @@ export class VarPipe extends Pipe {
     }
 
     calc(context, board, path) {
-        if (!isMarked(context, this)) {
-            super.calc(context, board, path);
-            this.index = this.index || context.index++;
-            const inPipe = invertDirection(path);
+        if (!context.isMark(this.getPos())) {
+            context.mark(this.getPos());
+            this.index = this.index || context.getIndex();
             const next = processNext(this, board)(DIRECTION.BOTTOM)
-            if (next.error) { this.addError(next.error); return }
+            if (next.error) { this.addError(next.error); return; }
             if (next.pipe) {
-                if (next.dir !== inPipe) next.pipe.calc(context, board, next.dir);
+                if (next.dir !== path) {
+                    next.pipe.calc(context, board, next.inDir);
+                }
                 const status = validateDirType(this, next);
                 if (status.error) { this.addError(status.error); return; }
                 if (status.valid) { this.tempType = status.type; }
                 if (status.warning) { this.addWarning(status.warning); }
-                if (next.pipe.inProcess) {
-                    context.marks[this.getPosX()][this.getPosY()] = false; 
-                }
             } else {
                 this.addWarning('No esta conectado a nada ')
             }
         }
     }
 
-    setIndex(index) {
-        this.index = index;
-    }
-
-    getIndex(index) {
-        return this.index;
-    }
-
-    getOutType() {
-        return this.tempType;
+    isOutDir(dir) {
+        return dir === DIRECTION.BOTTOM
     }
 
     getValueType() {
-        return this.getOutType();
+        return this.tempType;
+    }
+
+    setValueType(direction, type) {
+        this.type = type;
     }
 
     getName() {
@@ -83,31 +77,16 @@ export class VarPipe extends Pipe {
         return PIPE_TYPES.VARIABLE;
     }
 
-    setDirType(direction, type) {
-        if(direction === DIRECTION.BOTTOM) {
-            this.tempType = type;
-        }
-    }
-
-
-    getDirType(direction) {
-        return direction === DIRECTION.BOTTOM ? this.getOutType() : null;
-    }
-
-    isOutDir(dir) {
-        return dir === DIRECTION.BOTTOM;
-    }
-
     snapshot() {
         const value = this.getValue();
-        const outType = this.getOutType();
         return {
             ...(super.snapshot()),
-            index: this.index,
             name: this.getName(),
-            outType,  
+            dir: {
+                bottom: this.getValueType(),
+            },
             value,
-            valueText: valueToString(value, outType)
+            valueText: valueToString(value, this.getValueType())
         }
     }
 }

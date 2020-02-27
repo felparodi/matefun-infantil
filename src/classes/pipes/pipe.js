@@ -1,7 +1,8 @@
 import { DIRECTION, PIPE_TYPES, ERROR, VALUES_TYPES } from '../../constants/constants';
 
 export function isMarked(context, pipe) {
-    return context.marks[pipe.getPosX()][pipe.getPosY()];
+    const [x, y] = pipe.getPos();
+    return context.marks[x][y];
 }
 
 export function matchTypes(type1, type2) {
@@ -18,7 +19,8 @@ export function isDefined(type) {
     return type !== UNDEFINED && !isGeneric(type);
 }
 
-export function directionMove(x, y, direction) {
+export function directionMove(pos, direction) {
+    const [x, y] = pos;
     switch(direction) {
         case DIRECTION.BOTTOM:
             return [x+1, y]
@@ -32,6 +34,26 @@ export function directionMove(x, y, direction) {
     return [x, y]
 }
 
+export function pipeMultiTypeDefined(pipe) {
+    for(let dir in DIRECTION) {
+        if (pipe.hasDirection(dir) 
+            && !isDefined(pipe.getDirValueType(dir))) {
+            return false;
+        }
+    }
+    return true;
+}
+
+export function pipeMonoTypeDefined(pipe) {
+    return isDefined(pipe.getValueType());
+}
+
+export function pipeTypeDefined(pipe) {
+    if (pipe.getValueType) return pipeMonoTypeDefined(pipe);
+    if (pipe.getDirValueType) return pipeMultiTypeDefined(pipe);
+    return false;
+}
+
 export function sortPipe(p1, p2) {
     if(p1 && p2) {
         const t1 = p1.getType();
@@ -39,10 +61,14 @@ export function sortPipe(p1, p2) {
         if(t1 === t2 && t1 !== PIPE_TYPES.DUMMY && t1 !== PIPE_TYPES.VARIABLE) return 0;
         if(t1 === PIPE_TYPES.VALUE) return -1;
         if(t2 === PIPE_TYPES.VALUE) return 1;
-        if(t1 === PIPE_TYPES.DUMMY && isDefined(p1.getValueType())) return -1;
-        if(t2 === PIPE_TYPES.DUMMY && isDefined(p2.getValueType())) return 1;
-        if(t1 === PIPE_TYPES.VARIABLE && isDefined(p1.getOutType())) return -1;
-        if(t2 === PIPE_TYPES.VARIABLE && isDefined(p2.getOutType())) return 1;
+        if(t1 === PIPE_TYPES.FUNCTION && pipeTypeDefined(p1)) return -1;
+        if(t2 === PIPE_TYPES.FUNCTION && pipeTypeDefined(p2)) return 1;
+        if(t1 === PIPE_TYPES.CONDITION && pipeTypeDefined(p1)) return -1;
+        if(t2 === PIPE_TYPES.CONDITION && pipeTypeDefined(p2)) return 1;
+        if(t1 === PIPE_TYPES.DUMMY && pipeTypeDefined(p1)) return -1;
+        if(t2 === PIPE_TYPES.DUMMY && pipeTypeDefined(p2)) return 1;
+        if(t1 === PIPE_TYPES.VARIABLE && pipeTypeDefined(p1)) return -1;
+        if(t2 === PIPE_TYPES.VARIABLE && pipeTypeDefined(p2)) return 1;
         if(t1 === t2) return 0;
         if(t1 === PIPE_TYPES.FUNCTION) return -1;
         if(t2 === PIPE_TYPES.FUNCTION) return 1;
@@ -77,17 +103,19 @@ export function invertDirection(direction) {
 
 export function processNext(pipe) {
     return (direction) => {
+        let next, dir, inDir, connected, children, error;
+        dir = direction;
+        inDir = invertDirection(direction);
         try {
-            const [x, y] = directionMove(pipe.posX, pipe.posY, direction);
+            const [x, y] = directionMove(pipe.getPos(), direction);
             if (!pipe.board) { return null; }
-            let next = pipe.board.value(x, y);
-            let nextDir = invertDirection(direction);
-            const connected = next ?  next.hasDirection(nextDir) : true;
-            const children = next ?  next.isOutDirection(nextDir) : true;
-            return { pipe: next, dir: direction, connected, children };
+            next = pipe.board.value(x, y);
+            connected = next ?  next.hasDirection(inDir) : true;
+            children = next ?  next.isOutDir(inDir) : true;
         } catch(e) {
-            return { error: e.message, dir: direction };
+            error = e.message;
         }
+        return { pipe: next, dir, inDir, connected, children, error };
     }
 }
 
@@ -99,11 +127,18 @@ export function typeCompare(t1, t2) {
     return VALUES_TYPES.UNDEFINED;
 }
 
+export function pipeDirValueType(pipe, dir) {
+    if (pipe.hasDirection(dir)) {
+        if (pipe.getValueType) return pipe.getValueType();
+        if (pipe.getDirValueType) return pipe.getDirValueType(dir);
+    }
+}
+
 export function validateDirType(pipe, next) {
     const nextInvDir = invertDirection(next.dir);
-    const nextType = next.pipe.getDirType(nextInvDir);
+    const nextType = pipeDirValueType(next.pipe, nextInvDir);
     if (nextType) {
-        const pipeDirType = pipe.getDirType(next.dir);
+        const pipeDirType = pipeDirValueType(pipe, next.dir);
         if (!matchTypes(pipeDirType, nextType)) {
             return { valid: false, error: 'Tipos no conciden' }
         } 
@@ -126,8 +161,7 @@ export class Pipe {
         this.setInDirection(inDirections);
         this.setOutDirections(outDirections); 
         this.board = null;
-        this.posX = null;
-        this.posY = null;
+        this.pos = [];
     }
 
     clean() {
@@ -136,7 +170,7 @@ export class Pipe {
     }
 
     calc(context, board) {
-        context.marks[this.posX][this.posY] = true;
+        context.mark(this.pos);
     }
 
     addError(e) {
@@ -179,16 +213,11 @@ export class Pipe {
     }
 
     setPos(x, y) {
-        this.posX = x;
-        this.posY = y;
+        this.pos = [x, y];
     }
 
-    getPosX(){
-        return this.posX;
-    }
-
-    getPosY(){
-        return this.posY;
+    getPos() {
+        return this.pos;
     }
 
     setBoard(board) {
@@ -211,7 +240,7 @@ export class Pipe {
     toCodeArg(board) {
         const arg = this.getParents()
             .map((dirPipe) => dirPipe.pipe !== null ? dirPipe.pipe.toCode(dirPipe.dir, board) : null)
-        return arg.map(e => e !== null ? e : '?').join(', ')
+        return arg.map(e => e !== null ? e : '?')
     }
 
     toCode() {
@@ -222,10 +251,6 @@ export class Pipe {
         return PIPE_TYPES.UNDEFINED;
     }
 
-    isOutDirection(direction) {
-        return this.getOutDirections().indexOf(direction) >= 0;
-    }
-
     isOutDir(dir) {
         return false;
     }
@@ -233,22 +258,30 @@ export class Pipe {
     isInDir(dir) {
         return false;
     }
-
-    setDirType(direction, type) {
-
-    }
-
-    getDirType(direction) {
-        return VALUES_TYPES.UNDEFINED;
-    }
     
     snapshot() {
+        const [x, y] = this.getPos();
+        const dir = {}
+        this.getAllDirection().forEach((direction) => {
+            switch(direction) {
+                case DIRECTION.TOP:
+                    dir.top = VALUES_TYPES.UNDEFINED;
+                    break;
+                case DIRECTION.BOTTOM:
+                    dir.bottom = VALUES_TYPES.UNDEFINED;
+                    break;
+                case DIRECTION.RIGHT:
+                    dir.right = VALUES_TYPES.UNDEFINED;
+                    break;
+                case DIRECTION.LEFT:
+                    dir.left = VALUES_TYPES.UNDEFINED;
+                    break;
+            }
+        })
         return {
             type: this.getType(),
-            posX: this.getPosX(),
-            posY: this.getPosY(),
-            inDirections: this.getInDirections(),
-            outDirections: this.getOutDirections(),
+            pos: { x, y },
+            dir,
             errors: this.errors,
             warnings: this.warnings,
         }

@@ -6,17 +6,36 @@ import { DummyPipe } from './pipes/dummyPipe';
 import { ConditionPipe } from './pipes/conditionPipe';
 import { VarPipe } from './pipes/varPipe';
 import { isMarked, sortPipe } from './pipes/pipe';
+import { Context } from './context';
+
+function dirToDirections(dir) {
+    const directions = []
+    if(dir.left) { directions.push(DIRECTION.LEFT); }
+    if(dir.top) { directions.push(DIRECTION.TOP); }
+    if(dir.right) { directions.push(DIRECTION.RIGHT); }
+    if(dir.bottom) { directions.push(DIRECTION.BOTTOM); }
+    return directions;
+
+}
+
+function dirToInTypes(dir) {
+    const inTypes = []
+    if(dir.left) { inTypes.push(dir.left); }
+    if(dir.top) { inTypes.push(dir.top); }
+    if(dir.right) { inTypes.push(dir.right); }
+    return inTypes;
+}
 
 export function createPipe(snapshot) {
     switch(snapshot.type) {
         case PIPE_TYPES.END:
-            return new EndPipe(snapshot.valueType);
+            return new EndPipe(snapshot.dir.top);
         case PIPE_TYPES.DUMMY:
-            return new DummyPipe(...snapshot.allDirections);
+            return new DummyPipe(...(dirToDirections(snapshot.dir)));
         case PIPE_TYPES.FUNCTION:
-            return new FuncPipe(snapshot.name, snapshot.inTypes.list, snapshot.outType);
+            return new FuncPipe(snapshot.name, dirToInTypes(snapshot.dir), snapshot.dir.bottom);
         case PIPE_TYPES.VARIABLE:
-            return new VarPipe(snapshot.outType);
+            return new VarPipe(snapshot.dir.bottom);
         case PIPE_TYPES.VALUE:
             return new ConstPipe(snapshot.value);
         case PIPE_TYPES.CONDITION:
@@ -103,7 +122,7 @@ export class MatrixPipe {
 
     updateMatrix() {
         this.getAllPipes().forEach(p => p.clean());
-        const context = { marks:  Array(this.maxX).fill([]).map(() => Array(this.maxY).fill(false)), index: 0 };
+        const context = new Context(this.maxX, this.maxY);
         this.getAllPipes().sort(sortPipe).forEach(p => p.calc(context, this));
         //this.getAllPipes().filter((p) => !isMarked(context, p)).forEach((p) => p.addWarning('No procesado'))
     }

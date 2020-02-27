@@ -5,10 +5,11 @@ export interface IPipeSnap {
     type: PipeType;
     pos: IPos;
     dir: IDir;
-    dirType: IDirType;
     name?: string;
     value?: Value;
-    valueText?: string
+    valueText?: string;
+    errors?: Array<string>;
+    warnings?: Array<string>; 
 }
 
 export interface IPos {
@@ -17,13 +18,6 @@ export interface IPos {
 }
 
 export interface IDir {
-    top?: boolean;
-    left?: boolean;
-    right?: boolean;
-    bottom?: boolean;
-}
-
-export interface IDirType {
     top?: ValueType;
     left?: ValueType;
     right?: ValueType;
