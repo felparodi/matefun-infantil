@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
+import './type';
 import App from './App';
 
 const title = 'Matefun Infantil';

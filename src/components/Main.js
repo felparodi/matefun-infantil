@@ -3,13 +3,12 @@ import Cell from './Cell'
 import Toolbox from './Toolbox.js'
 import Board from './Board.js'
 import classNames from 'classnames';
-import { Button } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import Header from './Header';
 import { MatrixPipe, createPipe } from '../classes/matrix'
 import { BOARD_ROWS, BOARD_COLS } from '../constants/constants'
 import * as services from '../services';
 import './Main.scss';
-
 
 const debugMode = localStorage.getItem('debug-mode') === 'true';
 const matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);

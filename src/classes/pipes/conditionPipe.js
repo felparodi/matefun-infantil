@@ -1,9 +1,7 @@
 import { PIPE_TYPES, VALUES_TYPES } from '../../constants/constants';
 import { Pipe, processNext } from './pipe';
 import { FuncPipe } from './funcPipe';
-import { METHOD_FUNCTION } from '../../constants/constants'
-import { DIRECTION } from '../../constants/constants.js'
-
+import { METHOD_FUNCTION, DIRECTION } from '../../constants/constants'
 
 /*
 * @TODO: todo
