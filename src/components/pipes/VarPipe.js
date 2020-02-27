@@ -66,16 +66,16 @@ export class VarPipe extends React.Component {
 
     leaveEditing(value) {
         const { pipe, onChangeVarValue } = this.props;
-        value = castValue(value, pipe.outType);
+        value = castValue(value, pipe.dir.bottom);
         this.setState({ editingValue: false });
-        onChangeVarValue(pipe.posX, pipe.posY, value);
+        onChangeVarValue(pipe.pos.x, pipe.pos.y, value);
     }
 
     setDoorState(isOpen) {
         const { pipe, onChangeVarValue } = this.props;
         this.setState({ isOpen: isOpen, editingValue: isOpen });
         if(!isOpen) {
-            onChangeVarValue(pipe.posX, pipe.posY, null);
+            onChangeVarValue(pipe.pos.x, pipe.pos.y, null);
         }
     }
 
@@ -89,7 +89,7 @@ export class VarPipe extends React.Component {
         if (pipe.value || isOpen) {
             return (
                 <div className="VarPipe">
-                    { editingValue && <InputType value={pipe.value} type={pipe.outType} onBlur={this.leaveEditing}/> }
+                    { editingValue && <InputType value={pipe.value} type={pipe.dir.bottom} onBlur={this.leaveEditing}/> }
                     <DoorOpen pipe={pipe}
                         onClickValue={() => this.setEditingValue(true)} 
                         onClickDoor={() => this.setDoorState(false)}/>

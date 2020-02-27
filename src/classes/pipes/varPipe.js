@@ -16,7 +16,7 @@ export class VarPipe extends Pipe {
 
     setValue(value) {
         const type = evalValueType(value);
-        if(!matchTypes(this.getOutType(), type)) {
+        if(!matchTypes(this.getValueType(), type)) {
             throw new Error('No se puede asiganar el valor ya que es de otro tipo')
         }
         this.value = value;

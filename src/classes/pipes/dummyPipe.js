@@ -100,6 +100,14 @@ export class DummyPipe extends Pipe {
         return this.tempOutDirs.indexOf(dir) !== -1;
     }
 
+    getInDirections() {
+        return this.tempInDirection ? [this.tempInDirection] : []
+    }
+
+    getOutDirections() {
+        return this.tempOutDirs;
+    }
+
     snapshot() {
         const valueType = this.getValueType();
         const dir = {};

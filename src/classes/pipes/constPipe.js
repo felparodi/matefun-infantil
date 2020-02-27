@@ -44,9 +44,9 @@ export class ConstPipe extends Pipe {
         if(!context.isMark(this.getPos())) {
             context.mark(this.getPos());
             const next = processNext(this, board)(DIRECTION.BOTTOM);
-            
+
             if (next.error) { this.addError(next.error); return }
-            if (!next.pipe || next.connected) { this.addWarning('No esta conectado'); return;}
+            if (!next.pipe || !next.connected) { this.addWarning('No esta conectado'); return;}
             
             if(next.inDir !== path) { next.pipe.calc(context, board, next.inDir); }
 

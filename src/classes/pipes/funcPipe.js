@@ -94,8 +94,7 @@ export class FuncPipe extends Pipe {
         return this.name;
     }
 
-    toCode(direction, board) {
-        
+    toCode(direction, board) {        
         const arg = this.toCodeArg(direction, board);
 
         switch(this.name) {

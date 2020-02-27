@@ -81,9 +81,9 @@ export class ValPipe extends React.Component {
 
     leaveEditing(value) {
         const { pipe, onChangeVarValue } = this.props;
-        value = castValue(value, pipe.outType);
+        value = castValue(value, pipe.dir.bottom);
         this.setState({ edit: false });
-        onChangeVarValue(pipe.posX, pipe.posY, value);
+        onChangeVarValue(pipe.pos.x, pipe.pos.y, value);
     }
     
     render() {
