@@ -116,6 +116,10 @@ export class MatrixPipe {
         return x < 0 || x >= this.maxX || y < 0 || y >= this.maxY
     }
 
+    addPipeSnap(x, y, pipeSnap) {
+        this.addPipe(x, y, createPipe(pipeSnap));
+    }
+
     addPipe(x, y, p) {
         if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") }
         this.values[x][y] = p;
@@ -221,6 +225,12 @@ export class MatrixPipe {
         } else {
             throw new Error("No se le puede asiganr valor a el pipe")
         }
+    }
+
+    moverPipe(x, y, pos) {
+        const pipe = this.value(pos.x, pos.y);
+        this.values[pos.x][pos.y] = null;
+        this.addPipe(x, y, pipe);
     }
 
     setMateFunValue(value) {

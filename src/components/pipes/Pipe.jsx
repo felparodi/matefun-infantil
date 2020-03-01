@@ -44,11 +44,7 @@ class Pipe extends React.Component {
                     {SwitchPipe(pipe, this.props)}
             </div>) :
             <div className="Pipe"/>
-        if (origin == "toolbox") {
-            return connectDragSource(p);
-        } else if (origin == "board") {
-            return p;
-        }
+        return connectDragSource(p);
     }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
-import Pipe from './pipes/Pipe';
+
 import { DIRECTION, METHOD_FUNCTION, VALUES_TYPES } from '../constants/constants'
 import { FuncPipe } from '../classes/pipes/funcPipe';
 import { EndPipe } from '../classes/pipes/endPipe';
@@ -9,6 +9,7 @@ import { ConstPipe } from '../classes/pipes/constPipe';
 import { DummyPipe } from '../classes/pipes/dummyPipe'
 import { VarPipe } from '../classes/pipes/varPipe';
 import { ConditionPipe } from '../classes/pipes/conditionPipe';
+import ToolboxBody from './ToolboxBody';
 import './Toolbox.scss';
 
 
@@ -109,12 +110,6 @@ function toolboxPipeSnapshot(toolboxPipe) {
     );
 }
 
-const renderPipeCol = (pipe, index) => (
-    <Button key={index} className="pipe-button" variant="outline-primary">
-        <Pipe pipe={pipe} origin="toolbox"/>
-    </Button>
-)
-
 export default class Toolbox extends React.Component {
     constructor(props) {
         super(props)
@@ -125,6 +120,7 @@ export default class Toolbox extends React.Component {
     }
 
     render() {
+        const {onDrop} = this.props;
         const {select, pipeToolsGroup} = this.state;
         return (
             <div className="Toolbox">
@@ -139,9 +135,9 @@ export default class Toolbox extends React.Component {
                     )) 
                 }
                 </div>
-                <div className="toolbox-body">
-                    { pipeToolsGroup.find((toolbar) => toolbar.value === select).pipes.map(renderPipeCol) }
-                </div>
+                <ToolboxBody
+                    onDrop={onDrop}
+                    group={pipeToolsGroup.find((toolbar) => toolbar.value === select)}/>
             </div>
         )
     }

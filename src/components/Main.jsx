@@ -5,7 +5,7 @@ import Board from './Board'
 import classNames from 'classnames';
 import { Button, Modal } from 'react-bootstrap';
 import Header from './Header';
-import { MatrixPipe, createPipe } from '../classes/matrix'
+import { MatrixPipe } from '../classes/matrix'
 import { BOARD_ROWS, BOARD_COLS } from '../constants/constants'
 import * as services from '../services';
 import './Main.scss';
@@ -32,6 +32,7 @@ export default class Main extends React.Component {
         this.evaluate = this.evaluate.bind(this);
         this.onChangeVarValue = this.onChangeVarValue.bind(this);
         this.setResult= this.setResult.bind(this);
+        this.onDropToolbox = this.onDropToolbox.bind(this);
     }
 
 
@@ -79,10 +80,23 @@ export default class Main extends React.Component {
             });
     }
 
-    onDrop(row, col, pipe) {
+    onDropToolbox(pipe) {
+        if (pipe.pos) {
+            matrix.removePipe(pipe.pos.x, pipe.pos.y);
+            this.setState({
+                boardContent: matrix.snapshot(),
+            });
+        }
+    }
+
+    onDrop(row, col, pipeSnap) {
         console.log('onDrop', Date.now());
-        if (pipe) {
-            matrix.addPipe(row, col, createPipe(pipe));
+        if (pipeSnap) {
+            if(pipeSnap.pos) {
+                matrix.moverPipe(row, col, pipeSnap.pos);
+            } else {
+                matrix.addPipeSnap(row, col, pipeSnap);
+            }
         } else {
             matrix.removePipe(row, col);
         }
@@ -163,7 +177,7 @@ export default class Main extends React.Component {
                 <div className="container">
                     <div className="body">
                         <div className="toolbox-container">
-                            <Toolbox />
+                            <Toolbox onDrop={this.onDropToolbox}/>
                         </div>
                         <div className="board-container">
                             <Board content={boardContent.board} onDrop={this.onDrop} onChangeVarValue={this.onChangeVarValue} />

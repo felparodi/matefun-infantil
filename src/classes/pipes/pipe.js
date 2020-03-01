@@ -261,6 +261,7 @@ export class Pipe {
     
     snapshot() {
         const [x, y] = this.getPos();
+        const pos = x !== undefined && y !== undefined ? {x,y} : undefined;
         const dir = {}
         this.getAllDirection().forEach((direction) => {
             switch(direction) {
@@ -280,7 +281,7 @@ export class Pipe {
         })
         return {
             type: this.getType(),
-            pos: { x, y },
+            pos,
             dir,
             errors: this.errors,
             warnings: this.warnings,
