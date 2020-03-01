@@ -15,7 +15,7 @@ const OutPutValue = (props) => {
                 textAnchor="middle"
                 fontSize="35"
                 fill='white'>
-                {pipe.valueText}
+                {valueText}
             </text>
             }
             {
