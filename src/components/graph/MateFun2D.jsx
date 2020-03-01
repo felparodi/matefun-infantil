@@ -14,10 +14,23 @@ export class MateFun2D extends React.Component {
         this.zoomOut = this.zoomOut.bind(this);
         this.zoomIn = this.zoomIn.bind(this);
         this.recenterPlot = this.recenterPlot.bind(this);
-        this.exportPlot = this.exportPlot.bind(this)
+        this.exportPlot = this.exportPlot.bind(this);
+        this.handleResize = this.handleResize.bind(this);
+
+    }
+
+    handleResize() {
+        const { current } = this.graphDiv;
+        const bounding = current.getBoundingClientRect();
+        this.matFun.setBounding(bounding);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize);
     }
 
     componentDidMount() {
+        window.addEventListener('resize', this.handleResize)
         //To run after Render div container an run css sheets
         setTimeout(() => {
             const { value } = this.props;
@@ -30,6 +43,7 @@ export class MateFun2D extends React.Component {
             }
         })
     }
+
 
     componentDidUpdate(prevProps) {
         if(prevProps.value !== this.props.value) {

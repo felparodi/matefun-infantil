@@ -453,6 +453,7 @@ export class MateFunGraph2D {
     public setBounding(bounding:Bounding) {
         const { instance } = this;
         this.bounding = bounding;
+        debugger;
         if (bounding.width > 0 && instance) {
             instance.options.width = bounding.width;
             instance.options.height = bounding.height;
