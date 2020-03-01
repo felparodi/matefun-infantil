@@ -76,6 +76,10 @@ export class VarPipe extends Pipe {
         return `${this.getName()}`;
     }
 
+    getValueEval() {
+       return valueToString(this.getValue(), this.getValueType());
+    }
+
     getType() {
         return PIPE_TYPES.VARIABLE;
     }

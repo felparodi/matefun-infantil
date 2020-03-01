@@ -57,7 +57,7 @@ export class EndPipe extends Pipe {
         return DIRECTION.TOP === dir;
     }
 
-    getValue() {
+    getMateFunValue() {
         return this.value;
     }
 
@@ -73,13 +73,25 @@ export class EndPipe extends Pipe {
         this.type = type;
     }
 
+    setMateFunValue(value) {
+        this.value = value;
+    }
+
+    getValueText() {
+        if(this.value && this.value.tipo === 'salida') {
+            return this.value.resultado.replace('OUT', '');
+        }
+        return '';
+    }
+
     snapshot() {
         return {
             ...(super.snapshot()),
             dir: {
                 top: this.getValueType()
             },
-            value: this.getValue()
+            valueMateFun: this.getMateFunValue(),
+            valueText: this.getValueText()
         }
     }
 }

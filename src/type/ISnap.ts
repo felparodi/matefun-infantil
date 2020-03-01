@@ -7,9 +7,15 @@ export interface IPipeSnap {
     dir: IDir;
     name?: string;
     value?: Value;
+    valueMateFun?: IMateFunResp;
     valueText?: string;
     errors?: Array<string>;
     warnings?: Array<string>; 
+}
+
+export interface IMateFunResp {
+    type: string;
+    resultado: string;
 }
 
 export interface IPos {

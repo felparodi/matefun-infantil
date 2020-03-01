@@ -58,16 +58,17 @@ export default class Main extends React.Component {
 
                 this.ws.onmessage = evt => {
                     // listen to data sent from the websocket server
-                    const message = JSON.parse(evt.data)
-                    if (this.state.waitingForResult && message.tipo=="salida" && message.resultado.startsWith("OUT")){
-                        var resultValue= message.resultado.substring(3);
-                        matrix.setResultValue(resultValue);
+                    if(this.state.waitingForResult) {
+                        const message = JSON.parse(evt.data)
+                        if (!message.tipo || message.tipo === 'ack') { return; }
+                        matrix.setMateFunValue(message);
                         this.setState({ 
                             waitingForResult: false,
                             boardContent: matrix.snapshot()
                             //boardContent: boardContent
                         }, ()=>console.log('hey'))
                     }
+
                 }
 
                 this.ws.onclose = () => {

@@ -50,6 +50,10 @@ function getMateFunType(v) {
             return MATEFUN_TYPE.NUMBER;
         case VALUES_TYPES.FIGURE:
             return MATEFUN_TYPE.FIGURE;
+        case VALUES_TYPES.POINT:
+            return MATEFUN_TYPE.POINT;
+        case VALUES_TYPES.COLOR:
+            return MATEFUN_TYPE.COLOR;
         default:
             return "?";
     }
@@ -186,7 +190,7 @@ export class MatrixPipe {
     evaluateFunction() {
         if(this.isFunction()) {
             const varsPipes = this.getAllVars();
-            const varValueList = varsPipes.map((pipe) => pipe.value);
+            const varValueList = varsPipes.map((pipe) => pipe.getValueEval());
             return `${this.funcName}(${varValueList.join(', ')})`
         }
         return this.processInstruction();
@@ -204,7 +208,7 @@ export class MatrixPipe {
                 }
             }
         }
-        const canFuncEval = this.getAllVars().reduce((hasValue, pipe) => hasValue && !!pipe.getValue(), true);
+        const canFuncEval = this.getAllVars().reduce((hasValue, pipe) => hasValue && pipe.getValue() !== undefined && pipe.getValue() !== null, true);
         console.log( { board:snap,  isFunction: this.isFunction(), canProcess, canFuncEval });
         return { board:snap,  isFunction: this.isFunction(), canProcess, canFuncEval };
     }
@@ -219,9 +223,9 @@ export class MatrixPipe {
         }
     }
 
-    setResultValue(value) {
+    setMateFunValue(value) {
         const endPipe = this.getEndPipes()[0];
-        endPipe.value= value;
+        endPipe.setMateFunValue(value);
     }
 
     validateMatrix() {
