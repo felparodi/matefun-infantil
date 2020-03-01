@@ -15,7 +15,6 @@ export const InputType = (props) => {
         }
         case VALUES_TYPES.COLOR: {
             const [value, setValue] = useState(props.value && props.value.color ? props.value.color : "Verde");
-            debugger;
             return (
                 <select value={value}
                     className="form-control"
