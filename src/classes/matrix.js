@@ -95,10 +95,7 @@ export class MatrixPipe {
     clean() {
         this.values = new Array();
         for(let i = 0; i < this.maxX; i++) {
-            const column = new Array();
-            for(let j = 0; j < this.maxY; j++) {
-                column.push(null);
-            }
+            const column = new Array(this.maxY);
             this.values.push(column);
         }
     }
@@ -136,7 +133,7 @@ export class MatrixPipe {
     }
 
     removePipe(x, y) {
-        this.values[x][y] = null
+        delete this.values[x][y];
         this.updateMatrix();
     }
 
@@ -206,7 +203,7 @@ export class MatrixPipe {
         for(let x = 0; x < this.maxX; x++) {
             for(let y = 0; y < this.maxY; y++) {
                 const pipe = this.value(x,y);
-                if (pipe !== null) {
+                if (pipe) {
                     snap[x][y] = pipe.snapshot();
                     canProcess = canProcess && !snap[x][y].errors
                 }
@@ -229,7 +226,7 @@ export class MatrixPipe {
 
     moverPipe(x, y, pos) {
         const pipe = this.value(pos.x, pos.y);
-        this.values[pos.x][pos.y] = null;
+        delete this.values[pos.x][pos.y];
         this.addPipe(x, y, pipe);
     }
 

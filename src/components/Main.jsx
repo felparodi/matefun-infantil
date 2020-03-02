@@ -89,10 +89,10 @@ export default class Main extends React.Component {
         }
     }
 
-    onDrop(row, col, pipeSnap) {
+    onDrop(row, col, pipeSnap, options) {
         console.log('onDrop', Date.now());
         if (pipeSnap) {
-            if(pipeSnap.pos) {
+            if(pipeSnap.pos && !options.isCopy) {
                 matrix.moverPipe(row, col, pipeSnap.pos);
             } else {
                 matrix.addPipeSnap(row, col, pipeSnap);

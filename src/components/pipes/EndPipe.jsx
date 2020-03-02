@@ -52,10 +52,8 @@ export class EndPipe extends React.Component {
 
 
     render() {
-        //console.log('render EndPipe')
         const { pipe, origin } = this.props;
         const { showResult } = this.state;
-        //if(pipe.valueMateFun || pipe.valueText) { debugger };
         return (
             <React.Fragment>
                 <DisplayResult 

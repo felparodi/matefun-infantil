@@ -24,7 +24,6 @@ const toolboxGroups = [
             new FuncPipe(METHOD_FUNCTION.SUB, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
             new FuncPipe(METHOD_FUNCTION.MUL, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
             new FuncPipe(METHOD_FUNCTION.DIV, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
-            null,
         ]
     },
     { 
@@ -39,7 +38,6 @@ const toolboxGroups = [
             new EndPipe(VALUES_TYPES.POINT),
             new VarPipe(VALUES_TYPES.COLOR),
             new EndPipe(VALUES_TYPES.COLOR),
-            null,
         ],
     },
     {  
@@ -96,7 +94,6 @@ const toolboxGroups = [
         value: 'custom',
         label: 'Custom',
         pipes: [
-            null,
         ]
     }
 ];
