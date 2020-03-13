@@ -24,7 +24,6 @@ export default class Main extends React.Component {
             loadScriptField: '',
             evaluationResult: '',
             waitingForResult: false,
-            fileData: {},
             openConsole: false,
             userData: {}
         };
@@ -36,48 +35,8 @@ export default class Main extends React.Component {
         this.onDropToolbox = this.onDropToolbox.bind(this);
     }
 
-
     componentDidMount() {
-
-        var userData= this.props.userData;
-
-        this.setState({userData: userData});
-
-        services.crearArchivo(
-            (fileData) => {
-
-                this.setState({ fileData: fileData });
-            }
-        );
-        // instance of websocket connection as a class property
-        this.ws = new WebSocket('ws://localhost:8080/endpoint' + '/' + userData.cedula + '/' + userData.token + '/es');
-        // this.connection = new WebSocket(wsUrl+"/"+cedula+"/"+token+"/"+language);
-
-        this.ws.onopen = () => {
-            // on connecting, do nothing but log it to the console
-            console.log('connected')
-        }
-
-        this.ws.onmessage = evt => {
-            // listen to data sent from the websocket server
-            if (this.state.waitingForResult) {
-                const message = JSON.parse(evt.data)
-                if (!message.tipo || message.tipo === 'ack') { return; }
-                matrix.setMateFunValue(message);
-                this.setState({
-                    waitingForResult: false,
-                    boardContent: matrix.snapshot()
-                    //boardContent: boardContent
-                }, () => console.log('hey'))
-            }
-
-        }
-
-        this.ws.onclose = () => {
-            console.warn('disconnected')
-            // automatically try to reconnect on connection loss
-        }
-
+        services.loginInvitado();
     }
 
     onDropToolbox(pipe) {
@@ -116,33 +75,22 @@ export default class Main extends React.Component {
         var functionDeclaration = matrix.process();
         if (functionDeclaration.isFunction) {
             this.setState({ functionDeclaration: functionDeclaration.body })
-            var fileData = this.state.fileData;
-            fileData.contenido = functionDeclaration.body;
-            services.editarArchivo(fileData,
-                (response) => {
-                    var userData = this.state.userData;
-                    this.ws && this.ws.send('{"token":"' + userData.token + '","load":' + fileData.id + ',"dependencias":[' + fileData.id + ']}');
-                }
-            );
-        } else {
-            this.setState({ evaluationInstruction: functionDeclaration.body }, () =>
-                this.ws &&
-                this.ws.send('{"token":"' + this.state.userData.token + '","comando":"' + functionDeclaration.body + '"}')
-            );
+            services.editarWorkspace(functionDeclaration.body);
         }
     }
 
     evaluate() {
         //@TODO Cuando no es funcion
         var evaluationInstruction = matrix.evaluateFunction();
-        this.setState({
-            evaluationInstruction: evaluationInstruction,
-            waitingForResult: true
-        }, () => {
-            this.ws &&
-                this.ws.send('{"token":"' + this.state.userData.token + '","comando":"' + evaluationInstruction + '"}'); //send data to the server
-        })
-
+        this.setState({ evaluationInstruction: evaluationInstruction })
+        services.sendCommand(evaluationInstruction)
+            .then((message) => {
+                debugger
+                matrix.setMateFunValue(message);
+                this.setState({ 
+                    boardContent: matrix.snapshot()
+                });
+            });
     }
 
     setResult() {
