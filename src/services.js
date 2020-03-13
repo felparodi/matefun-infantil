@@ -5,7 +5,8 @@ const DOMMAIN_URL = 'localhost:8080'
 const SERVICES_URL = `http://${DOMMAIN_URL}/servicios`;
 const SOCKET_URL = `ws://${DOMMAIN_URL}/endpoint`;
 
-//Name Of matefun Field
+//Name Of matefun FIle
+const DEFAULT_ROOT_FILE_ID = 5;
 const WORKSPACE_FILE_NAME = 'MateFun Infatil Workspace';
 const CUSTOM_FUNCTION_FILE_NAME = 'MateFun Infatil Custom Function';
 
@@ -22,12 +23,20 @@ let customFuctionFile = null;
 //axios.defaults.withCredentials = true;
 
 export function loginInvitado() {
-    login("invitado", "invitado")
-        .then((userData) => {
-            crearWorkspace();
-        })
+    return login("invitado", "invitado")
 }
 
+function affetrLogin(user=userData) {
+    getArchios()
+        .then((files) => {
+            workspaceFile = files.find((file) => file.nombre === WORKSPACE_FILE_NAME)
+            if(!workspaceFile) crearWorkspaceFile();
+            customFuctionFile = files.find((file) => file.nombre === CUSTOM_FUNCTION_FILE_NAME)
+            if(!customFuctionFile) crearCustomFuctinoFile();
+
+        }
+    )
+}
 
 export function login(username, password) {
    return axios.post(SERVICES_URL + `/login`, {
@@ -37,6 +46,7 @@ export function login(username, password) {
         axios.defaults.headers.common = { 'Authorization': `Bearer ${res.data.token}` }
         userData = res.data;
         createWebSocket(userData);
+        affetrLogin(userData);
         return res.data;
     }).catch((e) => {
         console.warn("Error:Login Invitado", e)
@@ -84,6 +94,14 @@ export function editarWorkspace(contenido) {
    
 }
 
+export function getArchios(user=userData) {
+    axios.get(SERVICES_URL + `/archivo`, {params:{
+        cedula:user.cedula
+    }}).then((res) => {
+        return res.data;
+    })
+}
+
 export function sendCommand(comando) {
     return sendInstruction({comando});
 }
@@ -99,13 +117,20 @@ function sendInstruction(instr) {
     });
 }
 
-function crearWorkspace() {
+function crearWorkspaceFile() {
     return crearArchivo(WORKSPACE_FILE_NAME)
         .then(data => {
             workspaceFile = data;
             return data;
         })
+}
 
+function crearCustomFuctinoFile() {
+    return crearArchivo(CUSTOM_FUNCTION_FILE_NAME)
+        .then(data => {
+            customFuctionFile = data;
+            return data;
+        })
 }
 
 export function crearArchivo(name, user=userData) {
@@ -114,7 +139,7 @@ export function crearArchivo(name, user=userData) {
         contenido: "",
         nombre: name,
         directorio: false,
-        padreId: 5,
+        padreId: DEFAULT_ROOT_FILE_ID,
         editable: true
     }).then(res => res.data)
     .catch((e) => {
