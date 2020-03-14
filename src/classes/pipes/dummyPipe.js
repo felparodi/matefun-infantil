@@ -8,6 +8,23 @@ export class DummyPipe extends Pipe {
         this.clean();
     }
 
+    startWork() {
+        this.isWorking = true;
+    }
+    endWork() {
+        this.isWorking = false;
+    }
+
+    addDir(dir) {
+        const inDir = super.getInDirections();
+        const outDir = super.getOutDirections();
+        if(inDir.length === 0 && outDir.length === 0) {
+            this.setInDirection([dir]);
+        } else if(!inDir.find(d => d === dir) && !outDir.find(d => d === dir)) {
+            this.setOutDirections([...outDir, dir])
+        }
+    }
+
     clean() {
         super.clean();
         this.tempType = VALUES_TYPES.UNDEFINED;
@@ -129,7 +146,8 @@ export class DummyPipe extends Pipe {
         })
         return {
             ...(super.snapshot()),
-           dir
+           dir,
+           isWorking: this.isWorking,
         }
     }
 }

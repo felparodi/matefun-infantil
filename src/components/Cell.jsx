@@ -11,9 +11,10 @@ class Cell extends React.Component {
     }
 
     render() {
-        const { isOver, connectDropTarget, content, onDrop } = this.props;
+        const { isOver, connectDropTarget, content, onDrop, onClick } = this.props;
         return connectDropTarget(
-            <div className={classNames('Cell', { 'over': isOver })}>
+            <div className={classNames('Cell', { 'over': isOver })} 
+                onClick={onClick}>
                 { content &&  <Pipe onDrop={onDrop} pipe={content} origin="board"/>}
             </div>
         )

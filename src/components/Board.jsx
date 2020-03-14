@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { dropPipe, loadPenndingBoard} from '../api/board';
+import { dropPipe, loadPenndingBoard, startWork, endWork, addWorkingPipe} from '../api/board';
 import Cell from './Cell'
 import classNames from 'classnames';
 import './Board.scss';
@@ -13,13 +13,15 @@ export class Board extends React.Component {
         this.handlerKeyDown = this.handlerKeyDown.bind(this);
         this.handlerKeyUp = this.handlerKeyUp.bind(this);
         this.onDrop = this.onDrop.bind(this);
-        
+        this.addWPipe = this.addWPipe.bind(this);
     }
 
     handlerKeyDown(e) {
         if(e.type === 'keydown') {
             switch(e.keyCode) {
-               
+                case 88:
+                    !this.props.isWorking && this.props.startWork();
+                    break;
             }
         }
     }
@@ -27,11 +29,18 @@ export class Board extends React.Component {
     handlerKeyUp(e) {
         if(e.type === 'keyup') {
             switch(e.keyCode) {
-              
+                case 88:
+                    this.props.isWorking && this.props.endWork();
+                    break;
             }
         }
     }
 
+    addWPipe(x, y) {
+        if(this.props.isWorking) {
+            this.props.addWorkingPipe(x, y);
+        }
+    }
 
     onDrop(drop) {
         this.props.dropPipe(drop);
@@ -59,13 +68,14 @@ export class Board extends React.Component {
         for (let i = 0; i < content.length; i++) {
             let cells = []
             for (let j = 0; j < content[i].length; j++) {
-               
+               const content = this.props.content[i][j];
                 cells.push(
                     <Cell 
                         key={i + "-" + j} 
-                        content={this.props.content[i][j]} 
+                        content={content} 
                         posX={i}
                         posY={j}
+                        onClick={() => this.addWPipe(i, j)}
                         onDrop={this.onDrop}>
                     </Cell>
                 );
@@ -87,11 +97,15 @@ export class Board extends React.Component {
 const mapStateToProps = state => ({
     content: state.matrix.board,
     hasPendding: state.matrix.hasPendding,
+    isWorking: state.matrix.isWorking,
 });
 
 const mapDispatchToProps = {
     dropPipe,
-    loadPenndingBoard
+    loadPenndingBoard,
+    startWork,
+    endWork,
+    addWorkingPipe,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board);

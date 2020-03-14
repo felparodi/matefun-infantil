@@ -78,6 +78,27 @@ export function clean() {
     }
 }
 
+export function startWork() {
+    return (dispatch) => {
+        matrix.startWork();
+        updateMatrix(dispatch);
+    }
+}
+
+export function endWork() {
+    return (dispatch) => {
+        matrix.endWork();
+        updateMatrix(dispatch);
+    }
+}
+
+export function addWorkingPipe(x, y) {
+    return (dispatch) => {
+        matrix.addWorkPipe(x, y);
+        updateMatrix(dispatch);
+    }
+}
+
 function updateMatrix(dispatch) {
     const snapshot = matrix.snapshot();
     const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);

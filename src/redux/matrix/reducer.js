@@ -10,6 +10,7 @@ export const initialState = {
     canProcess: false,
     workspaceFunction: '',
     evalInstruction: '',
+    isWorking: false,
     hasPendding: !!localStorage.getItem('matrix')
 };
 
@@ -21,7 +22,8 @@ export default function matrix(state = initialState, action) {
         ...state, 
         board: boardSanp.board, 
         isFunction: boardSanp.isFunction,
-        canProcess: boardSanp.canProcess
+        canProcess: boardSanp.canProcess,
+        isWorking: boardSanp.isWorking,
       };
     }
     case actionTypes.SET_EVAL_INSTRUCTION: {

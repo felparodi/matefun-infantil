@@ -1,6 +1,6 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES, MATEFUN_TYPE } from '../constants/constants';
-
-import { isMarked, sortPipe } from './pipes/pipe';
+import {DummyPipe} from './pipes/dummyPipe';
+import { isMarked, sortPipe, invertDirection, pipeDirValueType } from './pipes/pipe';
 import { Context } from './context';
 
 function getMateFunType(v) {
@@ -31,7 +31,54 @@ export class MatrixPipe {
         this.maxX = x;
         this.maxY = y;
         this.funcName = 'func';
+        this.isWorking = false;
         this.clean();
+    }
+
+    startWork() {
+        this.isWorking = true;
+    }
+
+
+
+    endWork() {
+        this.isWorking = false;
+        this.getAllPipes()
+            .filter(p => p.endWork )
+            .forEach(p => p.endWork());
+    }
+
+    getArroundPipe(x, y) {
+        const arround = []
+        if(x-1 >= 0) arround.push({ dir: DIRECTION.TOP, p: this.value(x-1,y) })
+        if(y-1 >= 0) arround.push({ dir: DIRECTION.LEFT, p: this.value(x, y-1) })
+        if(x+1 < this.maxX) arround.push({ dir: DIRECTION.BOTTOM, p: this.value(x+1,y) })
+        if(y+1 < this.maxY) arround.push({ dir: DIRECTION.RIGHT, p: this.value(x,y+1) })
+        return arround.filter(a => a.p);
+    }
+
+    addWorkPipe(x, y) {
+        if (!this.isWorking) { throw new Error("La matrix no esta en porces de agrera working Pipe") }
+        if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") }
+        const act = this.value(x, y)
+        if(act && act.getType() !== PIPE_TYPES.DUMMY) return;
+        debugger;
+        const arrounds = this.getArroundPipe(x, y);
+        const dir = [];
+        arrounds.forEach(arr => {
+            const pipe = arr.p;
+            const invD = invertDirection(arr.dir);
+            if(pipe.getType() === PIPE_TYPES.DUMMY && pipe.isWorking) {
+                pipe.addDir(invD);
+                dir.push(arr.dir);
+            } else if(pipe.hasDirection(invD)) {
+                dir.push(arr.dir);
+            }
+        })
+        const newDummy =  new DummyPipe(...dir);
+        newDummy.startWork()
+        this.addPipeSpeed(x, y, newDummy);
+        this.updateMatrix();
     }
 
     getAllPipes() {
@@ -182,7 +229,7 @@ export class MatrixPipe {
         const isFunction = this.isFunction();
         canProcess = canProcess && (!isFunction || canFuncEval);
         console.log( { board:snap,  isFunction, canProcess });
-        return { board:snap,  isFunction, canProcess };
+        return { board:snap,  isFunction, canProcess, isWorking: this.isWorking };
     }
 
     setPipeValue(x, y, value) {
