@@ -26,6 +26,7 @@ export function loginInvitado() {
     return login("invitado", "invitado")
 }
 
+//Creare si no existe los archivos basicos para trabajar en matefun
 function affetrLogin(user=userData) {
     getArchios()
         .then((files) => {
@@ -33,7 +34,6 @@ function affetrLogin(user=userData) {
             if(!workspaceFile) crearWorkspaceFile();
             customFuctionFile = files.find((file) => file.nombre === CUSTOM_FUNCTION_FILE_NAME)
             if(!customFuctionFile) crearCustomFuctinoFile();
-
         }
     )
 }
@@ -95,7 +95,7 @@ export function editarWorkspace(contenido) {
 }
 
 export function getArchios(user=userData) {
-    axios.get(SERVICES_URL + `/archivo`, {params:{
+    return axios.get(SERVICES_URL + `/archivo`, {params:{
         cedula:user.cedula
     }}).then((res) => {
         return res.data;

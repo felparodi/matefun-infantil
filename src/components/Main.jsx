@@ -8,17 +8,16 @@ import Header from './Header';
 import { MatrixPipe } from '../classes/matrix'
 import { BOARD_ROWS, BOARD_COLS } from '../constants/constants'
 import * as services from '../services';
+import * as board from '../api/board';
 import './Main.scss';
 
 const debugMode = localStorage.getItem('debug-mode') === 'true';
-const matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
 
 export default class Main extends React.Component {
-
     constructor() {
         super();
         this.state = {
-            boardContent: matrix.snapshot(),
+            boardContent: board.getSnapshot(),
             functionDeclaration: '',
             evaluationInstruction: '',
             loadScriptField: '',
@@ -31,7 +30,6 @@ export default class Main extends React.Component {
         this.process = this.process.bind(this);
         this.evaluate = this.evaluate.bind(this);
         this.onChangeVarValue = this.onChangeVarValue.bind(this);
-        this.setResult = this.setResult.bind(this);
         this.onDropToolbox = this.onDropToolbox.bind(this);
     }
 
@@ -40,39 +38,33 @@ export default class Main extends React.Component {
     }
 
     onDropToolbox(pipe) {
-        if (pipe.pos) {
-            matrix.removePipe(pipe.pos.x, pipe.pos.y);
-            this.setState({
-                boardContent: matrix.snapshot(),
-            });
-        }
+        board.removePipe(pipe);
+        this.setState({
+            boardContent: board.getSnapshot(),
+        });
     }
 
     onDrop(row, col, pipeSnap, options) {
         console.log('onDrop', Date.now());
         if (pipeSnap) {
-            if (pipeSnap.pos && !options.isCopy) {
-                matrix.moverPipe(row, col, pipeSnap.pos);
+            if(pipeSnap.pos && !options.isCopy) {
+                board.moverPipe(row, col, pipeSnap);
             } else {
-                matrix.addPipeSnap(row, col, pipeSnap);
+                board.addPipeSnap(row, col, pipeSnap);
             }
-        } else {
-            matrix.removePipe(row, col);
+            this.setState({
+                boardContent: board.getSnapshot(),
+            });
         }
-        this.setState({
-            boardContent: matrix.snapshot(),
-        });
     }
 
     onChangeVarValue(x, y, value) {
-        matrix.setPipeValue(x, y, value);
-        this.setState({
-            boardContent: matrix.snapshot()
-        });
+        board.setPipeValue(x, y, value);
+        this.setState({ boardContent: board.getSnapshot() });
     }
 
     process() {
-        var functionDeclaration = matrix.process();
+        const functionDeclaration = board.process();
         if (functionDeclaration.isFunction) {
             this.setState({ functionDeclaration: functionDeclaration.body })
             services.editarWorkspace(functionDeclaration.body);
@@ -80,22 +72,15 @@ export default class Main extends React.Component {
     }
 
     evaluate() {
-        //@TODO Cuando no es funcion
-        var evaluationInstruction = matrix.evaluateFunction();
+        var evaluationInstruction = board.evaluate();
         this.setState({ evaluationInstruction: evaluationInstruction })
         services.sendCommand(evaluationInstruction)
             .then((message) => {
-                debugger
-                matrix.setMateFunValue(message);
+                board.setMateFunValue(message);
                 this.setState({ 
-                    boardContent: matrix.snapshot()
+                    boardContent: board.getSnapshot()
                 });
             });
-    }
-
-    setResult() {
-        matrix.setResultValue(5);
-        this.setState({ boardContent: matrix.snapshot() });
     }
 
     renderConsole() {
@@ -117,6 +102,19 @@ export default class Main extends React.Component {
         )
     }
 
+    renderActions() {
+        const { boardContent, openConsole } = this.state;
+        return( 
+            <div className="actions">
+                <div className="actions-button">
+                    <Button variant="primary" disabled={!boardContent.canProcess || (boardContent.isFunction && !boardContent.canFuncEval)} onClick={this.evaluate}>Evaluar</Button>
+                    <Button variant="primary" disabled={!boardContent.canProcess || !boardContent.isFunction} onClick={this.process}>Procesar</Button>
+                { debugMode && <Button variant="primary" onClick={() => {this.setState({openConsole:!openConsole})}}>Consola</Button> }
+                </div>
+                { debugMode && this.renderConsole() }
+            </div>
+        );
+    }
     render() {
         const { boardContent, openConsole } = this.state;
         return (
@@ -131,14 +129,7 @@ export default class Main extends React.Component {
                             <Board content={boardContent.board} onDrop={this.onDrop} onChangeVarValue={this.onChangeVarValue} />
                         </div>
                     </div>
-                    <div className="actions">
-                        <div className="actions-button">
-                            <Button variant="primary" disabled={!boardContent.canProcess || (boardContent.isFunction && !boardContent.canFuncEval)} onClick={this.evaluate}>Evaluar</Button>
-                            <Button variant="primary" disabled={!boardContent.canProcess || !boardContent.isFunction} onClick={this.process}>Procesar</Button>
-                            {debugMode && <Button variant="primary" onClick={() => { this.setState({ openConsole: !openConsole }) }}>Consola</Button>}
-                        </div>
-                        {debugMode && this.renderConsole()}
-                    </div>
+                   {this.renderActions()}
                 </div>
             </div>
         )
