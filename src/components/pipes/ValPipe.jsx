@@ -1,6 +1,9 @@
 import React, {useState} from 'react';
+import { connect } from 'react-redux';
+import { setPipeValue } from '../../api/board';
 import './ValPipe.scss';
 import {  VALUES_TYPES } from '../../constants/constants';
+
 import Output from './function-parts/Output';
 
 export const InputType = (props) => {
@@ -80,10 +83,10 @@ export class ValPipe extends React.Component {
     }
 
     leaveEditing(value) {
-        const { pipe, onChangeVarValue } = this.props;
+        const { pipe } = this.props;
         value = castValue(value, pipe.dir.bottom);
         this.setState({ edit: false });
-        onChangeVarValue(pipe.pos.x, pipe.pos.y, value);
+        this.props.setPipeValue(pipe.pos.x, pipe.pos.y, value);
     }
     
     render() {
@@ -114,3 +117,8 @@ export class ValPipe extends React.Component {
     }
 }
 
+const mapDispath = {
+    setPipeValue
+}
+
+export default connect(null, mapDispath)(ValPipe);

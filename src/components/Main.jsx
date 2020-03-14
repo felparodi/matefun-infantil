@@ -18,18 +18,13 @@ export class Main extends React.Component {
     constructor() {
         super();
         this.state = {
-            functionDeclaration: '',
-            evaluationInstruction: '',
-            loadScriptField: '',
             evaluationResult: '',
-            waitingForResult: false,
             openConsole: false,
             userData: {}
         };
         this.onDrop = this.onDrop.bind(this);
         this.process = this.process.bind(this);
         this.evaluate = this.evaluate.bind(this);
-        this.onChangeVarValue = this.onChangeVarValue.bind(this);
         this.onDropToolbox = this.onDropToolbox.bind(this);
     }
 
@@ -50,10 +45,6 @@ export class Main extends React.Component {
                 this.props.addPipeSnap(row, col, pipeSnap);
             }
         }
-    }
-
-    onChangeVarValue(x, y, value) {
-        this.props.setPipeValue(x, y, value);
     }
 
     process() {
@@ -107,7 +98,7 @@ export class Main extends React.Component {
                             <Toolbox onDrop={this.onDropToolbox} />
                         </div>
                         <div className="board-container">
-                            <Board onDrop={this.onDrop} onChangeVarValue={this.onChangeVarValue} />
+                            <Board onDrop={this.onDrop}/>
                         </div>
                     </div>
                    {this.renderActions()}

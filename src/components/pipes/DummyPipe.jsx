@@ -58,3 +58,4 @@ export class DummyPipe extends React.Component {
     }
 }
 
+export default DummyPipe;

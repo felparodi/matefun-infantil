@@ -1,5 +1,7 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { setPipeValue } from '../../api/board';
 import Output from './function-parts/Output';
 import { InputType, castValue } from './ValPipe'
 import './ValPipe.scss';
@@ -65,17 +67,17 @@ export class VarPipe extends React.Component {
     }
 
     leaveEditing(value) {
-        const { pipe, onChangeVarValue } = this.props;
+        const { pipe } = this.props;
         value = castValue(value, pipe.dir.bottom);
         this.setState({ editingValue: false });
-        onChangeVarValue(pipe.pos.x, pipe.pos.y, value);
+        this.props.setPipeValue(pipe.pos.x, pipe.pos.y, value);
     }
 
     setDoorState(isOpen) {
-        const { pipe, onChangeVarValue } = this.props;
+        const { pipe } = this.props;
         this.setState({ isOpen: isOpen, editingValue: isOpen });
         if(!isOpen) {
-            onChangeVarValue(pipe.pos.x, pipe.pos.y, null);
+            this.props.setPipeValue(pipe.pos.x, pipe.pos.y, null);
         }
     }
 
@@ -100,3 +102,8 @@ export class VarPipe extends React.Component {
     }
 }
 
+const mapDispath = {
+    setPipeValue
+}
+
+export default connect(null, mapDispath)(VarPipe);

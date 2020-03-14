@@ -101,3 +101,4 @@ export class FuncPipe extends React.Component {
     }
 }
 
+export default FuncPipe;

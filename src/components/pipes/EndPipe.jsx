@@ -72,3 +72,5 @@ export class EndPipe extends React.Component {
         )
     }
 }
+
+export default EndPipe;

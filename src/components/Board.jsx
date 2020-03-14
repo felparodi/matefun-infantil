@@ -56,8 +56,7 @@ export class Board extends React.Component {
                     <Cell 
                         key={i + "-" + j} 
                         content={this.props.content[i][j]} 
-                        onDrop={(pipe) => this.props.onDrop(i, j, pipe, {isCopy})}
-                        onChangeVarValue={this.props.onChangeVarValue}>
+                        onDrop={(pipe) => this.props.onDrop(i, j, pipe, {isCopy})}>
                     </Cell>
                 );
             }
