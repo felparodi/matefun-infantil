@@ -2,31 +2,16 @@ import * as matrixAction from '../redux/matrix/actionTypes';
 import { MatrixPipe } from '../classes/matrix';
 import { BOARD_ROWS, BOARD_COLS } from '../constants/constants';
 import * as services from '../services';
+import {createPipeToSnap} from '../classes/helpers/pipeSnap';
 
 let matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
-
-export function removePipe(pipe) {
-    return (dispatch) => {
-        if (pipe.pos) {
-            matrix.removePipe(pipe.pos.x, pipe.pos.y);
-            updateMatrix(dispatch);
-        }
-    }
-}
-
-export function moverPipe(row, col, pipeSnap) {
-    return (dispatch) => {
-        matrix.moverPipe(row, col, pipeSnap.pos);
-        updateMatrix(dispatch);
-    }
-}
 
 export function dropPipe(drop) {
     return (dispatch) => {
         const {origin, pos, dropEffect, pipe} = drop;
         if(origin === 'board') {
             if(!pipe.pos || dropEffect === 'copy') {
-                matrix.addPipeSnap(pos.x, pos.y, pipe);
+                matrix.addPipe(pos.x, pos.y, createPipeToSnap(pipe));
             } else if (dropEffect === 'move') {
                 matrix.moverPipe(pos.x, pos.y, pipe.pos);
             }
@@ -35,13 +20,6 @@ export function dropPipe(drop) {
                 matrix.removePipe(pipe.pos.x, pipe.pos.y);
             }
         }
-        updateMatrix(dispatch);
-    }
-}
-
-export function addPipeSnap(row, col, pipeSnap) {
-    return (dispatch) => {
-        matrix.addPipeSnap(row, col, pipeSnap);
         updateMatrix(dispatch);
     }
 }
