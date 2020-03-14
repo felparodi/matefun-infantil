@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import Cell from './Cell'
 import Toolbox from './Toolbox'
 import Board from './Board'
@@ -13,11 +14,10 @@ import './Main.scss';
 
 const debugMode = localStorage.getItem('debug-mode') === 'true';
 
-export default class Main extends React.Component {
+export class Main extends React.Component {
     constructor() {
         super();
         this.state = {
-            boardContent: board.getSnapshot(),
             functionDeclaration: '',
             evaluationInstruction: '',
             loadScriptField: '',
@@ -38,77 +38,59 @@ export default class Main extends React.Component {
     }
 
     onDropToolbox(pipe) {
-        board.removePipe(pipe);
-        this.setState({
-            boardContent: board.getSnapshot(),
-        });
+        this.props.removePipe(pipe);
     }
 
     onDrop(row, col, pipeSnap, options) {
         console.log('onDrop', Date.now());
         if (pipeSnap) {
             if(pipeSnap.pos && !options.isCopy) {
-                board.moverPipe(row, col, pipeSnap);
+                this.props.moverPipe(row, col, pipeSnap);
             } else {
-                board.addPipeSnap(row, col, pipeSnap);
+                this.props.addPipeSnap(row, col, pipeSnap);
             }
-            this.setState({
-                boardContent: board.getSnapshot(),
-            });
         }
     }
 
     onChangeVarValue(x, y, value) {
-        board.setPipeValue(x, y, value);
-        this.setState({ boardContent: board.getSnapshot() });
+        this.props.setPipeValue(x, y, value);
     }
 
     process() {
-        const functionDeclaration = board.process();
-        if (functionDeclaration.isFunction) {
-            this.setState({ functionDeclaration: functionDeclaration.body })
-            services.editarWorkspace(functionDeclaration.body);
-        }
+        this.props.process();
     }
 
     evaluate() {
-        var evaluationInstruction = board.evaluate();
-        this.setState({ evaluationInstruction: evaluationInstruction })
-        services.sendCommand(evaluationInstruction)
-            .then((message) => {
-                board.setMateFunValue(message);
-                this.setState({ 
-                    boardContent: board.getSnapshot()
-                });
-            });
+        this.props.evaluate();
     }
 
     renderConsole() {
         const {
-            functionDeclaration, evaluationInstruction,
-            loadScriptField, evaluationResult, openConsole
+            evalInstruction, workspaceFunction
+        } = this.props;
+        const { 
+             evaluationResult, openConsole
         } = this.state;
         return (
-            <div className={classNames("actions-info", { 'hidden': !openConsole })}>
-                <p>Evaluar</p>
-                <textarea className="info evaluation" readOnly value={evaluationInstruction} />
-                <p>Funcion</p>
-                <textarea className="info function" readOnly value={functionDeclaration} />
-                <p>Archivo</p>
-                <textarea className="info file" readOnly value={loadScriptField} />
-                <p>Resultado</p>
-                <textarea className="info result" readOnly value={evaluationResult} />
-            </div>
+            <div className={classNames("actions-info", {'hidden':!openConsole})}>
+            <p>Evaluar</p>
+            <textarea className="info evaluation" readOnly value={evalInstruction}/>
+            <p>Funcion</p>
+            <textarea className="info function" readOnly value={workspaceFunction}/>
+            <p>Resultado</p>
+            <textarea className="info result" readOnly value={evaluationResult}/>
+        </div>
         )
     }
 
     renderActions() {
-        const { boardContent, openConsole } = this.state;
+        const { openConsole } = this.state;
+        const {canProcess, isFunction} = this.props;
         return( 
             <div className="actions">
                 <div className="actions-button">
-                    <Button variant="primary" disabled={!boardContent.canProcess || (boardContent.isFunction && !boardContent.canFuncEval)} onClick={this.evaluate}>Evaluar</Button>
-                    <Button variant="primary" disabled={!boardContent.canProcess || !boardContent.isFunction} onClick={this.process}>Procesar</Button>
+                    <Button variant="primary" disabled={!canProcess} onClick={this.evaluate}>Evaluar</Button>
+                    <Button variant="primary" disabled={!isFunction} onClick={this.process}>Procesar</Button>
                 { debugMode && <Button variant="primary" onClick={() => {this.setState({openConsole:!openConsole})}}>Consola</Button> }
                 </div>
                 { debugMode && this.renderConsole() }
@@ -116,7 +98,6 @@ export default class Main extends React.Component {
         );
     }
     render() {
-        const { boardContent, openConsole } = this.state;
         return (
             <div className="Main">
                 <Header userData={this.state.userData} onLogout={this.props.onLogout}/>
@@ -126,7 +107,7 @@ export default class Main extends React.Component {
                             <Toolbox onDrop={this.onDropToolbox} />
                         </div>
                         <div className="board-container">
-                            <Board content={boardContent.board} onDrop={this.onDrop} onChangeVarValue={this.onChangeVarValue} />
+                            <Board onDrop={this.onDrop} onChangeVarValue={this.onChangeVarValue} />
                         </div>
                     </div>
                    {this.renderActions()}
@@ -135,3 +116,16 @@ export default class Main extends React.Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    canProcess: state.matrix.canProcess,
+    isFunction: state.matrix.isFunction,
+    evalInstruction: state.matrix.evalInstruction,
+    workspaceFunction: state.matrix.workspaceFunction
+});
+
+const mapDispachFunction = {
+    ...board
+}
+
+export default connect(mapStateToProps, mapDispachFunction)(Main);

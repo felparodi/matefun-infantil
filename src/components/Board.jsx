@@ -1,8 +1,11 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import Cell from './Cell'
 import classNames from 'classnames';
 import './Board.scss';
-export default class Board extends React.Component {
+
+
+export class Board extends React.Component {
 
     constructor(props) {
         super();
@@ -72,3 +75,9 @@ export default class Board extends React.Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    content: state.matrix.board,
+});
+
+export default connect(mapStateToProps, null)(Board)

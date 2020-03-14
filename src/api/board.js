@@ -1,38 +1,68 @@
+import * as matrixAction from '../redux/matrix/actionTypes';
 import { MatrixPipe } from '../classes/matrix';
 import { BOARD_ROWS, BOARD_COLS } from '../constants/constants';
+import * as services from '../services';
 
 let matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
 
 export function removePipe(pipe) {
-    if (pipe.pos) {
-        matrix.removePipe(pipe.pos.x, pipe.pos.y);
+    return (dispatch) => {
+        if (pipe.pos) {
+            matrix.removePipe(pipe.pos.x, pipe.pos.y);
+            updateMatrix(dispatch);
+        }
     }
-} 
+}
 
 export function moverPipe(row, col, pipeSnap) {
-    matrix.moverPipe(row, col, pipeSnap.pos);
+    return (dispatch) => {
+        matrix.moverPipe(row, col, pipeSnap.pos);
+        updateMatrix(dispatch);
+    }
 }
 
 export function addPipeSnap(row, col, pipeSnap) {
-    matrix.addPipeSnap(row, col, pipeSnap);
+    return (dispatch) => {
+        matrix.addPipeSnap(row, col, pipeSnap);
+        updateMatrix(dispatch);
+    }
 }
 
 export function setPipeValue(x, y, value) {
-    matrix.setPipeValue(x, y, value);
+    return (dispatch) => {
+        matrix.setPipeValue(x, y, value);
+        updateMatrix(dispatch);
+    }
 }
 
 export function process() {
-    return matrix.process();
+    return (dispatch) => {
+        const funcProcess = matrix.process();
+        services.editarWorkspace(funcProcess.body);
+        dispatch({
+            type:matrixAction.SET_WORKSPACE_FUNCTION_BODY, 
+            payload: funcProcess
+        });
+    }
 }
 
 export function evaluate() {
-    return matrix.evaluateFunction();
+    return (dispatch) => {
+        const instruction = matrix.evaluateFunction();
+        dispatch({
+            type:matrixAction.SET_EVAL_INSTRUCTION, 
+            payload: instruction
+        });
+        services.sendCommand(instruction).then((message) => {
+            matrix.setMateFunValue(message);
+            updateMatrix(dispatch);
+        })
+    }
 }
 
-export function setMateFunValue(message) {
-    matrix.setMateFunValue(message);
-}
-
-export function getSnapshot() {
-    return matrix.snapshot();
+function updateMatrix(dispatch) {
+    dispatch({
+        type:matrixAction.UPDATE_BOARD,
+        payload: matrix.snapshot()
+    });
 }

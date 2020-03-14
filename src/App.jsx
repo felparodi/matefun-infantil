@@ -3,11 +3,14 @@ import React from 'react';
 import Main from './components/Main';
 import Login from './components/Login';
 import { DndProvider } from 'react-dnd'
+
+import { Provider } from 'react-redux';
+import store from './redux';
 import HTML5Backend from 'react-dnd-html5-backend'
 import './App.scss';
+import { Container } from 'react-bootstrap';
 
 export default class App extends React.Component {
-
   constructor() {
     super();
     this.state = {
@@ -34,18 +37,23 @@ export default class App extends React.Component {
   }
 
   render() {
+    let contain = null;
     if (this.state.isLoggedIn) {
-      return (
+      contain = (
         <DndProvider backend={HTML5Backend}>
           <Main userData={this.state.userData} onLogout={this.onLogout}></Main>
         </DndProvider>
       )
     } else {
-      return (
+      contain = (
         <Login onLogin={this.onLogin}></Login>
       )
     }
-
+    return (
+      <Provider store={store}>
+        {contain}
+      </Provider>
+    )
   }
 
 }

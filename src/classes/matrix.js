@@ -210,8 +210,10 @@ export class MatrixPipe {
             }
         }
         const canFuncEval = this.getAllVars().reduce((hasValue, pipe) => hasValue && pipe.getValue() !== undefined && pipe.getValue() !== null, true);
-        console.log( { board:snap,  isFunction: this.isFunction(), canProcess, canFuncEval });
-        return { board:snap,  isFunction: this.isFunction(), canProcess, canFuncEval };
+        const isFunction = this.isFunction();
+        canProcess = canProcess && (!isFunction || canFuncEval);
+        console.log( { board:snap,  isFunction, canProcess });
+        return { board:snap,  isFunction, canProcess };
     }
 
     setPipeValue(x, y, value) {
