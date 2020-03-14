@@ -6,10 +6,8 @@ import Board from './Board'
 import classNames from 'classnames';
 import { Button, Modal } from 'react-bootstrap';
 import Header from './Header';
-import { MatrixPipe } from '../classes/matrix'
-import { BOARD_ROWS, BOARD_COLS } from '../constants/constants'
 import * as services from '../services';
-import * as board from '../api/board';
+import { process, evaluate } from '../api/board';
 import './Main.scss';
 
 const debugMode = localStorage.getItem('debug-mode') === 'true';
@@ -22,30 +20,14 @@ export class Main extends React.Component {
             openConsole: false,
             userData: {}
         };
-        this.onDrop = this.onDrop.bind(this);
         this.process = this.process.bind(this);
         this.evaluate = this.evaluate.bind(this);
-        this.onDropToolbox = this.onDropToolbox.bind(this);
     }
 
     componentDidMount() {
         services.loginInvitado();
     }
 
-    onDropToolbox(pipe) {
-        this.props.removePipe(pipe);
-    }
-
-    onDrop(row, col, pipeSnap, options) {
-        console.log('onDrop', Date.now());
-        if (pipeSnap) {
-            if(pipeSnap.pos && !options.isCopy) {
-                this.props.moverPipe(row, col, pipeSnap);
-            } else {
-                this.props.addPipeSnap(row, col, pipeSnap);
-            }
-        }
-    }
 
     process() {
         this.props.process();
@@ -98,7 +80,7 @@ export class Main extends React.Component {
                             <Toolbox onDrop={this.onDropToolbox} />
                         </div>
                         <div className="board-container">
-                            <Board onDrop={this.onDrop}/>
+                            <Board/>
                         </div>
                     </div>
                    {this.renderActions()}
@@ -116,7 +98,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispachFunction = {
-    ...board
+    process, evaluate
 }
 
 export default connect(mapStateToProps, mapDispachFunction)(Main);

@@ -1,5 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { moverPipe, addPipeSnap } from '../api/board';
 import Cell from './Cell'
 import classNames from 'classnames';
 import './Board.scss';
@@ -11,6 +12,7 @@ export class Board extends React.Component {
         super();
         this.handlerKeyDown = this.handlerKeyDown.bind(this);
         this.handlerKeyUp = this.handlerKeyUp.bind(this);
+        this.onDrop = this.onDrop.bind(this);
         this.state = {
             isCopy: false
         }
@@ -34,6 +36,19 @@ export class Board extends React.Component {
         }
     }
 
+
+    onDrop(row, col, pipeSnap, options) {
+        console.log('onDrop', Date.now());
+        if (pipeSnap) {
+            if(pipeSnap.pos && !options.isCopy) {
+                this.props.moverPipe(row, col, pipeSnap);
+            } else {
+                this.props.addPipeSnap(row, col, pipeSnap);
+            }
+        }
+    }
+
+
     componentDidMount() {
         window.addEventListener('keydown', this.handlerKeyDown)
         window.addEventListener('keyup', this.handlerKeyUp)
@@ -56,7 +71,7 @@ export class Board extends React.Component {
                     <Cell 
                         key={i + "-" + j} 
                         content={this.props.content[i][j]} 
-                        onDrop={(pipe) => this.props.onDrop(i, j, pipe, {isCopy})}>
+                        onDrop={(pipe) => this.onDrop(i, j, pipe, {isCopy})}>
                     </Cell>
                 );
             }
@@ -79,4 +94,9 @@ const mapStateToProps = state => ({
     content: state.matrix.board,
 });
 
-export default connect(mapStateToProps, null)(Board)
+const mapDispatchToProps = {
+    moverPipe,
+    addPipeSnap
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board)
