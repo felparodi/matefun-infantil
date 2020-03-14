@@ -73,11 +73,24 @@ export class MatrixPipe {
         return x < 0 || x >= this.maxX || y < 0 || y >= this.maxY
     }
 
-    addPipe(x, y, p) {
+    addPipeBulck(pipeBulck) {
+        pipeBulck.forEach(info => {
+            const {x, y} = info.pos;
+            this.addPipe(x, y, info.pipe);
+        })
+        this.updateMatrix();
+    }
+
+    //No valida ni actualiza la matirz
+    addPipeSpeed(x, y, pipe) {
+        this.values[x][y] = pipe;
+        pipe.setBoard(this);
+        pipe.setPos(x, y);
+    }
+
+    addPipe(x, y, pipe) {
         if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") }
-        this.values[x][y] = p;
-        p.setBoard(this);
-        p.setPos(x, y);
+        this.addPipeSpeed(x, y, pipe)
         this.updateMatrix();
     }
 

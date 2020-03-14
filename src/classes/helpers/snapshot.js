@@ -40,3 +40,27 @@ export function createPipeToSnap(snapshot) {
             return new ConditionPipe();
     }
 }
+
+export function cleanSnapshotMatrixInfo(snapshot) {
+    const clean = { 
+        pipes:[], 
+        size: {
+            x: snapshot.board.length,
+            y: snapshot.board[0].length,
+        }
+    };
+    snapshot.board.forEach(row => {
+        row.forEach( pipe => {
+            if(pipe) {
+                clean.pipes.push({
+                    type: pipe.type,
+                    dir: pipe.dir,
+                    name: pipe.name,
+                    value: pipe.value,
+                    pos: pipe.pos
+                })  
+            }
+        })
+    });
+    return clean;
+}

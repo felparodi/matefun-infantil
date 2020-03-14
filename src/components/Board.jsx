@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { dropPipe } from '../api/board';
+import { dropPipe, loadPenndingBoard} from '../api/board';
 import Cell from './Cell'
 import classNames from 'classnames';
 import './Board.scss';
@@ -39,13 +39,18 @@ export class Board extends React.Component {
 
 
     componentDidMount() {
-        window.addEventListener('keydown', this.handlerKeyDown)
-        window.addEventListener('keyup', this.handlerKeyUp)
+        window.addEventListener('keydown', this.handlerKeyDown);
+        window.addEventListener('keyup', this.handlerKeyUp);
+        if(this.props.hasPendding) {
+            if(confirm('Desa Cargar Pendient')) {
+                this.props.loadPenndingBoard();
+            }
+        }
     }
 
     componentWillUnmount() {
-        window.removeEventListener('keydown', this.handlerKeyDown)
-        window.removeEventListener('keyup', this.handlerKeyUp)
+        window.removeEventListener('keydown', this.handlerKeyDown);
+        window.removeEventListener('keyup', this.handlerKeyUp);
     }
 
     createRows() {
@@ -81,10 +86,12 @@ export class Board extends React.Component {
 
 const mapStateToProps = state => ({
     content: state.matrix.board,
+    hasPendding: state.matrix.hasPendding,
 });
 
 const mapDispatchToProps = {
-    dropPipe
-}
+    dropPipe,
+    loadPenndingBoard
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Board)
+export default connect(mapStateToProps, mapDispatchToProps)(Board);

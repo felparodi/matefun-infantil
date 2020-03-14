@@ -10,6 +10,7 @@ export const initialState = {
     canProcess: false,
     workspaceFunction: '',
     evalInstruction: '',
+    hasPendding: !!localStorage.getItem('matrix')
 };
 
 export default function matrix(state = initialState, action) {

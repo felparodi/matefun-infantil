@@ -2,16 +2,31 @@ import * as matrixAction from '../redux/matrix/actionTypes';
 import { MatrixPipe } from '../classes/matrix';
 import { BOARD_ROWS, BOARD_COLS } from '../constants/constants';
 import * as services from '../services';
-import {createPipeToSnap} from '../classes/helpers/pipeSnap';
+import * as snapHelper from '../classes/helpers/snapshot';
 
 let matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
+export function loadPenndingBoard() {
+    return (dispatch) => {
+        const matrixJSON = localStorage.getItem('matrix');
+        if (matrixJSON) {
+            const savedMatrix = JSON.parse(matrixJSON);
+            matrix = new MatrixPipe(savedMatrix.size.x, savedMatrix.size.y);
+            const pipesBulck = savedMatrix.pipes.map((snapPipe) => ({
+                    pos: snapPipe.pos,
+                    pipe: snapHelper.createPipeToSnap(snapPipe)
+            }))
+            matrix.addPipeBulck(pipesBulck);
+        }
+        updateMatrix(dispatch);
+    }
+}
 
 export function dropPipe(drop) {
     return (dispatch) => {
         const {origin, pos, dropEffect, pipe} = drop;
         if(origin === 'board') {
             if(!pipe.pos || dropEffect === 'copy') {
-                matrix.addPipe(pos.x, pos.y, createPipeToSnap(pipe));
+                matrix.addPipe(pos.x, pos.y, snapHelper.createPipeToSnap(pipe));
             } else if (dropEffect === 'move') {
                 matrix.moverPipe(pos.x, pos.y, pipe.pos);
             }
@@ -57,8 +72,11 @@ export function evaluate() {
 }
 
 function updateMatrix(dispatch) {
+    const snapshot = matrix.snapshot();
+    const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
+    localStorage.setItem('matrix', JSON.stringify(saveSnap));
     dispatch({
         type:matrixAction.UPDATE_BOARD,
-        payload: matrix.snapshot()
+        payload: snapshot
     });
 }
