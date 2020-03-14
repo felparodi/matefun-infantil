@@ -159,7 +159,7 @@ export class Pipe {
 
     constructor(inDirections, outDirections) {
         this.setInDirection(inDirections);
-        this.setOutDirections(outDirections); 
+        this.setOutDirections(outDirections.filter(d => d)); 
         this.board = null;
         this.pos = [];
     }
@@ -197,11 +197,11 @@ export class Pipe {
     }
 
     setInDirection(inDirections) {
-        this.inDirections = Array.isArray(inDirections) ? inDirections : inDirections ? [ inDirections ] : new Array();
+        this.inDirections = Array.isArray(inDirections) ? inDirections.filter(d => !!d) : inDirections ? [ inDirections ] : new Array();
     }
 
     setOutDirections(outDirections) {
-        this.outDirections = Array.isArray(outDirections) ? outDirections : outDirections ? [ outDirections ] : new Array();
+        this.outDirections = Array.isArray(outDirections) ? outDirections.filter(d => !!d) : outDirections ? [ outDirections ] : new Array();
     }
 
     getInDirections() {

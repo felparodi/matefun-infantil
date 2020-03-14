@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { Button } from 'react-bootstrap';
-import { process, evaluate } from '../api/board';
+import { process, evaluate, clean } from '../api/board';
 
 const debugMode = localStorage.getItem('debug-mode') === 'true';
 
@@ -15,6 +15,7 @@ export class Actions extends React.Component {
         };
         this.process = this.process.bind(this);
         this.evaluate = this.evaluate.bind(this);
+        this.clean = this.clean.bind(this);
     }
 
     process() {
@@ -23,6 +24,10 @@ export class Actions extends React.Component {
 
     evaluate() {
         this.props.evaluate();
+    }
+
+    clean() {
+        this.props.clean();
     }
 
     renderConsole() {
@@ -51,7 +56,8 @@ export class Actions extends React.Component {
             <div className="actions">
                 <div className="actions-button">
                     <Button variant="primary" disabled={!canProcess} onClick={this.evaluate}>Evaluar</Button>
-                    <Button variant="primary" disabled={!isFunction} onClick={this.process}>Procesar</Button>
+                    <Button variant="primary" disabled={!isFunction} onClick={this.process}>Salvar</Button>
+                    <Button variant="primary" onClick={this.clean}>Clean</Button>
                 { debugMode && <Button variant="primary" onClick={() => {this.setState({openConsole:!openConsole})}}>Consola</Button> }
                 </div>
                 { debugMode && this.renderConsole() }
@@ -69,7 +75,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispachFunction = {
-    process, evaluate
+    process, evaluate, clean
 }
 
 export default connect(mapStateToProps, mapDispachFunction)(Actions);

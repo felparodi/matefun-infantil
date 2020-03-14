@@ -12,6 +12,11 @@ import UBR from './dummies/UBR';
 import UBL from './dummies/UBL';
 import URL from './dummies/URL';
 import BRL from './dummies/BRL';
+import O from './dummies/O';
+import LI from './dummies/LI';
+import TI from './dummies/TI';
+import RI from './dummies/RI';
+import DI from './dummies/DI';
 
 export class DummyPipe extends React.Component {
 
@@ -38,6 +43,8 @@ export class DummyPipe extends React.Component {
                 }
             } else if(pipe.dir.left) {
                 return (<TopLeft className={pipe.dir.top}/>)
+            } else {
+                return (<TI className={pipe.dir.top}/>)
             }
         } else if (pipe.dir.left) {
             if (pipe.dir.right) {
@@ -48,13 +55,19 @@ export class DummyPipe extends React.Component {
                 }
             } else if (pipe.dir.bottom) {
                 return (<BottomLeft className={pipe.dir.bottom}/>)
+            } else {
+                return <LI className={pipe.dir.left}/>
             }
         } else if (pipe.dir.bottom) {
             if (pipe.dir.right) {
                 return (<BottomRight className={pipe.dir.bottom}/>)
+            } else {
+                return (<DI className={pipe.dir.bottom}/>)
             }
+        } else if (pipe.dir.right) {
+            return (<RI className={pipe.dir.right}/>);
         }
-        return null;
+        return (<O/>);
     }
 }
 

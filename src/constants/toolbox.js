@@ -63,6 +63,11 @@ const toolboxGroups = [
             new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT, DIRECTION.BOTTOM),
             new DummyPipe(DIRECTION.TOP, DIRECTION.RIGHT, DIRECTION.BOTTOM),
             new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.TOP),
+            new DummyPipe(),
+            new DummyPipe(DIRECTION.LEFT),
+            new DummyPipe(DIRECTION.RIGHT),
+            new DummyPipe(DIRECTION.TOP),
+            new DummyPipe(DIRECTION.BOTTOM),
         ]
     },
     {

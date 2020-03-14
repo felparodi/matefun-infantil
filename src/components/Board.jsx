@@ -42,9 +42,9 @@ export class Board extends React.Component {
         window.addEventListener('keydown', this.handlerKeyDown);
         window.addEventListener('keyup', this.handlerKeyUp);
         if(this.props.hasPendding) {
-            if(confirm('Desa Cargar Pendient')) {
+            //if(confirm('Desa Cargar Pendient')) {
                 this.props.loadPenndingBoard();
-            }
+            //}
         }
     }
 

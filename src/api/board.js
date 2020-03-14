@@ -71,6 +71,13 @@ export function evaluate() {
     }
 }
 
+export function clean() {
+    return (dispatch) => {
+       matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
+       updateMatrix(dispatch);
+    }
+}
+
 function updateMatrix(dispatch) {
     const snapshot = matrix.snapshot();
     const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
