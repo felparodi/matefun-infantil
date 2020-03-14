@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { moverPipe, addPipeSnap } from '../api/board';
+import { dropPipe } from '../api/board';
 import Cell from './Cell'
 import classNames from 'classnames';
 import './Board.scss';
@@ -13,16 +13,13 @@ export class Board extends React.Component {
         this.handlerKeyDown = this.handlerKeyDown.bind(this);
         this.handlerKeyUp = this.handlerKeyUp.bind(this);
         this.onDrop = this.onDrop.bind(this);
-        this.state = {
-            isCopy: false
-        }
+        
     }
 
     handlerKeyDown(e) {
         if(e.type === 'keydown') {
             switch(e.keyCode) {
-                case 18:
-                    return this.setState({isCopy: true})
+               
             }
         }
     }
@@ -30,22 +27,14 @@ export class Board extends React.Component {
     handlerKeyUp(e) {
         if(e.type === 'keyup') {
             switch(e.keyCode) {
-                case 18:
-                    return this.setState({isCopy: false})
+              
             }
         }
     }
 
 
-    onDrop(row, col, pipeSnap, options) {
-        console.log('onDrop', Date.now());
-        if (pipeSnap) {
-            if(pipeSnap.pos && !options.isCopy) {
-                this.props.moverPipe(row, col, pipeSnap);
-            } else {
-                this.props.addPipeSnap(row, col, pipeSnap);
-            }
-        }
+    onDrop(drop) {
+        this.props.dropPipe(drop);
     }
 
 
@@ -61,7 +50,6 @@ export class Board extends React.Component {
 
     createRows() {
         const { content } = this.props;
-        const {isCopy} = this.state;
         let rows = [];
         for (let i = 0; i < content.length; i++) {
             let cells = []
@@ -71,7 +59,9 @@ export class Board extends React.Component {
                     <Cell 
                         key={i + "-" + j} 
                         content={this.props.content[i][j]} 
-                        onDrop={(pipe) => this.onDrop(i, j, pipe, {isCopy})}>
+                        posX={i}
+                        posY={j}
+                        onDrop={this.onDrop}>
                     </Cell>
                 );
             }
@@ -81,9 +71,8 @@ export class Board extends React.Component {
     }
 
     render() {
-        const {isCopy} = this.state;
         return (
-            <div className={classNames('Board',{'copy': isCopy})} >
+            <div className='Board'>
                 {this.createRows()}
             </div>
         )
@@ -95,8 +84,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    moverPipe,
-    addPipeSnap
+    dropPipe
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board)

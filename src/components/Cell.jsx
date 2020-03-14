@@ -11,10 +11,10 @@ class Cell extends React.Component {
     }
 
     render() {
-        const { isOver, connectDropTarget, content } = this.props;
+        const { isOver, connectDropTarget, content, onDrop } = this.props;
         return connectDropTarget(
             <div className={classNames('Cell', { 'over': isOver })}>
-                { content &&  <Pipe pipe={content} origin="board"/>}
+                { content &&  <Pipe onDrop={onDrop} pipe={content} origin="board"/>}
             </div>
         )
     }
@@ -22,8 +22,10 @@ class Cell extends React.Component {
 
 const spec = {
     drop(props, monitor, component) {
-        const item = monitor.getItem();
-        props.onDrop(item.pipe);
+        return { 
+            pos:{x: props.posX, y: props.posY}, 
+            origin: 'board'
+        };
     }
 };
 

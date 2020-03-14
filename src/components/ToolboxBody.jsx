@@ -3,19 +3,26 @@ import { DropTarget } from "react-dnd";
 import { Button } from 'react-bootstrap';
 import Pipe from './pipes/Pipe';
 
-const renderPipeCol = (pipe, index) => (
-    <Button key={index} className="pipe-button" variant="outline-primary">
-        <Pipe pipe={pipe} origin="toolbox"/>
-    </Button>
-)
-
 class ToolboxBody extends React.Component {
+    constructor(props) {
+        super(props);
+        this.renderPipeCol = this.renderPipeCol.bind(this);
+    }
+
+    renderPipeCol(pipe, index) {
+        const {onDrop} = this.props;
+        return (
+            <Button key={index} className="pipe-button" variant="outline-primary">
+                <Pipe onDrop={onDrop} pipe={pipe} origin="toolbox"/>
+            </Button>
+        );
+    }
     render() {
         const { group, connectDropTarget } = this.props;
         return (
             connectDropTarget(
                 <div className="toolbox-body">
-                    { group.pipes.map(renderPipeCol) }
+                    { group.pipes.map(this.renderPipeCol) }
                 </div>
             )
         )
@@ -24,8 +31,7 @@ class ToolboxBody extends React.Component {
 
 const spec = {
     drop(props, monitor, component) {
-        const item = monitor.getItem();
-        props.onDrop(item.pipe);
+        return { origin: 'toolbox' };
     }
 };
 

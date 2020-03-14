@@ -35,15 +35,14 @@ class Pipe extends React.Component {
 
     render() {
         const { pipe, connectDragSource, origin } = this.props;
- 
-        const p = pipe ? (
+        const p = (
             <div className={classNames("Pipe", { 
-                'error':pipe.errors && pipe.errors.length > 0,
+                'error': pipe.errors && pipe.errors.length > 0,
                 'warning': pipe.warnings && pipe.warnings.length > 0
                 })}>
                     {SwitchPipe(pipe, this.props)}
-            </div>) :
-            <div className="Pipe"/>
+            </div>
+        );
         return connectDragSource(p);
     }
 }
@@ -58,6 +57,13 @@ const cardSource = {
     beginDrag(props, monitor, component) {
         const item = { pipe: props.pipe };
         return item;
+    },
+    endDrag(props, monitor, component) {
+        const {pipe, onDrop} = props
+        if(onDrop) {
+            const {pos, origin, dropEffect} = monitor.getDropResult();
+            props.onDrop({pos, pipe, origin, dropEffect});
+        }
     }
 };
 

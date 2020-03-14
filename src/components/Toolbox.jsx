@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {removePipe} from '../api/board';
+import {dropPipe} from '../api/board';
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 import toolboxGroups from '../constants/toolbox';
@@ -26,8 +26,8 @@ export class Toolbox extends React.Component {
         }
     }
 
-    onDrop(pipe) {
-        this.props.removePipe(pipe);
+    onDrop(drop) {
+        this.props.dropPipe(drop);
     }
 
     render() {
@@ -54,7 +54,7 @@ export class Toolbox extends React.Component {
 }
 
 const mapDispatchToProps = {
-    removePipe
+    dropPipe
 }
 
 export default connect(null, mapDispatchToProps)(Toolbox);

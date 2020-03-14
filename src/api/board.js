@@ -21,6 +21,24 @@ export function moverPipe(row, col, pipeSnap) {
     }
 }
 
+export function dropPipe(drop) {
+    return (dispatch) => {
+        const {origin, pos, dropEffect, pipe} = drop;
+        if(origin === 'board') {
+            if(!pipe.pos || dropEffect === 'copy') {
+                matrix.addPipeSnap(pos.x, pos.y, pipe);
+            } else if (dropEffect === 'move') {
+                matrix.moverPipe(pos.x, pos.y, pipe.pos);
+            }
+        } else if(origin === 'toolbox') {
+            if(pipe.pos) {
+                matrix.removePipe(pipe.pos.x, pipe.pos.y);
+            }
+        }
+        updateMatrix(dispatch);
+    }
+}
+
 export function addPipeSnap(row, col, pipeSnap) {
     return (dispatch) => {
         matrix.addPipeSnap(row, col, pipeSnap);
