@@ -15,14 +15,10 @@ export class Main extends React.Component {
         super();
     }
 
-    componentDidMount() {
-        services.loginInvitado();
-    }
-
     render() {
         return (
             <div className="Main">
-                <Header userData={this.state.userData} onLogout={this.props.onLogout}/>
+                <Header userData={this.props.userData} onLogout={this.props.onLogout}/>
                 <div className="container">
                     <div className="body">
                         <div className="toolbox-container">

@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Navbar, Nav, Row, Col, Button, Card, Form, FormControl } from 'react-bootstrap';
 import * as services from '../services';
 
-export default class Main extends React.Component {
+export class Login extends React.Component {
 
     constructor() {
         super();
@@ -11,7 +11,8 @@ export default class Main extends React.Component {
     }
 
     loginInvitado(){
-        services.loginInvitado(
+        services.loginInvitado()
+         .then(
             (userData) => {
                 this.props.onLogin(userData);
             }
@@ -55,3 +56,5 @@ export default class Main extends React.Component {
         )
     }
 }
+
+export default Login;
