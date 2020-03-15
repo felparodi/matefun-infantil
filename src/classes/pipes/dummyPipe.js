@@ -68,7 +68,7 @@ export class DummyPipe extends Pipe {
                 if(!next.pipe || !next.connected) { this.addWarning(`No coneccion ${next.dir}`); return; }
                 const newPath = enterDir ? [...path, this] : [this];
                 if(next.dir !== enterDir) { next.pipe.calc(context, board, next.dir, newPath); }
-
+                
                 if (next.pipe.isInDir(next.inDir)) {
                     if(this.isInDir(next.dir)) {
                         this.addError('Loop'); return;
