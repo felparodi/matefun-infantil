@@ -82,13 +82,13 @@ function createWebSocket(userData) {
 
 export function editarWorkspace(contenido) {
     workspaceFile.contenido = contenido;
-    editarArchivo2(workspaceFile)
+    return editarArchivo2(workspaceFile)
         .then((fileData) => {
             workspaceFile = fileData;
             return uplaodFile(workspaceFile)
                 .then((message) => {
                     console.log(message);
-                    return fileData;
+                    return { ...fileData, message};
                 })
         })
    

@@ -10,6 +10,7 @@ export const initialState = {
     canProcess: false,
     workspaceFunction: '',
     evalInstruction: '',
+    resultEval: '',
     isWorking: false,
     isJoining: false,
     hasPendding: !!localStorage.getItem('matrix')
@@ -40,6 +41,13 @@ export default function matrix(state = initialState, action) {
         ...state,
         workspaceFunction: workspaceInfo.body
       };
+    }
+    case actionTypes.SET_RESULT_EVAL: {
+      const messsage = action.payload;
+      return {
+        ...state,
+        resultEval: messsage
+      }
     }
     default:
       return state;

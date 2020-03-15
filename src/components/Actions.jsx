@@ -41,11 +41,9 @@ export class Actions extends React.Component {
 
     renderConsole() {
         const {
-            evalInstruction, workspaceFunction
+            evalInstruction, workspaceFunction, resultEval
         } = this.props;
-        const { 
-             evaluationResult, openConsole
-        } = this.state;
+        const { openConsole } = this.state;
         return (
             <div className={classNames("actions-info", {'hidden':!openConsole})}>
             <p>Evaluar</p>
@@ -53,7 +51,7 @@ export class Actions extends React.Component {
             <p>Funcion</p>
             <textarea className="info function" readOnly value={workspaceFunction}/>
             <p>Resultado</p>
-            <textarea className="info result" readOnly value={evaluationResult}/>
+            <textarea className="info result" readOnly value={resultEval}/>
         </div>
         )
     }
@@ -83,7 +81,8 @@ const mapStateToProps = state => ({
     isFunction: state.matrix.isFunction,
     evalInstruction: state.matrix.evalInstruction,
     workspaceFunction: state.matrix.workspaceFunction,
-    isWorking: state.matrix.isWorking
+    isWorking: state.matrix.isWorking,
+    resultEval: state.matrix.resultEval,
 });
 
 const mapDispachFunction = {

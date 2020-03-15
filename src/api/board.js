@@ -51,7 +51,12 @@ export function setPipeValue(x, y, value) {
 export function process() {
     return (dispatch) => {
         const funcProcess = matrix.process();
-        services.editarWorkspace(funcProcess.body);
+        services.editarWorkspace(funcProcess.body)
+            .then((fileData) => {
+                const { message } = fileData;
+                dispatch({type:matrixAction.SET_RESULT_EVAL, payload:message.resultado})
+            });
+
         dispatch({
             type:matrixAction.SET_WORKSPACE_FUNCTION_BODY, 
             payload: funcProcess
@@ -68,6 +73,7 @@ export function evaluate() {
         });
         services.sendCommand(instruction).then((message) => {
             matrix.setMateFunValue(message);
+            dispatch({type:matrixAction.SET_RESULT_EVAL, payload:message.resultado})
             updateMatrix(dispatch);
         })
     }
@@ -131,11 +137,13 @@ export function joinOutput(j2) {
 }
 
 function updateMatrix(dispatch) {
-    const snapshot = matrix.snapshot();
-    const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
-    localStorage.setItem('matrix', JSON.stringify(saveSnap));
-    dispatch({
-        type:matrixAction.UPDATE_BOARD,
-        payload: snapshot
+    return new Promise(() => {
+        const snapshot = matrix.snapshot();
+        const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
+        localStorage.setItem('matrix', JSON.stringify(saveSnap));
+        dispatch({
+            type:matrixAction.UPDATE_BOARD,
+            payload: snapshot
+        });
     });
 }
