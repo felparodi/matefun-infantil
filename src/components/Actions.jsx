@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { Button } from 'react-bootstrap';
-import { process, evaluate, clean, startWork, endWork } from '../api/board';
+import { process, evaluate, clean, startWork, endWork, processEval } from '../api/board';
 
 const debugMode = localStorage.getItem('debug-mode') === 'true';
 
@@ -32,7 +32,12 @@ export class Actions extends React.Component {
     }
 
     evaluate() {
-        this.props.evaluate();
+        const {isFunction} = this.props;
+        if(isFunction) {
+            this.props.processEval();
+        } else {
+            this.props.evaluate();
+        }
     }
 
     clean() {
@@ -65,7 +70,6 @@ export class Actions extends React.Component {
                     <Button className={classNames({'active':isWorking})} variant="primary" onClick={this.autodummy}>Connectar</Button>
                     <Button variant="primary" onClick={this.clean}>Clean</Button>
                     <Button variant="primary" disabled={!canProcess} onClick={this.evaluate}>Evaluar</Button>
-                    <Button variant="primary" disabled={!isFunction} onClick={this.process}>Salvar</Button>
                     
                 { debugMode && <Button variant="primary" onClick={() => {this.setState({openConsole:!openConsole})}}>Consola</Button> }
                 </div>
@@ -86,7 +90,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispachFunction = {
-    process, evaluate, clean, startWork, endWork
+    process, evaluate, clean, startWork, endWork, processEval
 }
 
 export default connect(mapStateToProps, mapDispachFunction)(Actions);

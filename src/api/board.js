@@ -51,16 +51,26 @@ export function setPipeValue(x, y, value) {
 export function process() {
     return (dispatch) => {
         const funcProcess = matrix.process();
-        services.editarWorkspace(funcProcess.body)
-            .then((fileData) => {
-                const { message } = fileData;
-                dispatch({type:matrixAction.SET_RESULT_EVAL, payload:message.resultado})
-            });
-
         dispatch({
             type:matrixAction.SET_WORKSPACE_FUNCTION_BODY, 
             payload: funcProcess
         });
+        return services.editarWorkspace(funcProcess.body)
+            .then((fileData) => {
+                const { message } = fileData;
+                dispatch({type:matrixAction.SET_RESULT_EVAL, payload:message.resultado})
+                return (fileData);
+            });
+        
+    }
+}
+
+export function processEval() {
+    return(dispatch) => {
+        return process()(dispatch)
+            .then((a) => {
+                return evaluate()(dispatch)
+            })
     }
 }
 

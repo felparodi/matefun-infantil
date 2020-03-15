@@ -65,10 +65,14 @@ function createWebSocket(userData) {
         if(wsResponse.length > 0) {
             const message = JSON.parse(evt.data)
             if (!message.tipo || message.tipo === 'ack') { return; }
-            const res = wsResponse.shift();
-            if(message.tipo !== 'error') {
+            if((message.tipo === 'salida' && message.resultado.indexOf('OUT') === 0)
+                ||(message.tipo === 'canvas')) {
+                //El shitf debuelve el primer de la lista y lo quita de la misma
+                const res = wsResponse.shift();
                 res.success(message);
-            } else {
+            } else if(message.tipo === 'error') {
+                //El shitf debuelve el primer de la lista y lo quita de la misma
+                const res = wsResponse.shift();
                 res.error(message);
             }
         }
