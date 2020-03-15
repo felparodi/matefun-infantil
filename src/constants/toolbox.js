@@ -37,38 +37,15 @@ const toolboxGroups = [
         label: 'Condiciones',
         pipes: [
             new ConditionPipe(),
-            new FuncPipe(METHOD_FUNCTION.OR, [VALUES_TYPES.BOOLEAN, VALUES_TYPES.BOOLEAN], VALUES_TYPES.BOOLEAN),
+            new FuncPipe(METHOD_FUNCTION.AND, [VALUES_TYPES.BOOLEAN, VALUES_TYPES.BOOLEAN], VALUES_TYPES.BOOLEAN),
             new FuncPipe(METHOD_FUNCTION.EQUAL, [VALUES_TYPES.GENERIC, VALUES_TYPES.GENERIC], VALUES_TYPES.BOOLEAN),
             new FuncPipe(METHOD_FUNCTION.N_EQUAL, [VALUES_TYPES.GENERIC, VALUES_TYPES.GENERIC], VALUES_TYPES.BOOLEAN),
             new FuncPipe(METHOD_FUNCTION.GREAT, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN),
             new FuncPipe(METHOD_FUNCTION.E_GREAT, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN),
             new FuncPipe(METHOD_FUNCTION.LEST, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN),
             new FuncPipe(METHOD_FUNCTION.E_LEST, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.BOOLEAN),
-            new FuncPipe(METHOD_FUNCTION.NOT, [VALUES_TYPES.BOOLEAN], VALUES_TYPES.BOOLEAN),
         ]
 
-    },
-    {
-        value: 'dummy',
-        label: 'Conectores',
-        pipes: [
-            new DummyPipe(DIRECTION.TOP, DIRECTION.BOTTOM),
-            new DummyPipe(DIRECTION.LEFT, DIRECTION.RIGHT),
-            new DummyPipe(DIRECTION.TOP, DIRECTION.RIGHT),
-            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT),
-            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.RIGHT),
-            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT),
-            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT),
-            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT, DIRECTION.RIGHT),
-            new DummyPipe(DIRECTION.TOP, DIRECTION.LEFT, DIRECTION.BOTTOM),
-            new DummyPipe(DIRECTION.TOP, DIRECTION.RIGHT, DIRECTION.BOTTOM),
-            new DummyPipe(DIRECTION.BOTTOM, DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.TOP),
-            new DummyPipe(),
-            new DummyPipe(DIRECTION.LEFT),
-            new DummyPipe(DIRECTION.RIGHT),
-            new DummyPipe(DIRECTION.TOP),
-            new DummyPipe(DIRECTION.BOTTOM),
-        ]
     },
     {
         value: 'figures',

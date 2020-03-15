@@ -25,8 +25,7 @@ export const METHOD_FUNCTION = Object.freeze({
     E_LEST: 'E_LEST',
     EQUAL: 'EQUAL',
     N_EQUAL: 'N_EQUAL',
-    NOT: 'NOT',
-    OR: 'OR',
+    AND: 'Y',
 })
 
 export const PIPE_TYPES= Object.freeze({

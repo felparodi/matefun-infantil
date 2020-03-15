@@ -10,7 +10,7 @@ import { METHOD_FUNCTION, DIRECTION } from '../../constants/constants'
 export class ConditionPipe extends FuncPipe {
 
     constructor() {
-       super('IF', [VALUES_TYPES.GENERIC, VALUES_TYPES.BOOLEAN, VALUES_TYPES.GENERIC], VALUES_TYPES.GENERIC);
+       super('SI', [VALUES_TYPES.GENERIC, VALUES_TYPES.BOOLEAN, VALUES_TYPES.GENERIC], VALUES_TYPES.GENERIC);
     }
 
     toCode(dir, board) {
