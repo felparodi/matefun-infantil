@@ -17,7 +17,7 @@ export class EndPipe extends Pipe {
     }
 
     //Calcula los tipos y informacion del estado del funcion   
-    calc(context, board, path) {
+    calc(context, board, enterDir, path) {
         if (!context.isMark(this.getPos())) {
             super.calc(context, board);
             const next = processNext(this, board)(DIRECTION.TOP);
@@ -25,7 +25,8 @@ export class EndPipe extends Pipe {
             if (next.error) { this.addError(next.error); return }
             if (!next.pipe || !next.connected) { this.addWarning("No esta conectado a nada"); return; }
             //Process Next
-            if(next.dir !== path) next.pipe.calc(context, board, next.inDir);
+            const newPath = enterDir ? [...path, this] : [this];
+            if(next.dir !== enterDir) next.pipe.calc(context, board, next.inDir, newPath);
             //Setea Valores
             const type = pipeDirValueType(next.pipe, next.inDir);
             if (matchTypes(this.tempType, type)) {

@@ -156,8 +156,7 @@ export class MatrixPipe {
 
     addPipeBulck(pipeBulck) {
         pipeBulck.forEach(info => {
-            const {x, y} = info.pos;
-            this.addPipe(x, y, info.pipe);
+            this.addPipeSpeed(info.pos, info.pipe);
         })
         this.updateMatrix();
     }

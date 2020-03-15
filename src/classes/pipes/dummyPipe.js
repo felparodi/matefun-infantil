@@ -55,7 +55,7 @@ export class DummyPipe extends Pipe {
     }
 
     //@TODO Loops
-    calc(context, board, path) {;
+    calc(context, board, enterDir, path) {;
         if(!context.isMark(this.getPos())) {
             context.mark(this.getPos());
             const dirs = this.getAllDirection();
@@ -66,7 +66,8 @@ export class DummyPipe extends Pipe {
                 if(this.errors) { return; }
                 if(next.error) { this.addError(next.error); return; }
                 if(!next.pipe || !next.connected) { this.addWarning(`No coneccion ${next.dir}`); return; }
-                if(next.dir !== path) { next.pipe.calc(context, board, next.dir); }
+                const newPath = enterDir ? [...path, this] : [this];
+                if(next.dir !== enterDir) { next.pipe.calc(context, board, next.dir, newPath); }
 
                 if (next.pipe.isInDir(next.inDir)) {
                     if(this.isInDir(next.dir)) {

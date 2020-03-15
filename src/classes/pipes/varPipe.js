@@ -35,7 +35,7 @@ export class VarPipe extends Pipe {
         this.tempType = this.type;
     }
 
-    calc(context, board, path) {
+    calc(context, board, enterDir, path) {
         if (!context.isMark(this.getPos())) {
             context.mark(this.getPos());
 
@@ -44,8 +44,8 @@ export class VarPipe extends Pipe {
             const next = processNext(this, board)(DIRECTION.BOTTOM)
             if (next.error) { this.addError(next.error); return; }
             if (!next.pipe || !next.connected) {this.addWarning('No esta conectado a nada '); return;}
-
-            if (next.dir !== path) { next.pipe.calc(context, board, next.inDir); }
+            const newPath = enterDir ? [...path, this] : [this];
+            if (next.dir !== enterDir) { next.pipe.calc(context, board, next.inDir, newPath); }
 
             const status = validateDirType(this, next);
             if (status.error) { this.addError(status.error); return; }
