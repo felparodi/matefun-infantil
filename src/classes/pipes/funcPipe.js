@@ -102,7 +102,7 @@ export class FuncPipe extends Pipe {
 
     toCode(direction, board) {        
         const arg = this.toCodeArg(direction, board);
-
+        debugger;
         switch(this.name) {
             case METHOD_FUNCTION.ADD:
                 return `(${arg[0]} + ${arg[1]})`;
@@ -164,7 +164,7 @@ export class FuncPipe extends Pipe {
     }
 
     isInDir(dir) {
-        return this.getInDirections().indexOf(dir) > 0;
+        return this.getInDirections().indexOf(dir) >= 0;
     }
 
     snapshot() {

@@ -92,7 +92,8 @@ export class Pipe {
     }
 
     toCodeArg(board) {
-        const arg = this.getParents()
+        const parentPipe = this.getParents();
+        const arg = parentPipe
             .map((dirPipe) => dirPipe.pipe !== null ? dirPipe.pipe.toCode(dirPipe.dir, board) : null)
         return arg.map(e => e !== null ? e : '?')
     }
