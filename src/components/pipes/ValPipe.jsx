@@ -8,7 +8,7 @@ import Output from './function-parts/Output';
 
 export const TextValue = ({onClick, valueText}) => {
     return (
-        <text x="50%" y="40%" 
+        <text x="50%" y="45%" 
         dominantBaseline="central" 
         textAnchor="middle" 
         fontSize="12" 
