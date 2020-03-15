@@ -56,7 +56,6 @@ export class DummyPipe extends Pipe {
 
     //@TODO Loops
     calc(context, board, enterDir, path) {
-        if(this.pos.x === 6 && this.pos.y === 4) debugger;
         if(!context.isMark(this.getPos())) {
             context.mark(this.getPos());
             const dirs = this.getAllDirection();

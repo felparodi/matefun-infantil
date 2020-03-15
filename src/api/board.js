@@ -66,6 +66,7 @@ export function process() {
 
 export function evaluate() {
     return (dispatch) => {
+        debugger;
         const instruction = matrix.evaluateFunction();
         dispatch({
             type:matrixAction.SET_EVAL_INSTRUCTION, 

@@ -66,9 +66,9 @@ function createWebSocket(userData) {
             const message = JSON.parse(evt.data)
             if (!message.tipo || message.tipo === 'ack') { return; }
             const res = wsResponse.shift();
-            if(message.tipo === 'salida') {
+            if(message.tipo !== 'error') {
                 res.success(message);
-            } else if(message.tipo === 'error') {
+            } else {
                 res.error(message);
             }
         }
