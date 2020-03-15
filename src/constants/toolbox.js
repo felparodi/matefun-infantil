@@ -12,10 +12,13 @@ const toolboxGroups = [
         label: 'Matematica',
         pipes: [
             new ConstPipe(0),
+            new FuncPipe(METHOD_FUNCTION.NEGATIVO, [VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
             new FuncPipe(METHOD_FUNCTION.ADD, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
             new FuncPipe(METHOD_FUNCTION.SUB, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
             new FuncPipe(METHOD_FUNCTION.MUL, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
             new FuncPipe(METHOD_FUNCTION.DIV, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
+            new FuncPipe(METHOD_FUNCTION.EXP, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
+            new FuncPipe(METHOD_FUNCTION.RAIZ, [VALUES_TYPES.NUMBER], VALUES_TYPES.NUMBER),
         ]
     },
     { 
@@ -30,6 +33,7 @@ const toolboxGroups = [
             new EndPipe(VALUES_TYPES.POINT),
             new VarPipe(VALUES_TYPES.COLOR),
             new EndPipe(VALUES_TYPES.COLOR),
+            new EndPipe(VALUES_TYPES.FIGURE),
         ],
     },
     {  
@@ -53,15 +57,16 @@ const toolboxGroups = [
         pipes: [
             new ConstPipe({color:'Rojo'}, VALUES_TYPES.COLOR),
             new ConstPipe({x:0, y:0}, VALUES_TYPES.POINT),
-            new FuncPipe('circ', [VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
-            new FuncPipe('rect', [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
-            new FuncPipe('linea', [VALUES_TYPES.POINT, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE),
-            new FuncPipe('poli', [VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
-            new FuncPipe('color', [VALUES_TYPES.FIGURE, VALUES_TYPES.COLOR], VALUES_TYPES.FIGURE),
-            new FuncPipe('rotar', [VALUES_TYPES.FIGURE, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
-            new FuncPipe('juntar', [VALUES_TYPES.FIGURE, VALUES_TYPES.FIGURE], VALUES_TYPES.FIGURE),
-            new FuncPipe('escalar', [VALUES_TYPES.FIGURE, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
-            new FuncPipe('mover', [VALUES_TYPES.FIGURE, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE),
+            new FuncPipe(METHOD_FUNCTION.CIRC, [VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
+            new FuncPipe(METHOD_FUNCTION.RECT, [VALUES_TYPES.NUMBER, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
+            //Estos no estan funcionado, LINEA no esta en nuestro interpret, y POLI haceta lista de PUNTOS
+            //new FuncPipe(METHOD_FUNCTION.LINEA, [VALUES_TYPES.POINT, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE),
+            //new FuncPipe(METHOD_FUNCTION.POLI, [VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
+            new FuncPipe(METHOD_FUNCTION.COLOR, [VALUES_TYPES.FIGURE, VALUES_TYPES.COLOR], VALUES_TYPES.FIGURE),
+            new FuncPipe(METHOD_FUNCTION.ROTAR, [VALUES_TYPES.FIGURE, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
+            new FuncPipe(METHOD_FUNCTION.JUNTAR, [VALUES_TYPES.FIGURE, VALUES_TYPES.FIGURE], VALUES_TYPES.FIGURE),
+            new FuncPipe(METHOD_FUNCTION.ESCALAR, [VALUES_TYPES.FIGURE, VALUES_TYPES.NUMBER], VALUES_TYPES.FIGURE),
+            new FuncPipe(METHOD_FUNCTION.MOVER, [VALUES_TYPES.FIGURE, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE),
         ]
     },
     {

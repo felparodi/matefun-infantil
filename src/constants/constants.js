@@ -11,6 +11,9 @@ export const METHOD_FUNCTION = Object.freeze({
     MUL: 'MUL',
     SUB: 'SUB',
     DIV: 'DIV',
+    EXP: 'EXP',
+    RAIZ: 'raizcuad',
+    NEGATIVO: '-',
     COLOR: 'color',
     ROTAR: 'rotar',
     CIRC: 'circ',
@@ -71,5 +74,5 @@ export const ERROR = Object.freeze({
     })
 })
 
-export const BOARD_ROWS= 10;
+export const BOARD_ROWS= 20;
 export const BOARD_COLS= 15;

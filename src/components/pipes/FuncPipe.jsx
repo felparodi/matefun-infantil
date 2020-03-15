@@ -57,23 +57,28 @@ const FunctionIcon = (props) => {
         case METHOD_FUNCTION.ADD:
             return <TextIcon text="+"/>;
         case METHOD_FUNCTION.SUB:
+        case METHOD_FUNCTION.NEGATIVO:
             return <TextIcon text="-"/>;
         case METHOD_FUNCTION.MUL:
             return <TextIcon text="x"/>;
         case METHOD_FUNCTION.DIV:
             return <TextIcon text="%"/>;
         case METHOD_FUNCTION.EQUAL:
-            return <TextIcon text="=="/>;
+            return <TextIcon text="="/>;
         case METHOD_FUNCTION.N_EQUAL:
-            return <TextIcon text="/="/>;
+            return <TextIcon text="&ne;"/>;
         case METHOD_FUNCTION.GREAT:
             return <TextIcon text=">"/>;
         case METHOD_FUNCTION.E_GREAT:
-            return <TextIcon text=">="/>;
+            return <TextIcon text="&ge;"/>;
         case METHOD_FUNCTION.LEST:
             return <TextIcon text="<"/>;
         case METHOD_FUNCTION.E_LEST:
-            return <TextIcon text="<="/>;
+            return <TextIcon text="&le;"/>;
+        case METHOD_FUNCTION.EXP:
+            return <TextIcon text="^"/>;
+        case METHOD_FUNCTION.RAIZ: 
+            return <TextIcon text="&radic;"/>
         case METHOD_FUNCTION.NOT:
             return <TextIcon text="!"/>;
         case METHOD_FUNCTION.JUNTAR:

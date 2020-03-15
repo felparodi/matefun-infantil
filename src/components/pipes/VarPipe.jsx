@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { setPipeValue, joinOutput} from '../../api/board';
 import Output from './function-parts/Output';
-import { InputType, castValue } from './ValPipe'
+import { InputType, castValue, TextValue } from './ValPipe'
 import { DIRECTION } from '../../constants/constants';
 import './ValPipe.scss';
 
@@ -25,14 +25,8 @@ export const DoorOpen = (props) => {
                 <path d="M 5 5 L 5 30 L 35 30 L 35 5 Z" style={{'fill': '#000000d6', 'stroke': 'black', 'strokeWidth': 0.3 }}/>
                 <path d="M 35 5 L 40 10 L 40 35 L 35 30 Z" style={{ 'fill': 'saddlebrown', 'stroke': 'black', 'strokeWidth' :0.3 }}/>
             </g>
-            <text x="50%" y="50%" 
-                dominantBaseline="central" 
-                textAnchor="middle" 
-                fontSize="20" 
-                onClick={onClickValue}
-                fill='white'>
-                {pipe.valueText}
-            </text>
+            <TextValue onClick={onClickValue}
+                valueText={pipe.valueText}/>
             <Output onClick={onClickOutput} className={pipe.dir.bottom}></Output>
         </svg>
     );

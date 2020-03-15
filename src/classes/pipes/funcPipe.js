@@ -125,6 +125,8 @@ export class FuncPipe extends Pipe {
                 return `(${arg[0]} =< ${arg[1]})`;
             case METHOD_FUNCTION.AND:
                 return `(${arg[0]} , ${arg[1]})`;
+            case METHOD_FUNCTION.EXP:
+                return `(${arg[0]} ^ ${arg[1]})`;
             default:
                 return `${this.name}(${arg.join(', ')})`;
         }
