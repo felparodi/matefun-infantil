@@ -1,6 +1,8 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES  } from '../../constants/constants';
-import { Pipe, processNext, validateDirType, matchTypes, pipeTypeDefined } from './pipe';
-import { evalValueType, valueToString } from './constPipe'
+import { validateDirType, matchTypes, pipeTypeDefined, evalValueType, valueToString } from '../helpers/type';
+import { processNext } from '../helpers/pipe';
+import { Pipe } from './pipe';
+
 /*
 *   Attr
 *   - index: String

@@ -96,7 +96,7 @@ export function endWork() {
 
 export function addWorkingPipe(x, y) {
     return (dispatch) => {
-        matrix.addWorkPipe(x, y);
+        matrix.addWorkPipe({x, y});
         updateMatrix(dispatch);
     }
 }

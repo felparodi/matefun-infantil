@@ -1,71 +1,10 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES, MATEFUN_TYPE } from '../constants/constants';
-import {DummyPipe} from './pipes/dummyPipe';
-import { isMarked, sortPipe, invertDirection, pipeDirValueType, directionMove } from './pipes/pipe';
+import { invertDirection, directionMove } from './helpers/direction';
+import { getMateFunType, pipeDirValueType, matchPipeTypeDir } from './helpers/type';
+import { sortPipe } from './helpers/pipe';
+import { DummyPipe } from './pipes/dummyPipe';
 import { Context } from './context';
-import DI from '../components/pipes/dummies/DI';
-
-function getMateFunType(v) {
-    const type = v.getValueType();
-    switch (type) {
-        case VALUES_TYPES.NUMBER:
-            return MATEFUN_TYPE.NUMBER;
-        case VALUES_TYPES.FIGURE:
-            return MATEFUN_TYPE.FIGURE;
-        case VALUES_TYPES.POINT:
-            return MATEFUN_TYPE.POINT;
-        case VALUES_TYPES.COLOR:
-            return MATEFUN_TYPE.COLOR;
-        default:
-            return "?";
-    }
-}
-
-
-function getArroundPos(pos, matrix) {
-    const {x, y} = pos;
-    const arround = []
-    if(x-1 >= 0) arround.push({x:x-1, y, dir:DIRECTION.TOP});
-    if(y-1 >= 0) arround.push({x, y:y-1, dir:DIRECTION.LEFT});
-    if(x+1 < matrix.maxX) arround.push({x:x+1, y, dir:DIRECTION.BOTTOM});
-    if(y+1 < matrix.maxY) arround.push({x, y:y+1, dir:DIRECTION.RIGHT});
-    return arround;
-}
-
-function equalPos(pos1, pos2) {
-    return pos1.x === pos2.x && pos1.y === pos2.y;
-}
-class BFS {
-    constructor(pos1, pos2, matrix) {
-        this.peandinProces = [[pos1, []]];
-        this.matrix = matrix;
-        this.end = pos2;
-        this.context = new Context(matrix.maxX, matrix.maxY);
-    }
-
-    procces() {
-        if(this.peandinProces.length === 0) return null;
-        debugger;
-        const [actual, path] = this.peandinProces.shift();
-        if(equalPos(actual, this.end)) { 
-            return [...path, actual];
-        }
-        const arround = getArroundPos(actual, this.matrix);
-        const childer = arround
-            .filter(pos => !this.context.isMark([pos.x, pos.y]))
-            .filter(pos => {
-                const pipe = this.matrix.value(pos.x, pos.y);
-                return !pipe || 
-                    (pipe.getType() === PIPE_TYPES.DUMMY &&
-                    pipe.hasDirection(invertDirection(pos.dir)));
-            });
-        for (let i = 0; i < childer.length; i++) {
-            const p = childer[i];
-            this.peandinProces.push([p, [...path, actual]]);
-            this.context.mark([p.x, p.y]);
-        }
-        return this.procces();
-    }
-}
+import {BFS} from './BFSMatrix';
 
 /*
 * Attr:
@@ -94,31 +33,26 @@ export class MatrixPipe {
             .forEach(p => p.endWork());
     }
 
-    getArroundPos() {
+    getArroundPos(pos) {
+        const {x, y} = pos;
         const arround = []
-        if(x-1 >= 0) arround.push([x-1, y]);
-        if(y-1 >= 0) arround.push([x, y-1]);
-        if(x+1 < this.maxX) arround.push([x+1, y]);
-        if(y+1 < this.maxY) arround.push([x, y+1]);
+        if(x-1 >= 0) arround.push({x:x-1, y, dir:DIRECTION.TOP});
+        if(y-1 >= 0) arround.push({x, y:y-1, dir:DIRECTION.LEFT});
+        if(x+1 < this.maxX) arround.push({x:x+1, y, dir:DIRECTION.BOTTOM});
+        if(y+1 < this.maxY) arround.push({x, y:y+1, dir:DIRECTION.RIGHT});
         return arround;
     }
 
-    getArroundPipe(x, y) {
-        const arround = []
-        if(x-1 >= 0) arround.push({ dir: DIRECTION.TOP, p: this.value(x-1,y) })
-        if(y-1 >= 0) arround.push({ dir: DIRECTION.LEFT, p: this.value(x, y-1) })
-        if(x+1 < this.maxX) arround.push({ dir: DIRECTION.BOTTOM, p: this.value(x+1,y) })
-        if(y+1 < this.maxY) arround.push({ dir: DIRECTION.RIGHT, p: this.value(x,y+1) })
+    getArroundPipe(pos) {
+        const arround = this.getArroundPos(pos).map((arr) => {
+            const {x, y} = arr;
+            return { dir: arr.dir, p: this.value(x,y) };
+        })
         return arround.filter(a => a.p);
     }
 
-    addWorkPipe(x, y) {
-        if (!this.isWorking) { throw new Error("La matrix no esta en porces de agrera working Pipe") }
-        if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") }
-        const act = this.value(x, y)
-        if(act && act.getType() !== PIPE_TYPES.DUMMY) return;
-        debugger;
-        const arrounds = this.getArroundPipe(x, y);
+    addDummyWorkingPipe(pos) {
+        const arrounds = this.getArroundPipe(pos);
         const dir = [];
         arrounds.forEach(arr => {
             const pipe = arr.p;
@@ -128,26 +62,25 @@ export class MatrixPipe {
                 dir.push(arr.dir);
             } else if(pipe.hasDirection(invD)) {
                 dir.push(arr.dir);
+                pipe.startWork && pipe.startWork();
             }
         })
         const newDummy =  new DummyPipe(...dir);
-        newDummy.startWork()
-        this.addPipeSpeed(x, y, newDummy);
+        newDummy.startWork();
+        this.addPipeSpeed(pos, newDummy);
+    }
+
+    addWorkPipe(pos) {
+        const {x, y} = pos;
+        if (!this.isWorking) { throw new Error("La matrix no esta en porces de agrera working Pipe") }
+        if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") }
+        const act = this.value(x, y)
+        if(act && act.getType() !== PIPE_TYPES.DUMMY) return;
+        this.addDummyWorkingPipe(pos);
         this.updateMatrix();
     }
 
-    join(j1, j2) {
-        debugger;
-        const pipe1 = this.value(j1.x, j1.y);
-        const pipe2 = this.value(j2.x, j2.y);
-        //Validar tipos
-        const [ip1x, ip1y] = directionMove([j1.x, j1.y], j1.dir);
-        const [ip2x, ip2y] = directionMove([j2.x, j2.y], j2.dir);
-        const toCreate = new BFS(
-            { x:ip1x, y:ip1y, dir:j1.dir }, 
-            { x:ip2x, y: ip2y, dir:j2.dir }, 
-            this).procces();
-        console.log(toCreate);
+    cratedJoinPipe(toCreate, end) {
         if(toCreate) {
             toCreate.forEach((pos, index, arr) => {
                 if(index < arr.length-1) {
@@ -157,18 +90,30 @@ export class MatrixPipe {
                         pipe.addDir(next.dir);
                     } else {
                         const invDir = invertDirection(pos.dir);
-                        this.addPipeSpeed(pos.x, pos.y, new DummyPipe(invDir, next.dir));
+                        this.addPipeSpeed(pos, new DummyPipe(invDir, next.dir));
                     }
                 }
             })
-            const endDir = invertDirection(toCreate[toCreate.length-1].dir);
-            this.addPipeSpeed(ip2x, ip2y, new DummyPipe(endDir, invertDirection(j2.dir)))
+            const endInDir = invertDirection(toCreate[toCreate.length-1].dir);
+            const endOutDir =  invertDirection(end.dir);
+            this.addPipeSpeed(end, new DummyPipe(endInDir, endOutDir));
         }
-        this.updateMatrix()
-        debugger
     }
 
-   
+    join(j1, j2) {
+        const pipe1 = this.value(j1.x, j1.y);
+        const pipe2 = this.value(j2.x, j2.y);
+        //Validar tipos
+        if(matchPipeTypeDir(pipe1, j1.dir, pipe2, j2.dir)) {
+            const start = { ...directionMove(j1, j1.dir), dir:j1.dir };
+            const end = { ...directionMove(j2, j2.dir), dir:j2.dir };
+            const toCreate = new BFS(start, end, this).procces();
+            this.cratedJoinPipe(toCreate, end)
+            this.updateMatrix()
+        } else {
+            throw new Error('No mapena tipos lo que se quiere unir');
+        }
+    }
 
     getAllPipes() {
         const pipes = new Array();
@@ -218,7 +163,8 @@ export class MatrixPipe {
     }
 
     //No valida ni actualiza la matirz
-    addPipeSpeed(x, y, pipe) {
+    addPipeSpeed(pos, pipe) {
+        const {x, y} = pos;
         this.values[x][y] = pipe;
         pipe.setBoard(this);
         pipe.setPos(x, y);
@@ -226,7 +172,7 @@ export class MatrixPipe {
 
     addPipe(x, y, pipe) {
         if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") }
-        this.addPipeSpeed(x, y, pipe)
+        this.addPipeSpeed({x, y}, pipe)
         this.updateMatrix();
     }
 
@@ -234,7 +180,6 @@ export class MatrixPipe {
         this.getAllPipes().forEach(p => p.clean());
         const context = new Context(this.maxX, this.maxY);
         this.getAllPipes().sort(sortPipe).forEach(p => p.calc(context, this));
-        //this.getAllPipes().filter((p) => !isMarked(context, p)).forEach((p) => p.addWarning('No procesado'))
     }
 
     removePipe(x, y) {

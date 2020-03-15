@@ -1,36 +1,7 @@
 import { PIPE_TYPES, VALUES_TYPES, DIRECTION} from '../../constants/constants';
-import { Pipe, processNext, validateDirType, matchTypes } from './pipe';
-
-export function evalValueType(value) {
-    switch(typeof value) {
-        case 'boolean': return VALUES_TYPES.BOOLEAN;
-        case 'number': return VALUES_TYPES.NUMBER;
-        case 'string': return VALUES_TYPES.STRING;
-        case 'function': return VALUES_TYPES.FUNCTION;
-        case 'object': {
-            if(value === null) return VALUES_TYPES.UNDEFINED;
-            if(value.x !== undefined && value.y !== undefined)  return VALUES_TYPES.POINT;
-            if(value.color) return VALUES_TYPES.COLOR;
-            if (Array.isArray(value)) {
-                //TODO array of number
-                return VALUES_TYPES.ARRAY;
-            }
-            return VALUES_TYPES.OTHER;
-        }
-        default:
-            return VALUES_TYPES.UNDEFINED;
-    }
-}
-
-export const valueToString = (value, type) => {
-    if(value === null || value == undefined) return '?';
-    if(type === VALUES_TYPES.STRING) return `"${value}"`;
-    if(type === VALUES_TYPES.NUMBER) return `${value}`;
-    if(type === VALUES_TYPES.BOOLEAN) return `${value}`;
-    if(type === VALUES_TYPES.COLOR) return `${value.color}`;
-    if(type === VALUES_TYPES.POINT) return `(${value.x}, ${value.y})`;
-    return `${JSON.stringify(value)}`;
-}
+import { processNext } from '../helpers/pipe';
+import { validateDirType, matchTypes, evalValueType, valueToString } from '../helpers/type';
+import { Pipe } from './pipe';
 
 export class ConstPipe extends Pipe {
 

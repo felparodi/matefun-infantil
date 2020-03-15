@@ -1,5 +1,6 @@
 import { PIPE_TYPES, VALUES_TYPES } from '../../constants/constants';
-import { Pipe, processNext } from './pipe';
+import { processNext } from '../helpers/pipe';
+import { Pipe } from './pipe';
 import { FuncPipe } from './funcPipe';
 import { METHOD_FUNCTION, DIRECTION } from '../../constants/constants'
 

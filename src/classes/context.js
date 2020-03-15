@@ -5,17 +5,17 @@ export class Context {
     }
 
     isMark(pos) {
-        const [x, y] = pos;
+        const {x, y} = pos;
         return this.marks[x][y];
     }
 
     mark(pos) {
-        const [x, y] = pos;
+        const {x, y} = pos;
         this.marks[x][y] = true;
     }
 
     unMark(pos) {
-        const [x, y] = pos;
+        const {x, y} = pos;
         this.marks[x][y] = false;
     }
 

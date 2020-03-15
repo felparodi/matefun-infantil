@@ -1,5 +1,8 @@
 import { PIPE_TYPES, VALUES_TYPES, METHOD_FUNCTION, DIRECTION } from '../../constants/constants';
-import { Pipe, isMarked, invertDirection, matchTypes, isDefined, isGeneric, processNext, sortPipe, pipeDirValueType, pipeTypeDefined} from './pipe'
+import { invertDirection } from '../helpers/direction';
+import { matchTypes, isDefined, isGeneric, pipeDirValueType, pipeTypeDefined } from '../helpers/type';
+import { processNext, sortPipe } from '../helpers/pipe';
+import { Pipe } from './pipe'
 
 /*
 * Retorna la lista de direciones que deberia tener una funcion segun la cantida de tipos de su entrada

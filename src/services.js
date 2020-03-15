@@ -45,7 +45,6 @@ export function login(username, password) {
         cedula: username,
         password: password
     }).then(res => {
-        debugger;
         userData = res.data;
         affetrLogin(userData);
         return res.data;
