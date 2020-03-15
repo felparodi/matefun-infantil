@@ -13,6 +13,7 @@ const CUSTOM_FUNCTION_FILE_NAME = 'MateFun Infatil Custom Function';
 //WebSockt Reference
 let ws = null
 const wsResponse = [];
+let accResp = [];
 const wsOnClose = [];
 
 //Dinamicy Matefun Data
@@ -32,12 +33,15 @@ function affetrLogin(user=userData) {
     createWebSocket(userData);
     getArchios()
         .then((files) => {
-            workspaceFile = files.find((file) => file.nombre === WORKSPACE_FILE_NAME)
-            if(!workspaceFile) crearWorkspaceFile();
             customFuctionFile = files.find((file) => file.nombre === CUSTOM_FUNCTION_FILE_NAME)
             if(!customFuctionFile) crearCustomFuctinoFile();
-        }
-    )
+            workspaceFile = files.find((file) => file.nombre === WORKSPACE_FILE_NAME)
+            if(!workspaceFile) crearWorkspaceFile();
+        
+        })
+        .then(() => {
+            setTimeout(allFunctionDef, 1000);
+        })
 }
 
 export function login(username, password) {
@@ -65,14 +69,20 @@ function createWebSocket(userData) {
         if(wsResponse.length > 0) {
             const message = JSON.parse(evt.data)
             if (!message.tipo || message.tipo === 'ack') { return; }
-            if((message.tipo === 'salida' && message.resultado.indexOf('OUT') === 0)
+            if(message.tipo === 'salida' && message.resultado === "") {
+                const res = wsResponse.shift();
+                const messages = accResp.length > 1 ? accResp : accResp[0];
+                accResp = [];
+                res.success(messages);
+            } if((message.tipo === 'salida' && message.resultado.indexOf('OUT') === 0)
                 ||(message.tipo === 'canvas')) {
                 //El shitf debuelve el primer de la lista y lo quita de la misma
-                const res = wsResponse.shift();
-                res.success(message);
+                accResp.push(message);
+                
             } else if(message.tipo === 'error') {
                 //El shitf debuelve el primer de la lista y lo quita de la misma
                 const res = wsResponse.shift();
+                accResp = [];
                 res.error(message);
             }
         }
@@ -135,6 +145,11 @@ function crearCustomFuctinoFile() {
             customFuctionFile = data;
             return data;
         })
+}
+
+export function allFunctionDef() {
+    return sendInstruction({ comando: '?funs'})
+        .then((a) => console.log(a));
 }
 
 export function crearArchivo(name, user=userData) {

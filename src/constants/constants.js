@@ -88,7 +88,9 @@ export const MATEFUN_TYPE= Object.freeze({
     FIGURE: 'Fig',
     COLOR: 'Color',
     POINT: '(R x R)',
-    LIST_NUMBER: 'R*',
+    list: (t) => `${t}*`,
+    GENERIC: 'A',
+
 })
 
 export const ERROR = Object.freeze({
