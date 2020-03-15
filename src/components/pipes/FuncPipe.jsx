@@ -15,7 +15,7 @@ import Rect from '../../icons/rect.svg'
 import Linea from '../../icons/linea.svg'
 import Poli from '../../icons/poli.svg'
 import Mover from '../../icons/mover.svg'
-
+import Puzzle from '../../icons/puzzle-pices.svg';
 
 function getTypeColor(type) {
     switch (type) {
@@ -76,6 +76,8 @@ const FunctionIcon = (props) => {
             return <TextIcon text="<="/>;
         case METHOD_FUNCTION.NOT:
             return <TextIcon text="!"/>;
+        case METHOD_FUNCTION.JUNTAR:
+            return <Puzzle/>;
         default:
             return <TextIcon text={props.name}/>;
     }

@@ -16,6 +16,7 @@ export const METHOD_FUNCTION = Object.freeze({
     CIRC: 'circ',
     RECT: 'rect',
     LINEA: 'linea',
+    JUNTAR: 'juntar',
     POLI:'poli',
     ESCALAR: 'escalar',
     MOVER: 'mover',
