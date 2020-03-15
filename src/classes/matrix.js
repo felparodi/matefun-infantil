@@ -1,7 +1,8 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES, MATEFUN_TYPE } from '../constants/constants';
 import {DummyPipe} from './pipes/dummyPipe';
-import { isMarked, sortPipe, invertDirection, pipeDirValueType } from './pipes/pipe';
+import { isMarked, sortPipe, invertDirection, pipeDirValueType, directionMove } from './pipes/pipe';
 import { Context } from './context';
+import DI from '../components/pipes/dummies/DI';
 
 function getMateFunType(v) {
     const type = v.getValueType();
@@ -16,6 +17,53 @@ function getMateFunType(v) {
             return MATEFUN_TYPE.COLOR;
         default:
             return "?";
+    }
+}
+
+
+function getArroundPos(pos, matrix) {
+    const {x, y} = pos;
+    const arround = []
+    if(x-1 >= 0) arround.push({x:x-1, y, dir:DIRECTION.TOP});
+    if(y-1 >= 0) arround.push({x, y:y-1, dir:DIRECTION.LEFT});
+    if(x+1 < matrix.maxX) arround.push({x:x+1, y, dir:DIRECTION.BOTTOM});
+    if(y+1 < matrix.maxY) arround.push({x, y:y+1, dir:DIRECTION.RIGHT});
+    return arround;
+}
+
+function equalPos(pos1, pos2) {
+    return pos1.x === pos2.x && pos1.y === pos2.y;
+}
+class BFS {
+    constructor(pos1, pos2, matrix) {
+        this.peandinProces = [[pos1, []]];
+        this.matrix = matrix;
+        this.end = pos2;
+        this.context = new Context(matrix.maxX, matrix.maxY);
+    }
+
+    procces() {
+        if(this.peandinProces.length === 0) return null;
+        debugger;
+        const [actual, path] = this.peandinProces.shift();
+        if(equalPos(actual, this.end)) { 
+            return [...path, actual];
+        }
+        const arround = getArroundPos(actual, this.matrix);
+        const childer = arround
+            .filter(pos => !this.context.isMark([pos.x, pos.y]))
+            .filter(pos => {
+                const pipe = this.matrix.value(pos.x, pos.y);
+                return !pipe || 
+                    (pipe.getType() === PIPE_TYPES.DUMMY &&
+                    pipe.hasDirection(invertDirection(pos.dir)));
+            });
+        for (let i = 0; i < childer.length; i++) {
+            const p = childer[i];
+            this.peandinProces.push([p, [...path, actual]]);
+            this.context.mark([p.x, p.y]);
+        }
+        return this.procces();
     }
 }
 
@@ -39,13 +87,20 @@ export class MatrixPipe {
         this.isWorking = true;
     }
 
-
-
     endWork() {
         this.isWorking = false;
         this.getAllPipes()
             .filter(p => p.endWork )
             .forEach(p => p.endWork());
+    }
+
+    getArroundPos() {
+        const arround = []
+        if(x-1 >= 0) arround.push([x-1, y]);
+        if(y-1 >= 0) arround.push([x, y-1]);
+        if(x+1 < this.maxX) arround.push([x+1, y]);
+        if(y+1 < this.maxY) arround.push([x, y+1]);
+        return arround;
     }
 
     getArroundPipe(x, y) {
@@ -80,6 +135,40 @@ export class MatrixPipe {
         this.addPipeSpeed(x, y, newDummy);
         this.updateMatrix();
     }
+
+    join(j1, j2) {
+        debugger;
+        const pipe1 = this.value(j1.x, j1.y);
+        const pipe2 = this.value(j2.x, j2.y);
+        //Validar tipos
+        const [ip1x, ip1y] = directionMove([j1.x, j1.y], j1.dir);
+        const [ip2x, ip2y] = directionMove([j2.x, j2.y], j2.dir);
+        const toCreate = new BFS(
+            { x:ip1x, y:ip1y, dir:j1.dir }, 
+            { x:ip2x, y: ip2y, dir:j2.dir }, 
+            this).procces();
+        console.log(toCreate);
+        if(toCreate) {
+            toCreate.forEach((pos, index, arr) => {
+                if(index < arr.length-1) {
+                    const pipe = this.value(pos.x, pos.y);
+                    const next = arr[index+1];
+                    if(pipe) {
+                        pipe.addDir(next.dir);
+                    } else {
+                        const invDir = invertDirection(pos.dir);
+                        this.addPipeSpeed(pos.x, pos.y, new DummyPipe(invDir, next.dir));
+                    }
+                }
+            })
+            const endDir = invertDirection(toCreate[toCreate.length-1].dir);
+            this.addPipeSpeed(ip2x, ip2y, new DummyPipe(endDir, invertDirection(j2.dir)))
+        }
+        this.updateMatrix()
+        debugger
+    }
+
+   
 
     getAllPipes() {
         const pipes = new Array();

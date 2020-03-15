@@ -1,9 +1,10 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { setPipeValue } from '../../api/board';
+import { setPipeValue, joinOutput} from '../../api/board';
 import Output from './function-parts/Output';
 import { InputType, castValue } from './ValPipe'
+import { DIRECTION } from '../../constants/constants';
 import './ValPipe.scss';
 
 const JoinOutput = (props) => (
@@ -15,7 +16,7 @@ const JoinOutput = (props) => (
 );
 
 export const DoorOpen = (props) => { 
-    const { pipe, onClickDoor, onClickValue } = props;
+    const { pipe, onClickDoor, onClickValue, onClickOutput } = props;
     return (
         <svg viewBox="0 0 40 40">
             <JoinOutput className={pipe.dir.bottom}/>
@@ -32,13 +33,13 @@ export const DoorOpen = (props) => {
                 fill='white'>
                 {pipe.valueText}
             </text>
-            <Output className={pipe.dir.bottom}></Output>
+            <Output onClick={onClickOutput} className={pipe.dir.bottom}></Output>
         </svg>
     );
 }
 
 export const DoorClosed = (props) => { 
-    const { pipe, onClickDoor } = props;
+    const { pipe, onClickDoor, onClickOutput } = props;
     return (
         <svg viewBox="0 0 40 40">
             <JoinOutput className={pipe.dir.bottom}/>
@@ -49,7 +50,7 @@ export const DoorClosed = (props) => {
                 <circle cx="18.6" cy="17" r="0.5" stroke="black" fill="red" strokeWidth="1"/>
                 <circle cx="21.4" cy="17" r="0.5" stroke="black" fill="red" strokeWidth="1"/>
             </g>
-            <Output className={pipe.dir.bottom}></Output>
+            <Output onClick={onClickOutput} className={pipe.dir.bottom}></Output>
         </svg>
     );
 }
@@ -64,6 +65,14 @@ export class VarPipe extends React.Component {
         this.leaveEditing = this.leaveEditing.bind(this);
         this.setDoorState = this.setDoorState.bind(this);
         this.setEditingValue = this.setEditingValue.bind(this);
+        this.joinOutput = this.joinOutput.bind(this);
+    }
+
+    joinOutput() {
+        const {pipe} = this.props;
+        if(pipe.pos) {
+            this.props.joinOutput({...pipe.pos, dir:DIRECTION.BOTTOM})
+        }
     }
 
     leaveEditing(value) {
@@ -93,17 +102,19 @@ export class VarPipe extends React.Component {
                 <div className="VarPipe">
                     { editingValue && <InputType value={pipe.value} type={pipe.dir.bottom} onBlur={this.leaveEditing}/> }
                     <DoorOpen pipe={pipe}
+                        onClickOutput={this.joinOutput}
                         onClickValue={() => this.setEditingValue(true)} 
                         onClickDoor={() => this.setDoorState(false)}/>
                 </div>
             )
         }
-        return (<DoorClosed pipe={pipe} onClickDoor={() => origin !== 'toolbox' && this.setDoorState(true)} />);
+        return (<DoorClosed onClickOutput={this.joinOutput} pipe={pipe} onClickDoor={() => origin !== 'toolbox' && this.setDoorState(true)} />);
     }
 }
 
 const mapDispath = {
-    setPipeValue
+    setPipeValue,
+    joinOutput
 }
 
 export default connect(null, mapDispath)(VarPipe);

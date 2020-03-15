@@ -1,8 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { joinInput } from '../../api/board';
 import { DisplayResult } from '../modal/DisplayResult';
 import InputTop from './function-parts/InputTop';
-import { VALUES_TYPES } from '../../constants/constants';
-import Image from '../../icons/imagen.svg'
+import { VALUES_TYPES, DIRECTION } from '../../constants/constants';
+import Image from '../../icons/imagen.svg';
 
 const OutPutValue = (props) => {
     const {valueMateFun, valueText} = props.pipe;
@@ -35,6 +37,7 @@ export class EndPipe extends React.Component {
         }
         this.handlerHiddenResult = this.handlerHiddenResult.bind(this);
         this.openDisplayResult = this.openDisplayResult.bind(this);
+        this.joinInput = this.joinInput.bind(this);
     }
 
     openDisplayResult() {
@@ -50,6 +53,12 @@ export class EndPipe extends React.Component {
         this.setState({showResult : false})
     }
 
+    joinInput() {
+        const {pipe} = this.props;
+        if(pipe.pos) {
+            this.props.joinInput({...pipe.pos, dir:DIRECTION.TOP})
+        }
+    }
 
     render() {
         const { pipe, origin } = this.props;
@@ -65,7 +74,7 @@ export class EndPipe extends React.Component {
                     <g transform="rotate(-180 20 20)">
                         <path d="M 20 0 L 0 20 L 10 30 L 10 40 L 30 40 L 30 30 L 40 20 z"/>
                     </g>
-                    <InputTop className={pipe.dir.top}/>
+                    <InputTop onClick={this.joinInput} className={pipe.dir.top}/>
                     <OutPutValue pipe={pipe}/>
                 </svg>
             </React.Fragment>
@@ -73,4 +82,9 @@ export class EndPipe extends React.Component {
     }
 }
 
-export default EndPipe;
+const mapStateToProps = null;
+const mapDispatchToProps = {
+    joinInput
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EndPipe);

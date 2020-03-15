@@ -51,7 +51,7 @@ export class VarPipe extends Pipe {
             if (status.valid) { this.tempType = status.type; }
         
             if(!this.errors && !pipeTypeDefined(this)) {
-                context.unMark(this.getPos());å
+                context.unMark(this.getPos());
             }
         }
     }

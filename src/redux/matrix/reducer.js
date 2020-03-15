@@ -11,6 +11,7 @@ export const initialState = {
     workspaceFunction: '',
     evalInstruction: '',
     isWorking: false,
+    isJoining: false,
     hasPendding: !!localStorage.getItem('matrix')
 };
 

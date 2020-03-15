@@ -5,6 +5,8 @@ import * as services from '../services';
 import * as snapHelper from '../classes/helpers/snapshot';
 
 let matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
+let joinList = {start: null, end:null }
+
 export function loadPenndingBoard() {
     return (dispatch) => {
         const matrixJSON = localStorage.getItem('matrix');
@@ -96,6 +98,35 @@ export function addWorkingPipe(x, y) {
     return (dispatch) => {
         matrix.addWorkPipe(x, y);
         updateMatrix(dispatch);
+    }
+}
+
+export function join(j1, j2) {
+    return (dispatch) => {
+        matrix.join(j1, j2);
+        updateMatrix(dispatch)
+    }
+}
+
+export function joinInput(j1) {
+    return (dispatch) => {
+        joinList.end = j1;
+        if(joinList.start && joinList.end) {
+            matrix.join(joinList.start, joinList.end);
+            joinList = {start: null, end: null}
+            updateMatrix(dispatch)
+        }
+    }
+}
+
+export function joinOutput(j2) {
+    return (dispatch) => {
+        joinList.start = j2;
+        if(joinList.start && joinList.end) {
+            matrix.join(joinList.start, joinList.end);
+            joinList = {start: null, end: null}
+            updateMatrix(dispatch)
+        }
     }
 }
 

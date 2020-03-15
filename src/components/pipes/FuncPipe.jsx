@@ -1,5 +1,6 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
+import { joinInput, joinOutput } from '../../api/board';
 import Base from './function-parts/Base';
 import InputRight from './function-parts/InputRight';
 import InputLeft from './function-parts/InputLeft';
@@ -81,6 +82,25 @@ const FunctionIcon = (props) => {
 }
 
 export class FuncPipe extends React.Component {
+    constructor(props) {
+        super(props);
+        this.joinInput = this.joinInput.bind(this);
+        this.joinOutput = this.joinOutput.bind(this);
+    }
+
+    joinInput(dir) {
+        const {pipe} = this.props;
+        if(pipe.pos) {
+            this.props.joinInput({...pipe.pos, dir})
+        }
+    }
+
+    joinOutput() {
+        const {pipe} = this.props;
+        if(pipe.pos) {
+            this.props.joinOutput({...pipe.pos, dir:DIRECTION.BOTTOM})
+        }
+    }
 
     render() {
         const { pipe } = this.props;
@@ -91,14 +111,20 @@ export class FuncPipe extends React.Component {
         return (
             <svg viewBox="0 0 40 40">
                 <Base pipe={pipe}></Base>
-                { leftType && <InputLeft className={leftType}></InputLeft> }
-                { rightType && <InputRight className={rightType}></InputRight> }
-                { topType && <InputTop className={topType}></InputTop> }
-                <Output className={bottomType}></Output>
+                { leftType && <InputLeft onClick={() => this.joinInput(DIRECTION.LEFT)} className={leftType}></InputLeft> }
+                { rightType && <InputRight onClick={() => this.joinInput(DIRECTION.RIGHT)} className={rightType}></InputRight> }
+                { topType && <InputTop onClick={() => this.joinInput(DIRECTION.TOP)} className={topType}></InputTop> }
+                <Output onClick={this.joinOutput} className={bottomType}></Output>
                 <FunctionIcon name={pipe.name}/>
             </svg>
         )
     }
 }
 
-export default FuncPipe;
+const mapStateToProps = null;
+const mapDispatchToProps = {
+    joinInput,
+    joinOutput
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FuncPipe);

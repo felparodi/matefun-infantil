@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { dropPipe, loadPenndingBoard, startWork, endWork, addWorkingPipe} from '../api/board';
+import { dropPipe, loadPenndingBoard, startWork, endWork, addWorkingPipe, join} from '../api/board';
 import Cell from './Cell'
 import classNames from 'classnames';
 import './Board.scss';
+import { DIRECTION } from '../constants/constants';
 
 
 export class Board extends React.Component {
@@ -19,9 +20,6 @@ export class Board extends React.Component {
     handlerKeyDown(e) {
         if(e.type === 'keydown') {
             switch(e.keyCode) {
-                case 88:
-                    !this.props.isWorking && this.props.startWork();
-                    break;
             }
         }
     }
@@ -29,9 +27,6 @@ export class Board extends React.Component {
     handlerKeyUp(e) {
         if(e.type === 'keyup') {
             switch(e.keyCode) {
-                case 88:
-                    this.props.isWorking && this.props.endWork();
-                    break;
             }
         }
     }
@@ -106,6 +101,7 @@ const mapDispatchToProps = {
     startWork,
     endWork,
     addWorkingPipe,
+    join
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board);

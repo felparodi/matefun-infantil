@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import { connect } from 'react-redux';
-import { setPipeValue } from '../../api/board';
+import { setPipeValue, joinOutput } from '../../api/board';
 import './ValPipe.scss';
-import {  VALUES_TYPES } from '../../constants/constants';
+import {  VALUES_TYPES, DIRECTION } from '../../constants/constants';
 
 import Output from './function-parts/Output';
 
@@ -80,6 +80,14 @@ export class ValPipe extends React.Component {
             edit: false
         }
         this.leaveEditing = this.leaveEditing.bind(this);
+        this.joinOutput = this.joinOutput.bind(this);
+    }
+
+    joinOutput() {
+        const {pipe} = this.props;
+        if(pipe.pos) {
+            this.props.joinOutput({...pipe.pos, dir:DIRECTION.BOTTOM})
+        }
     }
 
     leaveEditing(value) {
@@ -98,7 +106,7 @@ export class ValPipe extends React.Component {
                     <g>
                         <title>Value Bottom</title>
                         <path d="M 20 0 C 10 0 0 10 0 20 C 0 30 10 20 10 30 L 10 33 L 30 33 L 30 30 C 30 20 40 30 40 20 C 40 0 20 0 20 0 z"/>
-                        <Output className={pipe.dir.bottom}></Output>
+                        <Output onClick={this.joinOutput} className={pipe.dir.bottom}></Output>
                     </g>
                     {!edit &&
                         <text x="50%" y="50%" 
@@ -118,7 +126,8 @@ export class ValPipe extends React.Component {
 }
 
 const mapDispath = {
-    setPipeValue
+    setPipeValue,
+    joinOutput
 }
 
 export default connect(null, mapDispath)(ValPipe);

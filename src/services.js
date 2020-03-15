@@ -28,6 +28,8 @@ export function loginInvitado() {
 
 //Creare si no existe los archivos basicos para trabajar en matefun
 function affetrLogin(user=userData) {
+    axios.defaults.headers.common = { 'Authorization': `Bearer ${user.token}` }
+    createWebSocket(userData);
     getArchios()
         .then((files) => {
             workspaceFile = files.find((file) => file.nombre === WORKSPACE_FILE_NAME)
@@ -43,9 +45,8 @@ export function login(username, password) {
         cedula: username,
         password: password
     }).then(res => {
-        axios.defaults.headers.common = { 'Authorization': `Bearer ${res.data.token}` }
+        debugger;
         userData = res.data;
-        createWebSocket(userData);
         affetrLogin(userData);
         return res.data;
     }).catch((e) => {
