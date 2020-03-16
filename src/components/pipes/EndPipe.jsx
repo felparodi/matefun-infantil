@@ -5,25 +5,41 @@ import { DisplayResult } from '../modal/DisplayResult';
 import InputTop from './function-parts/InputTop';
 import { VALUES_TYPES, DIRECTION } from '../../constants/constants';
 import Image from '../../icons/imagen.svg';
+import Error from '../../icons/error.svg';
+import Lupa from '../../icons/lupa.svg';
+
+const TEXT_LENGTH = 2
 
 const OutPutValue = (props) => {
-    const {valueMateFun, valueText, dir} = props.pipe;
+    const {valueMateFun, valueText, dir, hasValueError} = props.pipe;
     debugger;
     return (
         <React.Fragment>
             {
-            valueText &&  
+            !hasValueError &&  valueText && valueText.length <= TEXT_LENGTH &&
                 <text x="50%" y="50%"
                 dominantBaseline="central"
                 textAnchor="middle"
-                fontSize="35"
+                fontSize="20"
                 fill='white'>
                 {valueText}
-            </text>
+                </text>
             }
             {
-                valueMateFun && dir.top === VALUES_TYPES.FIGURE &&
+            !hasValueError &&  valueText && valueText.length > TEXT_LENGTH &&
+                <Lupa/>
+            }
+            {
+                !hasValueError && valueMateFun && dir.top === VALUES_TYPES.FIGURE && 
                 <Image/>
+            }
+            {
+               hasValueError && 
+               <Error/>
+            }
+            {
+               hasValueError && 
+               <Error/>
             }
         </React.Fragment>
     );

@@ -19,7 +19,7 @@ export class DisplayResult extends React.Component {
                 { 
                     type  === VALUES_TYPES.FIGURE ?
                     <MateFun2D value={value}/> :
-                    <p className="text-value">{ valuetext }</p> 
+                    <textarea className="info result" readOnly value={valuetext}/>
                 }
             </Modal>
         )

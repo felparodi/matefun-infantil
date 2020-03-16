@@ -38,10 +38,7 @@ function affetrLogin(user=userData) {
             workspaceFile = files.find((file) => file.nombre === WORKSPACE_FILE_NAME)
             if(!workspaceFile) crearWorkspaceFile();
         
-        })
-        .then(() => {
-            setTimeout(allFunctionDef, 1000);
-        })
+        });
 }
 
 export function login(username, password) {

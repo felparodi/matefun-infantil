@@ -80,8 +80,26 @@ export class EndPipe extends Pipe {
         this.value = value;
     }
 
+    hasValueError() {
+        if (Array.isArray(this.value)) {
+            return !!this.value.find((value) => value.resultado.indexOf('OUTError') != -1)
+        } else if(this.value) {
+            return this.value.resultado.indexOf('OUTError') !== -1;
+        }
+    }
+
     getValueText() {
-        if(this.value && this.value.tipo === 'salida') {
+        if (Array.isArray(this.value)) {
+            debugger;
+            let messages = '';
+            this.value.forEach((value) => {
+                if(value.tipo === 'salida'
+                    && value.resultado.indexOf('OUTError') === -1) {
+                        messages += value.resultado.replace('OUT', '') + '\n';
+                }
+            })
+            return messages;
+        } if(this.value && this.value.tipo === 'salida') {
             return this.value.resultado.replace('OUT', '');
         }
         return '';
@@ -94,7 +112,8 @@ export class EndPipe extends Pipe {
                 top: this.getValueType()
             },
             valueMateFun: this.getMateFunValue(),
-            valueText: this.getValueText()
+            valueText: this.getValueText(),
+            hasValueError: this.hasValueError(),
         }
     }
 }

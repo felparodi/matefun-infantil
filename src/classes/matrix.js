@@ -108,7 +108,8 @@ export class MatrixPipe {
             const start = { ...directionMove(j1, j1.dir), dir:j1.dir };
             const end = { ...directionMove(j2, j2.dir), dir:j2.dir };
             const toCreate = new BFS(start, end, this).procces();
-            this.cratedJoinPipe(toCreate, end)
+            this.cratedJoinPipe(toCreate, end);
+            this.getEndPipes().forEach(p => p.setMateFunValue(null));
             this.updateMatrix()
         } else {
             throw new Error('No mapena tipos lo que se quiere unir');
@@ -172,6 +173,7 @@ export class MatrixPipe {
     addPipe(x, y, pipe) {
         if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") }
         this.addPipeSpeed({x, y}, pipe)
+        this.getEndPipes().forEach(p => p.setMateFunValue(null));
         this.updateMatrix();
     }
 
@@ -183,6 +185,7 @@ export class MatrixPipe {
 
     removePipe(x, y) {
         delete this.values[x][y];
+        this.getEndPipes().forEach(p => p.setMateFunValue(null));
         this.updateMatrix();
     }
 
@@ -269,6 +272,7 @@ export class MatrixPipe {
         const p = this.value(x, y);
         if (p !== null && p !== undefined && p.setValue) {
             p.setValue(value);
+            this.getEndPipes().forEach(p => p.setMateFunValue(null));
             this.updateMatrix();
         } else {
             throw new Error("No se le puede asiganr valor a el pipe")
