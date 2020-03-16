@@ -96,7 +96,6 @@ export class MateFun2D extends React.Component {
 
     render() {
         const {toggleAxis, toggleGrid} = this.state;
-        debugger;
         return (
             <div className='MateFun2D'>
                 <div className='buttons'>

@@ -35,7 +35,10 @@ const toolboxGroups = [
             new EndPipe(VALUES_TYPES.POINT),
             new VarPipe(VALUES_TYPES.COLOR),
             new EndPipe(VALUES_TYPES.COLOR),
+            new VarPipe(VALUES_TYPES.FIGURE),
             new EndPipe(VALUES_TYPES.FIGURE),
+            new VarPipe(VALUES_TYPES.list(VALUES_TYPES.GENERIC)),
+            new EndPipe(VALUES_TYPES.list(VALUES_TYPES.GENERIC)),
         ],
     },
     {  

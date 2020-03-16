@@ -2,11 +2,11 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import {isDefined, typeToClass, isList} from '../../classes/helpers/type';
-import { setPipeValue, joinOutput, isEqualJoin} from '../../api/board';
+import { typeToClass } from '../../classes/helpers/type';
+import { setPipeValue, joinOutput, isEqualJoin } from '../../api/board';
 import Output from './function-parts/Output';
-import TextIcon from './function-parts/TextIcon';
-import { InputType, castValue } from './ValPipe'
+import ValueInfo from './function-parts/ValueInfo';
+import ValueInput, {hasInputValue} from './function-parts/ValueInput';
 import { DIRECTION } from '../../constants/constants';
 import './ValPipe.scss';
 
@@ -28,14 +28,28 @@ const DoorOpen1 = ({onClick}) => (
 
 export const DoorOpen = (props) => { 
     const { pipe, onClickDoor, onClickValue, onClickOutput, startJoin } = props;
-    debugger;
     const isSelectJoin = pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.BOTTOM} , startJoin)
+    const type = pipe.dir.bottom;
     return (
         <svg viewBox="0 0 40 40">
-            <JoinOutput className={classNames(typeToClass(pipe.dir.bottom), {'join':isSelectJoin})}/>
+            <JoinOutput className={classNames(typeToClass(type), {'join':isSelectJoin})}/>
             <DoorOpen1 onClick={onClickDoor}/>
-            <TextIcon onClick={onClickValue} text={pipe.valueText}/>
-            <Output onClick={onClickOutput} join={isSelectJoin} type={pipe.dir.bottom}></Output>
+            <ValueInfo onClick={onClickValue} text={pipe.valueText} type={type}/>
+            <Output onClick={onClickOutput} join={isSelectJoin} type={type}></Output>
+        </svg>
+    );
+}
+
+//TODO USAR
+export const Door = ({pipe, onClickDoor, onClickValue, onClickOutput, startJoin, open}) => {
+    const isSelectJoin = pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.BOTTOM} , startJoin);
+    const type = pipe.dir.bottom;
+    return (
+        <svg viewBox="0 0 40 40">
+            <JoinOutput className={classNames(typeToClass(type), {'join':isSelectJoin})}/>
+            { open ? <DoorOpen1 onClick={onClickDoor}/> : <DoorClosed1 onClick={onClickDoor}/> }
+            { open && <ValueInfo onClick={onClickValue} text={pipe.valueText} type={type}/>}
+            <Output onClick={onClickOutput} join={isSelectJoin} type={type}></Output>
         </svg>
     );
 }
@@ -53,7 +67,6 @@ const DoorClosed1 = ({onClick}) => (
 
 export const DoorClosed = (props) => { 
     const { pipe, onClickDoor, onClickOutput, startJoin } = props;
-    debugger
     const isSelectJoin = pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.BOTTOM} , startJoin)
     return (
         <svg viewBox="0 0 40 40">
@@ -80,8 +93,8 @@ export class VarPipe extends React.Component {
 
     openDoor() {
         const {pipe} = this.props;
-        const type = pipe.dir.bottom
-        if(origin !== 'toolbox' && isDefined(type) && !isList(type)) {
+        const type = pipe.dir.bottom;
+        if(origin !== 'toolbox' && hasInputValue(type)) {
             this.setDoorState(true)
         }
     }
@@ -95,7 +108,6 @@ export class VarPipe extends React.Component {
 
     leaveEditing(value) {
         const { pipe } = this.props;
-        value = castValue(value, pipe.dir.bottom);
         this.setState({ editingValue: false });
         this.props.setPipeValue(pipe.pos.x, pipe.pos.y, value);
     }
@@ -118,7 +130,7 @@ export class VarPipe extends React.Component {
         if (pipe.value || isOpen) {
             return (
                 <div className="VarPipe">
-                    { editingValue && <InputType value={pipe.value} type={pipe.dir.bottom} onBlur={this.leaveEditing}/> }
+                    { editingValue && <ValueInput value={pipe.value} type={pipe.dir.bottom} onBlur={this.leaveEditing}/> }
                     <DoorOpen pipe={pipe}
                         startJoin={startJoin}
                         onClickOutput={this.joinOutput}

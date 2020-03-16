@@ -53,23 +53,19 @@ export default function matrix(state = initialState, action) {
     }
     case actionTypes.SET_START_JOIN: {
       const startJoin = action.payload;
-      debugger
       return {
         ...state,
         startJoin
       }
     }
     case actionTypes.SET_END_JOIN: {
-     
       const endJoin = action.payload;
-      debugger
       return {
         ...state,
         endJoin
       }
     }
     case actionTypes.CLEAN_JOIN: {
-      debugger
       return {
         ...state,
         startJoin: null,

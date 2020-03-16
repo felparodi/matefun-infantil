@@ -11,28 +11,20 @@ import Lupa from '../../icons/lupa.svg';
 
 const TEXT_LENGTH = 3
 
-const OutPutValue = (props) => {
-    const {valueMateFun, valueText, dir, hasValueError} = props.pipe;
-    return (
-        <React.Fragment>
-            {
-                !hasValueError &&  valueText && valueText.length <= TEXT_LENGTH &&
-                    <TextIcon text={valuetext}/>
-            }
-            {
-            !hasValueError &&  valueText && valueText.length > TEXT_LENGTH &&
-                <Lupa/>
-            }
-            {
-                !hasValueError && valueMateFun && dir.top === VALUES_TYPES.FIGURE && 
-                <Image/>
-            }
-            {
-               hasValueError && 
-               <Error/>
-            }
-        </React.Fragment>
-    );
+const OutPutValue = ({pipe}) => {
+    const {valueMateFun, valueText, dir, hasValueError} = pipe;
+    if(hasValueError) {
+        return <Error/>;
+    } else if(valueText) {
+         if(valueText.length <= TEXT_LENGTH) {
+            return <TextIcon text={valueText}/>;
+         } else {
+            return <Lupa/>;
+         }
+    } else if(valueMateFun && dir.top === VALUES_TYPES.FIGURE) {
+        return <Image/>;
+    }
+    return null;
 }
 
 export class EndPipe extends React.Component {

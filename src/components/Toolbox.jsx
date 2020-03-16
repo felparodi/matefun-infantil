@@ -21,7 +21,7 @@ export class Toolbox extends React.Component {
         super(props)
         this.onDrop = this.onDrop.bind(this)
         this.state = {
-            select: toolboxGroups[1].value,
+            select: toolboxGroups[0].value,
             pipeToolsGroup: toolboxPipeSnapshot(toolboxGroups)
         }
     }
