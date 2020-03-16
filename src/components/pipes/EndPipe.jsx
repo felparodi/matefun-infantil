@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { joinInput } from '../../api/board';
+import { joinInput, isEqualJoin } from '../../api/board';
 import { DisplayResult } from '../modal/DisplayResult';
 import InputTop from './function-parts/InputTop';
 import { VALUES_TYPES, DIRECTION } from '../../constants/constants';
@@ -12,7 +12,6 @@ const TEXT_LENGTH = 2
 
 const OutPutValue = (props) => {
     const {valueMateFun, valueText, dir, hasValueError} = props.pipe;
-    debugger;
     return (
         <React.Fragment>
             {
@@ -78,8 +77,9 @@ export class EndPipe extends React.Component {
     }
 
     render() {
-        const { pipe, origin } = this.props;
+        const { pipe, origin, endJoin } = this.props;
         const { showResult } = this.state;
+        const isSelectJoin = pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.TOP} , endJoin)
         return (
             <React.Fragment>
                 <DisplayResult 
@@ -92,7 +92,7 @@ export class EndPipe extends React.Component {
                     <g transform="rotate(-180 20 20)">
                         <path d="M 20 0 L 0 20 L 10 30 L 10 40 L 30 40 L 30 30 L 40 20 z"/>
                     </g>
-                    <InputTop onClick={this.joinInput} type={pipe.dir.top}/>
+                    <InputTop onClick={this.joinInput} join={isSelectJoin} type={pipe.dir.top}/>
                     <OutPutValue pipe={pipe}/>
                 </svg>
             </React.Fragment>
@@ -100,7 +100,10 @@ export class EndPipe extends React.Component {
     }
 }
 
-const mapStateToProps = null;
+const mapStateToProps = state => ({
+    endJoin: state.matrix.endJoin,
+});
+
 const mapDispatchToProps = {
     joinInput
 }

@@ -13,7 +13,6 @@ export class DisplayResult extends React.Component {
     render() {
         const { props } = this;
         const { value, valuetext, type} = props;
-        debugger;
         return (
             <Modal className="DisplayResult" {...props}>
                 { 

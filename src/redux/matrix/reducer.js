@@ -13,7 +13,9 @@ export const initialState = {
     resultEval: '',
     isWorking: false,
     isJoining: false,
-    hasPendding: !!localStorage.getItem('matrix')
+    hasPendding: !!localStorage.getItem('matrix'),
+    endJoin: null,
+    startJoin: null,
 };
 
 export default function matrix(state = initialState, action) {
@@ -47,6 +49,31 @@ export default function matrix(state = initialState, action) {
       return {
         ...state,
         resultEval: messsage
+      }
+    }
+    case actionTypes.SET_START_JOIN: {
+      const startJoin = action.payload;
+      debugger
+      return {
+        ...state,
+        startJoin
+      }
+    }
+    case actionTypes.SET_END_JOIN: {
+     
+      const endJoin = action.payload;
+      debugger
+      return {
+        ...state,
+        endJoin
+      }
+    }
+    case actionTypes.CLEAN_JOIN: {
+      debugger
+      return {
+        ...state,
+        startJoin: null,
+        endJoin: null
       }
     }
     default:

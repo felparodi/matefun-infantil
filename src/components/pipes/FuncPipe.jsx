@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { joinInput, joinOutput } from '../../api/board';
+import { joinInput, joinOutput, isEqualJoin } from '../../api/board';
 import Base from './function-parts/Base';
 import InputRight from './function-parts/InputRight';
 import InputLeft from './function-parts/InputLeft';
@@ -19,6 +19,7 @@ import Puzzle from '../../icons/puzzle-pices.svg';
 import Resto from '../../icons/resto.svg';
 import Primero from '../../icons/primero.svg';
 import Rango from '../../icons/rango.svg';
+import AFIG from '../../icons/aFig.svg';
 
 function getTypeColor(type) {
     switch (type) {
@@ -91,7 +92,9 @@ const FunctionIcon = (props) => {
         case METHOD_FUNCTION.PRIMER:
             return <Primero/>;
         case METHOD_FUNCTION.RANGO:
-            return <Rango/>
+            return <Rango/>;
+        case METHOD_FUNCTION.AFIG:
+            return <AFIG/>;
         default:
             return <TextIcon text={props.name}/>;
     }
@@ -119,25 +122,32 @@ export class FuncPipe extends React.Component {
     }
 
     render() {
-        const { pipe } = this.props;
+        const { pipe, startJoin, endJoin } = this.props;
         const leftType = pipe.dir.left;
         const rightType = pipe.dir.right;
         const topType = pipe.dir.top;
         const bottomType = pipe.dir.bottom;
+        const isJoinLeft =  pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.LEFT} , endJoin);
+        const isJoinTop =  pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.TOP} , endJoin);
+        const isJoinRigth =  pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.RIGHT} , endJoin);
+        const isJoinBottom =  pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.BOTTOM} , startJoin);
         return (
             <svg viewBox="0 0 40 40">
                 <Base/>
-                { leftType && <InputLeft onClick={() => this.joinInput(DIRECTION.LEFT)} type={leftType}/> }
-                { rightType && <InputRight onClick={() => this.joinInput(DIRECTION.RIGHT)} type={rightType}/>}
-                { topType && <InputTop onClick={() => this.joinInput(DIRECTION.TOP)} type={topType}/>}
-                <Output onClick={this.joinOutput} type={bottomType}/>
+                { leftType && <InputLeft join={isJoinLeft} onClick={() => this.joinInput(DIRECTION.LEFT)} type={leftType}/> }
+                { rightType && <InputRight join={isJoinRigth} onClick={() => this.joinInput(DIRECTION.RIGHT)} type={rightType}/>}
+                { topType && <InputTop join={isJoinTop} onClick={() => this.joinInput(DIRECTION.TOP)} type={topType}/>}
+                <Output join={isJoinBottom} onClick={this.joinOutput} type={bottomType}/>
                 <FunctionIcon name={pipe.name}/>
             </svg>
         )
     }
 }
 
-const mapStateToProps = null;
+const mapStateToProps = state => ({
+    startJoin: state.matrix.startJoin,
+    endJoin: state.matrix.endJoin,
+});;
 const mapDispatchToProps = {
     joinInput,
     joinOutput

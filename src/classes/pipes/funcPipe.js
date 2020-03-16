@@ -63,7 +63,7 @@ export class FuncPipe extends Pipe {
             }
         }
     }
-    //@TODO GENERIC
+
     calc(context, board, enterDir, path) {
         if(path && path.find((p) => p === this)) {
             this.addError('Loop');

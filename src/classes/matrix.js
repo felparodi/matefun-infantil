@@ -6,6 +6,9 @@ import { DummyPipe } from './pipes/dummyPipe';
 import { Context } from './context';
 import {BFS} from './BFSMatrix';
 
+export function equlasPos(p1, p2) {
+    return (!p1 && !p2) || (p1 && p2 && p1.x === p2.x && p1.y === p2.y);
+}
 /*
 * Attr:
     maxY -> 
@@ -101,6 +104,7 @@ export class MatrixPipe {
     }
 
     join(j1, j2) {
+        if(equlasPos(j1, j2)) return;
         const pipe1 = this.value(j1.x, j1.y);
         const pipe2 = this.value(j2.x, j2.y);
         //Validar tipos

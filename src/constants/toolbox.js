@@ -25,8 +25,8 @@ const toolboxGroups = [
         value: 'val',
         label: 'Valores',
         pipes: [
-            new VarPipe(),
-            new EndPipe(),
+            new VarPipe(VALUES_TYPES.GENERIC),
+            new EndPipe(VALUES_TYPES.GENERIC),
             new VarPipe(VALUES_TYPES.NUMBER),
             new EndPipe(VALUES_TYPES.NUMBER),
             new VarPipe(VALUES_TYPES.POINT),
@@ -67,6 +67,7 @@ const toolboxGroups = [
             getDefaultFunction(METHOD_FUNCTION.JUNTAR),
             getDefaultFunction(METHOD_FUNCTION.ESCALAR),
             getDefaultFunction(METHOD_FUNCTION.MOVER),
+            getDefaultFunction(METHOD_FUNCTION.AFIG),
         ]
     },
     {

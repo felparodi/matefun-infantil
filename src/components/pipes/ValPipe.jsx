@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { connect } from 'react-redux';
 import {isDefined} from '../../classes/helpers/type';
-import { setPipeValue, joinOutput } from '../../api/board';
+import { setPipeValue, joinOutput, isEqualJoin } from '../../api/board';
 import './ValPipe.scss';
 import {  VALUES_TYPES, DIRECTION } from '../../constants/constants';
 
@@ -120,15 +120,17 @@ export class ValPipe extends React.Component {
     }
     
     render() {
-        const { pipe, origin } = this.props;
+        const { pipe, origin, startJoin } = this.props;
         const {edit} = this.state;
+        const isSelectJoin = pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.BOTTOM} , startJoin)
+        if(isSelectJoin) debugger;
         return (
             <div className="ValPipe">
                 <svg viewBox="0 0 40 40">
                     <g>
                         <title>Value Bottom</title>
                         <path d="M 20 0 C 10 0 0 10 0 20 C 0 30 10 20 10 30 L 10 33 L 30 33 L 30 30 C 30 20 40 30 40 20 C 40 0 20 0 20 0 z"/>
-                        <Output onClick={this.joinOutput} type={pipe.dir.bottom}></Output>
+                        <Output onClick={this.joinOutput} join={isSelectJoin} type={pipe.dir.bottom}></Output>
                     </g>
                     {!edit && <TextValue 
                                     onClick={this.onClickValue} 
@@ -141,9 +143,13 @@ export class ValPipe extends React.Component {
     }
 }
 
+const mapStateToProps = state => ({
+    startJoin: state.matrix.startJoin,
+});
+
 const mapDispath = {
     setPipeValue,
     joinOutput
 }
 
-export default connect(null, mapDispath)(ValPipe);
+export default connect(mapStateToProps, mapDispath)(ValPipe);

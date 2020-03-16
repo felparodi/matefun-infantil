@@ -90,7 +90,6 @@ export class EndPipe extends Pipe {
 
     getValueText() {
         if (Array.isArray(this.value)) {
-            debugger;
             let messages = '';
             this.value.forEach((value) => {
                 if(value.tipo === 'salida'

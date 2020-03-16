@@ -1,5 +1,5 @@
 import * as matrixAction from '../redux/matrix/actionTypes';
-import { MatrixPipe } from '../classes/matrix';
+import { MatrixPipe, equlasPos } from '../classes/matrix';
 import { BOARD_ROWS, BOARD_COLS } from '../constants/constants';
 import * as services from '../services';
 import * as snapHelper from '../classes/helpers/snapshot';
@@ -124,25 +124,43 @@ export function join(j1, j2) {
     }
 }
 
+export function isEqualJoin(j1, j2) {
+    return (!j1 && !j2) || (equlasPos(j1, j2) && j1.dir === j2.dir)
+}
+
 export function joinInput(j1) {
     return (dispatch) => {
-        joinList.end = j1;
+        joinList.end = isEqualJoin(joinList.end, j1) ? null : j1;
+        if(equlasPos(joinList.start, joinList.end)){
+            joinList.start = null;
+            dispatch({type: matrixAction.SET_START_JOIN, payload: null })
+        }
+        dispatch({type: matrixAction.SET_END_JOIN, payload: joinList.end })
+        tryJoin(dispatch);
+    }
+}
+
+function tryJoin(dispatch) {
+    return new Promise(() => {
         if(joinList.start && joinList.end) {
             matrix.join(joinList.start, joinList.end);
             joinList = {start: null, end: null}
-            updateMatrix(dispatch)
+            dispatch({type: matrixAction.CLEAN_JOIN});
+            updateMatrix(dispatch);
         }
-    }
+        return Promise.resolve();
+    })
 }
 
 export function joinOutput(j2) {
     return (dispatch) => {
-        joinList.start = j2;
-        if(joinList.start && joinList.end) {
-            matrix.join(joinList.start, joinList.end);
-            joinList = {start: null, end: null}
-            updateMatrix(dispatch)
+        joinList.start = isEqualJoin(joinList.start, j2) ? null : j2;
+        if(equlasPos(joinList.start, joinList.end)){
+            joinList.end = null;
+            dispatch({type: matrixAction.SET_END_JOIN, payload: null })
         }
+        dispatch({type: matrixAction.SET_START_JOIN, payload: joinList.start })
+        tryJoin(dispatch);
     }
 }
 
