@@ -1,5 +1,10 @@
 import React from 'react';
-import { MateFunGraph2D }from '../../mateFunGraph/2D';
+import classNames from 'classnames';
+import { MateFunGraph2D } from '../../mateFunGraph/2D';
+import Grid from '../../icons/grid.svg';
+import Axis from '../../icons/axis.svg';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faDownload, faArrowsAlt, faSearchMinus, faSearchPlus } from '@fortawesome/free-solid-svg-icons'
 import './MateFun2D.scss';
 
 export class MateFun2D extends React.Component {
@@ -16,6 +21,10 @@ export class MateFun2D extends React.Component {
         this.recenterPlot = this.recenterPlot.bind(this);
         this.exportPlot = this.exportPlot.bind(this);
         this.handleResize = this.handleResize.bind(this);
+        this.state = {
+            toggleGrid: true,
+            toggleAxis: false
+        }
 
     }
 
@@ -38,6 +47,7 @@ export class MateFun2D extends React.Component {
             const containerId = current.id
             const bounding = current.getBoundingClientRect();
             this.matFun = new MateFunGraph2D(`#${containerId}`,bounding);
+            this.matFun.toggleAxis();
             if (value) {
                 this.matFun.render(value);
             }
@@ -52,11 +62,16 @@ export class MateFun2D extends React.Component {
     }
 
     toggleGrid() {
-        this.matFun.toggleGrid();
+        const {toggleGrid} = this.state;
+        this.setState({ toggleGrid: !toggleGrid });
+        setTimeout(() => this.matFun.toggleGrid());
     }
 
     toggleAxis() {
-        this.matFun.toggleAxis()
+        //this.matFun.toggleAxis()
+        const {toggleAxis} = this.state;
+        this.setState({ toggleAxis: !toggleAxis });
+        setTimeout(() => this.matFun.toggleAxis());
     }
 
     toggleTip() {
@@ -80,18 +95,21 @@ export class MateFun2D extends React.Component {
     }
 
     render() {
+        const {toggleAxis, toggleGrid} = this.state;
+        debugger;
         return (
             <div className='MateFun2D'>
                 <div className='buttons'>
-                    <button onClick={this.toggleGrid}>toggleGrid</button>
-                    <button onClick={this.toggleAxis}>toggleAxis</button>
-                    <button onClick={this.toggleTip}>toggleTip</button>
-                    <button onClick={this.zoomOut}>zoomOut</button>
-                    <button onClick={this.zoomIn}>zoomIn</button>
-                    <button onClick={this.recenterPlot}>recenterPlot</button>
-                    <button onClick={this.exportPlot}>exportPlot</button>
+                    <button className={classNames({'inactive': !toggleGrid})} onClick={this.toggleGrid}><Grid/></button>
+                    <button className={classNames({'inactive': !toggleAxis})} onClick={this.toggleAxis}><Axis/></button>
+                    <button onClick={this.zoomIn}><FontAwesomeIcon icon={faSearchPlus}/></button>
+                    <button onClick={this.zoomOut}><FontAwesomeIcon icon={faSearchMinus}/></button>
+                    <button onClick={this.recenterPlot}><FontAwesomeIcon icon={faArrowsAlt}/></button>
+                    <button onClick={this.exportPlot}><FontAwesomeIcon icon={faDownload}/></button>
                 </div>
-                <div ref={this.graphDiv} id="graph-container" className='graphic'>
+                <div className='graphic'>
+                    <div ref={this.graphDiv} id="graph-container">
+                    </div>
                 </div>
             </div>
         )

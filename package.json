@@ -28,6 +28,9 @@
   },
   "dependencies": {
     "@babel/preset-typescript": "^7.8.3",
+    "@fortawesome/fontawesome-svg-core": "^1.2.27",
+    "@fortawesome/free-solid-svg-icons": "^5.12.1",
+    "@fortawesome/react-fontawesome": "^0.1.9",
     "@svgr/webpack": "^4.3.3",
     "axios": "^0.19.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
