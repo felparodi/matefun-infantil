@@ -68,7 +68,7 @@ export class Actions extends React.Component {
             <div className="actions">
                 <div className="actions-button">
                     <Button className={classNames({'active':isWorking})} variant="primary" onClick={this.autodummy}>Connectar</Button>
-                    <Button variant="primary" onClick={this.clean}>Clean</Button>
+                    <Button variant="primary" onClick={this.clean}>Limpiar</Button>
                     <Button variant="primary" disabled={!canProcess} onClick={this.evaluate}>Evaluar</Button>
                     
                 { debugMode && <Button variant="primary" onClick={() => {this.setState({openConsole:!openConsole})}}>Consola</Button> }
