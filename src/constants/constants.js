@@ -53,7 +53,7 @@ export const METHOD_FUNCTION = Object.freeze({
     CONCAT: 'CONCAT', // NATIVA ":"
     RANGO: 'rango', // "rango :: (R X R X R) -> R*" Numeros entre dos de a pasos del terser
     PRIMER: 'primero', // "primero :: A* -> A"
-    REST: 'resto', // "resto :: A* -> A*"
+    RESTO: 'resto', // "resto :: A* -> A*"
 })
 
 export const PIPE_TYPES= Object.freeze({
@@ -68,12 +68,9 @@ export const PIPE_TYPES= Object.freeze({
 
 export const VALUES_TYPES= Object.freeze({
     BOOLEAN: 'BOOLEAN',
-    STRING: 'STRING',
     NUMBER: 'NUMBER',
-    FUNCTION: 'FUNCTION',
     OTHER: 'OTHER',
     POINT: 'POINT',
-    VAR: 'VAR',
     COLOR: 'COLOR',
     FIGURE: 'FIGURE',
     UNDEFINED: 'UNDEFINED',

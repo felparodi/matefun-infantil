@@ -69,16 +69,17 @@ const toolboxGroups = [
             getDefaultFunction(METHOD_FUNCTION.MOVER),
         ]
     },
-    /*
     {
         value: 'list',
         label: 'Listas',
         pipes: [
             new ConstPipe([], VALUES_TYPES.list(VALUES_TYPES.GENERIC)),
             getDefaultFunction(METHOD_FUNCTION.CONCAT),
+            getDefaultFunction(METHOD_FUNCTION.PRIMER),
+            getDefaultFunction(METHOD_FUNCTION.RESTO),
+            getDefaultFunction(METHOD_FUNCTION.RANGO),
         ]
     },
-    */
     {
         value: 'custom',
         label: 'Custom',

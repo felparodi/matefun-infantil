@@ -18,9 +18,9 @@ function dirToDirections(dir) {
 
 function dirToInTypes(dir) {
     const inTypes = []
-    if(dir.left) { inTypes.push(dir.left); }
-    if(dir.top) { inTypes.push(dir.top); }
-    if(dir.right) { inTypes.push(dir.right); }
+    if(dir.left !== undefined) { inTypes.push(dir.left); }
+    if(dir.top !== undefined) { inTypes.push(dir.top); }
+    if(dir.right !== undefined) { inTypes.push(dir.right); }
     return inTypes;
 }
 

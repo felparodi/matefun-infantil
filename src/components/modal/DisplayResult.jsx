@@ -1,4 +1,5 @@
 import React from 'react';
+import {VALUES_TYPES} from '../../constants/constants';
 import { Modal } from 'react-bootstrap';
 import MateFun2D from '../graph/MateFun2D';
 import './DisplayResult.scss';
@@ -11,13 +12,14 @@ export class DisplayResult extends React.Component {
 
     render() {
         const { props } = this;
-        const { value, valuetext } = props;
+        const { value, valuetext, type} = props;
+        debugger;
         return (
             <Modal className="DisplayResult" {...props}>
                 { 
-                    !value || value.tipo === 'salida' ?
-                    <p className="text-value">{ valuetext }</p>
-                 : <MateFun2D value={value}/>
+                    type  === VALUES_TYPES.FIGURE ?
+                    <MateFun2D value={value}/> :
+                    <p className="text-value">{ valuetext }</p> 
                 }
             </Modal>
         )

@@ -9,22 +9,28 @@ export class ConstPipe extends Pipe {
         super([], [DIRECTION.BOTTOM]);
         this.setValueType(type);
         this.setValue(value)
+        this.clean();
     }
 
     calc(context, board, enterDir, path) {
         if(!context.isMark(this.getPos())) {
             context.mark(this.getPos());
             const next = processNext(this, board)(DIRECTION.BOTTOM);
-
             if (next.error) { this.addError(next.error); return }
             if (!next.pipe || !next.connected) { this.addWarning('No esta conectado'); return;}
             const newPath = enterDir ? [...path, this] : [this];
-            if(next.inDir !== enterDir) { next.pipe.calc(context, board, next.inDir, newPath); }
-
+            if(next.dir !== enterDir) { next.pipe.calc(context, board, next.inDir, newPath); }
             const status = validateDirType(this, next);
             if (status.warning) this.addWarning(status.warning);
             if (status.error) this.addError(status.error);
+            if (status.valid) { this.tempType = status.type; }
         }
+    }
+
+
+    clean() {
+        super.clean();
+        this.tempType = this.outType;
     }
 
     setValueType(type) {
@@ -68,7 +74,7 @@ export class ConstPipe extends Pipe {
         return {
             ...(super.snapshot()),
             dir: {
-                bottom: this.getValueType()
+                bottom: this.tempType,
             },
             value: this.getValue(),
             valueText: this.toCode(),

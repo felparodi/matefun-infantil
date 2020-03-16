@@ -150,6 +150,11 @@ export class FuncPipe extends Pipe {
         }
     }
 
+    getInDirections() {
+        return super.getInDirections()
+            .filter(d => this.getOriginInType(d));
+    }
+
     getDirValueType(direction) {
         if (direction === DIRECTION.BOTTOM) {
            return this.tempOutType;
@@ -166,13 +171,13 @@ export class FuncPipe extends Pipe {
     }
 
     getOriginInType(direction) {
-        const dirPos = this.getInDirections().indexOf(direction);
-        return dirPos > -1 ? this.inTypes[dirPos] : null;
+        const dirPos = super.getInDirections().indexOf(direction);
+        return dirPos > -1 ? this.inTypes[dirPos] : undefined;
     }
 
     getInType(direction) {
-        const dirPos = this.getInDirections().indexOf(direction);
-        return dirPos > -1 ? this.tempInTypes[dirPos] : null;
+        const dirPos = super.getInDirections().indexOf(direction);
+        return dirPos > -1 ? this.tempInTypes[dirPos] : undefined;
     }
 
     getType() {

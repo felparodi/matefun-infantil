@@ -7,7 +7,8 @@ import { VALUES_TYPES, DIRECTION } from '../../constants/constants';
 import Image from '../../icons/imagen.svg';
 
 const OutPutValue = (props) => {
-    const {valueMateFun, valueText} = props.pipe;
+    const {valueMateFun, valueText, dir} = props.pipe;
+    debugger;
     return (
         <React.Fragment>
             {
@@ -21,7 +22,7 @@ const OutPutValue = (props) => {
             </text>
             }
             {
-                valueMateFun && !valueText &&
+                valueMateFun && dir.top === VALUES_TYPES.FIGURE &&
                 <Image/>
             }
         </React.Fragment>
@@ -68,6 +69,7 @@ export class EndPipe extends React.Component {
                 <DisplayResult 
                     show={showResult}
                     value={pipe.valueMateFun}
+                    type={pipe.dir.top}
                     valuetext={pipe.valueText}
                     onHide={this.handlerHiddenResult} />
                 <svg onDoubleClick={this.openDisplayResult} viewBox="0 0 40 40">

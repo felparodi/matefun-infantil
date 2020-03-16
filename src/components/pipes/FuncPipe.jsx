@@ -16,6 +16,9 @@ import Linea from '../../icons/linea.svg'
 import Poli from '../../icons/poli.svg'
 import Mover from '../../icons/mover.svg'
 import Puzzle from '../../icons/puzzle-pices.svg';
+import Resto from '../../icons/resto.svg';
+import Primero from '../../icons/primero.svg';
+import Rango from '../../icons/rango.svg';
 
 function getTypeColor(type) {
     switch (type) {
@@ -83,6 +86,12 @@ const FunctionIcon = (props) => {
             return <Puzzle/>;
         case METHOD_FUNCTION.CONCAT:
             return <TextIcon text=":"/>;
+        case METHOD_FUNCTION.RESTO:
+            return <Resto/>;
+        case METHOD_FUNCTION.PRIMER:
+            return <Primero/>;
+        case METHOD_FUNCTION.RANGO:
+            return <Rango/>
         default:
             return <TextIcon text={props.name}/>;
     }

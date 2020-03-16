@@ -32,7 +32,7 @@ export function getMateFunType(type) {
 }
 
 export function matchTypes(type1, type2) {
-    const oneNotDefined = !isDefined(type1) || !isDefined(type2);
+    const oneNotDefined = (!isDefined(type1) && !isList(type1)) || (!isDefined(type2) && !isList(type2));
     const sameType = type1 === type2;
     const listMatch = isList(type1) && isList(type2) && matchTypes(listSubType(type1), listSubType(type2));
     return oneNotDefined || sameType|| listMatch;
@@ -40,7 +40,7 @@ export function matchTypes(type1, type2) {
 
 export function genericReplace(subsType) {
     return (type) => {
-        if(/GENERIC/.test(type) >= 0) {
+        if(/GENERIC/.test(type)) {
             return type.replace(/GENERIC/, subsType);
         } else {
             return type;

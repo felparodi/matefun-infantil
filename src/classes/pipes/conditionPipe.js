@@ -2,13 +2,14 @@ import { PIPE_TYPES, VALUES_TYPES, DIRECTION } from '../../constants/constants';
 import { processNext } from '../helpers/pipe';
 import { FuncPipe } from './funcPipe';
 
+const { GENERIC, BOOLEAN} = VALUES_TYPES;
 /*
 * @TODO: todo
 */
 export class ConditionPipe extends FuncPipe {
 
     constructor() {
-       super('SI', [VALUES_TYPES.GENERIC, VALUES_TYPES.BOOLEAN, VALUES_TYPES.GENERIC], VALUES_TYPES.GENERIC);
+       super('SI', [GENERIC, BOOLEAN, GENERIC], GENERIC);
     }
 
     toCode(dir, board) {

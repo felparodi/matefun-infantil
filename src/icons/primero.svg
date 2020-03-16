@@ -1,0 +1,10 @@
+<g transform="scale(1.2) translate(4.5px, 4px)" fill="white" fill="white">
+    <g>
+        <rect x="3" y="8" height="8" width="18" stroke="pink" stroke-width="0.5" stroke-dasharray="1,1" fill="none"/>
+        <circle stroke="white"  stroke-width="0.5" stroke-dasharray="0.5,0.5" fill="none" cx="10" cy="12" r="1"/>
+        <circle stroke="white"  stroke-width="0.5" stroke-dasharray="0.5,0.5" fill="none" cx="13" cy="12" r="1"/>
+        <circle stroke="white"  stroke-width="0.5" stroke-dasharray="0.5,0.5" fill="none" cx="16" cy="12" r="1"/>
+        <circle stroke="white"  stroke-width="0.5" stroke-dasharray="0.5,0.5" fill="none" cx="19" cy="12" r="1"/>
+    </g>
+    <circle cx="6" cy="12" r="2"/>
+</g>
