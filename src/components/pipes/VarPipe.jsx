@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import {isDefined, typeToClass, isList} from '../../classes/helpers/type';
 import { setPipeValue, joinOutput} from '../../api/board';
 import Output from './function-parts/Output';
 import { InputType, castValue, TextValue } from './ValPipe'
@@ -19,7 +20,7 @@ export const DoorOpen = (props) => {
     const { pipe, onClickDoor, onClickValue, onClickOutput } = props;
     return (
         <svg viewBox="0 0 40 40">
-            <JoinOutput className={pipe.dir.bottom}/>
+            <JoinOutput className={typeToClass(pipe.dir.bottom)}/>
             <g onClick={onClickDoor}>
                 <path d="M 5 5 L 0 10 L 0 35 L 5 30 Z" style={{'fill': 'saddlebrown', 'stroke': 'black', 'strokeWidth': 0.3 }}/>
                 <path d="M 5 5 L 5 30 L 35 30 L 35 5 Z" style={{'fill': '#000000d6', 'stroke': 'black', 'strokeWidth': 0.3 }}/>
@@ -27,7 +28,7 @@ export const DoorOpen = (props) => {
             </g>
             <TextValue onClick={onClickValue}
                 valueText={pipe.valueText}/>
-            <Output onClick={onClickOutput} className={pipe.dir.bottom}></Output>
+            <Output onClick={onClickOutput} type={pipe.dir.bottom}></Output>
         </svg>
     );
 }
@@ -36,7 +37,7 @@ export const DoorClosed = (props) => {
     const { pipe, onClickDoor, onClickOutput } = props;
     return (
         <svg viewBox="0 0 40 40">
-            <JoinOutput className={pipe.dir.bottom}/>
+            <JoinOutput className={typeToClass(pipe.dir.bottom)}/>
             <g  onClick={onClickDoor} >
                 <path id="p1" d="M 5 5 L 5 30 L 35 30 L 35 5 Z" style={
                     {'fill': 'saddlebrown', 'stroke': 'black', 'strokeWidth': 0.3}}/>      
@@ -44,7 +45,7 @@ export const DoorClosed = (props) => {
                 <circle cx="18.6" cy="17" r="0.5" stroke="black" fill="red" strokeWidth="1"/>
                 <circle cx="21.4" cy="17" r="0.5" stroke="black" fill="red" strokeWidth="1"/>
             </g>
-            <Output onClick={onClickOutput} className={pipe.dir.bottom}></Output>
+            <Output onClick={onClickOutput} type={pipe.dir.bottom}></Output>
         </svg>
     );
 }
@@ -60,6 +61,15 @@ export class VarPipe extends React.Component {
         this.setDoorState = this.setDoorState.bind(this);
         this.setEditingValue = this.setEditingValue.bind(this);
         this.joinOutput = this.joinOutput.bind(this);
+        this.openDoor = this.openDoor.bind(this);
+    }
+
+    openDoor() {
+        const {pipe} = this.props;
+        const type = pipe.dir.bottom
+        if(origin !== 'toolbox' && isDefined(type) && !isList(type)) {
+            this.setDoorState(true)
+        }
     }
 
     joinOutput() {
@@ -102,7 +112,7 @@ export class VarPipe extends React.Component {
                 </div>
             )
         }
-        return (<DoorClosed onClickOutput={this.joinOutput} pipe={pipe} onClickDoor={() => origin !== 'toolbox' && this.setDoorState(true)} />);
+        return (<DoorClosed onClickOutput={this.joinOutput} pipe={pipe} onClickDoor={this.openDoor} />);
     }
 }
 

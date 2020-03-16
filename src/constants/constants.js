@@ -8,11 +8,11 @@ export const DIRECTION = Object.freeze({
 
 export const METHOD_FUNCTION = Object.freeze({
     //MATEMATICAS
-    ADD: 'ADD', //NATIVA
-    MUL: 'MUL', //NATIVA
-    SUB: 'SUB', //NATIVA
-    DIV: 'DIV', //NATIVA
-    EXP: 'EXP', //NATIVA
+    ADD: 'ADD', //NATIVA "+"
+    MUL: 'MUL', //NATIVA "*"
+    SUB: 'SUB', //NATIVA "-"
+    DIV: 'DIV', //NATIVA "/"
+    EXP: 'EXP', //NATIVA "^"
     RED: 'red ', // "red :: R -> R" Devuevle parte entera
     RAIZ: 'raizcuad', // "raizcuad :: R -> R"
     COS: 'cos', // "cos :: R -> R"
@@ -31,13 +31,13 @@ export const METHOD_FUNCTION = Object.freeze({
     MOVER: 'mover', // "mover :: (Fig X (R X R)) -> Fig"
     AFIG: 'aFig', // "aFig :: A -> Fig"
     //CONDICIONE
-    GREAT: 'GREAT', //NATIVA
-    E_GREAT: 'EGREAT', //NATIVA
-    LEST: 'LEST', //NATIVA
-    E_LEST: 'E_LEST', //NATIVA
-    EQUAL: 'EQUAL', //NATIVA
-    N_EQUAL: 'N_EQUAL', //NATIVA
-    AND: 'Y',
+    GREAT: 'GREAT', //NATIVA "<"
+    E_GREAT: 'EGREAT', //NATIVA ">="
+    LEST: 'LEST', //NATIVA "<"
+    E_LEST: 'E_LEST', //NATIVA "<="
+    EQUAL: 'EQUAL', //NATIVA "=="
+    N_EQUAL: 'N_EQUAL', //NATIVA "!="
+    AND: 'Y', // NATIVA ","
     //3D
     LINEA_3D: 'linea3D', // "linea3D :: ((R X R X R) X (R X R X R)) -> Fig3D"
     ESFERA: 'esfera', // "esfera :: R -> Fig3D"
@@ -50,6 +50,7 @@ export const METHOD_FUNCTION = Object.freeze({
     ROTAR_3D: 'rotar3D', // "rotar3D :: (Fig3D X (R X R X R)) -> Fig3D"
     ESCALAR_3D: 'escalar3D', // "escalar3D :: (Fig3D X R) -> Fig3D"
     //LISTA
+    CONCAT: 'CONCAT', // NATIVA ":"
     RANGO: 'rango', // "rango :: (R X R X R) -> R*" Numeros entre dos de a pasos del terser
     PRIMER: 'primero', // "primero :: A* -> A"
     REST: 'resto', // "resto :: A* -> A*"
@@ -69,7 +70,6 @@ export const VALUES_TYPES= Object.freeze({
     BOOLEAN: 'BOOLEAN',
     STRING: 'STRING',
     NUMBER: 'NUMBER',
-    ARRAY: 'ARRAY',
     FUNCTION: 'FUNCTION',
     OTHER: 'OTHER',
     POINT: 'POINT',
@@ -77,10 +77,8 @@ export const VALUES_TYPES= Object.freeze({
     COLOR: 'COLOR',
     FIGURE: 'FIGURE',
     UNDEFINED: 'UNDEFINED',
-    LIST_NUMBER: 'LIST_NUMBER',
+    list: (t) => `LIST<${t}>`,
     GENERIC: 'GENERIC',
-    GENERIC2: 'GENERIC2',
-    GENERIC3: 'GENERIC3',
 })
 
 export const MATEFUN_TYPE= Object.freeze({
@@ -90,7 +88,6 @@ export const MATEFUN_TYPE= Object.freeze({
     POINT: '(R x R)',
     list: (t) => `${t}*`,
     GENERIC: 'A',
-
 })
 
 export const ERROR = Object.freeze({

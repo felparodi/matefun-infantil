@@ -31,7 +31,7 @@ export function createPipeToSnap(snapshot) {
         case PIPE_TYPES.DUMMY:
             return new DummyPipe(...(dirToDirections(snapshot.dir)));
         case PIPE_TYPES.FUNCTION:
-            return new FuncPipe(snapshot.name, dirToInTypes(snapshot.dir), snapshot.dir.bottom);
+            return new FuncPipe(snapshot.name, dirToInTypes(snapshot.originDir), snapshot.originDir.bottom);
         case PIPE_TYPES.VARIABLE:
             return new VarPipe(snapshot.dir.bottom);
         case PIPE_TYPES.VALUE:
@@ -55,6 +55,7 @@ export function cleanSnapshotMatrixInfo(snapshot) {
                 clean.pipes.push({
                     type: pipe.type,
                     dir: pipe.dir,
+                    originDir: pipe.originDir,
                     name: pipe.name,
                     value: pipe.value,
                     pos: pipe.pos

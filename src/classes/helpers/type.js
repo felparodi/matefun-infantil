@@ -1,8 +1,16 @@
 import { VALUES_TYPES, MATEFUN_TYPE, DIRECTION } from '../../constants/constants'
 import { invertDirection } from './direction';
 
-export function getMateFunType(varPipe) {
-    const type = varPipe.getValueType();
+export function isList(type) {
+    return /LIST<.*>/.test(type);
+}   
+
+export function listSubType(type) {
+    const regexType = /LIST<(.*)>/;
+    return type.match(regexType)[1];
+}
+
+export function getMateFunType(type) {
     switch (type) {
         case VALUES_TYPES.NUMBER:
             return MATEFUN_TYPE.NUMBER;
@@ -12,18 +20,36 @@ export function getMateFunType(varPipe) {
             return MATEFUN_TYPE.POINT;
         case VALUES_TYPES.COLOR:
             return MATEFUN_TYPE.COLOR;
+        case VALUES_TYPES.GENERIC:
+            return MATEFUN_TYPE.GENERIC;
         default:
+            if(isList(type)) {
+                const subType = listSubType(type)
+                return MATEFUN_TYPE.list(getMateFunType(subType))
+            }
             return "?";
     }
 }
 
 export function matchTypes(type1, type2) {
-    return !isDefined(type1) || !isDefined(type2) || type1 === type2;
+    const oneNotDefined = !isDefined(type1) || !isDefined(type2);
+    const sameType = type1 === type2;
+    const listMatch = isList(type1) && isList(type2) && matchTypes(listSubType(type1), listSubType(type2));
+    return oneNotDefined || sameType|| listMatch;
+}
+
+export function genericReplace(subsType) {
+    return (type) => {
+        if(/GENERIC/.test(type) >= 0) {
+            return type.replace(/GENERIC/, subsType);
+        } else {
+            return type;
+        }
+    }
 }
 
 export function isGeneric(type) {
-    const { GENERIC, GENERIC2, GENERIC3} = VALUES_TYPES;
-    return type === GENERIC || type === GENERIC2 || type === GENERIC3;
+    return /GENERIC/.test(type);
 }
 
 export function isDefined(type) {
@@ -59,6 +85,11 @@ export function typeCompare(t1, t2) {
     return VALUES_TYPES.UNDEFINED;
 }
 
+//TODO soporte nested list
+export function listGenericSubs(genType, otherType) {
+    return listSubType(otherType)
+}
+
 export function pipeDirValueType(pipe, dir) {
     if (pipe.hasDirection(dir)) {
         if (pipe.getValueType) return pipe.getValueType();
@@ -83,15 +114,15 @@ export function evalValueType(value) {
     switch(typeof value) {
         case 'boolean': return VALUES_TYPES.BOOLEAN;
         case 'number': return VALUES_TYPES.NUMBER;
-        case 'string': return VALUES_TYPES.STRING;
-        case 'function': return VALUES_TYPES.FUNCTION;
         case 'object': {
             if(value === null) return VALUES_TYPES.UNDEFINED;
             if(value.x !== undefined && value.y !== undefined)  return VALUES_TYPES.POINT;
             if(value.color) return VALUES_TYPES.COLOR;
             if (Array.isArray(value)) {
+                let subType = evalValueType(value[0]);
+                subType = subType !== VALUES_TYPES.UNDEFINED ? subType : VALUES_TYPES.GENERIC
                 //TODO array of number
-                return VALUES_TYPES.ARRAY;
+                return VALUES_TYPES.list(subType);
             }
             return VALUES_TYPES.OTHER;
         }
@@ -114,4 +145,11 @@ export function matchPipeTypeDir(p1, dir1, p2, dir2) {
     const typeDir1 = p1.getDirValueType ? p1.getDirValueType(dir1) : p1.getValueType();
     const typeDir2 = p2.getDirValueType ? p2.getDirValueType(dir2) : p2.getValueType();
     return matchTypes(typeDir1, typeDir2);
+}
+
+export function typeToClass(type) {
+    if(isList(type)) {
+        return `LIST ${typeToClass(listSubType(type))}`;
+    }
+    return type;
 }

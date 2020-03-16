@@ -1,6 +1,6 @@
 import { PIPE_TYPES, VALUES_TYPES, METHOD_FUNCTION, DIRECTION } from '../../constants/constants';
 import { invertDirection } from '../helpers/direction';
-import { matchTypes, isDefined, isGeneric, pipeDirValueType, pipeTypeDefined } from '../helpers/type';
+import { matchTypes, isDefined, isGeneric, pipeDirValueType, pipeTypeDefined, isList, listGenericSubs, genericReplace} from '../helpers/type';
 import { processNext, sortPipe } from '../helpers/pipe';
 import { Pipe } from './pipe'
 
@@ -51,9 +51,13 @@ export class FuncPipe extends Pipe {
                     this.addError('No machea tipo');
                 }
             } else if(isGeneric(type)) {
+                let subsType = nextType;
+                if(isList(type) && isList(nextType)) {
+                    subsType = listGenericSubs(type, nextType);
+                }
                 this.tempInTypes = this.tempInTypes
-                    .map(inType => inType === type ? nextType : inType);
-                this.tempOutType = this.tempOutType === type ? nextType : this.tempOutType;
+                    .map(genericReplace(subsType));
+                this.tempOutType = genericReplace(subsType)(this.tempOutType);
             } else {
                 this.setDirType(dir, nextType);
             }
@@ -127,6 +131,8 @@ export class FuncPipe extends Pipe {
                 return `(${arg[0]} , ${arg[1]})`;
             case METHOD_FUNCTION.EXP:
                 return `(${arg[0]} ^ ${arg[1]})`;
+            case METHOD_FUNCTION.CONCAT:
+                    return `${arg[0]} : ${arg[1]}`;
             default:
                 return `${this.name}(${arg.join(', ')})`;
         }
@@ -149,6 +155,19 @@ export class FuncPipe extends Pipe {
            return this.tempOutType;
         }
         return this.getInType(direction);
+    }
+
+
+    getDirOriginValueType(direction) {
+        if (direction === DIRECTION.BOTTOM) {
+           return this.outType;
+        }
+        return this.getOriginInType(direction);
+    }
+
+    getOriginInType(direction) {
+        const dirPos = this.getInDirections().indexOf(direction);
+        return dirPos > -1 ? this.inTypes[dirPos] : null;
     }
 
     getInType(direction) {
@@ -177,6 +196,12 @@ export class FuncPipe extends Pipe {
                 bottom: this.getDirValueType(DIRECTION.BOTTOM),
                 right: this.getDirValueType(DIRECTION.RIGHT),
                 left: this.getDirValueType(DIRECTION.LEFT)
+            },
+            originDir: {
+                top: this.getDirOriginValueType(DIRECTION.TOP),
+                bottom: this.getDirOriginValueType(DIRECTION.BOTTOM),
+                right: this.getDirOriginValueType(DIRECTION.RIGHT),
+                left: this.getDirOriginValueType(DIRECTION.LEFT)
             }
         }
     }

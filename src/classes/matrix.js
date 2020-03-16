@@ -220,9 +220,9 @@ export class MatrixPipe {
         const varsPipes = this.getAllVars();
         const endPipe = this.getEndPipes()[0];
         const varsType = varsPipes.reduce(
-            (prev, v, index) => index > 0 ? `${prev} X ${getMateFunType(v)}` :`${getMateFunType(v)}`, ''
+            (prev, v, index) => index > 0 ? `${prev} X ${getMateFunType(v.getValueType())}` :`${getMateFunType(v.getValueType())}`, ''
         );
-        const endType = getMateFunType(endPipe);
+        const endType = getMateFunType(endPipe.getValueType());
         return `${name} :: ${varsType} -> ${endType}`;
     }
 

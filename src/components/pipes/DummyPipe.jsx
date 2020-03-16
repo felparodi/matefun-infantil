@@ -1,6 +1,6 @@
 import React from 'react';
 import { DIRECTION } from '../../constants/constants'
-
+import {typeToClass} from '../../classes/helpers/type';
 import Vertical from './dummies/Vertical';
 import Horizontal from './dummies/Horizontal';
 import TopRight from './dummies/TopRight';
@@ -26,46 +26,46 @@ export class DummyPipe extends React.Component {
             if (pipe.dir.bottom) {
                 if (pipe.dir.right) {
                     if (pipe.dir.left) {
-                        return (<Cross className={pipe.dir.top}></Cross>)
+                        return (<Cross className={typeToClass(pipe.dir.top)}></Cross>)
                     } else {
-                        return (<UBR className={pipe.dir.top}/>)
+                        return (<UBR className={typeToClass(pipe.dir.top)}/>)
                     }
                 } else if (pipe.dir.left) {
-                    return (<UBL className={pipe.dir.top}/>)
+                    return (<UBL className={typeToClass(pipe.dir.top)}/>)
                 } else {
-                    return (<Vertical className={pipe.dir.top}/>)
+                    return (<Vertical className={typeToClass(pipe.dir.top)}/>)
                 }
             } else if (pipe.dir.right) {
                 if (pipe.dir.left) {
-                    return (<URL className={pipe.dir.top}/>)
+                    return (<URL className={typeToClass(pipe.dir.top)}/>)
                 } else {
-                    return (<TopRight className={pipe.dir.top}/>)
+                    return (<TopRight className={typeToClass(pipe.dir.top)}/>)
                 }
             } else if(pipe.dir.left) {
-                return (<TopLeft className={pipe.dir.top}/>)
+                return (<TopLeft className={typeToClass(pipe.dir.top)}/>)
             } else {
-                return (<TI className={pipe.dir.top}/>)
+                return (<TI className={typeToClass(pipe.dir.top)}/>)
             }
         } else if (pipe.dir.left) {
             if (pipe.dir.right) {
                 if (pipe.dir.bottom) {
-                    return (<BRL className={pipe.dir.left}/>)
+                    return (<BRL className={typeToClass(pipe.dir.left)}/>)
                 } else {
-                    return (<Horizontal className={pipe.dir.left}/>)
+                    return (<Horizontal className={typeToClass(pipe.dir.left)}/>)
                 }
             } else if (pipe.dir.bottom) {
-                return (<BottomLeft className={pipe.dir.bottom}/>)
+                return (<BottomLeft className={typeToClass(pipe.dir.left)}/>)
             } else {
-                return <LI className={pipe.dir.left}/>
+                return <LI className={typeToClass(pipe.dir.left)}/>
             }
         } else if (pipe.dir.bottom) {
             if (pipe.dir.right) {
-                return (<BottomRight className={pipe.dir.bottom}/>)
+                return (<BottomRight className={typeToClass(pipe.dir.bottom)}/>)
             } else {
-                return (<DI className={pipe.dir.bottom}/>)
+                return (<DI className={typeToClass(pipe.dir.bottom)}/>)
             }
         } else if (pipe.dir.right) {
-            return (<RI className={pipe.dir.right}/>);
+            return (<RI className={typeToClass(pipe.dir.right)}/>);
         }
         return (<O/>);
     }

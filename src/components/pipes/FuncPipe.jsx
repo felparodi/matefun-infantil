@@ -79,10 +79,10 @@ const FunctionIcon = (props) => {
             return <TextIcon text="^"/>;
         case METHOD_FUNCTION.RAIZ: 
             return <TextIcon text="&radic;"/>
-        case METHOD_FUNCTION.NOT:
-            return <TextIcon text="!"/>;
         case METHOD_FUNCTION.JUNTAR:
             return <Puzzle/>;
+        case METHOD_FUNCTION.CONCAT:
+            return <TextIcon text=":"/>;
         default:
             return <TextIcon text={props.name}/>;
     }
@@ -117,11 +117,11 @@ export class FuncPipe extends React.Component {
         const bottomType = pipe.dir.bottom;
         return (
             <svg viewBox="0 0 40 40">
-                <Base pipe={pipe}></Base>
-                { leftType && <InputLeft onClick={() => this.joinInput(DIRECTION.LEFT)} className={leftType}></InputLeft> }
-                { rightType && <InputRight onClick={() => this.joinInput(DIRECTION.RIGHT)} className={rightType}></InputRight> }
-                { topType && <InputTop onClick={() => this.joinInput(DIRECTION.TOP)} className={topType}></InputTop> }
-                <Output onClick={this.joinOutput} className={bottomType}></Output>
+                <Base/>
+                { leftType && <InputLeft onClick={() => this.joinInput(DIRECTION.LEFT)} type={leftType}/> }
+                { rightType && <InputRight onClick={() => this.joinInput(DIRECTION.RIGHT)} type={rightType}/>}
+                { topType && <InputTop onClick={() => this.joinInput(DIRECTION.TOP)} type={topType}/>}
+                <Output onClick={this.joinOutput} type={bottomType}/>
                 <FunctionIcon name={pipe.name}/>
             </svg>
         )
