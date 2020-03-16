@@ -4,21 +4,8 @@ import {isDefined} from '../../classes/helpers/type';
 import { setPipeValue, joinOutput, isEqualJoin } from '../../api/board';
 import './ValPipe.scss';
 import {  VALUES_TYPES, DIRECTION } from '../../constants/constants';
-
+import TextIcon from './function-parts/TextIcon';
 import Output from './function-parts/Output';
-
-export const TextValue = ({onClick, valueText}) => {
-    return (
-        <text x="50%" y="45%" 
-        dominantBaseline="central" 
-        textAnchor="middle" 
-        fontSize="12" 
-        onClick={onClick}
-        fill='white'>
-        {valueText}
-        </text>
-    );
-}
 
 export const InputType = (props) => {
     switch(props.type) {
@@ -132,9 +119,11 @@ export class ValPipe extends React.Component {
                         <path d="M 20 0 C 10 0 0 10 0 20 C 0 30 10 20 10 30 L 10 33 L 30 33 L 30 30 C 30 20 40 30 40 20 C 40 0 20 0 20 0 z"/>
                         <Output onClick={this.joinOutput} join={isSelectJoin} type={pipe.dir.bottom}></Output>
                     </g>
-                    {!edit && <TextValue 
-                                    onClick={this.onClickValue} 
-                                    valueText={pipe.valueText}/>
+                    {   
+                        !edit && 
+                        <TextIcon 
+                            onClick={this.onClickValue} 
+                            text={pipe.valueText}/>
                     }
                 </svg>
                 { edit && <InputType value={pipe.value} onBlur={this.leaveEditing} type={pipe.dir.bottom}/> }

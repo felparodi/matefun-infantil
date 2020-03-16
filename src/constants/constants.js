@@ -8,10 +8,10 @@ export const DIRECTION = Object.freeze({
 
 export const METHOD_FUNCTION = Object.freeze({
     //MATEMATICAS
-    ADD: 'ADD', //NATIVA "+"
-    MUL: 'MUL', //NATIVA "*"
-    SUB: 'SUB', //NATIVA "-"
-    DIV: 'DIV', //NATIVA "/"
+    ADD: 'ADD', //NATIVA "+" R x R -> R
+    MUL: 'MUL', //NATIVA "*" R x R -> R
+    SUB: 'SUB', //NATIVA "-" R x R -> R
+    DIV: 'DIV', //NATIVA "/" R x R -> R
     EXP: 'EXP', //NATIVA "^"
     RED: 'red ', // "red :: R -> R" Devuevle parte entera
     RAIZ: 'raizcuad', // "raizcuad :: R -> R"
@@ -31,13 +31,13 @@ export const METHOD_FUNCTION = Object.freeze({
     MOVER: 'mover', // "mover :: (Fig X (R X R)) -> Fig"
     AFIG: 'aFig', // "aFig :: A -> Fig"
     //CONDICIONE
-    GREAT: 'GREAT', //NATIVA "<"
-    E_GREAT: 'EGREAT', //NATIVA ">="
-    LEST: 'LEST', //NATIVA "<"
-    E_LEST: 'E_LEST', //NATIVA "<="
-    EQUAL: 'EQUAL', //NATIVA "=="
-    N_EQUAL: 'N_EQUAL', //NATIVA "!="
-    AND: 'Y', // NATIVA ","
+    GREAT: 'GREAT', //NATIVA "<" R x R -> B
+    E_GREAT: 'EGREAT', //NATIVA ">="  R x R -> B
+    LEST: 'LEST', //NATIVA "<"  R x R -> B
+    E_LEST: 'E_LEST', //NATIVA "<="  R x R -> B
+    EQUAL: 'EQUAL', //NATIVA "==" A x A -> B
+    N_EQUAL: 'N_EQUAL', //NATIVA "!=" A x A -> B
+    AND: 'Y', // NATIVA "," B x B -> B
     //3D
     LINEA_3D: 'linea3D', // "linea3D :: ((R X R X R) X (R X R X R)) -> Fig3D"
     ESFERA: 'esfera', // "esfera :: R -> Fig3D"
@@ -50,7 +50,7 @@ export const METHOD_FUNCTION = Object.freeze({
     ROTAR_3D: 'rotar3D', // "rotar3D :: (Fig3D X (R X R X R)) -> Fig3D"
     ESCALAR_3D: 'escalar3D', // "escalar3D :: (Fig3D X R) -> Fig3D"
     //LISTA
-    CONCAT: 'CONCAT', // NATIVA ":"
+    CONCAT: 'CONCAT', // NATIVA ":" A x A* -> A*
     RANGO: 'rango', // "rango :: (R X R X R) -> R*" Numeros entre dos de a pasos del terser
     PRIMER: 'primero', // "primero :: A* -> A"
     RESTO: 'resto', // "resto :: A* -> A*"

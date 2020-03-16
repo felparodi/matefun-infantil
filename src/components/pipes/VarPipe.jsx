@@ -5,7 +5,8 @@ import classNames from 'classnames';
 import {isDefined, typeToClass, isList} from '../../classes/helpers/type';
 import { setPipeValue, joinOutput, isEqualJoin} from '../../api/board';
 import Output from './function-parts/Output';
-import { InputType, castValue, TextValue } from './ValPipe'
+import TextIcon from './function-parts/TextIcon';
+import { InputType, castValue } from './ValPipe'
 import { DIRECTION } from '../../constants/constants';
 import './ValPipe.scss';
 
@@ -33,8 +34,7 @@ export const DoorOpen = (props) => {
         <svg viewBox="0 0 40 40">
             <JoinOutput className={classNames(typeToClass(pipe.dir.bottom), {'join':isSelectJoin})}/>
             <DoorOpen1 onClick={onClickDoor}/>
-            <TextValue onClick={onClickValue}
-                valueText={pipe.valueText}/>
+            <TextIcon onClick={onClickValue} text={pipe.valueText}/>
             <Output onClick={onClickOutput} join={isSelectJoin} type={pipe.dir.bottom}></Output>
         </svg>
     );

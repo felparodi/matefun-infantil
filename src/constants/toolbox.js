@@ -19,6 +19,8 @@ const toolboxGroups = [
             getDefaultFunction(METHOD_FUNCTION.DIV),
             getDefaultFunction(METHOD_FUNCTION.EXP),
             getDefaultFunction(METHOD_FUNCTION.RAIZ),
+            getDefaultFunction(METHOD_FUNCTION.SEN),
+            getDefaultFunction(METHOD_FUNCTION.COS),
         ]
     },
     { 

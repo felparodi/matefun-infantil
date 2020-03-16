@@ -6,99 +6,8 @@ import InputRight from './function-parts/InputRight';
 import InputLeft from './function-parts/InputLeft';
 import InputTop from './function-parts/InputTop';
 import Output from './function-parts/Output';
-import { METHOD_FUNCTION, VALUES_TYPES, DIRECTION } from '../../constants/constants'
-import Color from '../../icons/color.svg'
-import Rotar from '../../icons/rotar.svg'
-import Circ from '../../icons/circ.svg'
-import Escalar from '../../icons/escalar.svg'
-import Rect from '../../icons/rect.svg'
-import Linea from '../../icons/linea.svg'
-import Poli from '../../icons/poli.svg'
-import Mover from '../../icons/mover.svg'
-import Puzzle from '../../icons/puzzle-pices.svg';
-import Resto from '../../icons/resto.svg';
-import Primero from '../../icons/primero.svg';
-import Rango from '../../icons/rango.svg';
-import AFIG from '../../icons/aFig.svg';
-
-function getTypeColor(type) {
-    switch (type) {
-        case VALUES_TYPES.NUMBER:
-            return "green";
-        case VALUES_TYPES.FIGURE:
-            return "blue";
-        case VALUES_TYPES.COLOR:
-            return "orange";
-        case VALUES_TYPES.POINT:
-            return "red";
-    }
-}
-
-const TextIcon = (props) => (
-    <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fontSize="20px" fill='white'>
-        { props.text }
-    </text>
-);
-
-const FunctionIcon = (props) => {
-    switch(props.name) {
-        case METHOD_FUNCTION.COLOR:
-            return <Color/>;
-        case METHOD_FUNCTION.ROTAR:
-            return <Rotar/>;
-        case METHOD_FUNCTION.RECT:
-            return <Rect/>;
-        case METHOD_FUNCTION.LINEA:
-            return <Linea/>
-        case METHOD_FUNCTION.POLI:
-            return <Poli/>;
-        case METHOD_FUNCTION.ESCALAR:
-            return <Escalar/>;
-        case METHOD_FUNCTION.MOVER: 
-            return <Mover/>;
-        case METHOD_FUNCTION.CIRC:
-            return <Circ/>
-        case METHOD_FUNCTION.ADD:
-            return <TextIcon text="+"/>;
-        case METHOD_FUNCTION.SUB:
-        case METHOD_FUNCTION.NEGATIVO:
-            return <TextIcon text="-"/>;
-        case METHOD_FUNCTION.MUL:
-            return <TextIcon text="x"/>;
-        case METHOD_FUNCTION.DIV:
-            return <TextIcon text="%"/>;
-        case METHOD_FUNCTION.EQUAL:
-            return <TextIcon text="="/>;
-        case METHOD_FUNCTION.N_EQUAL:
-            return <TextIcon text="&ne;"/>;
-        case METHOD_FUNCTION.GREAT:
-            return <TextIcon text=">"/>;
-        case METHOD_FUNCTION.E_GREAT:
-            return <TextIcon text="&ge;"/>;
-        case METHOD_FUNCTION.LEST:
-            return <TextIcon text="<"/>;
-        case METHOD_FUNCTION.E_LEST:
-            return <TextIcon text="&le;"/>;
-        case METHOD_FUNCTION.EXP:
-            return <TextIcon text="^"/>;
-        case METHOD_FUNCTION.RAIZ: 
-            return <TextIcon text="&radic;"/>
-        case METHOD_FUNCTION.JUNTAR:
-            return <Puzzle/>;
-        case METHOD_FUNCTION.CONCAT:
-            return <TextIcon text=":"/>;
-        case METHOD_FUNCTION.RESTO:
-            return <Resto/>;
-        case METHOD_FUNCTION.PRIMER:
-            return <Primero/>;
-        case METHOD_FUNCTION.RANGO:
-            return <Rango/>;
-        case METHOD_FUNCTION.AFIG:
-            return <AFIG/>;
-        default:
-            return <TextIcon text={props.name}/>;
-    }
-}
+import { DIRECTION } from '../../constants/constants';
+import Icons from './function-parts/Icons';
 
 export class FuncPipe extends React.Component {
     constructor(props) {
@@ -138,7 +47,7 @@ export class FuncPipe extends React.Component {
                 { rightType && <InputRight join={isJoinRigth} onClick={() => this.joinInput(DIRECTION.RIGHT)} type={rightType}/>}
                 { topType && <InputTop join={isJoinTop} onClick={() => this.joinInput(DIRECTION.TOP)} type={topType}/>}
                 <Output join={isJoinBottom} onClick={this.joinOutput} type={bottomType}/>
-                <FunctionIcon name={pipe.name}/>
+                <Icons name={pipe.name}/>
             </svg>
         )
     }

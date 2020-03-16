@@ -4,25 +4,20 @@ import { joinInput, isEqualJoin } from '../../api/board';
 import { DisplayResult } from '../modal/DisplayResult';
 import InputTop from './function-parts/InputTop';
 import { VALUES_TYPES, DIRECTION } from '../../constants/constants';
+import TextIcon from './function-parts/TextIcon';
 import Image from '../../icons/imagen.svg';
 import Error from '../../icons/error.svg';
 import Lupa from '../../icons/lupa.svg';
 
-const TEXT_LENGTH = 2
+const TEXT_LENGTH = 3
 
 const OutPutValue = (props) => {
     const {valueMateFun, valueText, dir, hasValueError} = props.pipe;
     return (
         <React.Fragment>
             {
-            !hasValueError &&  valueText && valueText.length <= TEXT_LENGTH &&
-                <text x="50%" y="50%"
-                dominantBaseline="central"
-                textAnchor="middle"
-                fontSize="20"
-                fill='white'>
-                {valueText}
-                </text>
+                !hasValueError &&  valueText && valueText.length <= TEXT_LENGTH &&
+                    <TextIcon text={valuetext}/>
             }
             {
             !hasValueError &&  valueText && valueText.length > TEXT_LENGTH &&
@@ -31,10 +26,6 @@ const OutPutValue = (props) => {
             {
                 !hasValueError && valueMateFun && dir.top === VALUES_TYPES.FIGURE && 
                 <Image/>
-            }
-            {
-               hasValueError && 
-               <Error/>
             }
             {
                hasValueError && 
