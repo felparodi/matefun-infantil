@@ -39,7 +39,6 @@ class Pipe extends React.Component {
             <div className={classNames("Pipe", { 
                 'error': pipe.errors && pipe.errors.length > 0,
                 'warning': pipe.warnings && pipe.warnings.length > 0,
-                'working': pipe.isWorking,
                 })}>
                     {SwitchPipe(pipe, this.props)}
             </div>

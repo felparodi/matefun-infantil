@@ -32,9 +32,7 @@ export class Board extends React.Component {
     }
 
     addWPipe(x, y) {
-        if(this.props.isWorking) {
-            this.props.addWorkingPipe(x, y);
-        }
+        this.props.addWorkingPipe(x, y);
     }
 
     onDrop(drop) {
@@ -70,7 +68,7 @@ export class Board extends React.Component {
                         content={content} 
                         posX={i}
                         posY={j}
-                        onClick={() => this.addWPipe(i, j)}
+                        onDoubleClick={() => this.addWPipe(i, j)}
                         onDrop={this.onDrop}>
                     </Cell>
                 );

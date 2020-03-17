@@ -6,6 +6,10 @@ $CELL_SIZE: 4rem;
     &.over {
         background-color: #0080004f;
     }
+    .empty {
+        height: 100%;
+        width: 100%;
+    }
 }
 .copy .Cell.over {
     cursor: copy;

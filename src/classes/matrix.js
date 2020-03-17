@@ -75,7 +75,7 @@ export class MatrixPipe {
 
     addWorkPipe(pos) {
         const {x, y} = pos;
-        if (!this.isWorking) { throw new Error("La matrix no esta en porces de agrera working Pipe") }
+        //if (!this.isWorking) { throw new Error("La matrix no esta en porces de agrera working Pipe") }
         if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") }
         const act = this.value(x, y)
         if(act && act.getType() !== PIPE_TYPES.DUMMY) return;
