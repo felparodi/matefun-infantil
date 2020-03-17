@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { VALUES_TYPES } from '../../constants/constants';
-import { MateFunGraph2D } from '../../mateFunGraph/2D';
+import { MateFunGraph2D } from 'matefun-graph/lib/2D';
 import Grid from '../../icons/grid.svg';
 import Axis from '../../icons/axis.svg';
 import SpeedMore from '../../icons/speedMore.svg';
@@ -14,6 +14,7 @@ import './MateFun2D.scss';
 export class MateFun2D extends React.Component {
 
     constructor(props) {
+        console.log('matefunGraph', MateFunGraph2D)
         super(props);
         this.graphDiv = React.createRef();
         this.matFun = null;
