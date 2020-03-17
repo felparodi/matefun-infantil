@@ -66,7 +66,11 @@ export class FuncPipe extends Pipe {
 
     calc(context, board, enterDir, path) {
         if(path && path.find((p) => p === this)) {
-            this.addError('Loop');
+            const notDummy = path
+                .filter((p) => p.getType() !== PIPE_TYPES.DUMMY);
+            if(notDummy.length === 1) {
+                this.addError('Loop');
+            }
         } else if(!context.isMark(this.getPos())) {
             context.mark(this.getPos());
             const nextPipes = this.getAllDirections().map(processNext(this, board))

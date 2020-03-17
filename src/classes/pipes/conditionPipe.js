@@ -1,5 +1,5 @@
 import { PIPE_TYPES, VALUES_TYPES, DIRECTION } from '../../constants/constants';
-import { processNext } from '../helpers/pipe';
+import { processNext, getNextParents } from '../helpers/pipe';
 import { FuncPipe } from './funcPipe';
 
 const { GENERIC, BOOLEAN} = VALUES_TYPES;
@@ -10,6 +10,19 @@ export class ConditionPipe extends FuncPipe {
 
     constructor() {
        super('SI', [GENERIC, BOOLEAN, GENERIC], GENERIC);
+    }
+
+    calc(context, board, enterDir, path) {
+        const marked = context.isMark(this.getPos());
+        super.calc(context, board, enterDir, path);
+        if(!marked) {
+            const parents = getNextParents(this);
+            const parntesFunction = parents
+                .filter((parent) => parent.getType() === PIPE_TYPES.FUNCTION);
+            if(parntesFunction.length) {
+                this.addError('No se puede seguir con una funcion')
+            }
+        }
     }
 
     toCode(dir, board) {

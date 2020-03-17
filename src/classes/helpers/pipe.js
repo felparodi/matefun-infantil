@@ -1,6 +1,7 @@
 import { DIRECTION, PIPE_TYPES } from '../../constants/constants';
 import { invertDirection, directionMove } from '../helpers/direction';
 import { pipeTypeDefined } from '../helpers/type';
+import { process } from '../../api/board';
 
 export function sortPipe(p1, p2) {
     if(p1 && p2) {
@@ -54,4 +55,21 @@ export function processNext(pipe) {
         }
         return { pipe: next, dir, inDir, connected, children, error };
     }
+}
+
+//Retorna los siguintes padres directos que no sean dummys
+export function getNextParents(pipe) {
+    const parents = pipe.getOutDirections()
+        .map(processNext(pipe))
+        .filter(next => next.pipe)
+        .map(next => next.pipe);;
+    const dummys = parents
+        .filter(pipe => pipe.getType() === PIPE_TYPES.DUMMY);
+    const notDummys = parents
+        .filter(pipe => pipe.getType() !== PIPE_TYPES.DUMMY)
+  
+    const dummyParent = dummys
+        .map((pipe) => getNextParents(pipe))
+        .reduce((acc, parent) => [...acc, ...parent] ,[]);
+    return [...notDummys, ...dummyParent ];
 }
