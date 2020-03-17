@@ -72,7 +72,8 @@ function createWebSocket(userData) {
                 accResp = [];
                 res.success(messages);
             } if((message.tipo === 'salida' && message.resultado.indexOf('OUT') === 0)
-                ||(message.tipo === 'canvas')) {
+                ||(message.tipo === 'canvas')
+                ||(message.tipo === 'animacion')) {
                 //El shitf debuelve el primer de la lista y lo quita de la misma
                 accResp.push(message);
                 

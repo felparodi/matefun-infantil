@@ -1,10 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
+import { VALUES_TYPES } from '../../constants/constants';
 import { MateFunGraph2D } from '../../mateFunGraph/2D';
 import Grid from '../../icons/grid.svg';
 import Axis from '../../icons/axis.svg';
+import SpeedMore from '../../icons/speedMore.svg';
+import SpeedLest from '../../icons/speedLest.svg';
+import SpeedNormal from '../../icons/speedNormal.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDownload, faArrowsAlt, faSearchMinus, faSearchPlus } from '@fortawesome/free-solid-svg-icons'
+import { faDownload, faArrowsAlt, faSearchMinus, faSearchPlus, faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 import './MateFun2D.scss';
 
 export class MateFun2D extends React.Component {
@@ -20,10 +24,16 @@ export class MateFun2D extends React.Component {
         this.zoomIn = this.zoomIn.bind(this);
         this.recenterPlot = this.recenterPlot.bind(this);
         this.exportPlot = this.exportPlot.bind(this);
+        this.pause = this.pause.bind(this);
+        this.play = this.play.bind(this);
+        this.moreSpeed = this.moreSpeed.bind(this)
+        this.lestSpeed = this.lestSpeed.bind(this);
+        this.normalSpeed = this.normalSpeed.bind(this);
         this.handleResize = this.handleResize.bind(this);
         this.state = {
             toggleGrid: true,
-            toggleAxis: false
+            toggleAxis: false,
+            play: true
         }
 
     }
@@ -36,6 +46,9 @@ export class MateFun2D extends React.Component {
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.handleResize);
+        if(this.matFun) {
+            this.matFun.cleanPlot();
+        }
     }
 
     componentDidMount() {
@@ -94,8 +107,32 @@ export class MateFun2D extends React.Component {
         this.matFun.exportPlot();
     }
 
+    pause() {
+        this.setState({ play: false });
+        setTimeout(() => this.matFun.pauseAnimation());
+    }
+
+    play() {
+        this.setState({ play: true });
+        setTimeout(() => this.matFun.runAnimation());
+    }
+
+    normalSpeed() {
+        this.matFun.restoreSpeed();
+    }
+
+    moreSpeed() {
+        this.matFun.increaseSpeed()
+    }
+
+    lestSpeed() {
+        this.matFun.decreaseSpeed();
+    }
+
     render() {
-        const {toggleAxis, toggleGrid} = this.state;
+        const {type} = this.props;
+        const {toggleAxis, toggleGrid, play} = this.state;
+        const animation = type === VALUES_TYPES.list(VALUES_TYPES.FIGURE);
         return (
             <div className='MateFun2D'>
                 <div className='buttons'>
@@ -104,6 +141,14 @@ export class MateFun2D extends React.Component {
                     <button onClick={this.zoomIn}><FontAwesomeIcon icon={faSearchPlus}/></button>
                     <button onClick={this.zoomOut}><FontAwesomeIcon icon={faSearchMinus}/></button>
                     <button onClick={this.recenterPlot}><FontAwesomeIcon icon={faArrowsAlt}/></button>
+                    {
+                        animation && (play ? 
+                        <button onClick={this.pause}><FontAwesomeIcon icon={faPause}/></button> :
+                        <button onClick={this.play}><FontAwesomeIcon icon={faPlay}/></button> )
+                    }
+                    { animation && <button disabled={!play} className={classNames({'inactive': !play})} onClick={this.moreSpeed}><SpeedMore/></button> }
+                    { animation && <button disabled={!play} className={classNames({'inactive': !play})} onClick={this.normalSpeed}><SpeedNormal/></button> }
+                    { animation && <button disabled={!play} className={classNames({'inactive': !play})} onClick={this.lestSpeed}><SpeedLest/></button> }
                     <button onClick={this.exportPlot}><FontAwesomeIcon icon={faDownload}/></button>
                 </div>
                 <div className='graphic'>

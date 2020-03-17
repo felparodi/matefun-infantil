@@ -36,7 +36,10 @@
         fill: pink;
     }
     .join {
-        fill: tomato!important
+        fill: tomato!important;
+        .border {
+            fill: tomato;
+        }
     }
     height: 100%;
     width: 100%;

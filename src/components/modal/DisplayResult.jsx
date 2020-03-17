@@ -14,12 +14,13 @@ export class DisplayResult extends React.Component {
     render() {
         const { props } = this;
         const { value, valuetext, type} = props;
+        const graph = type  === VALUES_TYPES.FIGURE  || type === VALUES_TYPES.list(VALUES_TYPES.FIGURE);
         return (
-            <Modal className={classNames("DisplayResult", {'no-graph': type  !== VALUES_TYPES.FIGURE} )} {...props}>
+            <Modal className={classNames("DisplayResult", {'no-graph': !graph} )} {...props}>
                 <p className="title">({type})</p>
                 { 
-                    type  === VALUES_TYPES.FIGURE ?
-                    <MateFun2D value={value}/> :
+                    graph ?
+                    <MateFun2D value={value} type={type}/> :
                     <textarea className="info result" readOnly value={valuetext}/>
                 }
             </Modal>

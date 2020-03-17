@@ -13,6 +13,7 @@ const TEXT_LENGTH = 3
 
 const OutPutValue = ({pipe}) => {
     const {valueMateFun, valueText, dir, hasValueError} = pipe;
+    const type = dir.top;
     if(hasValueError) {
         return <Error/>;
     } else if(valueText) {
@@ -21,7 +22,7 @@ const OutPutValue = ({pipe}) => {
          } else {
             return <Lupa/>;
          }
-    } else if(valueMateFun && dir.top === VALUES_TYPES.FIGURE) {
+    } else if(valueMateFun && (type === VALUES_TYPES.FIGURE || type === VALUES_TYPES.list(VALUES_TYPES.FIGURE)) ) {
         return <Image/>;
     }
     return null;

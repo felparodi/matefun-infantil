@@ -36,10 +36,10 @@ export const ValueInputColor = ({value, onBlur}) => {
             className="form-control"
             onBlur={() => onBlur(temValue)} 
             onChange={(e) => setValue(e.target.value)} >
+            <option value="Negro">Negro</option> 
             <option value="Rojo">Rojo</option> 
             <option value="Verde">Verde</option> 
             <option value="Azul">Azul</option> 
-            <option value="Negro">Negro</option> 
         </select>
     );
 }
