@@ -13,11 +13,11 @@ export class DisplayResult extends React.Component {
 
     render() {
         const { props } = this;
-        const { value, valuetext, type} = props;
+        const { value, valuetext, type, hasError} = props;
         const graph = type  === VALUES_TYPES.FIGURE  || type === VALUES_TYPES.list(VALUES_TYPES.FIGURE);
         return (
             <Modal className={classNames("DisplayResult", {'no-graph': !graph} )} {...props}>
-                <p className="title">({type})</p>
+                <p className="title">({hasError ? 'Error' : type})</p>
                 { 
                     graph ?
                     <MateFun2D value={value} type={type}/> :

@@ -71,6 +71,7 @@ export class EndPipe extends React.Component {
                     value={pipe.valueMateFun}
                     type={pipe.dir.top}
                     valuetext={pipe.valueText}
+                    hasError={pipe.hasValueError}
                     onHide={this.handlerHiddenResult} />
                 <svg onDoubleClick={this.openDisplayResult} viewBox="0 0 40 40">
                     <g transform="rotate(-180 20 20)">
