@@ -58,7 +58,16 @@ export function process() {
         return services.editarWorkspace(funcProcess.body)
             .then((fileData) => {
                 const { message } = fileData;
-                dispatch({type:matrixAction.SET_RESULT_EVAL, payload:message.resultado})
+                if(Array.isArray(message)) {
+                    //En genear si son dos es que hubo error
+                    const mess = message[message.length-1];
+                    dispatch({type:matrixAction.SET_RESULT_EVAL, payload:mess.resultado})
+                    if(message.find(m => m.resultado.indexOf('OUTError') !== -1)) {
+                        return Promise.reject(mess.resultado) 
+                    }
+                } else {
+                    dispatch({type:matrixAction.SET_RESULT_EVAL, payload:message.resultado})
+                }
                 return (fileData);
             });
         

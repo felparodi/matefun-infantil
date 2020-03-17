@@ -185,6 +185,9 @@ export class MatrixPipe {
         this.getAllPipes().forEach(p => p.clean());
         const context = new Context(this.maxX, this.maxY);
         this.getAllPipes().sort(sortPipe).forEach(p => p.calc(context, this));
+        //Con dos veces se calcula mejor porque siemrpoe queda algo suelto, ver mejor la algorimia
+        const context2 = new Context(this.maxX, this.maxY);
+        this.getAllPipes().sort(sortPipe).forEach(p => p.calc(context2, this));
     }
 
     removePipe(x, y) {
