@@ -17,10 +17,10 @@ const toolboxGroups = [
             getDefaultFunction(METHOD_FUNCTION.SUB),
             getDefaultFunction(METHOD_FUNCTION.MUL),
             getDefaultFunction(METHOD_FUNCTION.DIV),
-            getDefaultFunction(METHOD_FUNCTION.EXP),
-            getDefaultFunction(METHOD_FUNCTION.RAIZ),
-            getDefaultFunction(METHOD_FUNCTION.SEN),
-            getDefaultFunction(METHOD_FUNCTION.COS),
+            //getDefaultFunction(METHOD_FUNCTION.EXP),
+            //getDefaultFunction(METHOD_FUNCTION.RAIZ),
+            //getDefaultFunction(METHOD_FUNCTION.SEN),
+            //getDefaultFunction(METHOD_FUNCTION.COS),
         ]
     },
     { 
@@ -37,8 +37,8 @@ const toolboxGroups = [
             new EndPipe(VALUES_TYPES.COLOR),
             new VarPipe(VALUES_TYPES.FIGURE),
             new EndPipe(VALUES_TYPES.FIGURE),
-            new VarPipe(VALUES_TYPES.list(VALUES_TYPES.GENERIC)),
-            new EndPipe(VALUES_TYPES.list(VALUES_TYPES.GENERIC)),
+            //new VarPipe(VALUES_TYPES.list(VALUES_TYPES.GENERIC)),
+            //new EndPipe(VALUES_TYPES.list(VALUES_TYPES.GENERIC)),
         ],
     },
     {  
@@ -60,21 +60,22 @@ const toolboxGroups = [
         value: 'figures',
         label: 'Figuras',
         pipes: [
-            new ConstPipe({color:'Rojo'}, VALUES_TYPES.COLOR),
+            new ConstPipe({color:'Negro'}, VALUES_TYPES.COLOR),
             new ConstPipe({x:0, y:0}, VALUES_TYPES.POINT),
             getDefaultFunction(METHOD_FUNCTION.CIRC),
             getDefaultFunction(METHOD_FUNCTION.RECT),
-            //Estos no estan funcionado, LINEA no esta en nuestro interpret, y POLI haceta lista de PUNTOS
+            //Estos no estan funcionado, LINEA no esta en nuestro interpret
             //new FuncPipe(METHOD_FUNCTION.LINEA, [VALUES_TYPES.POINT, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE),
-            getDefaultFunction(METHOD_FUNCTION.POLI),
+            //getDefaultFunction(METHOD_FUNCTION.POLI),
             getDefaultFunction(METHOD_FUNCTION.COLOR),
             getDefaultFunction(METHOD_FUNCTION.ROTAR),
             getDefaultFunction(METHOD_FUNCTION.JUNTAR),
             getDefaultFunction(METHOD_FUNCTION.ESCALAR),
             getDefaultFunction(METHOD_FUNCTION.MOVER),
-            getDefaultFunction(METHOD_FUNCTION.AFIG),
+            //getDefaultFunction(METHOD_FUNCTION.AFIG),
         ]
     },
+    /*
     {
         value: 'list',
         label: 'Listas',
@@ -86,6 +87,7 @@ const toolboxGroups = [
             getDefaultFunction(METHOD_FUNCTION.RANGO),
         ]
     },
+    */
     {
         value: 'custom',
         label: 'Custom',
