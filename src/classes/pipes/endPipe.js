@@ -110,7 +110,7 @@ export class EndPipe extends Pipe {
             dir: {
                 top: this.getValueType()
             },
-            valueMateFun: this.getMateFunValue(),
+            value: this.getMateFunValue(),
             valueText: this.getValueText(),
             hasValueError: this.hasValueError(),
         }

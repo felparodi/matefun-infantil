@@ -12,7 +12,7 @@ import Lupa from '../../icons/lupa.svg';
 const TEXT_LENGTH = 3
 
 const OutPutValue = ({pipe}) => {
-    const {valueMateFun, valueText, dir, hasValueError} = pipe;
+    const {value, valueText, dir, hasValueError} = pipe;
     const type = dir.top;
     if(hasValueError) {
         return <Error/>;
@@ -22,7 +22,7 @@ const OutPutValue = ({pipe}) => {
          } else {
             return <Lupa/>;
          }
-    } else if(valueMateFun && (type === VALUES_TYPES.FIGURE || type === VALUES_TYPES.list(VALUES_TYPES.FIGURE)) ) {
+    } else if(value && (type === VALUES_TYPES.FIGURE || type === VALUES_TYPES.list(VALUES_TYPES.FIGURE)) ) {
         return <Image/>;
     }
     return null;
@@ -43,7 +43,7 @@ export class EndPipe extends React.Component {
     openDisplayResult() {
         const { origin, pipe } = this.props;
         if (origin === 'board') {
-            if(pipe.valueMateFun) {
+            if(pipe.value) {
                 this.setState({showResult : true})
             }
         }
@@ -68,7 +68,7 @@ export class EndPipe extends React.Component {
             <React.Fragment>
                 <DisplayResult 
                     show={showResult}
-                    value={pipe.valueMateFun}
+                    value={pipe.value}
                     type={pipe.dir.top}
                     valuetext={pipe.valueText}
                     hasError={pipe.hasValueError}

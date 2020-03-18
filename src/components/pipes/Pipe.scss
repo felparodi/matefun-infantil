@@ -1,5 +1,5 @@
 .Pipe {
-    &.error, &.error.warning {
+    &.error, &.error.warning, &.error.working {
         background-color: #ff000061;
     }
     &.warning {

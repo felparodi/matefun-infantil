@@ -21,21 +21,17 @@ export class MatrixPipe {
         this.maxX = x;
         this.maxY = y;
         this.funcName = 'func';
-        this.isWorking = false;
         this.clean();
     }
 
-    startWork() {
-        this.isWorking = true;
-    }
-
+    //Desabilita que los dummyPipe se auto junten
     endWork() {
-        this.isWorking = false;
         this.getAllPipes()
             .filter(p => p.endWork )
             .forEach(p => p.endWork());
     }
 
+    //Retorna lista de posisiones alreder de un punto
     getArroundPos(pos) {
         const {x, y} = pos;
         const arround = []
@@ -46,6 +42,7 @@ export class MatrixPipe {
         return arround;
     }
 
+    //Retorna todos los tubos alreder de una posicion
     getArroundPipe(pos) {
         const arround = this.getArroundPos(pos).map((arr) => {
             const {x, y} = arr;
@@ -54,6 +51,7 @@ export class MatrixPipe {
         return arround.filter(a => a.p);
     }
 
+    //TODO Comentario
     addDummyWorkingPipe(pos) {
         const arrounds = this.getArroundPipe(pos);
         const dir = [];
@@ -65,7 +63,6 @@ export class MatrixPipe {
                 dir.push(arr.dir);
             } else if(pipe.hasDirection(invD)) {
                 dir.push(arr.dir);
-                pipe.startWork && pipe.startWork();
             }
         })
         const newDummy =  new DummyPipe(...dir);
@@ -73,9 +70,9 @@ export class MatrixPipe {
         this.addPipeSpeed(pos, newDummy);
     }
 
+
     addWorkPipe(pos) {
         const {x, y} = pos;
-        //if (!this.isWorking) { throw new Error("La matrix no esta en porces de agrera working Pipe") }
         if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") }
         const act = this.value(x, y)
         if(act && act.getType() !== PIPE_TYPES.DUMMY) return;
@@ -272,7 +269,7 @@ export class MatrixPipe {
         const isFunction = this.isFunction();
         canProcess = canProcess && (!isFunction || canFuncEval);
         console.log( { board:snap,  isFunction, canProcess });
-        return { board:snap,  isFunction, canProcess, isWorking: this.isWorking };
+        return { board:snap,  isFunction, canProcess };
     }
 
     setPipeValue(x, y, value) {

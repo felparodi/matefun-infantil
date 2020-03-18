@@ -39,6 +39,7 @@ export function sortPipe(p1, p2) {
     return 0
 }
 
+//TODO ver como se conporat con el getAraoundPipe del Matrix
 export function processNext(pipe) {
     return (direction) => {
         let next, dir, inDir, connected, children, error;

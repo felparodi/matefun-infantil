@@ -37,6 +37,7 @@ export function dropPipe(drop) {
                 matrix.removePipe(pipe.pos.x, pipe.pos.y);
             }
         }
+        matrix.endWork();
         updateMatrix(dispatch);
     }
 }
@@ -126,7 +127,12 @@ export function endWork() {
 
 export function addWorkingPipe(x, y) {
     return (dispatch) => {
-        matrix.addWorkPipe({x, y});
+        const pipe = matrix.value(x, y);
+        if(pipe && pipe.isWorking) {
+            matrix.endWork();
+        } else {
+            matrix.addWorkPipe({x, y});
+        }
         updateMatrix(dispatch);
     }
 }
