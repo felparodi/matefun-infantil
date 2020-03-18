@@ -2,10 +2,35 @@ import {PIPE_TYPES} from '../constants/constants';
 import { invertDirection } from './helpers/direction';
 import { Context } from './context';
 
-function equalPos(pos1, pos2) {
+/*
+*   @desc: Devulve si dos Positions son iguales
+*   @attr Position pos1: Una de las posiciones que se desea comparar
+*   @attr Position pos2: Una de las posiciones que se desea comparar
+*   @return: Boolean
+*   @scope: public
+*/
+export function equalPos(pos1, pos2) {
     return pos1.x === pos2.x && pos1.y === pos2.y;
 }
+
+/*
+*   @desc: Clase que ese utliza para encotra caminos validos en una matriz
+*   @attr Array<[Position, Array<Position>]> peandinProces: Donde se guardan las posiciones pendientes
+*         de procesar y el camino que nos llevo a ella
+*   @attr MatrixPipe matrix: Matriz que se esta analizando
+*   @attr Position end: Posicion a la que se quiere llegar
+*   @attr Context context: Donde se marcan las posiciones ya visitadas
+*   @scope: public
+*/
 export class BFS {
+
+    /*
+    *   @desc: Constructo de la clase, setea una de la primera poscione en la lista de pendietes
+    *       y la otra como final, ademas de la Matriz que se desea evaluar
+    *   @attr Position pos1: Posicion Inicial
+    *   @attr Position pos2: Posicion final
+    *   @attr IMarixPipe matrix: Matrix que se desa evaluar  
+    */
     constructor(pos1, pos2, matrix) {
         this.peandinProces = [[pos1, []]];
         this.matrix = matrix;

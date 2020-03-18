@@ -20,6 +20,7 @@ export function equlasPos(p1, p2) {
 *   @attr Integer maxY: Tamanio maximo en el eje Y de la matriz
 *   @attr Array<Array<Pipe>> values: Lista de Lista que representa la matriz
 *   @scope: public
+*   @TODO Cambiar nombre
 */
 export class MatrixPipe {
 
