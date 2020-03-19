@@ -1,5 +1,5 @@
 import { PIPE_TYPES, VALUES_TYPES, DIRECTION } from '../../constants/constants';
-import { processNext, getNextParents } from '../helpers/pipe';
+import { processNext, getParentsPipeNotDummy } from '../helpers/pipe';
 import { FuncPipe } from './funcPipe';
 
 const { GENERIC, BOOLEAN} = VALUES_TYPES;
@@ -17,7 +17,7 @@ export class ConditionPipe extends FuncPipe {
         const marked = context.isMark(this.getPos());
         super.calc(context, board, enterDir, path);
         if(!marked) {
-            const parents = getNextParents(this);
+            const parents = getParentsPipeNotDummy(this);
             const parntesFunction = parents
                 .filter((parent) => parent.getType() === PIPE_TYPES.FUNCTION);
             if(parntesFunction.length) {

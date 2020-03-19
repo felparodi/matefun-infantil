@@ -1,5 +1,5 @@
 import { DIRECTION, PIPE_TYPES, ERROR, VALUES_TYPES } from '../../constants/constants';
-import { processNext } from '../helpers/pipe';
+import { getNextChildren } from '../helpers/pipe';
 
 /*
 * Attr:
@@ -86,17 +86,16 @@ export class Pipe {
         return !(this.board == null || this.pos === null)
     }
 
-    getParents() {
+    getChildrens() {
         if(!this.isInBoard()) {
             return new Array();
         }
-        return this.getInDirections()
-            .map(processNext(this))
+        return getNextChildren(this)
             .filter(dirPipe => dirPipe.children)
     }
 
     toCodeArg(board) {
-        const parentPipe = this.getParents();
+        const parentPipe = this.getChildrens();
         const arg = parentPipe
             .map((dirPipe) => dirPipe.pipe !== null ? dirPipe.pipe.toCode(dirPipe.dir, board) : null)
         return arg.map(e => e !== null ? e : '?')
