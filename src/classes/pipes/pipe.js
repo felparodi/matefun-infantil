@@ -53,10 +53,12 @@ export class Pipe {
     *   @desc: Calcula informacion de los Pipe que depende de como se conectan con los otros en la IMatrix
     *   @attr Context context: Context que marca los Pipe que ya se procesaron para que no se generen loops
     *   @attr IMarix board: IMatrix en la que se calcula todo
+    *   @attr Direction enterDir?: Direcion desde donde se caclua en caso de ser recuiciba
+    *   @attr Array<Pipe> path?: Camino de la recurcion en el calculo
     *   @return: void
     *   @scope: public
     */
-    calc(context, board) {
+   calc(context, board, enterDir, path=[]) {
         context.mark(this.pos);
     }
 
