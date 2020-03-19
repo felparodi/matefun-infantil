@@ -10,7 +10,7 @@ import { Pipe } from './pipe';
 export class ConstPipe extends Pipe {
 
     /*
-    *   @desc:  
+    *   @desc: Cosntucor, que dado un valor y/o un typo cosntrulle la ConstPipe
     *   @attr Value value?:
     *   @attr ValueType type?:
     */
@@ -21,8 +21,8 @@ export class ConstPipe extends Pipe {
         this.clean();
     }
 
-     /*
-    *   @desc:
+    /*
+    *   @desc: Caclua los eroores y warnig de la ConstPipe y de sus conexiones
     *   @attr Context context: Context que marca los Pipe que ya se procesaron para que no se generen loops
     *   @attr IMarix board: IMatrix en la que se calcula todo
     *   @attr Direction enterDir?: Direcion desde donde se caclua en caso de ser recuiciba
@@ -46,7 +46,7 @@ export class ConstPipe extends Pipe {
     }
 
     /*
-    *   @desc:
+    *   @desc: Setea el ValueType que contine la constante
     *   @attr ValueType type: ValueType que se quiere asignar
     *   @return: void
     *   @scope: private
@@ -56,7 +56,7 @@ export class ConstPipe extends Pipe {
     }
 
     /*
-    *   @desc:
+    *   @desc: Devuelve el ValueType que representa la ConstPipe
     *   @return: ValueType
     *   @scope: public
     */
@@ -65,8 +65,8 @@ export class ConstPipe extends Pipe {
     }
 
     /*
-    *   @desc:
-    *   @attr Value value:
+    *   @desc: Setea un nuevo valor en la constante si este es valido
+    *   @attr Value value: valor que se desa setear
     *   @return: void
     *   @scope: public
     */
@@ -84,7 +84,7 @@ export class ConstPipe extends Pipe {
     }
 
     /*
-    *   @desc:
+    *   @desc: Devulve el valor que esta contenido en la ConstPipe
     *   @return: Value
     *   @socpe: public
     */
@@ -93,20 +93,41 @@ export class ConstPipe extends Pipe {
     }
 
     /*
-    *   
+    *   @desc: Devulve el como se represta el valor en codigo
+    *   @return: String
+    *   @scope: public
+    *   @overide
     */
     toCode() {
         return valueToString(this.getValue(), this.getValueType());
     }
 
+    /*
+    *   @desc: Devuelv el PipeType que repesenta a la ConstPipe
+    *   @return: PipeValue
+    *   @scope: public
+    *   @overide
+    */
     getType() {
         return PIPE_TYPES.VALUE;
     }
 
+    /*
+    *   @desc: Devuelve si es una direcion de salida valida
+    *   @attr Direction dir:
+    *   @return: Boolean
+    *   @scope: public
+    *   @overide
+    */
     isOutDir(dir) {
         return dir === DIRECTION.BOTTOM;
     }
 
+    /*
+    *   @desc: Devulve el SnapPipe que represta a esta ConstPipe
+    *   @return: SnapPipe
+    *   @scope: public
+    */
     snapshot() {
         return {
             ...(super.snapshot()),

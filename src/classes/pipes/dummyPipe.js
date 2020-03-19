@@ -194,8 +194,6 @@ export class DummyPipe extends Pipe {
 
     /*
     *   @desc: Devuelve el codigo de el hijo del DummyPipe
-    *   @attr Direction dir:
-    *   @attr IMatrix board:
     *   @return: String
     *   @scope: public
     *   @overider
