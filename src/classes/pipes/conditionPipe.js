@@ -3,6 +3,7 @@ import { processNext, getNextParents } from '../helpers/pipe';
 import { FuncPipe } from './funcPipe';
 
 const { GENERIC, BOOLEAN} = VALUES_TYPES;
+
 /*
 * @TODO: todo
 */

@@ -1,8 +1,60 @@
 import { DIRECTION, PIPE_TYPES } from '../../constants/constants';
-import { invertDirection, directionMove } from '../helpers/direction';
-import { pipeTypeDefined } from '../helpers/type';
-import { process } from '../../api/board';
+import { invertDirection, directionMove } from './direction';
+import { matchTypes, typeCompare, isDefined} from './type'
 
+export function pipeDirValueType(pipe, dir) {
+    if (pipe.hasDirection(dir)) {
+        if (pipe.getValueType) return pipe.getValueType();
+        if (pipe.getDirValueType) return pipe.getDirValueType(dir);
+    }
+}
+
+function pipeMultiTypeDefined(pipe) {
+    for(let dir in DIRECTION) {
+        if (pipe.hasDirection(dir) 
+            && !isDefined(pipe.getDirValueType(dir))) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function pipeMonoTypeDefined(pipe) {
+    return isDefined(pipe.getValueType());
+}
+
+export function pipeTypeDefined(pipe) {
+    if (pipe.getValueType) return pipeMonoTypeDefined(pipe);
+    if (pipe.getDirValueType) return pipeMultiTypeDefined(pipe);
+    return false;
+}
+
+export function validateDirType(pipe, next) {
+    const nextInvDir = invertDirection(next.dir);
+    const nextType = pipeDirValueType(next.pipe, nextInvDir);
+    if (nextType) {
+        const pipeDirType = pipeDirValueType(pipe, next.dir);
+        if (!matchTypes(pipeDirType, nextType)) {
+            return { valid: false, error: 'Tipos no conciden' }
+        } 
+        return { valid: true, type:typeCompare(pipeDirType, nextType) }
+    } 
+    return { valid: false, warning: 'Connecion Obstuida' }
+}
+
+export function matchPipeTypeDir(p1, dir1, p2, dir2) {
+    const typeDir1 = p1.getDirValueType ? p1.getDirValueType(dir1) : p1.getValueType();
+    const typeDir2 = p2.getDirValueType ? p2.getDirValueType(dir2) : p2.getValueType();
+    return matchTypes(typeDir1, typeDir2);
+}
+
+/*
+*   @desc: Funcion que sirve para compara la prioridad para ordenar 2 IPipe
+*   @attr IPipe p1: Una de las IPipe que se desea ordenar
+*   @attr IPipe p2: Una de las IPipe que se desea ordenar
+*   @return: Int
+*   @scope: public
+*/
 export function sortPipe(p1, p2) {
     if(p1 && p2) {
         const t1 = p1.getType();
@@ -47,7 +99,8 @@ export function processNext(pipe) {
         inDir = invertDirection(direction);
         try {
             const {x, y} = directionMove(pipe.getPos(), direction);
-            if (!pipe.board) { return null; }
+            const board = pipe.getBoard();
+            if (!board) { return null; }
             next = pipe.board.value(x, y);
             connected = next ?  next.hasDirection(inDir) : true;
             children = next ?  next.isOutDir(inDir) : true;

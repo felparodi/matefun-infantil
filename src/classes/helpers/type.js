@@ -1,5 +1,4 @@
-import { VALUES_TYPES, MATEFUN_TYPE, DIRECTION } from '../../constants/constants'
-import { invertDirection } from './direction';
+import { VALUES_TYPES, MATEFUN_TYPE } from '../../constants/constants'
 
 export function isList(type) {
     return /LIST<.*>/.test(type);
@@ -57,26 +56,6 @@ export function isDefined(type) {
     return type !== UNDEFINED && !isGeneric(type);
 }
 
-export function pipeMultiTypeDefined(pipe) {
-    for(let dir in DIRECTION) {
-        if (pipe.hasDirection(dir) 
-            && !isDefined(pipe.getDirValueType(dir))) {
-            return false;
-        }
-    }
-    return true;
-}
-
-export function pipeMonoTypeDefined(pipe) {
-    return isDefined(pipe.getValueType());
-}
-
-export function pipeTypeDefined(pipe) {
-    if (pipe.getValueType) return pipeMonoTypeDefined(pipe);
-    if (pipe.getDirValueType) return pipeMultiTypeDefined(pipe);
-    return false;
-}
-
 export function typeCompare(t1, t2) {
     if(isDefined(t1)) { return t1; }
     if(isDefined(t2)) { return t2; }
@@ -88,26 +67,6 @@ export function typeCompare(t1, t2) {
 //TODO soporte nested list
 export function listGenericSubs(genType, otherType) {
     return listSubType(otherType)
-}
-
-export function pipeDirValueType(pipe, dir) {
-    if (pipe.hasDirection(dir)) {
-        if (pipe.getValueType) return pipe.getValueType();
-        if (pipe.getDirValueType) return pipe.getDirValueType(dir);
-    }
-}
-
-export function validateDirType(pipe, next) {
-    const nextInvDir = invertDirection(next.dir);
-    const nextType = pipeDirValueType(next.pipe, nextInvDir);
-    if (nextType) {
-        const pipeDirType = pipeDirValueType(pipe, next.dir);
-        if (!matchTypes(pipeDirType, nextType)) {
-            return { valid: false, error: 'Tipos no conciden' }
-        } 
-        return { valid: true, type:typeCompare(pipeDirType, nextType) }
-    } 
-    return { valid: false, warning: 'Connecion Obstuida' }
 }
 
 export function evalValueType(value) {
@@ -139,12 +98,6 @@ export const valueToString = (value, type) => {
     if(type === VALUES_TYPES.COLOR) return `${value.color}`;
     if(type === VALUES_TYPES.POINT) return `(${value.x}, ${value.y})`;
     return `${JSON.stringify(value)}`;
-}
-
-export function matchPipeTypeDir(p1, dir1, p2, dir2) {
-    const typeDir1 = p1.getDirValueType ? p1.getDirValueType(dir1) : p1.getValueType();
-    const typeDir2 = p2.getDirValueType ? p2.getDirValueType(dir2) : p2.getValueType();
-    return matchTypes(typeDir1, typeDir2);
 }
 
 export function typeToClass(type) {

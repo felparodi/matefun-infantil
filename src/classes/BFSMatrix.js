@@ -38,6 +38,11 @@ export class BFS {
         this.context = new Context(matrix.maxX, matrix.maxY);
     }
 
+    /*
+    *   @desc: En caso que encuentre devuevle la una lista de posiciones que representan el camino
+    *   @return: Array<Position>
+    *   @scope: public
+    */
     procces() {
         if(this.peandinProces.length === 0) return null;
         const [actual, path] = this.peandinProces.shift();

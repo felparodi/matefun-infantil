@@ -1,7 +1,7 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES, MATEFUN_TYPE } from '../constants/constants';
 import { invertDirection, directionMove } from './helpers/direction';
-import { getMateFunType, pipeDirValueType, matchPipeTypeDir } from './helpers/type';
-import { sortPipe } from './helpers/pipe';
+import { getMateFunType } from './helpers/type';
+import { sortPipe, pipeDirValueType, matchPipeTypeDir } from './helpers/pipe';
 import { DummyPipe } from './pipes/dummyPipe';
 import { Context } from './context';
 import { BFS } from './BFSMatrix';

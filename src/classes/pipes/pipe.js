@@ -1,5 +1,5 @@
 import { DIRECTION, PIPE_TYPES, ERROR, VALUES_TYPES } from '../../constants/constants';
-import {processNext} from '../helpers/pipe';
+import { processNext } from '../helpers/pipe';
 
 /*
 * Attr:
@@ -16,6 +16,10 @@ export class Pipe {
         this.setOutDirections(outDirections.filter(d => d)); 
         this.board = null;
         this.pos = null;
+    }
+
+    getBoard() {
+        return this.board;
     }
 
     clean() {

@@ -1,6 +1,6 @@
 import { PIPE_TYPES, VALUES_TYPES, DIRECTION} from '../../constants/constants';
-import { processNext } from '../helpers/pipe';
-import { validateDirType, matchTypes, evalValueType, valueToString } from '../helpers/type';
+import { processNext, validateDirType } from '../helpers/pipe';
+import { matchTypes, evalValueType, valueToString } from '../helpers/type';
 import { Pipe } from './pipe';
 
 export class ConstPipe extends Pipe {

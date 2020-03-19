@@ -1,6 +1,6 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../../constants/constants';
-import {pipeDirValueType, pipeTypeDefined, matchTypes, typeCompare} from '../helpers/type';
-import { processNext } from '../helpers/pipe';
+import { matchTypes, typeCompare} from '../helpers/type';
+import { processNext, pipeDirValueType } from '../helpers/pipe';
 import { Pipe } from './pipe';
 
 export class EndPipe extends Pipe {

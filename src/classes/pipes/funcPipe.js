@@ -1,7 +1,6 @@
 import { PIPE_TYPES, VALUES_TYPES, METHOD_FUNCTION, DIRECTION } from '../../constants/constants';
-import { invertDirection } from '../helpers/direction';
-import { matchTypes, isDefined, isGeneric, pipeDirValueType, pipeTypeDefined, isList, listGenericSubs, genericReplace} from '../helpers/type';
-import { processNext, sortPipe } from '../helpers/pipe';
+import { matchTypes, isDefined, isGeneric, isList, listGenericSubs, genericReplace} from '../helpers/type';
+import { processNext, sortPipe, pipeTypeDefined, pipeDirValueType } from '../helpers/pipe';
 import { Pipe } from './pipe'
 
 /*

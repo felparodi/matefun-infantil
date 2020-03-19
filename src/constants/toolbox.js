@@ -1,9 +1,8 @@
 import { METHOD_FUNCTION, VALUES_TYPES } from './constants';
-import {getDefaultFunction} from './functions';
+import { getDefaultFunction } from './functions';
 import { ConditionPipe } from '../classes/pipes/conditionPipe';
 import { EndPipe } from '../classes/pipes/endPipe';
 import { ConstPipe } from '../classes/pipes/constPipe';
-import { DummyPipe } from '../classes/pipes/dummyPipe'
 import { VarPipe } from '../classes/pipes/varPipe';
 
 const toolboxGroups = [
@@ -65,7 +64,7 @@ const toolboxGroups = [
             getDefaultFunction(METHOD_FUNCTION.CIRC),
             getDefaultFunction(METHOD_FUNCTION.RECT),
             //Estos no estan funcionado, LINEA no esta en nuestro interpret
-            //new FuncPipe(METHOD_FUNCTION.LINEA, [VALUES_TYPES.POINT, VALUES_TYPES.POINT], VALUES_TYPES.FIGURE),
+            //getDefaultFunction(METHOD_FUNCTION.LINEA),
             //getDefaultFunction(METHOD_FUNCTION.POLI),
             getDefaultFunction(METHOD_FUNCTION.COLOR),
             getDefaultFunction(METHOD_FUNCTION.ROTAR),

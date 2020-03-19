@@ -1,6 +1,6 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES  } from '../../constants/constants';
-import { validateDirType, matchTypes, pipeTypeDefined, evalValueType, valueToString } from '../helpers/type';
-import { processNext } from '../helpers/pipe';
+import { matchTypes, evalValueType, valueToString } from '../helpers/type';
+import { processNext, validateDirType, pipeTypeDefined } from '../helpers/pipe';
 import { Pipe } from './pipe';
 
 /*

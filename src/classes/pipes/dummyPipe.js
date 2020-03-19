@@ -1,7 +1,6 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../../constants/constants';
-import { invertDirection } from '../helpers/direction';
-import { matchTypes, isDefined, pipeDirValueType, pipeTypeDefined, typeCompare} from '../helpers/type';
-import { processNext, sortPipe } from '../helpers/pipe';
+import { matchTypes, typeCompare} from '../helpers/type';
+import { processNext, sortPipe, pipeTypeDefined, pipeDirValueType } from '../helpers/pipe';
 import { Pipe } from './pipe';
 
 export class DummyPipe extends Pipe {
