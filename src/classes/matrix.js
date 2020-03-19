@@ -435,7 +435,7 @@ export class MatrixPipe {
     /*
     *   @desc: Retorna una estructura de Snapshot de la matriz para trabajar con ella 
     *       sin modificar la memoria de las misma
-    *   @return: MatrixSnap
+    *   @return: SnapMatrix
     *   @scope: public
     */
     snapshot() {

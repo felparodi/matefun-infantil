@@ -6,6 +6,12 @@ import { DummyPipe } from '../pipes/dummyPipe';
 import { ConditionPipe } from '../pipes/conditionPipe';
 import { VarPipe } from '../pipes/varPipe';
 
+/*
+*   @desc: Retorna una lista de Direction apartir de un DirectionType
+*   @attr DirtectionType dir: DirectionType del que se quiren averiguar direciones 
+*   @return: Array<Direction>
+*   @scope: private
+*/
 function dirToDirections(dir) {
     const directions = []
     if(dir.left) { directions.push(DIRECTION.LEFT); }
@@ -16,6 +22,13 @@ function dirToDirections(dir) {
 
 }
 
+/*
+*   @desc: Retorna la lista de los ValueType de entrada que represent 
+*           una DirtectionType
+*   @attr DirectonType dir:
+*   @return Array<ValueType>
+*   @scope: private
+*/
 function dirToInTypes(dir) {
     const inTypes = []
     if(dir.left !== undefined) { inTypes.push(dir.left); }
@@ -24,6 +37,12 @@ function dirToInTypes(dir) {
     return inTypes;
 }
 
+/*
+*   @desc: Crea un Pipe que corresponede al AnySnapPipe que recibe
+*   @attr AnySnapPipe snapshot: AnySnapPipe apartir de la que se crea la Pipe
+*   @return: Pipe
+*   @scope: public
+*/
 export function createPipeToSnap(snapshot) {
     switch(snapshot.type) {
         case PIPE_TYPES.END:
@@ -42,6 +61,13 @@ export function createPipeToSnap(snapshot) {
     }
 }
 
+/*
+*   @desc: Devuevle una CleanSanpMatrix aprtir de una SnapMatrix para que 
+*           no se manjen datos que son post calcuado por la Matiz
+*   @attr SnapMatix snapshot: SnapMatrix que se desa tener de maner mas sensilla
+*   @return: CleanSnapMatrix
+*   @scope: public       
+*/
 export function cleanSnapshotMatrixInfo(snapshot) {
     const clean = { 
         pipes:[], 
