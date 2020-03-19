@@ -1,5 +1,12 @@
 import { DIRECTION } from '../../constants/constants';
 
+/*
+*   @desc: Devuelve una posicion de un movimiento en una direcion sobre otra posicion
+*   @attr Position pos: Posicion de la que se desa mover
+*   @attr Direction direction: Direcion asi la cual se desa mover
+*   @return: Position
+*   @scope: public
+*/
 export function directionMove(pos, direction) {
     const {x, y} = pos;
     switch(direction) {
@@ -15,6 +22,12 @@ export function directionMove(pos, direction) {
     return {x, y}
 }
 
+/*
+*   @desc: Devuelve la direcion opuesta a otra direcion
+*   @attr Direction direcion: Direcion que se desea saber su opuesta
+*   @return: Direction
+*   @scope: public
+*/
 export function invertDirection(direction) {
     switch(direction) {
         case DIRECTION.BOTTOM:
