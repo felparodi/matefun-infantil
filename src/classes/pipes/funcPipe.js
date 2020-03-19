@@ -107,8 +107,8 @@ export class FuncPipe extends Pipe {
         return this.name;
     }
 
-    toCode(direction, board) {        
-        const arg = this.toCodeArg(direction, board);
+    toCode() {        
+        const arg = this.toCodeArg();
         switch(this.name) {
             case METHOD_FUNCTION.ADD:
                 return `(${arg[0]} + ${arg[1]})`;

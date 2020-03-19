@@ -1,6 +1,6 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../../constants/constants';
 import { matchTypes, typeCompare} from '../helpers/type';
-import { processNext, pipeDirValueType } from '../helpers/pipe';
+import { nextPipeDirection, pipeDirValueType } from '../helpers/pipe';
 import { Pipe } from './pipe';
 
 export class EndPipe extends Pipe {
@@ -20,7 +20,7 @@ export class EndPipe extends Pipe {
     calc(context, board, enterDir, path) {
         if (!context.isMark(this.getPos())) {
             super.calc(context, board);
-            const next = processNext(this, board)(DIRECTION.TOP);
+            const next = nextPipeDirection(this, DIRECTION.TOP);
             //Manejo de errores
             if (next.error) { this.addError(next.error); return }
             if (!next.pipe || !next.connected) { this.addWarning("No esta conectado a nada"); return; }
@@ -47,8 +47,8 @@ export class EndPipe extends Pipe {
         this.tempType = this.type;
     }
 
-    toCode(dir, board) {
-        const arg = this.toCodeArg(DIRECTION.TOP, board);
+    toCode() {
+        const arg = this.toCodeArg();
         return `${arg[0]}`;
     }
 

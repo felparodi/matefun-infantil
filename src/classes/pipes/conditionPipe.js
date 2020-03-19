@@ -1,5 +1,5 @@
 import { PIPE_TYPES, VALUES_TYPES, DIRECTION } from '../../constants/constants';
-import { processNext, getParentsPipeNotDummy } from '../helpers/pipe';
+import { nextPipeDirection, getParentsPipeNotDummy } from '../helpers/pipe';
 import { FuncPipe } from './funcPipe';
 
 const { GENERIC, BOOLEAN} = VALUES_TYPES;
@@ -26,12 +26,12 @@ export class ConditionPipe extends FuncPipe {
         }
     }
 
-    toCode(dir, board) {
-        const leftNext = processNext(this, board)(DIRECTION.LEFT)
+    toCode() {
+        const leftNext = nextPipeDirection(this, DIRECTION.LEFT)
         const left = leftNext.pipe ? leftNext.pipe.toCode() : '?';
-        const upNext = processNext(this, board)(DIRECTION.TOP);
+        const upNext = nextPipeDirection(this, DIRECTION.TOP);
         const up = upNext.pipe ? upNext.pipe.toCode() : '?';
-        const rightNext = processNext(this, board)(DIRECTION.RIGHT);
+        const rightNext = nextPipeDirection(this, DIRECTION.RIGHT);
         const right = rightNext.pipe ? rightNext.pipe.toCode() : '?';
         return `${left} si ${up} \n\t o ${right}`;
     }

@@ -203,15 +203,14 @@ export class Pipe {
 
     /*
     *   @desc: Devulve la lista de los codigos de los childres de una Pipe
-    *   @attr IMatrix board: IMarix donde se calcula las conneciones
     *   @return: Array<String>
     *   @scope: protected
     *   @TODO como se accede al board
     */
-    toCodeArg(board) {
+    toCodeArg() {
         const parentPipe = this.getChildrens();
         const arg = parentPipe
-            .map((dirPipe) => dirPipe.pipe !== null ? dirPipe.pipe.toCode(dirPipe.dir, board) : null)
+            .map((dirPipe) => dirPipe.pipe !== null ? dirPipe.pipe.toCode() : null)
         return arg.map(e => e !== null ? e : '?')
     }
 

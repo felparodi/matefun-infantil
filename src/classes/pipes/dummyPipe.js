@@ -64,6 +64,7 @@ export class DummyPipe extends Pipe {
     *   @desc: Limpia toda la inforamcion que se calcula
     *   @return: void
     *   @scope: public
+    *   @overider
     */
     clean() {
         super.clean();
@@ -176,6 +177,7 @@ export class DummyPipe extends Pipe {
     *   @attr Array<Pipe> path?: Los pipe que se cacluaron para llegar a este
     *   @return: void
     *   @scope: public
+    *   @overider
     */
     calc(context, board, enterDir, path=[]) {
         if(!context.isMark(this.getPos())) {
@@ -196,15 +198,17 @@ export class DummyPipe extends Pipe {
     *   @attr IMatrix board:
     *   @return: String
     *   @scope: public
+    *   @overider
     */
-    toCode(dir, board) {
-        return this.toCodeArg(dir, board).join(', ');
+    toCode() {
+        return this.toCodeArg().join(', ');
     }
 
     /*
     *   @desc: Devuelve el PipeType que representa el dummyPipe
     *   @return: PipeType
     *   @scope: public
+    *   @overider
     */
     getType() {
         return PIPE_TYPES.DUMMY;
@@ -224,6 +228,7 @@ export class DummyPipe extends Pipe {
     *   @attr Direction dir: Direction que se quiere evaluar
     *   @return: Boolean
     *   @scope: public
+    *   @overider
     */
     isInDir(dir) {
         return this.tempInDirection === dir;
@@ -234,6 +239,7 @@ export class DummyPipe extends Pipe {
     *   @attr Direction dir: Direction que se quiere evaluar
     *   @return: Boolean
     *   @scope: public
+    *   @overider
     */
     isOutDir(dir) {
         return this.tempOutDirs.indexOf(dir) !== -1;
@@ -243,6 +249,7 @@ export class DummyPipe extends Pipe {
     *   @desc: Obtine todas la direciones de entrada de la DummyPipe
     *   @return: Array<Direction>
     *   @scope: public
+    *   @overider
     */
     getInDirections() {
         return this.tempInDirection ? [this.tempInDirection] : []
@@ -252,6 +259,7 @@ export class DummyPipe extends Pipe {
     *   @desc: Obtine todas la direciones de salida de la DummyPipe
     *   @return: Array<Direction>
     *   @scope: public
+    *   @overider
     */
     getOutDirections() {
         return this.tempOutDirs;
@@ -288,6 +296,7 @@ export class DummyPipe extends Pipe {
     *   @desc: Devulve una esturctura que represeta la informacion de la DummyPipe
     *   @return: SnapPipe
     *   @scope: public
+    *   @overider
     */
     snapshot() {
         const valueType = this.getValueType();

@@ -74,7 +74,7 @@ export class VarPipe extends Pipe {
         return `x${this.index}`
     }
 
-    toCode(direction, blockVar) {
+    toCode() {
         return `${this.getName()}`;
     }
 
