@@ -5,14 +5,16 @@ import { Pipe } from './pipe';
 
 /*
 *   @desc: Pipe que represtenta un valor fijo en la funcion
+*   @attr private Value value: Donde esta el valor que contiene la constante
+*   @attr private ValueType outType: Donde se indica el tipo de salida de la constante
 *   @scope: public
 */
 export class ConstPipe extends Pipe {
 
     /*
     *   @desc: Cosntucor, que dado un valor y/o un typo cosntrulle la ConstPipe
-    *   @attr Value value?:
-    *   @attr ValueType type?:
+    *   @attr Value value: Valor inicial de la constante
+    *   @attr ValueType type: Typo de valor de constante
     */
     constructor(value, type) {
         super([], [DIRECTION.BOTTOM]);
@@ -22,7 +24,7 @@ export class ConstPipe extends Pipe {
     }
 
     /*
-    *   @desc: Caclua los eroores y warnig de la ConstPipe y de sus conexiones
+    *   @desc: Caclua los errores y warnig de la ConstPipe y de sus conexiones
     *   @attr Context context: Context que marca los Pipe que ya se procesaron para que no se generen loops
     *   @attr IMarix board: IMatrix en la que se calcula todo
     *   @attr Direction enterDir?: Direcion desde donde se caclua en caso de ser recuiciba

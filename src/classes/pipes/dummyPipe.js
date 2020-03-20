@@ -6,10 +6,10 @@ import { Pipe } from './pipe';
 /*
 *   @desc: Este Pipe represtanta los movimientos de datos y no los tranforma,
 *       por lo que tine un solo hijo y muchos padres
-*   @attr Boolean isWorking: Representa si la DummyPipe esta validada para crear direciones para auto unirse con otra en el mismo estado
-*   @attr ValueType tempType: ValueType que se caculo
-*   @attr Direction tempInDirection: Direction de Entrada que se calculo
-*   @attr Array<Direction> tempOutDirs: Las de Direction de salida que se calcularon
+*   @attr public Boolean isWorking: Representa si la DummyPipe esta validada para crear direciones para auto unirse con otra en el mismo estado
+*   @attr private ValueType tempType: ValueType que se caculo
+*   @attr private Direction tempInDirection: Direction de Entrada que se calculo
+*   @attr private Array<Direction> tempOutDirs: Las de Direction de salida que se calcularon
 *   @scope: public
 */
 export class DummyPipe extends Pipe {

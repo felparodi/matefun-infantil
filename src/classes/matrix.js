@@ -16,9 +16,9 @@ export function equlasPos(p1, p2) {
 *           tambien los ustiliza para generar el codigo que
 *           matefun interpreta, tanto instruciones como 
 *           definicion de funciones nuevas
-*   @attr Integer maxX: Tamanio maximo en el eje X de la matriz 
-*   @attr Integer maxY: Tamanio maximo en el eje Y de la matriz
-*   @attr Array<Array<Pipe>> values: Lista de Lista que representa la matriz
+*   @attr private Integer maxX: Tamanio maximo en el eje X de la matriz 
+*   @attr private Integer maxY: Tamanio maximo en el eje Y de la matriz
+*   @attr private Array<Array<Pipe>> values: Lista de Lista que representa la matriz
 *   @scope: public
 *   @TODO Cambiar nombre
 */
@@ -502,7 +502,7 @@ export class MatrixPipe {
     */
     setMateFunValue(value) {
         const endPipe = this.getEndPipes()[0];
-        endPipe.setMateFunValue(value);
+        endPipe.setValue(value);
     }
 
     /*
@@ -511,6 +511,6 @@ export class MatrixPipe {
     *   @scope: private
     */
     cleanEndValues() {
-        this.getEndPipes().forEach(p => p.setMateFunValue(null));
+        this.getEndPipes().forEach(p => p.setValue(null));
     }
 }
