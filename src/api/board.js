@@ -1,8 +1,10 @@
-import * as matrixAction from '../redux/matrix/actionTypes';
+import * as matrixAction from '../redux/matrix/matrixActionTypes';
 import { MatrixPipe } from '../classes/matrix';
 import { BOARD_ROWS, BOARD_COLS } from '../constants/constants';
 import * as services from '../services';
+import * as webSocket from '../webSocket';
 import * as snapHelper from '../classes/helpers/snapshot';
+import { updateBoard, setEvalInstruction } from '../redux/matrix/matrixAction';
 
 let matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
 export function loadPenndingBoard() {
@@ -50,21 +52,15 @@ export function process() {
     return (dispatch) => {
         const funcProcess = matrix.process();
         services.editarWorkspace(funcProcess.body);
-        dispatch({
-            type:matrixAction.SET_WORKSPACE_FUNCTION_BODY, 
-            payload: funcProcess
-        });
+        dispatch(setWorkspaceFunctionBody(funcProcess));
     }
 }
 
 export function evaluate() {
     return (dispatch) => {
         const instruction = matrix.evaluateFunction();
-        dispatch({
-            type:matrixAction.SET_EVAL_INSTRUCTION, 
-            payload: instruction
-        });
-        services.sendCommand(instruction).then((message) => {
+        dispatch(setEvalInstruction(instruction));
+        webSocket.sendCommand(instruction).then((message) => {
             matrix.setMateFunValue(message);
             updateMatrix(dispatch);
         })
@@ -103,8 +99,5 @@ function updateMatrix(dispatch) {
     const snapshot = matrix.snapshot();
     const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
     localStorage.setItem('matrix', JSON.stringify(saveSnap));
-    dispatch({
-        type:matrixAction.UPDATE_BOARD,
-        payload: snapshot
-    });
+    dispatch(updateBoard());
 }

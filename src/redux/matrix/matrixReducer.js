@@ -1,4 +1,4 @@
-import * as actionTypes from './actionTypes';
+import * as actionTypes from './matrixActionTypes';
 import { BOARD_ROWS, BOARD_COLS } from '../../constants/constants';
 
 const initBoardGrid = new Array(BOARD_ROWS)
@@ -14,7 +14,7 @@ export const initialState = {
     hasPendding: !!localStorage.getItem('matrix')
 };
 
-export default function matrix(state = initialState, action) {
+export default function matrixReducer(state = initialState, action) {
   switch (action.type) {
     case actionTypes.UPDATE_BOARD: {
       const boardSanp = action.payload;
