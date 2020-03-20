@@ -156,7 +156,7 @@ export class DummyPipe extends Pipe {
     *   @return: void
     *   @scope: private
     */
-    nextPipeCalc(next, context, board, enterDir, path) {
+    nextPipeCalc(next, context, board, enterDir, path=[]) {
         if(this.errors) { return; }
         if(next.error) { this.addError(next.error); return; }
         if(!next.pipe || !next.connected) { this.addWarning(`No coneccion ${next.dir}`); return; }

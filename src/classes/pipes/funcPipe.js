@@ -4,10 +4,9 @@ import { processNext, sortPipe, pipeTypeDefined, pipeDirValueType } from '../hel
 import { Pipe } from './pipe'
 
 /*
-* Retorna la lista de direciones que deberia tener una funcion segun la cantida de tipos de su entrada
-* Param: 
-* - inType: List<String>
-* Out: List<String>
+*   @desc: Retorna la lista de direciones que deberia tener una funcion segun la cantida de tipos de su entrada
+*   @attr Arry<ValueType> inType: 
+*   @return: Array<Direction>
 */
 function inTypesToDirections(inTypes) {
     switch(inTypes.length) {
@@ -20,13 +19,21 @@ function inTypesToDirections(inTypes) {
 }
 
 /*
-* Intenta represantar una funcion de hasta 3 atributos de entrada y un unico tipo de retorno
-* Attr
-* - inTypes:List<String> Tipos Enteradas (deberian ser menos de 3)
-* - outType: String Tipos de salida (deberia ser 1)
+*   @desc: Intenta represantar una funcion de hasta 3 atributos de entrada y un unico tipo de retorno
+*   @attr Array<ValueType> inTypes: Tipos Enteradas (deberian ser menos de 3)
+*   @attr ValueType outType: String Tipos de salida
+*   @attr Array<ValueType> tempInTypes: Represta los tipo de entrada calculados
+*   @attr ValueType tempOutType: Representa el tipo de salida calculado
+*   @scope: public
 */
 export class FuncPipe extends Pipe {
 
+    /*
+    *   @desc:
+    *   @attr String name:
+    *   @attr Array<ValueType> inTypes:
+    *   @attr ValueType outType:
+    */
     constructor(name, inTypes, outType) {
        super([], [DIRECTION.BOTTOM]);
        this.inTypes = inTypes || [];
@@ -36,77 +43,144 @@ export class FuncPipe extends Pipe {
        this.clean();
     }
 
+    /*
+    *   @desc: Limpia las variables que se calculan
+    *   @return: void
+    *   @scope: public
+    */
     clean() {
         super.clean();
         this.tempInTypes = [...(this.inTypes)];
         this.tempOutType = this.outType
     }
 
-    calcTempTypes(dir, nextType) {
-        if(isDefined(nextType)) {
+    /*
+    *   @desc:
+    *   @attr Direction dir:
+    *   @attr ValueType newType:
+    *   @return: void
+    *   @scope: private
+    */
+    calcTempTypes(dir, newType) {
+        if(isDefined(newType)) {
             const type = this.getDirValueType(dir);
             if(isDefined(type)) {
-                if(!matchTypes(type, nextType)) {
+                if(!matchTypes(type, newType)) {
                     this.addError('No machea tipo');
                 }
             } else if(isGeneric(type)) {
-                let subsType = nextType;
-                if(isList(type) && isList(nextType)) {
-                    subsType = listGenericSubs(type, nextType);
+                let subsType = newType;
+                if(isList(type) && isList(newType)) {
+                    subsType = listGenericSubs(type, newType);
                 }
                 this.tempInTypes = this.tempInTypes
                     .map(genericReplace(subsType));
                 this.tempOutType = genericReplace(subsType)(this.tempOutType);
             } else {
-                this.setDirType(dir, nextType);
+                this.setTempDirType(dir, newType);
             }
         }
     }
 
-    calc(context, board, enterDir, path) {
-        if(path && path.find((p) => p === this)) {
+    /*
+    *   @desc:
+    *   @attr NextPipe next:
+    *   @attr Context context:
+    *   @attr IMatrx board:
+    *   @attr Direction enterDir:
+    *   @attr Array<Pipe> path:
+    *   @return: void
+    *   @scope: private
+    */
+    nextPipeCalc(next, context, board, enterDir, path) {
+        if (this.errors) { return; }
+        if (next.error) { this.addError(next.error); return; }
+        if (!next.pipe || !next.connected) { this.addWarning(`No connectado ${next.dir}`); return; }
+        //Process next pipe
+        const newPath = enterDir ? [...path, this] : [this];
+        if (next.dir !== enterDir) next.pipe.calc(context, board, next.inDir, newPath);
+        //Setea Valores
+        if (pipeTypeDefined(next.pipe)) {
+            const nextType = pipeDirValueType(next.pipe, next.inDir);
+            this.calcTempTypes(next.dir, nextType);
+        }
+    }
+
+    /*
+    *   @desc: Valida si hay loops, en caso de haberlos agrega un mensaje de error
+    *   @attr Array<Pipe> path:
+    *   @return: void
+    *   @scope: private
+    */
+    verifyLoop(path) {
+        if(path.find((p) => p === this)) {
             const notDummy = path
                 .filter((p) => p.getType() !== PIPE_TYPES.DUMMY);
             if(notDummy.length === 1) {
                 this.addError('Loop');
             }
-        } else if(!context.isMark(this.getPos())) {
+        } 
+    }
+
+    /*
+    *   @desc:  Calcula si hay loop y los tipos no definidos de la funcion,
+    *       ademas calcua de manera recuscibo con la informacion de los Pipe a la que esta conectada
+    *   @attr Context context: Context que marca los Pipe que ya se procesaron para que no se generen loops
+    *   @attr IMarix board: IMatrix en la que se calcula todo
+    *   @attr Direction enterDir?: Direcion desde donde se caclua en caso de ser recuiciba
+    *   @attr Array<Pipe> path?: Camino de la recurcion en el calculo
+    *   @return: void
+    *   @scope: public
+    *   @overide 
+    */
+    calc(context, board, enterDir, path=[]) {
+        this.verifyLoop(path);
+        if(this.errors) { return }
+        if(!context.isMark(this.getPos())) {
             context.mark(this.getPos());
             const nextPipes = this.getAllDirections().map(processNext(this, board))
                 .sort((n1, n2) => sortPipe(n1.pipe, n2.pipe));
-            nextPipes.forEach((next) => {
-                //Manejo de errores
-                if (this.errors) { return; }
-                if (next.error) { this.addError(next.error); return; }
-                if (!next.pipe || !next.connected) { this.addWarning(`No connectado ${next.dir}`); return; }
-                //Process next pipe
-                const newPath = enterDir ? [...path, this] : [this];
-                if (next.dir !== enterDir) next.pipe.calc(context, board, next.inDir, newPath);
-                //Setea Valores
-                if (pipeTypeDefined(next.pipe)) {
-                    const nextType = pipeDirValueType(next.pipe, next.inDir);
-                    this.calcTempTypes(next.dir, nextType);
-                }
-
-            });
+            nextPipes.forEach((next) => this.nextPipeCalc(next, context, board, enterDir, path));
             if (!this.errors && !pipeTypeDefined(this)) {
                 context.unMark(this.getPos());
             }
         }
     }
 
+    /*
+    *   @desc:  Devulve todas la direciones de una FunacuntionPipe
+    *   @return: Array<Direction>
+    *   @scope: public
+    */
     getAllDirections() {
         return [...(this.getInDirections()), DIRECTION.BOTTOM]
     }
 
+    /*
+    *   @desc: Asigana un nombre a la FunctionPipe
+    *   @attr String name: Nombre que se desa asignar
+    *   @return: void
+    *   @scope: private
+    */
     setName(name) {
         this.name = name;
     }
 
+    /*
+    *   @desc: Devuelve el nombre de la funcion
+    *   @return String
+    *   @scope: public
+    */
     getName() {
         return this.name;
     }
 
+    /*
+    *   @desc: Devuevle el codigo que representa la aplicaicon de una funcion con sus hijos como argumentos
+    *   @return: String
+    *   @scope: public
+    *   @overide
+    */
     toCode() {        
         const arg = this.toCodeArg();
         switch(this.name) {
@@ -141,8 +215,14 @@ export class FuncPipe extends Pipe {
         }
     }
 
-    //Private
-    setDirType(direction, type) {
+    /*
+    *   @desc: Seta una ValueType en un los tipos temporales
+    *   @attr Direction direction: Direcion en la que se quiere asignar el ValueType
+    *   @attr ValueType value: ValueType que se quiere asiganar
+    *   @return: void
+    *   @scope: private
+    */
+    setTempDirType(direction, type) {
         if (direction === DIRECTION.BOTTOM) {
             this.tempOutType = type;
         } else {
@@ -153,11 +233,23 @@ export class FuncPipe extends Pipe {
         }
     }
 
+    /*
+    *   @desc: Devuleve las direciones de entrada
+    *   @return: Array<Direction>
+    *   @scope: public
+    *   @overide
+    */
     getInDirections() {
         return super.getInDirections()
             .filter(d => this.getOriginInType(d));
     }
 
+    /*
+    *   @desc: Devuleve el ValueType de una direcion
+    *   @attr Direction direction: Direcion de la que se quiere el ValueType
+    *   @return: ValueType
+    *   @scope: public
+    */
     getDirValueType(direction) {
         if (direction === DIRECTION.BOTTOM) {
            return this.tempOutType;
@@ -165,7 +257,12 @@ export class FuncPipe extends Pipe {
         return this.getInType(direction);
     }
 
-
+    /*
+    *   @desc: Devuleve el ValueType original de una direcion
+    *   @attr Direction direction: Direcion de la que se quiere el ValueType
+    *   @return: ValueType
+    *   @scope: public
+    */
     getDirOriginValueType(direction) {
         if (direction === DIRECTION.BOTTOM) {
            return this.outType;
@@ -173,28 +270,67 @@ export class FuncPipe extends Pipe {
         return this.getOriginInType(direction);
     }
 
+    /*
+    *   @desc: Devuleve el ValueType original de una direcion de entada
+    *   @attr Direction direction: Direcion de la que se quiere el ValueType
+    *   @return: ValueType
+    *   @scope: public
+    */
     getOriginInType(direction) {
         const dirPos = super.getInDirections().indexOf(direction);
         return dirPos > -1 ? this.inTypes[dirPos] : undefined;
     }
 
+    /*
+    *   @desc: Devuleve el ValueType de una direcion de entada
+    *   @attr Direction direction: Direcion de la que se quiere el ValueType
+    *   @return: ValueType
+    *   @scope: public
+    */
     getInType(direction) {
         const dirPos = super.getInDirections().indexOf(direction);
         return dirPos > -1 ? this.tempInTypes[dirPos] : undefined;
     }
 
+
+    /*
+    *   @desc: Devuelv el PipeType que repesenta a la FunctionPipe
+    *   @return: PipeValue
+    *   @scope: public
+    *   @overide
+    */
     getType() {
         return PIPE_TYPES.FUNCTION;
     }
 
+    /*
+    *   @desc: Devuelve si es una direcion de salida valida
+    *   @attr Direction dir: Direcion de la que se quiere el saber si es salida
+    *   @return: Boolean
+    *   @scope: public
+    *   @overide
+    */
     isOutDir(dir) {
         return dir === DIRECTION.BOTTOM;
     }
 
+    /*
+    *   @desc: Devuelve si es una direcion de entrada valida
+    *   @attr Direction dir: Direcion de la que se quiere el saber si es entrada
+    *   @return: Boolean
+    *   @scope: public
+    *   @overide
+    */
     isInDir(dir) {
         return this.getInDirections().indexOf(dir) >= 0;
     }
 
+
+    /*
+    *   @desc: Devulve el SnapPipe que represta a esta FunctionPipe
+    *   @return: SnapPipe
+    *   @scope: public
+    */
     snapshot() {
         return  {
             ...(super.snapshot()),

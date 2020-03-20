@@ -4,18 +4,33 @@ import { processNext, validateDirType, pipeTypeDefined } from '../helpers/pipe';
 import { Pipe } from './pipe';
 
 /*
-*   Attr
-*   - index: String
+*   @desc: Esta Pipe representa las variables de una funcion
+*   @attr Int index:
+*   @attr Value value:
+*   @attr ValueType type:
+*   @attr ValueType tempType: 
+*   @scope: public
 */
 export class VarPipe extends Pipe {
 
-    constructor(type) {
+    /*
+    *   @desc: Constuct de la Variable, se le puede asiganra el tipo
+    *   @attr ValueType type?: Typo que se quiere crear la variable
+    *   @scope: public
+    */
+    constructor(type=VALUES_TYPES.UNDEFINED) {
         super([], [DIRECTION.BOTTOM]);
-        this.type = type || VALUES_TYPES.UNDEFINED;
+        this.type = type;
         this.value = undefined;
         this.clean();
     }
 
+    /*
+    *   @desc: Seta un valor en la variable, en caso de mapear con el tipo de la misma
+    *   @attr Value value:
+    *   @return: void
+    *   @scope: public
+    */
     setValue(value) {
         const type = evalValueType(value);
         if(!matchTypes(this.getValueType(), type)) {
@@ -25,17 +40,37 @@ export class VarPipe extends Pipe {
         this.type = type;
     }
 
+    /*
+    *   @desc: Devuelve el valor que esta en la VarPipe
+    *   @return: Value
+    *   @scope: public
+    */
     getValue() {
         return this.value;
     }
 
+    /*
+    *   @desc: Limpia todos los valores que se calculan
+    *   @return: void
+    *   @scope: public
+    */
     clean() {
         super.clean();
         this.index = undefined
         this.tempType = this.type;
     }
 
-    calc(context, board, enterDir, path) {
+    /*
+    *   @desc: Calcula el tempType y los mesajes de error o warnig de una VarPipe
+    *   @attr Context context: Context que marca los Pipe que ya se procesaron para que no se generen loops
+    *   @attr IMarix board: IMatrix en la que se calcula todo
+    *   @attr Direction enterDir?: Direcion desde donde se caclua en caso de ser recuiciba
+    *   @attr Array<Pipe> path?: Camino de la recurcion en el calculo
+    *   @return: void
+    *   @scope: public
+    *   @overide 
+    */
+    calc(context, board, enterDir, path=[]) {
         if (!context.isMark(this.getPos())) {
             context.mark(this.getPos());
 
@@ -58,34 +93,69 @@ export class VarPipe extends Pipe {
         }
     }
 
+    /*
+    *   @desc: Devuelve si es una direcion de salida valida
+    *   @attr Direction dir:
+    *   @return: Boolean
+    *   @scope: public
+    *   @overide
+    */
     isOutDir(dir) {
         return dir === DIRECTION.BOTTOM
     }
 
+    /*
+    *   @desc: Devuelve el ValueType de la variable
+    *   @return: ValueType
+    *   @scope: public
+    */
     getValueType() {
         return this.tempType;
     }
 
-    setValueType(direction, type) {
-        this.type = type;
-    }
-
+    /*
+    *   @desc: Devuelve el nombre de la varialbe que representa la VarPipe
+    *   @return: String
+    *   @scope: public
+    */
     getName() {
         return `x${this.index}`
     }
 
+    /*
+    *   @desc: Devuelve el codio que es el nombre de la varialbe que representa
+    *   @return: String
+    *   @scope: public
+    */
     toCode() {
         return `${this.getName()}`;
     }
 
+    /*
+    *   @desc: Devuelve el valor que esta contenido en la VarPipe
+    *   @return: String
+    *   @scope: public
+    */
     getValueEval() {
        return valueToString(this.getValue(), this.getValueType());
     }
 
+    /*
+    *   @desc: Devuelve el PipeType que representa el VarPipe
+    *   @return: PipeType
+    *   @scope: public
+    *   @overider  
+    */
     getType() {
         return PIPE_TYPES.VARIABLE;
     }
 
+    /*
+    *   @desc: Devulve una esturctura que represeta la informacion de la VarPipe
+    *   @return: SnapPipe
+    *   @scope: public
+    *   @overider
+    */
     snapshot() {
         const value = this.getValue();
         return {

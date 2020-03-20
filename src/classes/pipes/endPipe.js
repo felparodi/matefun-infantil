@@ -33,7 +33,7 @@ export class EndPipe extends Pipe {
     *   @scope: public
     *   @overide
     */  
-    calc(context, board, enterDir, path) {
+    calc(context, board, enterDir, path=[]) {
         if (!context.isMark(this.getPos())) {
             super.calc(context, board);
             const next = nextPipeDirection(this, DIRECTION.TOP);

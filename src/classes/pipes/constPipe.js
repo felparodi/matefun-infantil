@@ -33,7 +33,7 @@ export class ConstPipe extends Pipe {
     *   @scope: public
     *   @overider
     */
-    calc(context, board, enterDir, path) {
+    calc(context, board, enterDir, path=[]) {
         if(!context.isMark(this.getPos())) {
             context.mark(this.getPos());
             const next = nextPipeDirection(this, DIRECTION.BOTTOM);

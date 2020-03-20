@@ -150,6 +150,15 @@ export class Pipe {
     }
 
     /*
+    *   @desc: Devuelve toda la lista de direciones
+    *   @return: Array<Direction> 
+    *   @scope: public
+    */
+    getAllDirections() {
+        return [...this.inDirections, ...this.outDirections];
+    }
+
+    /*
     *   @desc: Setea la Position de un Pipe
     *   @attr Int x: Valore en el eje X de la Position
     *   @attr Int y: Valore en el eje Y de la Position
