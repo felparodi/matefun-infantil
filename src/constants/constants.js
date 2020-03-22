@@ -73,3 +73,6 @@ export const ERROR = Object.freeze({
 
 export const BOARD_ROWS= 10;
 export const BOARD_COLS= 15;
+
+export const WORKSPACE_FILE_NAME= 'Workspace';
+export const MYFUNCTIONS_FILE_NAME= "MyFunctions"

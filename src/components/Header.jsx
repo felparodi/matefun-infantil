@@ -2,7 +2,7 @@ import React from 'react';
 import { Navbar, Nav, DropdownButton, Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux'
 
-import { logout } from '../redux/user/userAction'
+import { logout } from '../api/user'
 
 
 export class Header extends React.Component {
@@ -33,10 +33,8 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        logout: () => dispatch(logout())
-    }
+const mapDispatchToProps = {
+    logout
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

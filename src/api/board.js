@@ -1,13 +1,15 @@
 import * as matrixAction from '../redux/matrix/matrixActionTypes';
 import { MatrixPipe } from '../classes/matrix';
 import { BOARD_ROWS, BOARD_COLS } from '../constants/constants';
-import * as services from '../services';
-import * as webSocket from '../webSocket';
+import * as services from '../server_connection/services';
+import * as webSocket from '../server_connection/webSocket';
 import * as snapHelper from '../classes/helpers/snapshot';
 import { updateBoard, setEvalInstruction } from '../redux/matrix/matrixAction';
+import { setWorkspaceFileData, setMyFunctionsFileData } from '../redux/environment/environmentAction';
 
 let matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
-export function loadPenndingBoard() {
+
+export function loadPendingBoard() {
     return (dispatch) => {
         const matrixJSON = localStorage.getItem('matrix');
         if (matrixJSON) {
@@ -56,11 +58,11 @@ export function process() {
     }
 }
 
-export function evaluate() {
+export function evaluate(userData) {
     return (dispatch) => {
         const instruction = matrix.evaluateFunction();
         dispatch(setEvalInstruction(instruction));
-        webSocket.sendCommand(instruction).then((message) => {
+        webSocket.evaluarExpresion(userData, instruction).then((message) => {
             matrix.setMateFunValue(message);
             updateMatrix(dispatch);
         })
@@ -95,9 +97,57 @@ export function addWorkingPipe(x, y) {
     }
 }
 
+export function setMateFunValue(value) {
+    return (dispatch) => {
+        matrix.setMateFunValue(value);
+        updateMatrix(dispatch);
+    }
+}
+
 function updateMatrix(dispatch) {
     const snapshot = matrix.snapshot();
     const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
     localStorage.setItem('matrix', JSON.stringify(saveSnap));
-    dispatch(updateBoard());
+    dispatch(updateBoard(snapshot));
 }
+
+export function prepareEnvironment(userData) {
+
+    return (dispatch) => {
+
+        services.getArchivos(userData.cedula, (files) => {
+            
+            var workspaceFileData = files.find((file) => file.nombre == WORKSPACE_FILE_NAME);
+            if (typeof workspaceFileData !== "undefined") {
+                dispatch(setWorkspaceFileData(workspaceFileData))
+            } else {
+                services.crearArchivo(WORKSPACE_FILE_NAME,
+                    (workspaceFileData) => {
+                        dispatch(setWorkspaceFileData(workspaceFileData))
+                    }
+                );
+            }
+            var myFunctionsFileData = files.find((file) => file.nombre == MYFUNCTIONS_FILE_NAME);
+            if (typeof myFunctionsFileData !== "undefined") {
+                dispatch(setMyFunctionsFileData(myFunctionsFileData))
+            } else {
+                services.crearArchivo(MYFUNCTIONS_FILE_NAME,
+                    (myFunctionsFileData) => {
+                        dispatch(setMyFunctionsFileData(myFunctionsFileData))
+                    }
+                );
+            }
+        })
+
+        webSocket.abrirConexion(userData, onMessage);
+    }
+}
+
+/*
+export function onMessage() {
+
+    return (dispatch) => {
+
+    }
+}
+*/

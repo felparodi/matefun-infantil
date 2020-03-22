@@ -16,6 +16,7 @@ export class Actions extends React.Component {
         this.process = this.process.bind(this);
         this.evaluate = this.evaluate.bind(this);
         this.clean = this.clean.bind(this);
+        this.saveInMyFunctions = this.saveInMyFunctions.bind(this);
     }
 
     process() {
@@ -23,11 +24,15 @@ export class Actions extends React.Component {
     }
 
     evaluate() {
-        this.props.evaluate();
+        this.props.evaluate(this.props.userData);
     }
 
     clean() {
         this.props.clean();
+    }
+
+    saveInMyFunctions() {
+
     }
 
     renderConsole() {
@@ -60,6 +65,9 @@ export class Actions extends React.Component {
                     <Button variant="primary" onClick={this.clean}>Clean</Button>
                 { debugMode && <Button variant="primary" onClick={() => {this.setState({openConsole:!openConsole})}}>Consola</Button> }
                 </div>
+                <div className="actions-button">
+                    <Button variant="primary" onClick={this.saveInMyFunctions}>Guardar en Mis funciones</Button>
+                </div>
                 { debugMode && this.renderConsole() }
             </div>
         );
@@ -71,7 +79,8 @@ const mapStateToProps = state => ({
     canProcess: state.matrix.canProcess,
     isFunction: state.matrix.isFunction,
     evalInstruction: state.matrix.evalInstruction,
-    workspaceFunction: state.matrix.workspaceFunction
+    workspaceFunction: state.matrix.workspaceFunction,
+    userData: state.user.userData
 });
 
 const mapDispachFunction = {

@@ -3,11 +3,12 @@ import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import matrixReducer from './matrix/matrixReducer';
 import userReducer from './user/userReducer';
+import environmentReducer from './environment/environmentReducer';
 
 export const middlewares = [thunk];
 export const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
 
-export const reducers = combineReducers({ user: userReducer, matrix: matrixReducer});
+export const reducers = combineReducers({ user: userReducer, matrix: matrixReducer, environment: environmentReducer});
 
 const store = createStoreWithMiddleware(
   reducers,

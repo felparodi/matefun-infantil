@@ -2,8 +2,7 @@ import React from 'react';
 import { Container, Row, Button, Card, Form } from 'react-bootstrap';
 import { connect } from 'react-redux'
 
-import * as services from '../services';
-import { login } from '../redux/user/userAction'
+import { loginInvitado } from '../api/user'
 
 export class Login extends React.Component {
 
@@ -14,9 +13,7 @@ export class Login extends React.Component {
     }
 
     loginInvitado() {
-        services.loginInvitado((userData) => {
-            this.props.login(userData);
-        })
+        this.props.loginInvitado();
     }
 
     render() {
@@ -57,15 +54,9 @@ export class Login extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {}
+const mapDispatchToProps = {
+    loginInvitado
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        login: userData => dispatch(login(userData))
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);
 

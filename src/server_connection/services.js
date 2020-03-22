@@ -1,11 +1,8 @@
 import axios from 'axios';
+import {DOMAIN_URL} from './config'
 
-const SERVICES_URL = 'http://localhost:8080/servicios';
+const SERVICES_URL = `http://${DOMAIN_URL}/servicios`;
 
-export function loginInvitado(onSuccess) {
-
-    login("invitado", "invitado", onSuccess);
-}
 
 export function login(cedula, password, onSuccess) {
 

@@ -11,19 +11,19 @@ export const initialState = {
     workspaceFunction: '',
     evalInstruction: '',
     isWorking: false,
-    hasPendding: !!localStorage.getItem('matrix')
+    hasPending: !!localStorage.getItem('matrix')
 };
 
 export default function matrixReducer(state = initialState, action) {
   switch (action.type) {
     case actionTypes.UPDATE_BOARD: {
-      const boardSanp = action.payload;
+      const boardSnap = action.payload;
       return {
         ...state, 
-        board: boardSanp.board, 
-        isFunction: boardSanp.isFunction,
-        canProcess: boardSanp.canProcess,
-        isWorking: boardSanp.isWorking,
+        board: boardSnap.board, 
+        isFunction: boardSnap.isFunction,
+        canProcess: boardSnap.canProcess,
+        isWorking: boardSnap.isWorking,
       };
     }
     case actionTypes.SET_EVAL_INSTRUCTION: {
