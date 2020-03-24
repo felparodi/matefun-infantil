@@ -14,27 +14,15 @@ export function abrirConexion(userData, onMessage) {
         console.log('connected')
     }
 
-    ws.onmessage = onMessage;
-    
-    //evt => {
+    ws.onmessage = evt => {
         
-      //  console.log(evt);
-        /*
         // listen to data sent from the websocket server
-        if (this.state.waitingForResult) {
-            const message = JSON.parse(evt.data)
-            if (!message.tipo || message.tipo === 'ack') { return; }
-            matrix.setMateFunValue(message);
-            
-            this.setState({
-                waitingForResult: false,
-                boardContent: matrix.snapshot()
-                //boardContent: boardContent
-            }, () => console.log('hey'))
+        const message = JSON.parse(evt.data)
+        if (!message.tipo || message.tipo === 'ack') { return; }
+        if (message.tipo==='salida' && message.resultado.startsWith("OUT")){
+            onMessage(message);
         }
-        */
-
-    //}
+    }
     
 
     ws.onclose = () => {

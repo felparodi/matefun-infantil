@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { Button } from 'react-bootstrap';
-import { process, evaluate, clean } from '../api/board';
+import { loadFunctionDefinition, evaluate, clean, saveInMyFunctions } from '../api/board';
 
 const debugMode = localStorage.getItem('debug-mode') === 'true';
 
@@ -13,14 +13,14 @@ export class Actions extends React.Component {
             evaluationResult: '',
             openConsole: false,
         };
-        this.process = this.process.bind(this);
+        this.loadFunctionDefinition = this.loadFunctionDefinition.bind(this);
         this.evaluate = this.evaluate.bind(this);
         this.clean = this.clean.bind(this);
         this.saveInMyFunctions = this.saveInMyFunctions.bind(this);
     }
 
-    process() {
-        this.props.process();
+    loadFunctionDefinition() {
+        this.props.loadFunctionDefinition(this.props.userData, this.props.workspaceFileData, this.props.myFunctionsFileData);
     }
 
     evaluate() {
@@ -32,7 +32,7 @@ export class Actions extends React.Component {
     }
 
     saveInMyFunctions() {
-
+        this.props.saveInMyFunctions(this.props.userData, this.props.workspaceFileData, this.props.myFunctionsFileData);
     }
 
     renderConsole() {
@@ -61,7 +61,7 @@ export class Actions extends React.Component {
             <div className="actions">
                 <div className="actions-button">
                     <Button variant="primary" disabled={!canProcess} onClick={this.evaluate}>Evaluar</Button>
-                    <Button variant="primary" disabled={!isFunction} onClick={this.process}>Salvar</Button>
+                    <Button variant="primary" disabled={!isFunction} onClick={this.loadFunctionDefinition}>Cargar funcion</Button>
                     <Button variant="primary" onClick={this.clean}>Clean</Button>
                 { debugMode && <Button variant="primary" onClick={() => {this.setState({openConsole:!openConsole})}}>Consola</Button> }
                 </div>
@@ -80,11 +80,13 @@ const mapStateToProps = state => ({
     isFunction: state.matrix.isFunction,
     evalInstruction: state.matrix.evalInstruction,
     workspaceFunction: state.matrix.workspaceFunction,
-    userData: state.user.userData
+    userData: state.user.userData,
+    workspaceFileData: state.environment.workspaceFileData,
+    myFunctionsFileData: state.environment.myFunctionsFileData,
 });
 
 const mapDispachFunction = {
-    process, evaluate, clean
+    loadFunctionDefinition, evaluate, clean, saveInMyFunctions
 }
 
 export default connect(mapStateToProps, mapDispachFunction)(Actions);

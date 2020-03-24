@@ -5,8 +5,7 @@ import Toolbox from './Toolbox'
 import Board from './Board'
 import Actions from './Actions';
 import Header from './Header';
-import * as logic from '../logic';
-import * as webSocket from '../server_connection/webSocket';
+import { prepareEnvironment } from '../api/board';
 
 import './Main.scss';
 
@@ -19,9 +18,7 @@ export class Main extends React.Component {
 
         var userData = this.props.userData;
 
-        logic.prepareEnvironment(userData, (workspaceFileData, myFunctionsFileData) => {
-            this.props.prepareEnvironment(workspaceFileData, myFunctionsFileData);
-        })
+        this.props.prepareEnvironment(userData);
     }
 
     render() {
@@ -50,10 +47,9 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return { 
-        prepareEnvironment: (workspaceFileData, myFunctionsFileData) => dispatch(prepareEnvironment(workspaceFileData, myFunctionsFileData))
-    }
+const mapDispatchToProps = {
+    prepareEnvironment
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

@@ -1,10 +1,10 @@
 import * as matrixAction from '../redux/matrix/matrixActionTypes';
 import { MatrixPipe } from '../classes/matrix';
-import { BOARD_ROWS, BOARD_COLS } from '../constants/constants';
+import { BOARD_ROWS, BOARD_COLS, WORKSPACE_FILE_NAME, MYFUNCTIONS_FILE_NAME } from '../constants/constants';
 import * as services from '../server_connection/services';
 import * as webSocket from '../server_connection/webSocket';
 import * as snapHelper from '../classes/helpers/snapshot';
-import { updateBoard, setEvalInstruction } from '../redux/matrix/matrixAction';
+import { updateBoard, setEvalInstruction, setWorkspaceFunctionBody } from '../redux/matrix/matrixAction';
 import { setWorkspaceFileData, setMyFunctionsFileData } from '../redux/environment/environmentAction';
 
 let matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
@@ -50,11 +50,15 @@ export function setPipeValue(x, y, value) {
     }
 }
 
-export function process() {
+export function loadFunctionDefinition(userData, workspaceFileData, myFunctionsFileData) {
     return (dispatch) => {
-        const funcProcess = matrix.process();
-        services.editarWorkspace(funcProcess.body);
-        dispatch(setWorkspaceFunctionBody(funcProcess));
+        const functionDefinition = matrix.getFunctionDefinition();
+        workspaceFileData.contenido= functionDefinition.body;
+        services.editarArchivo(workspaceFileData, () => {
+            dispatch(setWorkspaceFunctionBody(functionDefinition));
+            dispatch(setWorkspaceFileData(workspaceFileData));
+            webSocket.cargarArchivo(userData, workspaceFileData.id, myFunctionsFileData.id); 
+        })
     }
 }
 
@@ -62,10 +66,7 @@ export function evaluate(userData) {
     return (dispatch) => {
         const instruction = matrix.evaluateFunction();
         dispatch(setEvalInstruction(instruction));
-        webSocket.evaluarExpresion(userData, instruction).then((message) => {
-            matrix.setMateFunValue(message);
-            updateMatrix(dispatch);
-        })
+        webSocket.evaluarExpresion(userData, instruction)
     }
 }
 
@@ -139,15 +140,38 @@ export function prepareEnvironment(userData) {
             }
         })
 
-        webSocket.abrirConexion(userData, onMessage);
+        webSocket.abrirConexion(userData, (message) => {
+            matrix.setMateFunValue(message);
+            updateMatrix(dispatch);
+        });
     }
 }
 
-/*
-export function onMessage() {
-
+export function saveInMyFunctions(userData, workspaceFileData, myFunctionsFileData) {
     return (dispatch) => {
 
+        var functionMetaData= {
+            nombre: "funcionLucia1",
+            icono: "icono123"
+        }
+
+        const functionDefinition = matrix.getFunctionDefinition();
+
+        var newContent= "{-" + JSON.stringify(functionMetaData) + "-} \n" + functionDefinition.body + "\n";
+
+        workspaceFileData.contenido= '';
+        
+        myFunctionsFileData.contenido+= newContent;
+        
+        services.editarArchivo(workspaceFileData, () => {
+            dispatch(setWorkspaceFunctionBody(functionDefinition));
+            dispatch(setWorkspaceFileData(workspaceFileData));
+
+            services.editarArchivo(myFunctionsFileData, ()=> {
+                dispatch(setMyFunctionsFileData(myFunctionsFileData));
+
+                webSocket.cargarArchivo(userData, workspaceFileData.id, myFunctionsFileData.id); 
+            })
+        })
     }
 }
-*/

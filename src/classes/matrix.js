@@ -153,18 +153,16 @@ export class MatrixPipe {
         this.updateMatrix();
     }
 
-    process() {
+    getFunctionDefinition() {
         if (this.isFunction()) {
-            return { isFunction: true, body:this.processFunction(this.funcName) };
-        } else {
-            return { isFunction: false, body:this.processInstruction() };
+            return { isFunction: true, body:this.getFunctionDefinitionWithName(this.funcName) };
         }
     }
 
-    processFunction(name) {
-        const def = this.getFunctionDefinition(name)
-        const code = this.getFunctionCode(name)
-        return `${def}\n${code}`
+    getFunctionDefinitionWithName(name) {
+        const sig = this.getFunctionSignature(name)
+        const eq = this.getFunctionEquation(name)
+        return `${sig}\n${eq}`
     }
 
     processInstruction() {
@@ -182,8 +180,8 @@ export class MatrixPipe {
         return this.getAllPipes().filter((pipe) => pipe.getType() === PIPE_TYPES.CONDITION);
     }
 
-    getFunctionDefinition(name) {
-        console.log('Matrix.getFunctionDefinition')
+    getFunctionSignature(name) {
+        console.log('Matrix.getFunctionSignature')
         const varsPipes = this.getAllVars();
         const endPipe = this.getEndPipes()[0];
         const varsType = varsPipes.reduce(
@@ -193,7 +191,7 @@ export class MatrixPipe {
         return `${name} :: ${varsType} -> ${endType}`;
     }
 
-    getFunctionCode(name) {
+    getFunctionEquation(name) {
         const varsPipes = this.getAllVars();
         const endPipe = this.getEndPipes();
         const code = endPipe[0].toCode();
