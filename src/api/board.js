@@ -1,13 +1,17 @@
-import * as matrixAction from '../redux/matrix/actionTypes';
+
+import * as matrixAction from '../redux/matrix/matrixActionTypes';
 import { MatrixPipe, equlasPos } from '../classes/matrix';
-import { BOARD_ROWS, BOARD_COLS } from '../constants/constants';
-import * as services from '../services';
+import { BOARD_ROWS, BOARD_COLS, WORKSPACE_FILE_NAME, MYFUNCTIONS_FILE_NAME } from '../constants/constants';
+import * as services from '../server_connection/services';
+import * as webSocket from '../server_connection/webSocket';
 import * as snapHelper from '../classes/helpers/snapshot';
+import { updateBoard, setEvalInstruction, setWorkspaceFunctionBody } from '../redux/matrix/matrixAction';
+import { setWorkspaceFileData, setMyFunctionsFileData } from '../redux/environment/environmentAction';
 
 let matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
 let joinList = {start: null, end:null }
 
-export function loadPenndingBoard() {
+export function loadPendingBoard() {
     return (dispatch) => {
         const matrixJSON = localStorage.getItem('matrix');
         if (matrixJSON) {
@@ -49,58 +53,23 @@ export function setPipeValue(x, y, value) {
     }
 }
 
-export function process() {
+export function loadFunctionDefinition(userData, workspaceFileData, myFunctionsFileData) {
     return (dispatch) => {
-        const funcProcess = matrix.process();
-        dispatch({
-            type:matrixAction.SET_WORKSPACE_FUNCTION_BODY, 
-            payload: funcProcess
+        const functionDefinition = matrix.getFunctionDefinition();
+        workspaceFileData.contenido= functionDefinition.body;
+        services.editarArchivo(workspaceFileData, () => {
+            dispatch(setWorkspaceFunctionBody(functionDefinition));
+            dispatch(setWorkspaceFileData(workspaceFileData));
+            webSocket.cargarArchivo(userData, workspaceFileData.id, myFunctionsFileData.id); 
         });
-        return services.editarWorkspace(funcProcess.body)
-            .then((fileData) => {
-                const { message } = fileData;
-                if(Array.isArray(message)) {
-                    //En genear si son dos es que hubo error
-                    const mess = message[message.length-1];
-                    if(message.find(m => m.resultado.indexOf('OUTError') !== -1)) {
-                        return Promise.reject(message);
-                    }
-                } else {
-                    dispatch({type:matrixAction.SET_RESULT_EVAL, payload:message.resultado})
-                }
-                return (fileData);
-            });
-        
     }
 }
 
-export function processEval() {
-    return(dispatch) => {
-        return process()(dispatch)
-            .then((a) => {
-                return evaluate()(dispatch)
-            })
-            .catch((message) => {
-                matrix.setMateFunValue(message);
-                dispatch({type:matrixAction.SET_RESULT_EVAL, payload:message.resultado})
-                updateMatrix(dispatch);
-            })
-
-    }
-}
-
-export function evaluate() {
+export function evaluate(userData) {
     return (dispatch) => {
         const instruction = matrix.evaluateFunction();
-        dispatch({
-            type:matrixAction.SET_EVAL_INSTRUCTION, 
-            payload: instruction
-        });
-        services.sendCommand(instruction).then((message) => {
-            matrix.setMateFunValue(message);
-            dispatch({type:matrixAction.SET_RESULT_EVAL, payload:message.resultado})
-            updateMatrix(dispatch);
-        })
+        dispatch(setEvalInstruction(instruction));
+        webSocket.evaluarExpresion(userData, instruction)
     }
 }
 
@@ -184,14 +153,80 @@ export function joinOutput(j2) {
     }
 }
 
+export function setMateFunValue(value) {
+    return (dispatch) => {
+        matrix.setMateFunValue(value);
+        updateMatrix(dispatch);
+    }
+}
+
 function updateMatrix(dispatch) {
-    return new Promise(() => {
-        const snapshot = matrix.snapshot();
-        const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
-        localStorage.setItem('matrix', JSON.stringify(saveSnap));
-        dispatch({
-            type:matrixAction.UPDATE_BOARD,
-            payload: snapshot
+    const snapshot = matrix.snapshot();
+    const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
+    localStorage.setItem('matrix', JSON.stringify(saveSnap));
+    dispatch(updateBoard(snapshot));
+}
+
+export function prepareEnvironment(userData) {
+
+    return (dispatch) => {
+
+        services.getArchivos(userData.cedula, (files) => {
+            
+            var workspaceFileData = files.find((file) => file.nombre == WORKSPACE_FILE_NAME);
+            if (typeof workspaceFileData !== "undefined") {
+                dispatch(setWorkspaceFileData(workspaceFileData))
+            } else {
+                services.crearArchivo(WORKSPACE_FILE_NAME,
+                    (workspaceFileData) => {
+                        dispatch(setWorkspaceFileData(workspaceFileData))
+                    }
+                );
+            }
+            var myFunctionsFileData = files.find((file) => file.nombre == MYFUNCTIONS_FILE_NAME);
+            if (typeof myFunctionsFileData !== "undefined") {
+                dispatch(setMyFunctionsFileData(myFunctionsFileData))
+            } else {
+                services.crearArchivo(MYFUNCTIONS_FILE_NAME,
+                    (myFunctionsFileData) => {
+                        dispatch(setMyFunctionsFileData(myFunctionsFileData))
+                    }
+                );
+            }
+        })
+
+        webSocket.abrirConexion(userData, (message) => {
+            matrix.setMateFunValue(message);
+            updateMatrix(dispatch);
         });
-    });
+    }
+}
+
+export function saveInMyFunctions(userData, workspaceFileData, myFunctionsFileData) {
+    return (dispatch) => {
+
+        var functionMetaData= {
+            nombre: "funcionLucia1",
+            icono: "icono123"
+        }
+
+        const functionDefinition = matrix.getFunctionDefinition();
+
+        var newContent= "{-" + JSON.stringify(functionMetaData) + "-} \n" + functionDefinition.body + "\n";
+
+        workspaceFileData.contenido= '';
+        
+        myFunctionsFileData.contenido+= newContent;
+        
+        services.editarArchivo(workspaceFileData, () => {
+            dispatch(setWorkspaceFunctionBody(functionDefinition));
+            dispatch(setWorkspaceFileData(workspaceFileData));
+
+            services.editarArchivo(myFunctionsFileData, ()=> {
+                dispatch(setMyFunctionsFileData(myFunctionsFileData));
+
+                webSocket.cargarArchivo(userData, workspaceFileData.id, myFunctionsFileData.id); 
+            })
+        })
+    }
 }

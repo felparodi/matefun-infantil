@@ -1,4 +1,4 @@
-import * as actionTypes from './actionTypes';
+import * as actionTypes from './matrixActionTypes';
 import { BOARD_ROWS, BOARD_COLS } from '../../constants/constants';
 
 const initBoardGrid = new Array(BOARD_ROWS)
@@ -13,21 +13,21 @@ export const initialState = {
     resultEval: '',
     isWorking: false,
     isJoining: false,
-    hasPendding: !!localStorage.getItem('matrix'),
     endJoin: null,
     startJoin: null,
+    hasPending: !!localStorage.getItem('matrix')
 };
 
-export default function matrix(state = initialState, action) {
+export default function matrixReducer(state = initialState, action) {
   switch (action.type) {
     case actionTypes.UPDATE_BOARD: {
-      const boardSanp = action.payload;
+      const boardSnap = action.payload;
       return {
         ...state, 
-        board: boardSanp.board, 
-        isFunction: boardSanp.isFunction,
-        canProcess: boardSanp.canProcess,
-        isWorking: boardSanp.isWorking,
+        board: boardSnap.board, 
+        isFunction: boardSnap.isFunction,
+        canProcess: boardSnap.canProcess,
+        isWorking: boardSnap.isWorking,
       };
     }
     case actionTypes.SET_EVAL_INSTRUCTION: {

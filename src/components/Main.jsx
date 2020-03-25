@@ -1,13 +1,12 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import Cell from './Cell'
+import { connect } from 'react-redux';
+
 import Toolbox from './Toolbox'
 import Board from './Board'
 import Actions from './Actions';
-import classNames from 'classnames';
-import { Button, Modal } from 'react-bootstrap';
 import Header from './Header';
-import * as services from '../services';
+import { prepareEnvironment } from '../api/board';
+
 import './Main.scss';
 
 export class Main extends React.Component {
@@ -15,25 +14,42 @@ export class Main extends React.Component {
         super();
     }
 
+    componentDidMount() {
+
+        var userData = this.props.userData;
+
+        this.props.prepareEnvironment(userData);
+    }
+
     render() {
         return (
             <div className="Main">
-                <Header userData={this.props.userData} onLogout={this.props.onLogout}/>
+                <Header />
                 <div className="container">
                     <div className="body">
                         <div className="toolbox-container">
                             <Toolbox onDrop={this.onDropToolbox} />
                         </div>
                         <div className="board-container">
-                            <Board/>
+                            <Board />
                         </div>
                     </div>
-                    <Actions/>
+                    <Actions />
                 </div>
             </div>
         )
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        userData: state.user.userData
+    }
+}
 
-export default Main;
+const mapDispatchToProps = {
+    prepareEnvironment
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

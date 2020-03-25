@@ -1,7 +1,11 @@
 import React from 'react';
-import { Navbar, Nav, Button, Form, FormControl, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Navbar, Nav, DropdownButton, Dropdown } from 'react-bootstrap';
+import { connect } from 'react-redux'
 
-export default class Header extends React.Component {
+import { logout2 } from '../api/user'
+
+
+export class Header extends React.Component {
 
     constructor() {
         super();
@@ -13,11 +17,24 @@ export default class Header extends React.Component {
                 <Navbar.Brand >Matefun Infantil</Navbar.Brand>
                 <Nav className="mr-auto"></Nav>
 
-                <DropdownButton alignRight id="dropdown-basic-button" title={(this.props.userData)?this.props.userData.nombre + " " + this.props.userData.apellido:""}>
-                    <Dropdown.Item onClick={this.props.onLogout}>Cerrar sesión</Dropdown.Item>
+                <DropdownButton alignRight id="dropdown-basic-button" title={(this.props.userData) ? this.props.userData.nombre + " " + this.props.userData.apellido : ""}>
+                    <Dropdown.Item onClick={this.props.logout2}>Cerrar sesión</Dropdown.Item>
                 </DropdownButton>
 
             </Navbar>
         )
     }
 }
+
+
+const mapStateToProps = state => {
+    return {
+        userData: state.user.userData
+    }
+}
+
+const mapDispatchToProps = {
+    logout2
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

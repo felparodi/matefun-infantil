@@ -1,22 +1,19 @@
 import React from 'react';
-import { Container, Navbar, Nav, Row, Col, Button, Card, Form, FormControl } from 'react-bootstrap';
-import * as services from '../services';
+import { Container, Row, Button, Card, Form } from 'react-bootstrap';
+import { connect } from 'react-redux'
+
+import { loginInvitado } from '../api/user'
 
 export class Login extends React.Component {
 
     constructor() {
         super();
-        
-        this.loginInvitado= this.loginInvitado.bind(this);
+
+        this.loginInvitado = this.loginInvitado.bind(this);
     }
 
-    loginInvitado(){
-        services.loginInvitado()
-         .then(
-            (userData) => {
-                this.props.onLogin(userData);
-            }
-        )
+    loginInvitado() {
+        this.props.loginInvitado();
     }
 
     render() {
@@ -38,11 +35,11 @@ export class Login extends React.Component {
                                 </Form.Group>
 
                                 <Row>
-                                    <div style={{margin: "0 auto", marginTop:"30px", marginBottom:"30px"}}>
+                                    <div style={{ margin: "0 auto", marginTop: "30px", marginBottom: "30px" }}>
                                         <Button variant="primary" size="lg" type="button" style={{ borderColor: "white" }}>
                                             Iniciar sesión
                                         </Button>
-                                        <Button variant="primary" size="lg" type="button" style={{ borderColor: "white", marginLeft:"30px" }}
+                                        <Button variant="primary" size="lg" type="button" style={{ borderColor: "white", marginLeft: "30px" }}
                                             onClick={this.loginInvitado}>
                                             Invitado
                                         </Button>
@@ -57,4 +54,9 @@ export class Login extends React.Component {
     }
 }
 
-export default Login;
+const mapDispatchToProps = {
+    loginInvitado
+}
+
+export default connect(null, mapDispatchToProps)(Login);
+

@@ -327,11 +327,9 @@ export class MatrixPipe {
     *   @return: ProcessInfo
     *   @scope: public
     */
-    process(name=DEFAULT_FUNCTION_NAME) {
+    getFunctionDefinition(name=DEFAULT_FUNCTION_NAME) {
         if (this.isFunction()) {
-            return { isFunction: true, body:this.processFunction(name) };
-        } else {
-            return { isFunction: false, body:this.processInstruction() };
+            return { isFunction: true, body:this.getFunctionDefinitionWithName(this.funcName) };
         }
     }
 
@@ -341,10 +339,10 @@ export class MatrixPipe {
     *   @return: String
     *   @scope: private
     */
-    processFunction(name) {
-        const def = this.getFunctionDefinition(name)
-        const code = this.getFunctionCode(name)
-        return `${def}\n${code}`
+    getFunctionDefinitionWithName(name) {
+        const sig = this.getFunctionSignature(name);
+        const eq = this.getFunctionEquation(name);
+        return `${sig}\n${eq}`;
     }
 
     /*
@@ -384,8 +382,8 @@ export class MatrixPipe {
     *   @return: String
     *   @scope: private
     */
-    getFunctionDefinition(name) {
-        console.log('Matrix.getFunctionDefinition')
+    getFunctionSignature(name) {
+        console.log('Matrix.getFunctionSignature')
         const varsPipes = this.getAllVars();
         const endPipe = this.getEndPipes()[0];
         const varsType = varsPipes.reduce(
@@ -401,7 +399,7 @@ export class MatrixPipe {
     *   @return: String
     *   @scope: private
     */
-    getFunctionCode(name) {
+    getFunctionEquation(name) {
         const varsPipes = this.getAllVars();
         const endPipe = this.getEndPipes();
         const code = endPipe[0].toCode();

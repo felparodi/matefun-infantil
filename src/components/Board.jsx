@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { dropPipe, loadPenndingBoard, startWork, endWork, addWorkingPipe, join} from '../api/board';
+import { dropPipe, loadPendingBoard, startWork, endWork, addWorkingPipe, join} from '../api/board';
 import Cell from './Cell'
 import classNames from 'classnames';
 import './Board.scss';
@@ -43,9 +43,9 @@ export class Board extends React.Component {
     componentDidMount() {
         window.addEventListener('keydown', this.handlerKeyDown);
         window.addEventListener('keyup', this.handlerKeyUp);
-        if(this.props.hasPendding) {
+        if(this.props.hasPending) {
             //if(confirm('Desa Cargar Pendient')) {
-                this.props.loadPenndingBoard();
+                this.props.loadPendingBoard();
             //}
         }
     }
@@ -89,13 +89,13 @@ export class Board extends React.Component {
 
 const mapStateToProps = state => ({
     content: state.matrix.board,
-    hasPendding: state.matrix.hasPendding,
+    hasPending: state.matrix.hasPending,
     isWorking: state.matrix.isWorking,
 });
 
 const mapDispatchToProps = {
     dropPipe,
-    loadPenndingBoard,
+    loadPendingBoard,
     startWork,
     endWork,
     addWorkingPipe,

@@ -11,7 +11,7 @@ const toolboxGroups = [
         label: 'Matematica',
         pipes: [
             new ConstPipe(0),
-            getDefaultFunction(METHOD_FUNCTION.NEGATIVO),
+            //getDefaultFunction(METHOD_FUNCTION.NEGATIVO),
             getDefaultFunction(METHOD_FUNCTION.ADD),
             getDefaultFunction(METHOD_FUNCTION.SUB),
             getDefaultFunction(METHOD_FUNCTION.MUL),
