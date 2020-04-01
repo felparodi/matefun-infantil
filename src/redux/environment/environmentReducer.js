@@ -2,7 +2,8 @@ import * as actionTypes from './environmentActionTypes';
 
 export const initialState = {
     workspaceFileData: null,
-    myFunctionsFileData: null
+    myFunctionsFileData: null,
+    myFunctions: null
 };
 
 export default function environmentReducer(state = initialState, action) {
@@ -19,6 +20,13 @@ export default function environmentReducer(state = initialState, action) {
       return {
         ...state, 
         myFunctionsFileData: myFunctionsFileData,
+      };
+    }
+    case actionTypes.SET_MY_FUNCTIONS : {
+      const myFunctions = action.payload;
+      return {
+        ...state, 
+        myFunctions: myFunctions,
       };
     }
     default:

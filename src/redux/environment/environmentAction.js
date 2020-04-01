@@ -1,4 +1,4 @@
-import { SET_WORKSPACE_FILE_DATA, SET_MY_FUNCTIONS_FILE_DATA } from './environmentActionTypes'
+import { SET_WORKSPACE_FILE_DATA, SET_MY_FUNCTIONS_FILE_DATA, SET_MY_FUNCTIONS } from './environmentActionTypes'
 
 export const setWorkspaceFileData= (workspaceFileData) => {
     return {
@@ -13,4 +13,12 @@ export const setMyFunctionsFileData= (myFunctionsFileData) => {
         payload: myFunctionsFileData
     }
 }
+
+export const setMyFunctions= (myFunctions) => {
+    return {
+        type: SET_MY_FUNCTIONS,
+        payload: myFunctions
+    }
+}
+
 

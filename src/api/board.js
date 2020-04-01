@@ -6,7 +6,11 @@ import * as services from '../server_connection/services';
 import * as webSocket from '../server_connection/webSocket';
 import * as snapHelper from '../classes/helpers/snapshot';
 import { updateBoard, setEvalInstruction, setWorkspaceFunctionBody } from '../redux/matrix/matrixAction';
-import { setWorkspaceFileData, setMyFunctionsFileData } from '../redux/environment/environmentAction';
+import { setWorkspaceFileData, setMyFunctionsFileData, setMyFunctions } from '../redux/environment/environmentAction';
+//borrar
+import {FuncPipe} from '../classes/pipes/funcPipe'
+import { VALUES_TYPES } from '../constants/constants';
+
 
 let matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
 let joinList = {start: null, end:null }
@@ -16,15 +20,20 @@ export function loadPendingBoard() {
         const matrixJSON = localStorage.getItem('matrix');
         if (matrixJSON) {
             const savedMatrix = JSON.parse(matrixJSON);
-            matrix = new MatrixPipe(savedMatrix.size.x, savedMatrix.size.y);
-            const pipesBulck = savedMatrix.pipes.map((snapPipe) => ({
-                    pos: snapPipe.pos,
-                    pipe: snapHelper.createPipeToSnap(snapPipe)
-            }))
-            matrix.addPipeBulck(pipesBulck);
+            matrix = matrixFromSnapshot(savedMatrix)
         }
         updateMatrix(dispatch);
     }
+}
+
+function matrixFromSnapshot(savedMatrix) {
+    var matrix = new MatrixPipe(savedMatrix.size.x, savedMatrix.size.y);
+    const pipesBulk = savedMatrix.pipes.map((snapPipe) => ({
+            pos: snapPipe.pos,
+            pipe: snapHelper.createPipeToSnap(snapPipe)
+    }))
+    matrix.addPipeBulk(pipesBulk);
+    return matrix;
 }
 
 export function dropPipe(drop) {
@@ -56,7 +65,7 @@ export function setPipeValue(x, y, value) {
 export function loadFunctionDefinition(userData, workspaceFileData, myFunctionsFileData) {
     return (dispatch) => {
         const functionDefinition = matrix.getFunctionDefinition();
-        workspaceFileData.contenido= functionDefinition.body;
+        workspaceFileData.contenido = 'incluir ' + MYFUNCTIONS_FILE_NAME + '\n\n' + functionDefinition.body;
         services.editarArchivo(workspaceFileData, () => {
             dispatch(setWorkspaceFunctionBody(functionDefinition));
             dispatch(setWorkspaceFileData(workspaceFileData));
@@ -75,9 +84,13 @@ export function evaluate(userData) {
 
 export function clean() {
     return (dispatch) => {
-       matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
-       updateMatrix(dispatch);
+       cleanAux(dispatch);
     }
+}
+
+function cleanAux(dispatch) {
+    matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
+    updateMatrix(dispatch);
 }
 
 export function startWork() {
@@ -155,9 +168,13 @@ export function joinOutput(j2) {
 
 export function setMateFunValue(value) {
     return (dispatch) => {
-        matrix.setMateFunValue(value);
-        updateMatrix(dispatch);
+        setMateFunValueAux(dispatch, value);
     }
+}
+
+function setMateFunValueAux(dispatch, value) {
+    matrix.setMateFunValue(value);
+    updateMatrix(dispatch);
 }
 
 function updateMatrix(dispatch) {
@@ -185,7 +202,9 @@ export function prepareEnvironment(userData) {
             }
             var myFunctionsFileData = files.find((file) => file.nombre == MYFUNCTIONS_FILE_NAME);
             if (typeof myFunctionsFileData !== "undefined") {
-                dispatch(setMyFunctionsFileData(myFunctionsFileData))
+                dispatch(setMyFunctionsFileData(myFunctionsFileData));
+
+                myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData);
             } else {
                 services.crearArchivo(MYFUNCTIONS_FILE_NAME,
                     (myFunctionsFileData) => {
@@ -196,27 +215,84 @@ export function prepareEnvironment(userData) {
         })
 
         webSocket.abrirConexion(userData, (message) => {
-            matrix.setMateFunValue(message);
-            updateMatrix(dispatch);
+            setMateFunValue(dispatch, message);
         });
     }
+}
+
+function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
+
+    var contenido= myFunctionsFileData.contenido;
+
+    //console.log(contenido);
+
+    var metadata= contenido.match(/{-.*-}/g);
+    //console.log(metadata);
+
+    var functions= contenido.split(/{-.*-}\n/);
+    functions.shift();
+    //console.log(functions);
+
+    var signatures= functions.map(func => {
+        var i= func.indexOf("\n");
+        return func.substring(0,i);
+    })
+    //console.log(signatures);
+
+    var equations= functions.map(func => {
+        var i= func.indexOf("\n")+1;
+        return func.substring(i);
+    })
+    //console.log(equations);0
+
+    var mfFunctions= [];
+    for (var i=0; i<metadata.length; i++){
+        //quito apertura y cierre de comentarios {- y -}
+        var md= metadata[i].substring(2,metadata[i].length-2);
+        
+        var mdJson = JSON.parse(md);
+        var name= mdJson.nombre;
+        var snapshot= mdJson.snapshot;
+
+        var matrixAux= matrixFromSnapshot(snapshot);
+        var pipe= matrixAux.getFunctionPipe(name);
+        
+        mfFunctions.push({
+            name: mdJson.nombre,
+            snapshot: mdJson.snapshot,
+            signature: signatures[i],
+            equation: equations[i],
+            pipe: pipe
+        })
+    }
+    console.log(mfFunctions);
+    dispatch(setMyFunctions(mfFunctions));
 }
 
 export function saveInMyFunctions(userData, workspaceFileData, myFunctionsFileData) {
     return (dispatch) => {
 
+        var contenido= myFunctionsFileData.contenido;
+
+        var metadata= contenido.match(/{-.*-}/g);
+        
+        var nombre= "func" + (metadata.length+1);
+
+        var snapshot = matrix.snapshot();
+        var saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
+
         var functionMetaData= {
-            nombre: "funcionLucia1",
-            icono: "icono123"
+            nombre: nombre,
+            snapshot: saveSnap
         }
 
-        const functionDefinition = matrix.getFunctionDefinition();
+        const functionDefinition = matrix.getFunctionDefinition(nombre);
 
-        var newContent= "{-" + JSON.stringify(functionMetaData) + "-} \n" + functionDefinition.body + "\n";
+        var newContent= "{-" + JSON.stringify(functionMetaData) + "-}\n" + functionDefinition.body + "\n";
 
         workspaceFileData.contenido= '';
         
-        myFunctionsFileData.contenido+= newContent;
+        myFunctionsFileData.contenido+= "\n\n" + newContent;
         
         services.editarArchivo(workspaceFileData, () => {
             dispatch(setWorkspaceFunctionBody(functionDefinition));
@@ -226,6 +302,10 @@ export function saveInMyFunctions(userData, workspaceFileData, myFunctionsFileDa
                 dispatch(setMyFunctionsFileData(myFunctionsFileData));
 
                 webSocket.cargarArchivo(userData, workspaceFileData.id, myFunctionsFileData.id); 
+
+                myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData);
+
+                cleanAux(dispatch);        
             })
         })
     }

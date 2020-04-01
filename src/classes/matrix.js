@@ -5,6 +5,7 @@ import { sortPipe, pipeDirValueType, matchPipeTypeDir } from './helpers/pipe';
 import { DummyPipe } from './pipes/dummyPipe';
 import { Context } from './context';
 import { BFS } from './BFSMatrix';
+import { FuncPipe } from './pipes/funcPipe';
 
 const DEFAULT_FUNCTION_NAME = 'func';
 export function equlasPos(p1, p2) {
@@ -249,12 +250,12 @@ export class MatrixPipe {
     /*
     *   @desc: Agrega todos los Pipe a la matriz en la posicion indicada, 
     *           limpia los valores finales y actualiza la informacion de la matriz
-    *   @attr List<PositionPipe> pipeBulck: Lista de Pipe y sus posiciones a agregar
+    *   @attr List<PositionPipe> pipeBulk: Lista de Pipe y sus posiciones a agregar
     *   @return void
     *   @socpe public
     */
-    addPipeBulck(pipeBulck) {
-        pipeBulck.forEach(info => {
+    addPipeBulk(pipeBulk) {
+        pipeBulk.forEach(info => {
             this.addPipeSpeed(info.pos, info.pipe);
         })
         this.cleanEndValues();
@@ -329,7 +330,7 @@ export class MatrixPipe {
     */
     getFunctionDefinition(name=DEFAULT_FUNCTION_NAME) {
         if (this.isFunction()) {
-            return { isFunction: true, body:this.getFunctionDefinitionWithName(this.funcName) };
+            return { isFunction: true, body:this.getFunctionDefinitionWithName(name) };
         }
     }
 
@@ -374,6 +375,14 @@ export class MatrixPipe {
     */
     getAllConditions() {
         return this.getAllPipes().filter((pipe) => pipe.getType() === PIPE_TYPES.CONDITION);
+    }
+
+    getFunctionPipe(name){
+        const varsPipes = this.getAllVars();
+        const endPipe = this.getEndPipes()[0];
+        var inputTypes= varsPipes.map(pipe => pipe.getValueType());
+        var outType= endPipe.getValueType()
+        return new FuncPipe(name, inputTypes, outType);
     }
 
     /*

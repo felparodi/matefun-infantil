@@ -19,7 +19,7 @@ function toolboxPipeSnapshot(toolboxPipe) {
 export class Toolbox extends React.Component {
     constructor(props) {
         super(props)
-        this.onDrop = this.onDrop.bind(this)
+        this.onDrop = this.onDrop.bind(this);
         this.state = {
             select: toolboxGroups[0].value,
             pipeToolsGroup: toolboxPipeSnapshot(toolboxGroups)
@@ -28,6 +28,13 @@ export class Toolbox extends React.Component {
 
     onDrop(drop) {
         this.props.dropPipe(drop);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        var pipeToolsGroup= this.state.pipeToolsGroup;
+        var toolbarCustom= pipeToolsGroup.find((toolbar) => toolbar.value === 'custom');
+        toolbarCustom.pipes= (nextProps.myFunctions)?nextProps.myFunctions.map(func=> func.pipe.snapshot()):[];
+        this.setState({ pipeToolsGroup: pipeToolsGroup });
     }
 
     render() {
@@ -53,8 +60,12 @@ export class Toolbox extends React.Component {
     }
 }
 
+const mapStateToProps = state => ({
+    myFunctions: state.environment.myFunctions
+});
+
 const mapDispatchToProps = {
     dropPipe
 }
 
-export default connect(null, mapDispatchToProps)(Toolbox);
+export default connect(mapStateToProps, mapDispatchToProps)(Toolbox);
