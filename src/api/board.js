@@ -79,6 +79,10 @@ export function evaluate(userData) {
         const instruction = matrix.evaluateFunction();
         dispatch(setEvalInstruction(instruction));
         webSocket.evaluarExpresion(userData, instruction)
+        .then((messages) => {
+            matrix.setMateFunValue(messages);
+            updateMatrix(dispatch);
+        })
     }
 }
 
@@ -214,9 +218,7 @@ export function prepareEnvironment(userData) {
             }
         })
 
-        webSocket.abrirConexion(userData, (message) => {
-            setMateFunValue(dispatch, message);
-        });
+        webSocket.abrirConexion(userData);
     }
 }
 

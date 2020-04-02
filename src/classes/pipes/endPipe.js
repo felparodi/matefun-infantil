@@ -149,15 +149,19 @@ export class EndPipe extends Pipe {
     */
     getValueText() {
         if (Array.isArray(this.value)) {
-            let messages = '';
-            this.value.forEach((value) => {
-                if(value.tipo === 'salida'
-                    && value.resultado.indexOf('OUTError') === -1) {
-                        messages += value.resultado.replace('OUT', '') + '\n';
-                }
-            })
-            return messages;
-        } if(this.value && this.value.tipo === 'salida') {
+            if(this.value.length > 1) {
+                let messages = '';
+                this.value.forEach((value) => {
+                    if(value.tipo === 'salida'
+                        && value.resultado.indexOf('OUTError') === -1) {
+                            messages += value.resultado.replace('OUT', '') + '\n';
+                    }
+                })
+                return messages;
+            } else if(this.value.length === 1) {
+                return this.value[0].resultado.replace('OUT', '');
+            }
+        } else if(this.value && this.value.tipo === 'salida') {
             return this.value.resultado.replace('OUT', '');
         }
         return '';
