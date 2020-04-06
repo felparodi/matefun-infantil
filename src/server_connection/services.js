@@ -3,53 +3,48 @@ import {DOMAIN_URL} from './config'
 
 const SERVICES_URL = `http://${DOMAIN_URL}/servicios`;
 
-
-export function login(cedula, password, onSuccess) {
-
-    axios.post(SERVICES_URL + `/login`, {
+export function login(cedula, password) {
+    return axios.post(SERVICES_URL + `/login`, {
         cedula: cedula,
         password: password
     }).then(res => {
         axios.defaults.headers.common = { 'Authorization': `Bearer ${res.data.token}` }
-        onSuccess(res.data);
+        return res.data;
     }).catch((e) => {
         console.warn("Error:Login Invitado", e)
-    })
+    });
 }
 
-export function crearArchivo(nombre, onSuccess) {
-
-    axios.post(SERVICES_URL + `/archivo`, {
-        cedulaCreador: "invitado",
+export function createFile(user, name) {
+    return axios.post(SERVICES_URL + `/archivo`, {
+        cedulaCreador: user.cedula,
         contenido: "",
-        nombre: nombre,
+        nombre: name,
         directorio: false,
         padreId: 5,
         editable: true
-    }).then(res => {
-        onSuccess(res.data);
-    }).catch((e) => {
+    }).then(res => res.data)
+    .catch((e) => {
         console.warn("Error:Crear Archivo", e)
-    })
+        throw e;
+    });
 }
 
 
-export function editarArchivo(fileData, onSuccess) {
-
-    axios.put(SERVICES_URL + `/archivo/` + fileData.id, fileData)
-        .then(res => {
-            onSuccess(res.data);
-        }).catch((e) => {
+export function editFile(fileData) {
+   return axios.put(SERVICES_URL + `/archivo/` + fileData.id, fileData)
+        .then(res => res.data)
+        .catch((e) => {
             console.warn("Error:Editar Archivo", e)
-        })
+            throw e;
+        }); 
 }
 
-export function getArchivos(cedula, onSuccess) {
-
-    axios.get(SERVICES_URL + `/archivo?cedula=` + cedula)
-        .then(res => {
-            onSuccess(res.data);
-        }).catch((e) => {
-            console.warn("Error:Get Archivos", e)
-        })
+export function getFiles(user) {
+    return axios.get(SERVICES_URL + `/archivo?cedula=` + user.cedula)
+        .then(res => res.data)
+        .catch((e) => {
+            console.warn("Error:Get Archivos", e);
+            throw e;
+        });
 }

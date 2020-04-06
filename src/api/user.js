@@ -4,7 +4,8 @@ import { login, logout } from '../redux/user/userAction';
 
 export function loginInvitado() {
     return (dispatch) => {
-        services.login("invitado", "invitado", (userData)=> {
+        services.login("invitado", "invitado")
+        .then((userData)=> {
             dispatch(login(userData));
         })
     }
