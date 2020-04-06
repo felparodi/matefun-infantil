@@ -107,6 +107,13 @@ export class EndPipe extends Pipe {
     *   @scope: public
     */
     getValue() {
+        if (Array.isArray(this.value)) {
+            if(this.value.length === 1) {
+                return this.value[0];
+            } else {
+                return this.value;
+            }
+        }
         return this.value;
     }
 

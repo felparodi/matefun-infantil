@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import { Button } from 'react-bootstrap';
+import Consola from './Console';
 import { loadFunctionDefinition, evaluate, clean, saveInMyFunctions } from '../api/board';
 
 const debugMode = localStorage.getItem('debug-mode') === 'true';
@@ -44,23 +44,6 @@ export class Actions extends React.Component {
         this.props.saveInMyFunctions(this.props.userData, this.props.workspaceFileData, this.props.myFunctionsFileData);
     }
 
-    renderConsole() {
-        const {
-            evalInstruction, workspaceFunction, resultEval
-        } = this.props;
-        const { openConsole } = this.state;
-        return (
-            <div className={classNames("actions-info", {'hidden':!openConsole})}>
-            <p>Evaluar</p>
-            <textarea className="info evaluation" readOnly value={evalInstruction}/>
-            <p>Funcion</p>
-            <textarea className="info function" readOnly value={workspaceFunction}/>
-            <p>Resultado</p>
-            <textarea className="info result" readOnly value={resultEval}/>
-        </div>
-        )
-    }
-
     render() {
         const { openConsole } = this.state;
         const { canProcess, isFunction, isWorking} = this.props;
@@ -70,13 +53,10 @@ export class Actions extends React.Component {
                     <Button variant="primary" onClick={this.clean}>Limpiar</Button>
                     <Button variant="primary" disabled={!canProcess} onClick={this.evaluate}>Evaluar</Button>
                     <Button variant="primary" disabled={!isFunction} onClick={this.loadFunctionDefinition}>Cargar funcion</Button>
-                    <Button variant="primary" onClick={this.clean}>Clean</Button>
+                    <Button variant="primary" onClick={this.saveInMyFunctions}>Guardar en Mis funciones</Button>
                 { debugMode && <Button variant="primary" onClick={() => {this.setState({openConsole:!openConsole})}}>Consola</Button> }
                 </div>
-                <div className="actions-button">
-                    <Button variant="primary" onClick={this.saveInMyFunctions}>Guardar en Mis funciones</Button>
-                </div>
-                { debugMode && this.renderConsole() }
+                { debugMode && <Consola openConsole={openConsole}/> }
             </div>
         );
     }
