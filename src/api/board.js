@@ -189,9 +189,8 @@ function updateMatrix(dispatch) {
 }
 
 export function prepareEnvironment(userData) {
-
     return (dispatch) => {
-
+        debugger;
         services.getArchivos(userData.cedula, (files) => {
             
             var workspaceFileData = files.find((file) => file.nombre == WORKSPACE_FILE_NAME);
@@ -204,6 +203,7 @@ export function prepareEnvironment(userData) {
                     }
                 );
             }
+            
             var myFunctionsFileData = files.find((file) => file.nombre == MYFUNCTIONS_FILE_NAME);
             if (typeof myFunctionsFileData !== "undefined") {
                 dispatch(setMyFunctionsFileData(myFunctionsFileData));
