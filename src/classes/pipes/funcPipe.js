@@ -131,7 +131,7 @@ export class FuncPipe extends Pipe {
     *   @attr Array<Pipe> path?: Camino de la recurcion en el calculo
     *   @return: void
     *   @scope: public
-    *   @overide 
+    *   @override 
     */
     calc(context, board, enterDir, path=[]) {
         this.verifyLoop(path);
@@ -179,7 +179,7 @@ export class FuncPipe extends Pipe {
     *   @desc: Devuevle el codigo que representa la aplicaicon de una funcion con sus hijos como argumentos
     *   @return: String
     *   @scope: public
-    *   @overide
+    *   @override
     */
     toCode() {        
         const arg = this.toCodeArg();
@@ -237,7 +237,7 @@ export class FuncPipe extends Pipe {
     *   @desc: Devuleve las direciones de entrada
     *   @return: Array<Direction>
     *   @scope: public
-    *   @overide
+    *   @override
     */
     getInDirections() {
         return super.getInDirections()

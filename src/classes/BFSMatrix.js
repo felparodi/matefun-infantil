@@ -49,7 +49,7 @@ export class BFS {
         if(equalPos(actual, this.end)) { 
             return [...path, actual];
         }
-        const arround = this.matrix.getArroundPos(actual);
+        const arround = this.matrix.getAroundPos(actual);
         const childer = arround
             .filter(pos => !this.context.isMark(pos))
             .filter(pos => {

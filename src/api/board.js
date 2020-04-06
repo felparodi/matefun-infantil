@@ -1,6 +1,6 @@
 
 import * as matrixAction from '../redux/matrix/matrixActionTypes';
-import { MatrixPipe, equlasPos } from '../classes/matrix';
+import { MatrixPipe, equalsPos as equalsPos } from '../classes/matrix';
 import { BOARD_ROWS, BOARD_COLS, WORKSPACE_FILE_NAME, MYFUNCTIONS_FILE_NAME } from '../constants/constants';
 import * as services from '../server_connection/services';
 import * as webSocket from '../server_connection/webSocket';
@@ -131,13 +131,13 @@ export function join(j1, j2) {
 }
 
 export function isEqualJoin(j1, j2) {
-    return (!j1 && !j2) || (equlasPos(j1, j2) && j1.dir === j2.dir)
+    return (!j1 && !j2) || (equalsPos(j1, j2) && j1.dir === j2.dir)
 }
 
 export function joinInput(j1) {
     return (dispatch) => {
         joinList.end = isEqualJoin(joinList.end, j1) ? null : j1;
-        if(equlasPos(joinList.start, joinList.end)){
+        if(equalsPos(joinList.start, joinList.end)){
             joinList.start = null;
             dispatch({type: matrixAction.SET_START_JOIN, payload: null })
         }
@@ -161,7 +161,7 @@ function tryJoin(dispatch) {
 export function joinOutput(j2) {
     return (dispatch) => {
         joinList.start = isEqualJoin(joinList.start, j2) ? null : j2;
-        if(equlasPos(joinList.start, joinList.end)){
+        if(equalsPos(joinList.start, joinList.end)){
             joinList.end = null;
             dispatch({type: matrixAction.SET_END_JOIN, payload: null })
         }
@@ -203,7 +203,7 @@ export function prepareEnvironment(userData) {
                     }
                 );
             }
-            
+
             var myFunctionsFileData = files.find((file) => file.nombre == MYFUNCTIONS_FILE_NAME);
             if (typeof myFunctionsFileData !== "undefined") {
                 dispatch(setMyFunctionsFileData(myFunctionsFileData));

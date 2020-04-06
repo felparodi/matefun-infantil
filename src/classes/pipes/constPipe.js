@@ -31,7 +31,7 @@ export class ConstPipe extends Pipe {
     *   @attr Array<Pipe> path?: Camino de la recurcion en el calculo
     *   @return: void
     *   @scope: public
-    *   @overider
+    *   @overrides
     */
     calc(context, board, enterDir, path=[]) {
         if(!context.isMark(this.getPos())) {
@@ -98,7 +98,7 @@ export class ConstPipe extends Pipe {
     *   @desc: Devulve el como se represta el valor en codigo
     *   @return: String
     *   @scope: public
-    *   @overide
+    *   @override
     */
     toCode() {
         return valueToString(this.getValue(), this.getValueType());
@@ -108,7 +108,7 @@ export class ConstPipe extends Pipe {
     *   @desc: Devuelv el PipeType que repesenta a la ConstPipe
     *   @return: PipeValue
     *   @scope: public
-    *   @overide
+    *   @override
     */
     getType() {
         return PIPE_TYPES.VALUE;
@@ -119,7 +119,7 @@ export class ConstPipe extends Pipe {
     *   @attr Direction dir:
     *   @return: Boolean
     *   @scope: public
-    *   @overide
+    *   @override
     */
     isOutDir(dir) {
         return dir === DIRECTION.BOTTOM;

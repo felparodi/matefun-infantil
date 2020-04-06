@@ -31,7 +31,7 @@ export class EndPipe extends Pipe {
     *   @attr Array<Pipe> path?: Camino de la recurcion en el calculo
     *   @return: void
     *   @scope: public
-    *   @overide
+    *   @override
     */  
     calc(context, board, enterDir, path=[]) {
         if (!context.isMark(this.getPos())) {
@@ -62,7 +62,7 @@ export class EndPipe extends Pipe {
     *   @desc: Limpiar la informacion que se calcual en calc
     *   @return: void
     *   @scope: public
-    *   @overide
+    *   @override
     */
     clean() {
         super.clean();
@@ -73,7 +73,7 @@ export class EndPipe extends Pipe {
     *   @desc: Devulve el codigo que se genera apartir de el arbol de la funcion
     *   @return: String
     *   @scope: public
-    *   @overide
+    *   @override
     */
     toCode() {
         const arg = this.toCodeArg();
@@ -84,7 +84,7 @@ export class EndPipe extends Pipe {
     *   @desc: Devuelv el PipeType que repesenta a la EndPipe
     *   @return: PipeValue
     *   @scope: public
-    *   @overide
+    *   @override
     */
     getType() {
         return PIPE_TYPES.END;
@@ -95,7 +95,7 @@ export class EndPipe extends Pipe {
     *   @attr Direction dir: Direction que se quiere evaluar
     *   @return: Boolean
     *   @scope: public
-    *   @overider
+    *   @overrides
     */
     isInDir(dir) {
         return DIRECTION.TOP === dir;
@@ -178,7 +178,7 @@ export class EndPipe extends Pipe {
     *   @desc: Devulve el SnapPipe que represtnat a la EndPipe
     *   @return: PipeSnap
     *   @scope: public
-    *   @overider
+    *   @override
     */
     snapshot() {
         return {

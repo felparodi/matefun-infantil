@@ -68,7 +68,7 @@ export class VarPipe extends Pipe {
     *   @attr Array<Pipe> path?: Camino de la recurcion en el calculo
     *   @return: void
     *   @scope: public
-    *   @overide 
+    *   @override 
     */
     calc(context, board, enterDir, path=[]) {
         if (!context.isMark(this.getPos())) {
@@ -98,7 +98,7 @@ export class VarPipe extends Pipe {
     *   @attr Direction dir:
     *   @return: Boolean
     *   @scope: public
-    *   @overide
+    *   @override
     */
     isOutDir(dir) {
         return dir === DIRECTION.BOTTOM
@@ -144,7 +144,7 @@ export class VarPipe extends Pipe {
     *   @desc: Devuelve el PipeType que representa el VarPipe
     *   @return: PipeType
     *   @scope: public
-    *   @overider  
+    *   @override  
     */
     getType() {
         return PIPE_TYPES.VARIABLE;
@@ -154,7 +154,7 @@ export class VarPipe extends Pipe {
     *   @desc: Devulve una esturctura que represeta la informacion de la VarPipe
     *   @return: SnapPipe
     *   @scope: public
-    *   @overider
+    *   @override
     */
     snapshot() {
         const value = this.getValue();

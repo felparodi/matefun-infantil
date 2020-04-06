@@ -11,7 +11,7 @@ import { getNextChildren } from '../helpers/pipe';
 *   @attr protected Array<String> error: Los error que se encotraron mientrs se calculaba la informcion
 *   @attr protected Array<String> warning: Los warning que se encontraron mientras se calculava una direcion
 *   @scope: public
-*   @astract
+*   @abstract
 *   @implement IPipe
 */
 export class Pipe {

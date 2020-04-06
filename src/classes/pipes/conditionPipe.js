@@ -26,16 +26,16 @@ export class ConditionPipe extends FuncPipe {
     *   @attr Array<Pipe> path?: Camino de la recurcion en el calculo
     *   @return: void
     *   @scope: public
-    *   @overide
+    *   @override
     */
     calc(context, board, enterDir, path=[]) {
         const marked = context.isMark(this.getPos());
         super.calc(context, board, enterDir, path);
         if(!marked) {
             const parents = getParentsPipeNotDummy(this);
-            const parntesFunction = parents
+            const parentsFunction = parents
                 .filter((parent) => parent.getType() === PIPE_TYPES.FUNCTION);
-            if(parntesFunction.length) {
+            if(parentsFunction.length) {
                 this.addError('No se puede seguir con una funcion')
             }
         }
@@ -60,7 +60,7 @@ export class ConditionPipe extends FuncPipe {
     *   @desc: Devuelve el PipeType que repesenta a la ConditionPipe
     *   @return: PipeValue
     *   @scope: public
-    *   @overide
+    *   @override
     */
     getType() {
         return PIPE_TYPES.CONDITION;

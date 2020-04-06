@@ -64,7 +64,7 @@ export class DummyPipe extends Pipe {
     *   @desc: Limpia toda la inforamcion que se calcula
     *   @return: void
     *   @scope: public
-    *   @overider
+    *   @override
     */
     clean() {
         super.clean();

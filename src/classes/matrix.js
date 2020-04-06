@@ -8,7 +8,7 @@ import { BFS } from './BFSMatrix';
 import { FuncPipe } from './pipes/funcPipe';
 
 const DEFAULT_FUNCTION_NAME = 'func';
-export function equlasPos(p1, p2) {
+export function equalsPos(p1, p2) {
     return (!p1 && !p2) || (p1 && p2 && p1.x === p2.x && p1.y === p2.y);
 }
 /*
@@ -55,14 +55,14 @@ export class MatrixPipe {
     *   @return: List<Posicion>
     *   @scope: public 
     */
-    getArroundPos(pos) {
+    getAroundPos(pos) {
         const {x, y} = pos;
-        const arround = []
-        if(x-1 >= 0) arround.push({x:x-1, y, dir:DIRECTION.TOP});
-        if(y-1 >= 0) arround.push({x, y:y-1, dir:DIRECTION.LEFT});
-        if(x+1 < this.maxX) arround.push({x:x+1, y, dir:DIRECTION.BOTTOM});
-        if(y+1 < this.maxY) arround.push({x, y:y+1, dir:DIRECTION.RIGHT});
-        return arround;
+        const around = []
+        if(x-1 >= 0) around.push({x:x-1, y, dir:DIRECTION.TOP});
+        if(y-1 >= 0) around.push({x, y:y-1, dir:DIRECTION.LEFT});
+        if(x+1 < this.maxX) around.push({x:x+1, y, dir:DIRECTION.BOTTOM});
+        if(y+1 < this.maxY) around.push({x, y:y+1, dir:DIRECTION.RIGHT});
+        return around;
     }
 
     /*
@@ -71,12 +71,12 @@ export class MatrixPipe {
     *   @return: List<Pipe>
     *   @scope: public
     */
-    getArroundPipe(pos) {
-        const arround = this.getArroundPos(pos).map((arr) => {
+    getAroundPipe(pos) {
+        const around = this.getAroundPos(pos).map((arr) => {
             const {x, y} = arr;
             return { dir: arr.dir, p: this.value(x,y) };
         })
-        return arround.filter(a => a.p);
+        return around.filter(a => a.p);
     }
 
     /*
@@ -88,9 +88,9 @@ export class MatrixPipe {
     *   @scope: private
     */
     addDummyWorkingPipe(pos) {
-        const arrounds = this.getArroundPipe(pos);
+        const around = this.getAroundPipe(pos);
         const dir = [];
-        arrounds.forEach(arr => {
+        around.forEach(arr => {
             const pipe = arr.p;
             const invD = invertDirection(arr.dir);
             if(pipe.getType() === PIPE_TYPES.DUMMY && pipe.isWorking) {
@@ -132,22 +132,22 @@ export class MatrixPipe {
     *   @scope: private
     */
     cratedJoinPipe(toCreate, end) {
-        if(toCreate) {
+        if (toCreate) {
             toCreate.forEach((pos, index, arr) => {
-                if(index < arr.length-1) {
-                    const pipe = this.value(pos.x, pos.y);
-                    const next = arr[index+1];
-                    if(pipe) {
-                        pipe.addDir(next.dir);
-                    } else {
-                        const invDir = invertDirection(pos.dir);
-                        this.addPipeSpeed(pos, new DummyPipe(invDir, next.dir));
-                    }
+                let directionOut;
+                let directionIn = invertDirection(pos.dir);
+                if (index < arr.length-1) {
+                    directionOut = arr[index+1].dir;
+                } else {
+                    directionOut = invertDirection(end.dir);
                 }
-            })
-            const endInDir = invertDirection(toCreate[toCreate.length-1].dir);
-            const endOutDir =  invertDirection(end.dir);
-            this.addPipeSpeed(end, new DummyPipe(endInDir, endOutDir));
+                const pipe = this.value(pos.x, pos.y);
+                if (pipe) {
+                    pipe.addDir(directionOut);
+                } else {
+                    this.addPipeSpeed(pos, new DummyPipe(directionIn, directionOut));
+                }
+            });
         }
     }
 
@@ -158,7 +158,7 @@ export class MatrixPipe {
     *   @scope: public
     */
     join(j1, j2) {
-        if(equlasPos(j1, j2)) return;
+        if(equalsPos(j1, j2)) return;
         const pipe1 = this.value(j1.x, j1.y);
         const pipe2 = this.value(j2.x, j2.y);
         if(matchPipeTypeDir(pipe1, j1.dir, pipe2, j2.dir)) {
