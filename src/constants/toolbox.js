@@ -4,95 +4,105 @@ import { ConditionPipe } from '../classes/pipes/conditionPipe';
 import { EndPipe } from '../classes/pipes/endPipe';
 import { ConstPipe } from '../classes/pipes/constPipe';
 import { VarPipe } from '../classes/pipes/varPipe';
+import * as icon from './icons';
 
-const toolboxGroups = [
+export const COMPLEX = 0;
+export const ToolboxGroups = [
     {
         value: 'mat',
-        label: 'Matematica',
+        label: 'Mate',
+        icon: icon.CALCULATOR,
+        complex: 0,
         pipes: [
-            new ConstPipe(0),
-            //getDefaultFunction(METHOD_FUNCTION.NEGATIVO),
-            getDefaultFunction(METHOD_FUNCTION.ADD),
-            getDefaultFunction(METHOD_FUNCTION.SUB),
-            getDefaultFunction(METHOD_FUNCTION.MUL),
-            getDefaultFunction(METHOD_FUNCTION.DIV),
-            //getDefaultFunction(METHOD_FUNCTION.EXP),
-            //getDefaultFunction(METHOD_FUNCTION.RAIZ),
-            //getDefaultFunction(METHOD_FUNCTION.SEN),
-            //getDefaultFunction(METHOD_FUNCTION.COS),
+            { pipe: new ConstPipe(0), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.NEGATIVO), complex: 1 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.ADD), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.SUB), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.MUL), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.DIV), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.EXP), complex: 2 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.RAIZ), complex: 2 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.SEN), complex: 2},
+            { pipe: getDefaultFunction(METHOD_FUNCTION.COS),complex: 2 },
         ]
     },
     { 
         value: 'val',
         label: 'Valores',
+        icon: null,
+        complex: 0,
         pipes: [
-            new VarPipe(VALUES_TYPES.GENERIC),
-            new EndPipe(VALUES_TYPES.GENERIC),
-            new VarPipe(VALUES_TYPES.NUMBER),
-            new EndPipe(VALUES_TYPES.NUMBER),
-            new VarPipe(VALUES_TYPES.POINT),
-            new EndPipe(VALUES_TYPES.POINT),
-            new VarPipe(VALUES_TYPES.COLOR),
-            new EndPipe(VALUES_TYPES.COLOR),
-            new VarPipe(VALUES_TYPES.FIGURE),
-            new EndPipe(VALUES_TYPES.FIGURE),
-            //new VarPipe(VALUES_TYPES.list(VALUES_TYPES.GENERIC)),
-            //new EndPipe(VALUES_TYPES.list(VALUES_TYPES.GENERIC)),
+            { pipe: new VarPipe(VALUES_TYPES.GENERIC), complex: 0 },
+            { pipe: new EndPipe(VALUES_TYPES.GENERIC), complex: 0 },
+            { pipe: new VarPipe(VALUES_TYPES.NUMBER), complex: 0 },
+            { pipe: new EndPipe(VALUES_TYPES.NUMBER), complex: 0 },
+            { pipe: new VarPipe(VALUES_TYPES.POINT), complex: 0 },
+            { pipe: new EndPipe(VALUES_TYPES.POINT), complex: 0 },
+            { pipe: new VarPipe(VALUES_TYPES.COLOR), complex: 0 },
+            { pipe: new EndPipe(VALUES_TYPES.COLOR), complex: 0 },
+            { pipe: new VarPipe(VALUES_TYPES.FIGURE), complex: 0 },
+            { pipe: new EndPipe(VALUES_TYPES.FIGURE), complex: 0 },
         ],
     },
     {  
         value: 'cond',
         label: 'Condiciones',
+        icon: null,
+        complex: 0,
         pipes: [
-            new ConditionPipe(),
-            getDefaultFunction(METHOD_FUNCTION.AND),
-            getDefaultFunction(METHOD_FUNCTION.EQUAL),
-            getDefaultFunction(METHOD_FUNCTION.N_EQUAL),
-            getDefaultFunction(METHOD_FUNCTION.GREAT),
-            getDefaultFunction(METHOD_FUNCTION.E_GREAT),
-            getDefaultFunction(METHOD_FUNCTION.LEST),
-            getDefaultFunction(METHOD_FUNCTION.E_LEST),
+            { pipe: new ConditionPipe(), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.AND), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.EQUAL), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.N_EQUAL), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.GREAT), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.E_GREAT), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.LEST), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.E_LEST), complex: 0 },
         ]
 
     },
     {
         value: 'figures',
         label: 'Figuras',
+        icon: null,
+        complex: 0,
         pipes: [
-            new ConstPipe({color:'Negro'}, VALUES_TYPES.COLOR),
-            new ConstPipe({x:0, y:0}, VALUES_TYPES.POINT),
-            getDefaultFunction(METHOD_FUNCTION.CIRC),
-            getDefaultFunction(METHOD_FUNCTION.RECT),
+            { pipe: new ConstPipe({color:'Negro'}, VALUES_TYPES.COLOR), complex: 0 },
+            { pipe: new ConstPipe({x:0, y:0}, VALUES_TYPES.POINT), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.CIRC), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.RECT), complex: 0 },
             //Estos no estan funcionado, LINEA no esta en nuestro interpret
-            //getDefaultFunction(METHOD_FUNCTION.LINEA),
-            //getDefaultFunction(METHOD_FUNCTION.POLI),
-            getDefaultFunction(METHOD_FUNCTION.COLOR),
-            getDefaultFunction(METHOD_FUNCTION.ROTAR),
-            getDefaultFunction(METHOD_FUNCTION.JUNTAR),
-            getDefaultFunction(METHOD_FUNCTION.ESCALAR),
-            getDefaultFunction(METHOD_FUNCTION.MOVER),
-            //getDefaultFunction(METHOD_FUNCTION.AFIG),
+            //{ pipe: getDefaultFunction(METHOD_FUNCTION.LINEA), complex: 0 },
+            //{ pipe: getDefaultFunction(METHOD_FUNCTION.POLI), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.COLOR), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.ROTAR), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.JUNTAR), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.ESCALAR), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.MOVER), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.AFIG), complex: 1 },
         ]
     },
-    /*
     {
         value: 'list',
         label: 'Listas',
+        icon: null,
+        complex: 5,
         pipes: [
-            new ConstPipe([], VALUES_TYPES.list(VALUES_TYPES.GENERIC)),
-            getDefaultFunction(METHOD_FUNCTION.CONCAT),
-            getDefaultFunction(METHOD_FUNCTION.PRIMER),
-            getDefaultFunction(METHOD_FUNCTION.RESTO),
-            getDefaultFunction(METHOD_FUNCTION.RANGO),
+            { pipe: new ConstPipe([], VALUES_TYPES.list(VALUES_TYPES.GENERIC)), complex: 5 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.CONCAT), complex: 5 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.PRIMER), complex: 5 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.RESTO), complex: 5 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.RANGO), complex: 5 },
         ]
     },
-    */
     {
         value: 'custom',
         label: 'Custom',
+        icon: null,
+        complex: 0,
         pipes: [
         ]
     }
 ];
 
-export default toolboxGroups;
+export default ToolboxGroups;

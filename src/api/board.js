@@ -60,6 +60,7 @@ export function setPipeValue(x, y, value) {
 
 export function loadFunctionDefinition(userData, workspaceFileData, myFunctionsFileData) {
     return (dispatch) => {
+        services.getFiles(userData).then(console.log)
         debugger;
         const functionDefinition = matrix.getFunctionDefinition();
         workspaceFileData.contenido = `incluir ${MYFUNCTIONS_FILE_NAME}\n\n${functionDefinition.body}`;
@@ -189,12 +190,13 @@ function updateMatrix(dispatch) {
 
 export function prepareEnvironment(userData) {
     return (dispatch) => {
+        webSocket.openConnection(userData);
         services.getFiles(userData)
         .then((files) => {
+            debugger;
             var myFunctionsFileData = files.find((file) => file.nombre === MYFUNCTIONS_FILE_NAME);
-            if (typeof myFunctionsFileData !== "undefined") {
+            if (myFunctionsFileData) {
                 dispatch(setMyFunctionsFileData(myFunctionsFileData));
-
                 myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData);
             } else {
                 services.createFile(userData, MYFUNCTIONS_FILE_NAME)
@@ -206,7 +208,7 @@ export function prepareEnvironment(userData) {
             }
 
             var workspaceFileData = files.find((file) => file.nombre === WORKSPACE_FILE_NAME);
-            if (typeof workspaceFileData !== "undefined") {
+            if (workspaceFileData) {
                 dispatch(setWorkspaceFileData(workspaceFileData))
             } else {
                 services.createFile(userData, WORKSPACE_FILE_NAME)
@@ -216,9 +218,7 @@ export function prepareEnvironment(userData) {
                     }
                 );
             } 
-        })
-
-        webSocket.openConnection(userData);
+        });
     }
 }
 

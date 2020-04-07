@@ -7,7 +7,7 @@ import InputLeft from './function-parts/InputLeft';
 import InputTop from './function-parts/InputTop';
 import Output from './function-parts/Output';
 import { DIRECTION } from '../../constants/constants';
-import Icons from './function-parts/Icons';
+import FuncIcons from './function-parts/FunctionIcon';
 
 export class FuncPipe extends React.Component {
     constructor(props) {
@@ -47,7 +47,7 @@ export class FuncPipe extends React.Component {
                 { rightType && <InputRight join={isJoinRigth} onClick={() => this.joinInput(DIRECTION.RIGHT)} type={rightType}/>}
                 { topType && <InputTop join={isJoinTop} onClick={() => this.joinInput(DIRECTION.TOP)} type={topType}/>}
                 <Output join={isJoinBottom} onClick={this.joinOutput} type={bottomType}/>
-                <Icons name={pipe.name}/>
+                <FuncIcons name={pipe.name}/>
             </svg>
         )
     }

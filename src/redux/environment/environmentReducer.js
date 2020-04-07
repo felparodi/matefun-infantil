@@ -3,7 +3,7 @@ import * as actionTypes from './environmentActionTypes';
 export const initialState = {
     workspaceFileData: null,
     myFunctionsFileData: null,
-    myFunctions: null
+    myFunctions: [],
 };
 
 export default function environmentReducer(state = initialState, action) {

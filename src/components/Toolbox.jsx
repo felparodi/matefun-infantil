@@ -3,15 +3,22 @@ import { connect } from 'react-redux';
 import {dropPipe} from '../api/board';
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
-import toolboxGroups from '../constants/toolbox';
+import toolboxGroups, {COMPLEX} from '../constants/toolbox';
 import ToolboxBody from './ToolboxBody';
+import Icon from './Icon';
+
 import './Toolbox.scss';
 
 function toolboxPipeSnapshot(toolboxPipe) {
-    return toolboxPipe.map(group => ({
+    return toolboxPipe
+        .filter(({complex}) => complex <= COMPLEX)
+        .map(group => ({
             value: group.value,
             label: group.label,
-            pipes: group.pipes.map((pipe) => pipe ? pipe.snapshot() : null)
+            icon: group.icon,
+            pipes: group.pipes
+                .filter(({complex}) => complex <= COMPLEX)
+                .map(({pipe}) => pipe ? pipe.snapshot() : null)
         })
     );
 }
@@ -30,15 +37,18 @@ export class Toolbox extends React.Component {
         this.props.dropPipe(drop);
     }
 
-    componentWillReceiveProps(nextProps) {
-        var pipeToolsGroup= this.state.pipeToolsGroup;
-        var toolbarCustom= pipeToolsGroup.find((toolbar) => toolbar.value === 'custom');
-        toolbarCustom.pipes= (nextProps.myFunctions)?nextProps.myFunctions.map(func=> func.pipe.snapshot()):[];
-        this.setState({ pipeToolsGroup: pipeToolsGroup });
+    componentDidUpdate(prevProp) {
+        if(prevProp.myFunctions != this.props.myFunctions) {
+            var pipeToolsGroup = this.state.pipeToolsGroup;
+            var toolbarCustom = pipeToolsGroup.find((toolbar) => toolbar.value === 'custom');
+            toolbarCustom.pipes = this.props.myFunctions.map(func => func.pipe.snapshot());
+            this.setState({ pipeToolsGroup: pipeToolsGroup });
+        }
     }
 
     render() {
         const {select, pipeToolsGroup} = this.state;
+        debugger;
         return (
             <div className="Toolbox">
                 <div className="toolbox-header">
@@ -47,7 +57,10 @@ export class Toolbox extends React.Component {
                         <Button key={index}
                             className={classNames("button-group", {'selected': select === toolbar.value })}
                             onClick={()=> this.setState({select: toolbar.value})}>
-                            <span>{toolbar.label}</span>
+                            {toolbar.icon ?
+                                <Icon icon={toolbar.icon}/>
+                                : <span>{toolbar.label}</span>
+                            }
                         </Button>
                     )) 
                 }

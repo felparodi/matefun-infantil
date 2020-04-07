@@ -1,6 +1,6 @@
 $CELL_SIZE: 4rem;
 .Cell {
-    border: 1px solid lightgray;
+    border: 1px solid rgba(211, 211, 211, 0.479);
     width: $CELL_SIZE;
     height: $CELL_SIZE;
     &.over {

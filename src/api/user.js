@@ -1,18 +1,34 @@
 import * as services from '../server_connection/services';
-import { login, logout } from '../redux/user/userAction';
+import * as action from '../redux/user/userAction';
+import store from '../redux/store';
 
+const USER_SESSION_STORAGE = 'USER_SESSION_STORAGE';
 
 export function loginInvitado() {
     return (dispatch) => {
         services.login("invitado", "invitado")
         .then((userData)=> {
-            dispatch(login(userData));
+            sessionStorage.setItem(USER_SESSION_STORAGE, JSON.stringify(userData));
+            dispatch(action.login(userData));
         })
     }
 }
 
-export function logout2() {
+export function logout() {
     return (dispatch) => {
-        dispatch(logout());
+        sessionStorage.clear();
+        dispatch(action.logout());
     }
 }
+
+function init() {
+    console.warn("INIT")
+    const userDataJSON  = sessionStorage.getItem(USER_SESSION_STORAGE);
+    if (userDataJSON) {
+        const userData = JSON.parse(userDataJSON);
+        debugger;
+        services.setAuthUser(userData);
+        store.dispatch(action.login(userData));
+    }
+}
+init();

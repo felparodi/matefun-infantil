@@ -16,7 +16,7 @@ import Primero from '../../../icons/primero.svg';
 import Rango from '../../../icons/rango.svg';
 import AFIG from '../../../icons/aFig.svg';
 
-const FunctionIcon = ({name}) => {
+const FunctionIcon = ({name, icon}) => {
     switch(name) {
         case METHOD_FUNCTION.COLOR:
             return <Color/>;
