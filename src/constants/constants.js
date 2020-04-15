@@ -95,5 +95,5 @@ export const ERROR = Object.freeze({
 
 export const BOARD_ROWS= 20;
 export const BOARD_COLS= 15;
-export const WORKSPACE_FILE_NAME= 'MyWorkspaces2';
-export const MYFUNCTIONS_FILE_NAME= "MyFunctions2";
+export const WORKSPACE_FILE_NAME= 'MyWorkspaces MatefunInfantil';
+export const MY_FUNCTIONS_FILE_NAME= "MyFunctions MatefunInfantil";

@@ -48,7 +48,6 @@ export class Toolbox extends React.Component {
 
     render() {
         const {select, pipeToolsGroup} = this.state;
-        debugger;
         return (
             <div className="Toolbox">
                 <div className="toolbox-header">

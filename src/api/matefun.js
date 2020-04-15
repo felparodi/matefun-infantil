@@ -2,15 +2,18 @@
 import * as services from '../server_connection/services';
 import * as webSocket from '../server_connection/webSocket';
 import { setMateFunValue, getEvaluateFunction, getFunctionDefinition, getMatrixSnapshot } from './board';
-import { WORKSPACE_FILE_NAME, MYFUNCTIONS_FILE_NAME } from '../constants/constants';
+import { WORKSPACE_FILE_NAME, MY_FUNCTIONS_FILE_NAME } from '../constants/constants';
 import { setEvalInstruction, setWorkspaceFunctionBody } from '../redux/matrix/matrixAction';
 import { setWorkspaceFileData, setMyFunctionsFileData, setMyFunctions } from '../redux/environment/environmentAction';
+
+const MY_FUNCTION_FILE_STORAGE = 'MY_FUNCTION_FILE_STORAGE';
+const WORKSPACE_FILE_STORAGE = 'WORKSPACE_FILE_STORAGE';
 
 export function loadFunctionDefinition(userData, workspaceFileData, myFunctionsFileData) {
     return (dispatch) => {
         services.getFiles(userData).then(console.log)
         const functionDefinition = getFunctionDefinition();
-        workspaceFileData.contenido = `incluir ${MYFUNCTIONS_FILE_NAME}\n\n${functionDefinition.body}`;
+        workspaceFileData.contenido = `incluir ${MY_FUNCTIONS_FILE_NAME}\n\n${functionDefinition.body}`;
         services.editFile(workspaceFileData)
         .then((data) => {
             console.log(data);
@@ -32,37 +35,56 @@ export function evaluate(userData) {
     }
 }
 
+function findOrCreateFile(userData, name) {
+    return services.getFiles(userData)
+        .then((files) => {
+            const file = files.find((file) => file.nombre === name);
+            if (file) {
+                return Promise.resolve(file);
+            } else {
+                return services.createFile(userData, name);
+            }
+        });
+}
+
+function loadMyFunctionFile(userData) {
+    const myFunctionsFileDataJSON = sessionStorage.getItem(MY_FUNCTION_FILE_STORAGE);
+    if(myFunctionsFileDataJSON) {
+        return Promise.resolve(JSON.parse(myFunctionsFileDataJSON));
+    }
+    return findOrCreateFile(userData, MY_FUNCTIONS_FILE_NAME)
+        .then((myFunctionsFileData) => {
+            sessionStorage.setItem(MY_FUNCTION_FILE_STORAGE, JSON.stringify(myFunctionsFileData));
+            return myFunctionsFileData;
+        });
+} 
+
+
+function loadWorkspaceFile(userData) {
+    const workspaceFileDataJSON = sessionStorage.getItem(WORKSPACE_FILE_STORAGE);
+    if(workspaceFileDataJSON) {
+        return Promise.resolve(JSON.parse(workspaceFileDataJSON));
+    }
+    return findOrCreateFile(userData, WORKSPACE_FILE_NAME)
+        .then((workspaceFileData) => {
+            sessionStorage.setItem(WORKSPACE_FILE_STORAGE, JSON.stringify(workspaceFileData));
+            return workspaceFileData;
+        });
+}
+
+function loadFiles(userData) {
+    return (dispatch) => {
+        loadMyFunctionFile(userData)
+            .then((myFunctionsFileData) => dispatch(setMyFunctionsFileData(myFunctionsFileData)));
+        loadWorkspaceFile(userData)
+            .then((workspaceFileData) => dispatch(setWorkspaceFileData(workspaceFileData)));
+    }
+}
+
 export function prepareEnvironment(userData) {
     return (dispatch) => {
         webSocket.openConnection(userData);
-        services.getFiles(userData)
-        .then((files) => {
-
-            var myFunctionsFileData = files.find((file) => file.nombre === MYFUNCTIONS_FILE_NAME);
-            if (myFunctionsFileData) {
-                dispatch(setMyFunctionsFileData(myFunctionsFileData));
-                myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData);
-            } else {
-                services.createFile(userData, MYFUNCTIONS_FILE_NAME)
-                .then(
-                    (myFunctionsFileData) => {
-                        dispatch(setMyFunctionsFileData(myFunctionsFileData))
-                    }
-                );
-            }
-
-            var workspaceFileData = files.find((file) => file.nombre === WORKSPACE_FILE_NAME);
-            if (workspaceFileData) {
-                dispatch(setWorkspaceFileData(workspaceFileData))
-            } else {
-                services.createFile(userData, WORKSPACE_FILE_NAME)
-                .then(
-                    (workspaceFileData) => {
-                        dispatch(setWorkspaceFileData(workspaceFileData))
-                    }
-                );
-            } 
-        });
+        loadFiles(userData)(dispatch);
     }
 }
 

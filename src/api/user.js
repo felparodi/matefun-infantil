@@ -26,7 +26,6 @@ function init() {
     const userDataJSON  = sessionStorage.getItem(USER_SESSION_STORAGE);
     if (userDataJSON) {
         const userData = JSON.parse(userDataJSON);
-        debugger;
         services.setAuthUser(userData);
         store.dispatch(action.login(userData));
     }
