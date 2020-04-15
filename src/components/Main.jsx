@@ -5,7 +5,7 @@ import Toolbox from './Toolbox'
 import Board from './Board'
 import Actions from './Actions';
 import Header from './Header';
-import { prepareEnvironment } from '../api/board';
+import { prepareEnvironment } from '../api/matefun';
 
 import './Main.scss';
 

@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import Consola from './Console';
-import { loadFunctionDefinition, evaluate, clean, saveInMyFunctions } from '../api/board';
+import { clean } from '../api/board';
+import { loadFunctionDefinition, evaluate, saveInMyFunctions } from '../api/matefun';
 
 const debugMode = localStorage.getItem('debug-mode') === 'true';
 

@@ -13,7 +13,7 @@ export const METHOD_FUNCTION = Object.freeze({
     SUB: 'SUB', //NATIVA "-" R x R -> R
     DIV: 'DIV', //NATIVA "/" R x R -> R
     EXP: 'EXP', //NATIVA "^"
-    RED: 'red ', // "red :: R -> R" Devuevle parte entera
+    RED: 'red ', // "red :: R -> R" Devuevle parte entera 
     RAIZ: 'raizcuad', // "raizcuad :: R -> R"
     COS: 'cos', // "cos :: R -> R"
     SEN: 'sen', // "sen :: R -> R"

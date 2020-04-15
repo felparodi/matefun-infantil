@@ -2,9 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { dropPipe, loadPendingBoard, startWork, endWork, addWorkingPipe, join} from '../api/board';
 import Cell from './Cell'
-import classNames from 'classnames';
 import './Board.scss';
-import { DIRECTION } from '../constants/constants';
 
 
 export class Board extends React.Component {
