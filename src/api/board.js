@@ -19,7 +19,7 @@ export function loadPendingBoard() {
     }
 }
 
-function matrixFromSnapshot(savedMatrix) {
+export function matrixFromSnapshot(savedMatrix) {
     var matrix = new MatrixPipe(savedMatrix.size.x, savedMatrix.size.y);
     const pipesBulk = savedMatrix.pipes.map((snapPipe) => ({
             pos: snapPipe.pos,

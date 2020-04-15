@@ -1,37 +1,49 @@
 //Aca la idea es tener los methodos mas propios de matefun
 import * as services from '../server_connection/services';
 import * as webSocket from '../server_connection/webSocket';
-import { setMateFunValue, getEvaluateFunction, getFunctionDefinition, getMatrixSnapshot } from './board';
+import * as snapHelper from '../classes/helpers/snapshot';
+import { setMateFunValue, getEvaluateFunction, matrixFromSnapshot, getFunctionDefinition, getMatrixSnapshot } from './board';
 import { WORKSPACE_FILE_NAME, MY_FUNCTIONS_FILE_NAME } from '../constants/constants';
 import { setEvalInstruction, setWorkspaceFunctionBody } from '../redux/matrix/matrixAction';
 import { setWorkspaceFileData, setMyFunctionsFileData, setMyFunctions } from '../redux/environment/environmentAction';
+import store from '../redux/store';
 
 const MY_FUNCTION_FILE_STORAGE = 'MY_FUNCTION_FILE_STORAGE';
 const WORKSPACE_FILE_STORAGE = 'WORKSPACE_FILE_STORAGE';
 
 export function loadFunctionDefinition(userData, workspaceFileData, myFunctionsFileData) {
     return (dispatch) => {
-        services.getFiles(userData).then(console.log)
         const functionDefinition = getFunctionDefinition();
         workspaceFileData.contenido = `incluir ${MY_FUNCTIONS_FILE_NAME}\n\n${functionDefinition.body}`;
-        services.editFile(workspaceFileData)
-        .then((data) => {
-            console.log(data);
-            dispatch(setWorkspaceFunctionBody({ body: data.contenido }));
-            dispatch(setWorkspaceFileData(data));
-            webSocket.loadFile(userData, workspaceFileData.id, myFunctionsFileData.id)
-        });
+        return services.editFile(workspaceFileData)
+            .then((data) => {
+                dispatch(setWorkspaceFunctionBody({ body: data.contenido }));
+                sessionStorage.setItem(WORKSPACE_FILE_STORAGE, JSON.stringify(data));
+                dispatch(setWorkspaceFileData(data));
+                return webSocket.loadFile(userData, workspaceFileData.id, myFunctionsFileData.id)
+            });
     }
 }
 
 export function evaluate(userData) {
     return (dispatch) => {
-        const instruction = getEvaluateFunction();
-        dispatch(setEvalInstruction(instruction));
-        webSocket.evalExpression(userData, instruction)
-        .then((messages) => {
-            setMateFunValue(messages)(dispatch);
-        })
+        const evalInst = getEvaluateFunction();
+        const { environment } = store.getState();
+        const { myFunctionsFileData } = environment;
+        let loadFilePromise;
+        if (evalInst.isFunction) {
+            const { workspaceFileData } = environment;
+            loadFilePromise = loadFunctionDefinition(userData, workspaceFileData, myFunctionsFileData)(dispatch);
+        } else {
+            loadFilePromise = webSocket.loadFile(userData, myFunctionsFileData.id);
+        }
+        loadFilePromise.then((message) => {
+            dispatch(setEvalInstruction(evalInst.command))
+            webSocket.evalExpression(userData, evalInst.command)
+            .then((messages) => {
+                setMateFunValue(messages)(dispatch);
+            })
+        });
     }
 }
 
@@ -141,7 +153,7 @@ function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
 
 export function saveInMyFunctions(userData, workspaceFileData, myFunctionsFileData) {
     return (dispatch) => {
-
+        debugger;
         var contenido= myFunctionsFileData.contenido;
 
         var metadata= contenido.match(/{-.*-}/g);
@@ -164,21 +176,10 @@ export function saveInMyFunctions(userData, workspaceFileData, myFunctionsFileDa
         
         myFunctionsFileData.contenido+= "\n\n" + newContent;
         
-        services.editFile(workspaceFileData)
-        .then(() => {
-            dispatch(setWorkspaceFunctionBody(functionDefinition));
-            dispatch(setWorkspaceFileData(workspaceFileData));
-
-            services.editFile(myFunctionsFileData)
-            .then(()=> {
-                dispatch(setMyFunctionsFileData(myFunctionsFileData));
-
-                webSocket.loadFile(userData, workspaceFileData.id, myFunctionsFileData.id); 
-                
-                myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData);
-
-                cleanAux(dispatch);        
+        services.editFile(myFunctionsFileData)
+            .then((data) => {
+                dispatch(setMyFunctionsFileData(data));
+                myFunctionsFileToToolboxPipes(dispatch, data);
             })
-        })
     }
 }

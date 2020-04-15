@@ -431,12 +431,16 @@ export class MatrixPipe {
     *   @scope: public
     */
     evaluateFunction(name=DEFAULT_FUNCTION_NAME) {
-        if(this.isFunction()) {
+        let command = "";
+        const isFunction = this.isFunction();
+        if(isFunction) {
             const varsPipes = this.getAllVars();
             const varValueList = varsPipes.map((pipe) => pipe.getValueEval());
-            return `${name}(${varValueList.join(', ')})`
+            command = `${name}(${varValueList.join(', ')})`;
+        } else {
+            command = this.processInstruction();
         }
-        return this.processInstruction();
+        return { isFunction, command };
     }
 
     /*
