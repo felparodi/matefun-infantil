@@ -11,6 +11,11 @@ import store from '../redux/store';
 const MY_FUNCTION_FILE_STORAGE = 'MY_FUNCTION_FILE_STORAGE';
 const WORKSPACE_FILE_STORAGE = 'WORKSPACE_FILE_STORAGE';
 
+function updateWorkspace(dispatch, data) {
+    dispatch(setWorkspaceFileData(data));
+    sessionStorage.setItem(WORKSPACE_FILE_STORAGE, JSON.stringify(data));
+}
+
 export function loadFunctionDefinition(userData, workspaceFileData, myFunctionsFileData) {
     return (dispatch) => {
         const functionDefinition = getFunctionDefinition();
@@ -18,8 +23,7 @@ export function loadFunctionDefinition(userData, workspaceFileData, myFunctionsF
         return services.editFile(workspaceFileData)
             .then((data) => {
                 dispatch(setWorkspaceFunctionBody({ body: data.contenido }));
-                sessionStorage.setItem(WORKSPACE_FILE_STORAGE, JSON.stringify(data));
-                dispatch(setWorkspaceFileData(data));
+                updateWorkspace(dispatch, data);
                 return webSocket.loadFile(userData, workspaceFileData.id, myFunctionsFileData.id)
             });
     }
@@ -66,7 +70,6 @@ function loadMyFunctionFile(userData) {
     }
     return findOrCreateFile(userData, MY_FUNCTIONS_FILE_NAME)
         .then((myFunctionsFileData) => {
-            sessionStorage.setItem(MY_FUNCTION_FILE_STORAGE, JSON.stringify(myFunctionsFileData));
             return myFunctionsFileData;
         });
 } 
@@ -79,17 +82,22 @@ function loadWorkspaceFile(userData) {
     }
     return findOrCreateFile(userData, WORKSPACE_FILE_NAME)
         .then((workspaceFileData) => {
-            sessionStorage.setItem(WORKSPACE_FILE_STORAGE, JSON.stringify(workspaceFileData));
             return workspaceFileData;
         });
+}
+
+function updateMyFunction(dispatch, data) {
+    dispatch(setMyFunctionsFileData(data));
+    sessionStorage.setItem(MY_FUNCTION_FILE_STORAGE, JSON.stringify(data));
+    myFunctionsFileToToolboxPipes(dispatch, data);
 }
 
 function loadFiles(userData) {
     return (dispatch) => {
         loadMyFunctionFile(userData)
-            .then((myFunctionsFileData) => dispatch(setMyFunctionsFileData(myFunctionsFileData)));
+            .then((data) => updateMyFunction(dispatch, data));
         loadWorkspaceFile(userData)
-            .then((workspaceFileData) => dispatch(setWorkspaceFileData(workspaceFileData)));
+            .then((data) => updateWorkspace(dispatch, data));
     }
 }
 
@@ -100,13 +108,18 @@ export function prepareEnvironment(userData) {
     }
 }
 
-function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
+const METADATA_REGEX = /{-.*-}/g;
+const COMMENT_REGEX = /{-.*-}/;
+const FUNCTION_SING_REGEX = /\s*(\w+)\s?::\s?(\w+)\s?->\s?(\w+)/g;
 
+function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
+    debugger;
     var contenido = myFunctionsFileData.contenido;
 
     //console.log(contenido);
 
-    var metadata= contenido.match(/{-.*-}/g);
+    var metadata= contenido.match(METADATA_REGEX);
+    var c = contenido.replace(COMMENT_REGEX, "").match(FUNCTION_SING_REGEX);
     //console.log(metadata);
 
     var functions= contenido.split(/{-.*-}\n/);
@@ -151,34 +164,29 @@ function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
     dispatch(setMyFunctions(mfFunctions));
 }
 
+function metadataSerialize(name, snapshot) {
+    var saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
+    var metadata = {
+        nombre: name,
+        snapshot: saveSnap
+    }
+    return `{-${JSON.stringify(metadata)}-}`;
+}
+
 export function saveInMyFunctions(userData, workspaceFileData, myFunctionsFileData) {
     return (dispatch) => {
-        debugger;
-        var contenido= myFunctionsFileData.contenido;
 
-        var metadata= contenido.match(/{-.*-}/g);
+        const contenido = myFunctionsFileData.contenido;
+        const metadata = contenido.match(METADATA_REGEX);
+        const name = "func" + (metadata ? metadata.length + 1 : 1);
+        const newMetadata = metadataSerialize(name, getMatrixSnapshot());
+        const functionDefinition = getFunctionDefinition(name);
         
-        var nombre= "func" + (metadata ? metadata.length+1 : 1);
-
-        var snapshot = getMatrixSnapshot();
-        var saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
-
-        var functionMetaData= {
-            nombre: nombre,
-            snapshot: saveSnap
-        }
-
-        const functionDefinition = getFunctionDefinition(nombre);
-
-        var newContent= "{-" + JSON.stringify(functionMetaData) + "-}\n" + functionDefinition.body + "\n";
-
-        workspaceFileData.contenido= '';
-        
-        myFunctionsFileData.contenido+= "\n\n" + newContent;
-        
+        myFunctionsFileData.contenido += `\n${newMetadata}\n${functionDefinition.body}\n`;;
+    
         services.editFile(myFunctionsFileData)
             .then((data) => {
-                dispatch(setMyFunctionsFileData(data));
+                updateMyFunction(dispatch, data);
                 myFunctionsFileToToolboxPipes(dispatch, data);
             })
     }
