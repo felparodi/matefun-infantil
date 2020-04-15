@@ -17,16 +17,7 @@ export class Actions extends React.Component {
         this.loadFunctionDefinition = this.loadFunctionDefinition.bind(this);
         this.evaluate = this.evaluate.bind(this);
         this.clean = this.clean.bind(this);
-        this.autodummy = this.autodummy.bind(this);
         this.saveInMyFunctions = this.saveInMyFunctions.bind(this);
-    }
-
-    autodummy() {
-        if(this.props.isWorking) {
-            this.props.endWork();
-        } else {
-            this.props.startWork();
-        }
     }
 
     loadFunctionDefinition() {
@@ -47,13 +38,13 @@ export class Actions extends React.Component {
 
     render() {
         const { openConsole } = this.state;
-        const { canProcess, isFunction, isWorking} = this.props;
+        const { canProcess, canSaveFunction } = this.props;
         return( 
             <div className="actions">
                 <div className="actions-button">
                     <Button variant="primary" onClick={this.clean}>Limpiar</Button>
                     <Button variant="primary" disabled={!canProcess} onClick={this.evaluate}>Evaluar</Button>
-                    <Button variant="primary" onClick={this.saveInMyFunctions}>Guardar en Mis funciones</Button>
+                    <Button variant="primary" disabled={!canSaveFunction} onClick={this.saveInMyFunctions}>Guardar en Mis funciones</Button>
                 { debugMode && <Button variant="primary" onClick={() => {this.setState({openConsole:!openConsole})}}>Consola</Button> }
                 </div>
                 { debugMode && <Consola openConsole={openConsole}/> }
@@ -65,18 +56,14 @@ export class Actions extends React.Component {
 
 const mapStateToProps = state => ({
     canProcess: state.matrix.canProcess,
-    isFunction: state.matrix.isFunction,
-    evalInstruction: state.matrix.evalInstruction,
-    workspaceFunction: state.matrix.workspaceFunction,
-    isWorking: state.matrix.isWorking,
-    resultEval: state.matrix.resultEval,
+    canSaveFunction: state.matrix.canSaveFunction,
     userData: state.user.userData,
     workspaceFileData: state.environment.workspaceFileData,
     myFunctionsFileData: state.environment.myFunctionsFileData,
 });
 
-const mapDispachFunction = {
+const mapDispatchFunction = {
     loadFunctionDefinition, evaluate, clean, saveInMyFunctions
 }
 
-export default connect(mapStateToProps, mapDispachFunction)(Actions);
+export default connect(mapStateToProps, mapDispatchFunction)(Actions);

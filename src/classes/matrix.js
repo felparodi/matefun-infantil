@@ -450,22 +450,24 @@ export class MatrixPipe {
     *   @scope: public
     */
     snapshot() {
-        let canProcess =  this.getEndPipes().length === 1;
+        let hasErorrs =  this.getEndPipes().length === 1;
         const snap = Array(this.maxX).fill([]).map(() => Array(this.maxY));
         for(let x = 0; x < this.maxX; x++) {
             for(let y = 0; y < this.maxY; y++) {
                 const pipe = this.value(x,y);
                 if (pipe) {
                     snap[x][y] = pipe.snapshot();
-                    canProcess = canProcess && !snap[x][y].errors
+                    hasErorrs = hasErorrs && !snap[x][y].errors
                 }
             }
         }
-        const canFuncEval = this.getAllVars().reduce((hasValue, pipe) => hasValue && pipe.getValue() !== undefined && pipe.getValue() !== null, true);
+        const vars = this.getAllVars();
+        const canFuncEval = vars.reduce((hasValue, pipe) => hasValue && pipe.getValue() !== undefined && pipe.getValue() !== null, true);
         const isFunction = this.isFunction();
-        canProcess = canProcess && (!isFunction || canFuncEval);
+        const canSaveFunction = isFunction &&  vars.length > 0;
+        const canProcess = hasErorrs && (!isFunction || (canFuncEval && canSaveFunction));
         console.log( { board:snap,  isFunction, canProcess });
-        return { board:snap,  isFunction, canProcess };
+        return { board:snap,  isFunction, canProcess, canSaveFunction };
     }
 
     /*

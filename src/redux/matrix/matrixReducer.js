@@ -8,6 +8,7 @@ export const initialState = {
     board: initBoardGrid,
     isFunction: false,
     canProcess: false,
+    canSaveFunction: false,
     workspaceFunction: '',
     evalInstruction: '',
     resultEval: '',
@@ -24,10 +25,7 @@ export default function matrixReducer(state = initialState, action) {
       const boardSnap = action.payload;
       return {
         ...state, 
-        board: boardSnap.board, 
-        isFunction: boardSnap.isFunction,
-        canProcess: boardSnap.canProcess,
-        isWorking: boardSnap.isWorking,
+        ...boardSnap
       };
     }
     case actionTypes.SET_EVAL_INSTRUCTION: {
