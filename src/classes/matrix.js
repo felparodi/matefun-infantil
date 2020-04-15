@@ -1,7 +1,8 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES, MATEFUN_TYPE } from '../constants/constants';
 import { invertDirection, directionMove } from './helpers/direction';
 import { getMateFunType } from './helpers/type';
-import { sortPipe, pipeDirValueType, matchPipeTypeDir } from './helpers/pipe';
+import { sortPipe, matchPipeTypeDir } from './helpers/pipe';
+import { isDefined } from './helpers/type'
 import { DummyPipe } from './pipes/dummyPipe';
 import { Context } from './context';
 import { BFS } from './BFSMatrix';
@@ -471,13 +472,14 @@ export class MatrixPipe {
                 }
             }
         }
+        
         const vars = this.getAllVars();
         const canFuncEval = vars.reduce((hasValue, pipe) => hasValue && pipe.getValue() !== undefined && pipe.getValue() !== null, true);
         const isFunction = this.isFunction();
-        const hasGeneric = vars.reduce((hasG, pipe) => hasG || pipe.getType() !== VALUES_TYPES.GENERIC, false);
+        const hasGeneric = vars.reduce((hasG, pipe) => hasG || !isDefined(pipe.getValueType()), false);
         const canSaveFunction = !hasError && isFunction &&  vars.length > 0 && vars.length <= 3 && !hasGeneric;
         const canProcess = !hasError && (!isFunction || (canFuncEval && canSaveFunction));
-        console.log( { board:snap,  isFunction, canProcess });
+        console.log( { board:snap,  isFunction, canProcess, canSaveFunction });
         return { board:snap,  isFunction, canProcess, canSaveFunction };
     }
 
