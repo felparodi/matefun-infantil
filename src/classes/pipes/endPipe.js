@@ -51,6 +51,7 @@ export class EndPipe extends Pipe {
                 this.addError('No machean tipos');
                 return;
             }
+            if (this.tempType === VALUES_TYPES.BOOLEAN) { this.addError('No puede haber Salidas Booleanas'); return; }
             //Post Process
             if(!this.errors && !pipeDirValueType(this)) {
                 context.unMark(this.getPos());

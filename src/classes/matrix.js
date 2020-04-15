@@ -305,6 +305,16 @@ export class MatrixPipe {
         //Con dos veces se calcula mejor porque siemrpoe queda algo suelto, ver mejor la algorimia
         const context2 = new Context(this.maxX, this.maxY);
         this.getAllPipes().sort(sortPipe).forEach(p => p.calc(context2, this));
+        //Error en caso de mas de un end pipe
+        const endPipes = this.getEndPipes();
+        if(endPipes.length > 1) {
+            endPipes.forEach((endPipe) => endPipe.addError('Hay mas de una salida'))
+        }
+        //Error en caso de mas de 3 var pipe
+        const varPipes = this.getAllVars();
+        if(varPipes.length > 3) {
+            varPipes.forEach((varPipe) => varPipe.addError('Hay mas de 3 variables'))
+        }
     }
 
     /*
@@ -450,22 +460,23 @@ export class MatrixPipe {
     *   @scope: public
     */
     snapshot() {
-        let hasErorrs =  this.getEndPipes().length === 1;
+        let hasError =  this.getEndPipes().length !== 1;
         const snap = Array(this.maxX).fill([]).map(() => Array(this.maxY));
         for(let x = 0; x < this.maxX; x++) {
             for(let y = 0; y < this.maxY; y++) {
                 const pipe = this.value(x,y);
                 if (pipe) {
                     snap[x][y] = pipe.snapshot();
-                    hasErorrs = hasErorrs && !snap[x][y].errors
+                    hasError = hasError || !!snap[x][y].errors
                 }
             }
         }
         const vars = this.getAllVars();
         const canFuncEval = vars.reduce((hasValue, pipe) => hasValue && pipe.getValue() !== undefined && pipe.getValue() !== null, true);
         const isFunction = this.isFunction();
-        const canSaveFunction = isFunction &&  vars.length > 0;
-        const canProcess = hasErorrs && (!isFunction || (canFuncEval && canSaveFunction));
+        const hasGeneric = vars.reduce((hasG, pipe) => hasG || pipe.getType() !== VALUES_TYPES.GENERIC, false);
+        const canSaveFunction = !hasError && isFunction &&  vars.length > 0 && vars.length <= 3 && !hasGeneric;
+        const canProcess = !hasError && (!isFunction || (canFuncEval && canSaveFunction));
         console.log( { board:snap,  isFunction, canProcess });
         return { board:snap,  isFunction, canProcess, canSaveFunction };
     }

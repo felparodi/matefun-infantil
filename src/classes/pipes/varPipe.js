@@ -86,7 +86,7 @@ export class VarPipe extends Pipe {
             if (status.error) { this.addError(status.error); return; }
             if (status.warning) { this.addWarning(status.warning); }
             if (status.valid) { this.tempType = status.type; }
-        
+            if (this.tempType === VALUES_TYPES.BOOLEAN) { this.addError('No puede haber variables Booleanas'); return; }
             if(!this.errors && !pipeTypeDefined(this)) {
                 context.unMark(this.getPos());
             }
