@@ -17,33 +17,12 @@ const textPrint = (text) => {
 }
 
 const TextIcon = ({text, onClick, onDoubleClick}) => {
-    const [timer, setTimer] = useState(null);
-    const handlerClick = (event) => {
-        if(timer) return;
-        console.log('handlerOnClick')
-        if(onDoubleClick && onClick) {
-            setTimer(setTimeout(() => {
-                setTimer(null);
-                onClick(event);
-            }, 300));
-        } else if(onClick) {
-            onClick(event);
-        }
-    } 
-    const handlerDobublClick = (event) => {
-        console.log('handlerDobublClick')
-        if(timer) {
-            clearTimeout(timer);
-            setTimer(null);
-        }
-        onDoubleClick && onDoubleClick(event)
-    } 
     return (
         <text x="50%" y="45%" 
             dominantBaseline="central" 
             textAnchor="middle" 
-            onClick={handlerClick}
-            onDoubleClick={handlerDobublClick}
+            onClick={onClick}
+            onDoubleClick={onDoubleClick}
             fontSize={fontSize(text)} 
             fill='white'>
             { textPrint(text) }

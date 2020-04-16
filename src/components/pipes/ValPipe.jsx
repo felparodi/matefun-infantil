@@ -57,7 +57,7 @@ export class ValPipe extends React.Component {
                         !edit && 
                         <ValueInfo 
                             type={type}
-                            onClick={this.onClickValue} 
+                            onClick={this.onClickValue}
                             text={pipe.valueText}/>
                     }
                 </svg>
