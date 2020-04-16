@@ -1,0 +1,21 @@
+.SetValue {
+    display: flex !important;
+    .modal-dialog {
+        min-width: 70vh;
+        margin: auto;
+        .modal-content {
+            padding: 1rem;
+        }
+    }
+    .value-input {
+        text-align: center;
+        &.point {
+            display: flex;
+            padding: 0;
+            .number {
+                text-align: center;
+                min-width: 50%;
+            }
+        }
+    }
+}

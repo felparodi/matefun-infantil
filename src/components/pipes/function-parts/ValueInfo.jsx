@@ -26,14 +26,14 @@ const ValueInfo = ({onClick, onDoubleClick, text, type}) => {
             setTimer(setTimeout(() => {
                 setTimer(null);
                 onClick(event);
-            }, 300));
+            }, 200));
         } else if(onClick) {
             onClick(event);
         }
     } 
     const handlerDoubleClick = (event) => {
-        console.log('handlerDobublClick')
-        if(timer) {
+        console.log('handlerDoubleClick')
+        if (timer) {
             clearTimeout(timer);
             setTimer(null);
         }

@@ -4,6 +4,7 @@ import {isDefined} from '../../classes/helpers/type';
 import { setPipeValue, joinOutput, isEqualJoin } from '../../api/board';
 import './ValPipe.scss';
 import { DIRECTION } from '../../constants/constants';
+import SetValueModal from '../modal/SetValue'
 import ValueInfo from './function-parts/ValueInfo';
 import Output from './function-parts/Output';
 import ValueInput from './function-parts/ValueInput';
@@ -13,11 +14,14 @@ export class ValPipe extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            edit: false
+            edit: false,
+            editModal: false,
         }
         this.leaveEditing = this.leaveEditing.bind(this);
         this.joinOutput = this.joinOutput.bind(this);
         this.onClickValue = this.onClickValue.bind(this);
+        this.handlerDoubleClick = this.handlerDoubleClick.bind(this);
+        this.handlerHideModal = this.handlerHideModal.bind(this);
     }
 
     joinOutput() {
@@ -39,12 +43,27 @@ export class ValPipe extends React.Component {
             this.setState({edit:true})
         }
     }
-    
+
+    handlerDoubleClick() {
+        const {origin, pipe} = this.props;
+        if(origin !== "toolbox" && isDefined(pipe.dir.bottom)) {
+            this.setState({ editModal:true })
+        }
+    }
+
+    handlerHideModal(value) {
+        this.setState({ editModal: false });
+        if(value !== undefined) {
+            const { pipe } = this.props;
+            this.props.setPipeValue(pipe.pos.x, pipe.pos.y, value);
+        }
+    }
+
     render() {
-        const { pipe, origin, startJoin } = this.props;
-        const {edit} = this.state;
+        const { pipe, startJoin } = this.props;
+        const { edit, editModal} = this.state;
         const isSelectJoin = pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.BOTTOM} , startJoin);
-        const type = pipe.dir.bottom
+        const type = pipe.dir.bottom;
         return (
             <div className="ValPipe">
                 <svg viewBox="0 0 40 40">
@@ -58,10 +77,12 @@ export class ValPipe extends React.Component {
                         <ValueInfo 
                             type={type}
                             onClick={this.onClickValue}
+                            onDoubleClick={this.handlerDoubleClick}
                             text={pipe.valueText}/>
                     }
                 </svg>
                 { edit && <ValueInput value={pipe.value} onBlur={this.leaveEditing} type={type}/> }
+                <SetValueModal show={editModal} type={type} value={pipe.value} onHide={this.handlerHideModal}/>
             </div>
         )
     }
