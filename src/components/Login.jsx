@@ -2,21 +2,31 @@ import React from 'react';
 import { Container, Row, Button, Card, Form } from 'react-bootstrap';
 import { connect } from 'react-redux'
 
-import { loginInvitado } from '../api/user'
+import { login } from '../api/user'
 
 export class Login extends React.Component {
 
     constructor() {
         super();
-
+        this.state = {
+            username: '',
+            password: '',
+        }
         this.loginInvitado = this.loginInvitado.bind(this);
+        this.login = this.login.bind(this);
     }
 
     loginInvitado() {
-        this.props.loginInvitado();
+        this.props.login("invitado", "invitado");
+    }
+
+    login() {
+        const { username, password } = this.state;
+        this.props.login(username, password);
     }
 
     render() {
+        const { username, password } = this.state;
         return (
             <div>
                 <Container>
@@ -26,17 +36,18 @@ export class Login extends React.Component {
                             <Form>
                                 <Form.Group controlId="formBasicEmail">
                                     <Form.Label style={{ color: "white" }}>Usuario</Form.Label>
-                                    <Form.Control type="email" placeholder="Ingrese usuario" />
+                                    <Form.Control onChange={(e) => this.setState({username: e.target.value})} value={username} type="email" placeholder="Ingrese usuario" />
                                 </Form.Group>
 
                                 <Form.Group controlId="formBasicPassword">
                                     <Form.Label style={{ color: "white" }}>Contraseña</Form.Label>
-                                    <Form.Control type="password" placeholder="Ingrese contraseña" />
+                                    <Form.Control onChange={(e) => this.setState({password: e.target.value})} value={password} type="password" placeholder="Ingrese contraseña" />
                                 </Form.Group>
 
                                 <Row>
                                     <div style={{ margin: "0 auto", marginTop: "30px", marginBottom: "30px" }}>
-                                        <Button variant="primary" size="lg" type="button" style={{ borderColor: "white" }}>
+                                        <Button variant="primary" size="lg" type="button" style={{ borderColor: "white" }} 
+                                            onClick={this.login}>
                                             Iniciar sesión
                                         </Button>
                                         <Button variant="primary" size="lg" type="button" style={{ borderColor: "white", marginLeft: "30px" }}
@@ -55,7 +66,7 @@ export class Login extends React.Component {
 }
 
 const mapDispatchToProps = {
-    loginInvitado
+    login
 }
 
 export default connect(null, mapDispatchToProps)(Login);

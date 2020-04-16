@@ -7,6 +7,25 @@ import { Modal } from 'react-bootstrap';
 
 import './SetValue.scss';
 
+function valueToColor(value) {
+    if(value) {
+        switch(value.color) {
+            case 'Rojo':
+                return 'rgb(255,0,0)';
+            case 'Verde':
+                return 'rgb(0,255,0)';
+            case 'Azul': 
+                return 'rgb(0,0, 255)';
+            case 'Negro': 
+                return 'rgb(0,0,0)';
+            default:
+                return value.color;
+        }
+    } else {
+        return 'rgb(0,0,0)';
+    }
+}
+
 export const SetValue = (props) => {
     const { value, type} = props;
     const [temValue, setTempValue] = useState(value);
@@ -19,7 +38,7 @@ export const SetValue = (props) => {
             {type !== VALUES_TYPES.COLOR && <ValueInput value={value} type={type} onBlur={setTempValue}/> }
             {type === VALUES_TYPES.COLOR && 
                 <SketchPicker disableAlpha={true} 
-                    color={temValue ? temValue.color : ''} 
+                    color={valueToColor(temValue)} 
                     onChange={(color) => setTempValue({color: `rgb(${color.rgb.r},${color.rgb.g},${color.rgb.b})`})}/>
             }
         </Modal>

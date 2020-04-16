@@ -82,7 +82,7 @@ export class ValPipe extends React.Component {
                     }
                 </svg>
                 { edit && <ValueInput value={pipe.value} onBlur={this.leaveEditing} type={type}/> }
-                <SetValueModal show={editModal} type={type} value={pipe.value} onHide={this.handlerHideModal}/>
+                { editModal && <SetValueModal show={true} type={type} value={pipe.value} onHide={this.handlerHideModal}/> }
             </div>
         )
     }

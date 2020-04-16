@@ -42,7 +42,7 @@ export class Toolbox extends React.Component {
             var pipeToolsGroup = this.state.pipeToolsGroup;
             var toolbarCustom = pipeToolsGroup.find((toolbar) => toolbar.value === 'custom');
             toolbarCustom.pipes = this.props.myFunctions.map(func => func.pipe.snapshot());
-            this.setState({ pipeToolsGroup: pipeToolsGroup });
+            this.setState({ pipeToolsGroup: [...pipeToolsGroup] });
         }
     }
 

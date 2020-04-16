@@ -4,9 +4,9 @@ import store from '../redux/store';
 
 const USER_SESSION_STORAGE = 'USER_SESSION_STORAGE';
 
-export function loginInvitado() {
+export function login(username, password) {
     return (dispatch) => {
-        services.login("invitado", "invitado")
+        services.login(username, password)
         .then((userData)=> {
             sessionStorage.setItem(USER_SESSION_STORAGE, JSON.stringify(userData));
             dispatch(action.login(userData));

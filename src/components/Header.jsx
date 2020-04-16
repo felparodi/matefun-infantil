@@ -18,6 +18,9 @@ export class Header extends React.Component {
                 <Nav className="mr-auto"></Nav>
 
                 <DropdownButton alignRight id="dropdown-basic-button" title={(this.props.userData) ? this.props.userData.nombre + " " + this.props.userData.apellido : ""}>
+                    <Dropdown.Item>Aumentar Complejidad</Dropdown.Item>
+                    <Dropdown.Item>Disminuir Complejidad</Dropdown.Item>
+                    <Dropdown.Item>Borrar Funciones Custom</Dropdown.Item>
                     <Dropdown.Item onClick={this.props.logout}>Cerrar sesión</Dropdown.Item>
                 </DropdownButton>
 

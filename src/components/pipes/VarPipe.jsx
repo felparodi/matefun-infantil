@@ -69,7 +69,7 @@ export class VarPipe extends React.Component {
     constructor() {
         super();
         this.state = {
-            editingValue: true,
+            editingValue: false,
             editModal: false,
         }
         this.leaveEditing = this.leaveEditing.bind(this);
@@ -136,7 +136,7 @@ export class VarPipe extends React.Component {
         if (pipe.value || isOpen) {
             return (
                 <div className="VarPipe">
-                    <SetValueModal show={editModal} onHide={this.handlerHideModal} value={pipe.value} type={pipe.dir.bottom}/> 
+                    { editModal && <SetValueModal show={true} onHide={this.handlerHideModal} value={pipe.value} type={pipe.dir.bottom}/> }
                     { editingValue && <ValueInput value={pipe.value} type={pipe.dir.bottom} onBlur={this.leaveEditing}/> }
                     <DoorOpen pipe={pipe}
                         startJoin={startJoin}
