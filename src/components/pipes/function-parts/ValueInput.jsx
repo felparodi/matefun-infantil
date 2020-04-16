@@ -32,7 +32,7 @@ export const ValueInputNumber = ({value, onBlur}) => {
 }
 
 export const ValueInputColor = ({value, onBlur}) => {
-    const colorStyle = colorByColorValue(value.color);
+    const colorStyle = value ? colorByColorValue(value.color) : 'black';
     return (
         <div className="value-input color">
             <Crallon style={{fill: colorStyle}}/>

@@ -16,14 +16,14 @@ const OutPutValue = ({pipe}) => {
     const type = dir.top;
     if(hasValueError) {
         return <Error/>;
+    } else if(value && (type === VALUES_TYPES.FIGURE || type === VALUES_TYPES.list(VALUES_TYPES.FIGURE)) ) {
+        return <Image/>;
     } else if(valueText) {
          if(valueText.length <= TEXT_LENGTH) {
             return <TextIcon text={valueText}/>;
          } else {
             return <Lupa/>;
          }
-    } else if(value && (type === VALUES_TYPES.FIGURE || type === VALUES_TYPES.list(VALUES_TYPES.FIGURE)) ) {
-        return <Image/>;
     }
     return null;
 }

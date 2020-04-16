@@ -1,14 +1,15 @@
 import React from 'react';
-import { Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import { typeToClass } from '../../classes/helpers/type';
+import { typeToClass, isDefined } from '../../classes/helpers/type';
 import { setPipeValue, joinOutput, isEqualJoin } from '../../api/board';
+import SetValueModal from '../modal/SetValue';
 import Output from './function-parts/Output';
 import ValueInfo from './function-parts/ValueInfo';
 import ValueInput, {hasInputValue} from './function-parts/ValueInput';
 import { DIRECTION } from '../../constants/constants';
 import './ValPipe.scss';
+
 
 const JoinOutput = (props) => (
     <g className={props.className}>
@@ -18,7 +19,7 @@ const JoinOutput = (props) => (
     </g>
 );
 
-const DoorOpen1 = ({onClick}) => (
+const DoorsOpen = ({onClick}) => (
     <g>
         <path onClick={onClick} d="M 5 5 L 0 10 L 0 35 L 5 30 Z" style={{'fill': 'saddlebrown', 'stroke': 'black', 'strokeWidth': 0.3 }}/>
         <path d="M 5 5 L 5 30 L 35 30 L 35 5 Z" style={{'fill': '#000000d6', 'stroke': 'black', 'strokeWidth': 0.3 }}/>
@@ -27,34 +28,20 @@ const DoorOpen1 = ({onClick}) => (
 )
 
 export const DoorOpen = (props) => { 
-    const { pipe, onClickDoor, onClickValue, onClickOutput, startJoin } = props;
+    const { pipe, onClickDoor, onClickValue, onDoubleClickValue, onClickOutput, startJoin } = props;
     const isSelectJoin = pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.BOTTOM} , startJoin)
     const type = pipe.dir.bottom;
     return (
         <svg viewBox="0 0 40 40">
             <JoinOutput className={classNames(typeToClass(type), {'join':isSelectJoin})}/>
-            <DoorOpen1 onClick={onClickDoor}/>
-            <ValueInfo onClick={onClickValue} text={pipe.valueText} type={type}/>
+            <DoorsOpen onClick={onClickDoor}/>
+            <ValueInfo onClick={onClickValue} onDoubleClick={onDoubleClickValue} text={pipe.valueText} type={type}/>
             <Output onClick={onClickOutput} join={isSelectJoin} type={type}></Output>
         </svg>
     );
 }
 
-//TODO USAR
-export const Door = ({pipe, onClickDoor, onClickValue, onClickOutput, startJoin, open}) => {
-    const isSelectJoin = pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.BOTTOM} , startJoin);
-    const type = pipe.dir.bottom;
-    return (
-        <svg viewBox="0 0 40 40">
-            <JoinOutput className={classNames(typeToClass(type), {'join':isSelectJoin})}/>
-            { open ? <DoorOpen1 onClick={onClickDoor}/> : <DoorClosed1 onClick={onClickDoor}/> }
-            { open && <ValueInfo onClick={onClickValue} text={pipe.valueText} type={type}/>}
-            <Output onClick={onClickOutput} join={isSelectJoin} type={type}></Output>
-        </svg>
-    );
-}
-
-const DoorClosed1 = ({onClick}) => (
+const DoorsClosed = ({onClick}) => (
     <g  onClick={onClick} >
         <path id="p1" d="M 5 5 L 5 30 L 35 30 L 35 5 Z" style={
             {'fill': 'saddlebrown', 'stroke': 'black', 'strokeWidth': 0.3}}/>      
@@ -71,7 +58,7 @@ export const DoorClosed = (props) => {
     return (
         <svg viewBox="0 0 40 40">
             <JoinOutput className={classNames(typeToClass(pipe.dir.bottom), {'join':isSelectJoin})}/>
-            <DoorClosed1 onClick={onClickDoor}/>
+            <DoorsClosed onClick={onClickDoor}/>
             <Output onClick={onClickOutput} join={isSelectJoin} type={pipe.dir.bottom}></Output>
         </svg>
     );
@@ -83,12 +70,15 @@ export class VarPipe extends React.Component {
         super();
         this.state = {
             editingValue: true,
+            editModal: false,
         }
         this.leaveEditing = this.leaveEditing.bind(this);
         this.setDoorState = this.setDoorState.bind(this);
         this.setEditingValue = this.setEditingValue.bind(this);
         this.joinOutput = this.joinOutput.bind(this);
         this.openDoor = this.openDoor.bind(this);
+        this.handlerDoubleClickValue = this.handlerDoubleClickValue.bind(this);
+        this.handlerHideModal = this.handlerHideModal.bind(this);
     }
 
     openDoor() {
@@ -124,17 +114,35 @@ export class VarPipe extends React.Component {
         this.setState({ editingValue: value });
     }
 
+    handlerDoubleClickValue() {
+        const {origin, pipe} = this.props;
+        if(origin !== "toolbox" && isDefined(pipe.dir.bottom)) {
+            this.setState({ editModal:true })
+        }
+    }
+
+    handlerHideModal(value) {
+        this.setState({ editModal: false });
+        if(value !== undefined) {
+            const { pipe } = this.props;
+            this.props.setPipeValue(pipe.pos.x, pipe.pos.y, value);
+        }
+    }
+
+
     render() {
-        const { isOpen, editingValue  } = this.state;
-        const { pipe, origin, startJoin } = this.props;
+        const { isOpen, editingValue, editModal } = this.state;
+        const { pipe, startJoin } = this.props;
         if (pipe.value || isOpen) {
             return (
                 <div className="VarPipe">
+                    <SetValueModal show={editModal} onHide={this.handlerHideModal} value={pipe.value} type={pipe.dir.bottom}/> 
                     { editingValue && <ValueInput value={pipe.value} type={pipe.dir.bottom} onBlur={this.leaveEditing}/> }
                     <DoorOpen pipe={pipe}
                         startJoin={startJoin}
                         onClickOutput={this.joinOutput}
                         onClickValue={() => this.setEditingValue(true)} 
+                        onDoubleClickValue={this.handlerDoubleClickValue}
                         onClickDoor={() => this.setDoorState(false)}/>
                 </div>
             )

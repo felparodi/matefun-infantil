@@ -13,6 +13,8 @@ export function colorByColorValue(value) {
             return 'red';
         case 'Verde':
             return 'green';
+        default:
+            return value
     }
 }
 //TODO Agrear Mas Variantes para COLOR u otros

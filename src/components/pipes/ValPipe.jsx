@@ -4,7 +4,7 @@ import {isDefined} from '../../classes/helpers/type';
 import { setPipeValue, joinOutput, isEqualJoin } from '../../api/board';
 import './ValPipe.scss';
 import { DIRECTION } from '../../constants/constants';
-import SetValueModal from '../modal/SetValue'
+import SetValueModal from '../modal/SetValue';
 import ValueInfo from './function-parts/ValueInfo';
 import Output from './function-parts/Output';
 import ValueInput from './function-parts/ValueInput';

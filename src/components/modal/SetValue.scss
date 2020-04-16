@@ -1,5 +1,34 @@
 .SetValue {
     display: flex !important;
+    &.color {
+        .modal-dialog {
+            min-width: 0;
+            .modal-content {
+                padding: 0;
+                .sketch-picker {
+                    > div:nth-child(3) {
+                        > div:first-child {
+                            display: none;
+                        }
+                        > div {
+                            padding-left: 0 !important;
+                            padding-right: 0.2rem;
+                            > div {
+                            display: flex;
+                            padding-bottom: 0.2rem;
+                            span {
+                                padding-left: 0.5rem;
+                            }
+                        }
+                        }
+                    }
+                    input {
+                        text-align: center;
+                    }
+                }
+            }
+        } 
+    }
     .modal-dialog {
         min-width: 70vh;
         margin: auto;
