@@ -113,7 +113,7 @@ const COMMENT_REGEX = /{-.*-}/;
 const FUNCTION_SING_REGEX = /\s*(\w+)\s?::\s?(\w+)\s?->\s?(\w+)/g;
 
 function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
-    debugger;
+
     var contenido = myFunctionsFileData.contenido;
 
     //console.log(contenido);
@@ -183,7 +183,7 @@ export function saveInMyFunctions(userData, workspaceFileData, myFunctionsFileDa
         const functionDefinition = getFunctionDefinition(name);
         
         myFunctionsFileData.contenido += `\n${newMetadata}\n${functionDefinition.body}\n`;;
-    
+        
         services.editFile(myFunctionsFileData)
             .then((data) => {
                 updateMyFunction(dispatch, data);

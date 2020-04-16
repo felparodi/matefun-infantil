@@ -3,18 +3,16 @@ import {VALUES_TYPES, } from '../../../constants/constants';
 import TextIcon from './TextIcon';
 import Crallon from '../../../icons/crallon.svg';
 
-function testToColor(text) {
-    switch(text) {
-        case "Rojo":
-            return 'red';
-        case "Verde":
-            return 'green'
-        case "Azul":
-            return 'blue';
-        case "Negro":
+export function colorByColorValue(value) {
+    switch(value) {
+        case 'Negro':
             return 'black';
-        default:
-            return text;
+        case 'Azul':
+            return 'blue';
+        case 'Rojo':
+            return 'red';
+        case 'Verde':
+            return 'green';
     }
 }
 //TODO Agrear Mas Variantes para COLOR u otros
@@ -22,7 +20,7 @@ function testToColor(text) {
 const ValueInfo = ({onClick, text, type}) => {
     switch(type) {
         case VALUES_TYPES.COLOR:
-            return <Crallon onClick={onClick} style={{fill: testToColor(text)}}/>;
+            return <Crallon onClick={onClick} style={{fill: colorByColorValue(text)}}/>;
         default:
             return <TextIcon onClick={onClick} text={text}/>;
     }

@@ -2,10 +2,12 @@
     height:100%; 
     width:100%;
     position: relative;
-    .form-control {
+    .value-input {
         position: absolute;
         height: 40%;
         top: 30%;
+        left: 5%;
+        width: 90%;
         &[type=number] {
             text-align: center;
         }
@@ -14,7 +16,42 @@
             padding: 0;
             .number {
                 min-width: 50%;
-             
+            }
+        }
+        &.color {
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            .color-options {
+                position: absolute;
+                background-color: rgba(255,255,255,0.6);
+                border: solid 1px;
+                border-radius: 3px;
+                height: 120%;
+                width: 120%;
+                top: -10%;
+                left: -10%;
+                display: grid ;
+                grid-template-columns:  auto  auto;
+                grid-template-rows:  auto  auto;
+                .option {
+                    margin: 10%;
+                    border: solid 1px;
+                    border-radius: 3px;
+                    &.blue {
+                        background-color: blue;
+                    }
+                    &.red {
+                        background-color: red;
+                    }
+                    &.green {
+                        background-color: green;
+                    }
+                    &.black {
+                        background-color: black;
+                    }
+                }
             }
         }
     }

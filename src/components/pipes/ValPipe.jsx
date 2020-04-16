@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {isDefined} from '../../classes/helpers/type';
 import { setPipeValue, joinOutput, isEqualJoin } from '../../api/board';
 import './ValPipe.scss';
-import {  VALUES_TYPES, DIRECTION } from '../../constants/constants';
+import { DIRECTION } from '../../constants/constants';
 import ValueInfo from './function-parts/ValueInfo';
 import Output from './function-parts/Output';
 import ValueInput from './function-parts/ValueInput';
