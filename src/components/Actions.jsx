@@ -33,7 +33,7 @@ export class Actions extends React.Component {
     }
 
     saveInMyFunctions() {
-        this.props.saveInMyFunctions(this.props.userData, this.props.workspaceFileData, this.props.myFunctionsFileData);
+        this.props.saveInMyFunctions();
     }
 
     render() {

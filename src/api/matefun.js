@@ -7,13 +7,10 @@ import { WORKSPACE_FILE_NAME, MY_FUNCTIONS_FILE_NAME } from '../constants/consta
 import { setEvalInstruction, setWorkspaceFunctionBody } from '../redux/matrix/matrixAction';
 import { setWorkspaceFileData, setMyFunctionsFileData, setMyFunctions } from '../redux/environment/environmentAction';
 import store from '../redux/store';
-
-const MY_FUNCTION_FILE_STORAGE = 'MY_FUNCTION_FILE_STORAGE';
-const WORKSPACE_FILE_STORAGE = 'WORKSPACE_FILE_STORAGE';
+import * as tost from './toast';
 
 function updateWorkspace(dispatch, data) {
     dispatch(setWorkspaceFileData(data));
-    sessionStorage.setItem(WORKSPACE_FILE_STORAGE, JSON.stringify(data));
 }
 
 export function loadFunctionDefinition(userData, workspaceFileData, myFunctionsFileData) {
@@ -58,16 +55,13 @@ function findOrCreateFile(userData, name) {
             if (file) {
                 return Promise.resolve(file);
             } else {
-                return services.createFile(userData, name);
+                const root = files.find((file) => file.nombre === 'root');
+                return services.createFile(userData, name, root.id);
             }
         });
 }
 
 function loadMyFunctionFile(userData) {
-    const myFunctionsFileDataJSON = sessionStorage.getItem(MY_FUNCTION_FILE_STORAGE);
-    if(myFunctionsFileDataJSON) {
-        return Promise.resolve(JSON.parse(myFunctionsFileDataJSON));
-    }
     return findOrCreateFile(userData, MY_FUNCTIONS_FILE_NAME)
         .then((myFunctionsFileData) => {
             return myFunctionsFileData;
@@ -76,10 +70,6 @@ function loadMyFunctionFile(userData) {
 
 
 function loadWorkspaceFile(userData) {
-    const workspaceFileDataJSON = sessionStorage.getItem(WORKSPACE_FILE_STORAGE);
-    if(workspaceFileDataJSON) {
-        return Promise.resolve(JSON.parse(workspaceFileDataJSON));
-    }
     return findOrCreateFile(userData, WORKSPACE_FILE_NAME)
         .then((workspaceFileData) => {
             return workspaceFileData;
@@ -88,7 +78,6 @@ function loadWorkspaceFile(userData) {
 
 function updateMyFunction(dispatch, data) {
     dispatch(setMyFunctionsFileData(data));
-    sessionStorage.setItem(MY_FUNCTION_FILE_STORAGE, JSON.stringify(data));
     myFunctionsFileToToolboxPipes(dispatch, data);
 }
 
@@ -173,21 +162,54 @@ function metadataSerialize(name, snapshot) {
     return `{-${JSON.stringify(metadata)}-}`;
 }
 
-export function saveInMyFunctions(userData, workspaceFileData, myFunctionsFileData) {
+export function cleanMyFunctions() {
     return (dispatch) => {
-
-        const contenido = myFunctionsFileData.contenido;
-        const metadata = contenido.match(METADATA_REGEX);
-        const name = "func" + (metadata ? metadata.length + 1 : 1);
-        const newMetadata = metadataSerialize(name, getMatrixSnapshot());
-        const functionDefinition = getFunctionDefinition(name);
-        
-        myFunctionsFileData.contenido += `\n${newMetadata}\n${functionDefinition.body}\n`;;
-        
-        services.editFile(myFunctionsFileData)
+        const state = store.getState();
+        const myFunctionsFileData = state.environment.myFunctionsFileData;
+        const cleanMyFunctionsFileData = { ...myFunctionsFileData, contenido: '' }
+        services.editFile(cleanMyFunctionsFileData)
             .then((data) => {
                 updateMyFunction(dispatch, data);
                 myFunctionsFileToToolboxPipes(dispatch, data);
             })
+    }
+}
+
+function newFunctionBlock(name) {
+    const functionMetadata = metadataSerialize(name, getMatrixSnapshot());
+    const functionDefinition = getFunctionDefinition(name);
+    return `${functionMetadata}\n${functionDefinition.body}\n`;
+}
+
+export function saveInMyFunctions(name) {
+    return (dispatch) => {
+        const { myFunctionsFileData } = store.getState().environment
+        const newMyFunctionFileData = {...myFunctionsFileData };
+        const contenido = myFunctionsFileData.contenido;
+        const metadata = contenido.match(METADATA_REGEX);
+        const funcName = name ? name : `func${metadata ? metadata.length + 1 : 1}`;
+        const myFunctionBlock = newFunctionBlock(funcName);
+        newMyFunctionFileData.contenido = `${contenido}\n${myFunctionBlock}`;
+        
+        services.editFile(newMyFunctionFileData)
+            .then((data) => {
+                const { userData } = store.getState().user;
+                return webSocket.loadFile(userData, data.id)
+                    .then((messages) => {
+                        if(messages.find((message) => message.resultado.startsWith('OUTError:'))) {
+                            console.error(messages)
+                            tost.createErrorMessage('Se no se pudo crear la nueva funcion, revice las piesas con fondo amarillo', funcName)
+                            return services.editFile(myFunctionsFileData);
+                        } else {
+                            tost.createSuccessMessage('Se creo con extito la nueva funcion', funcName)
+                            return data
+                        }
+                    })
+            })
+            .then((data) => {
+                updateMyFunction(dispatch, data);
+                myFunctionsFileToToolboxPipes(dispatch, data);
+            })
+            
     }
 }

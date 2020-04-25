@@ -219,7 +219,7 @@ export class Pipe {
     toCodeArg() {
         const parentPipe = this.getChildrens();
         const arg = parentPipe
-            .map((dirPipe) => dirPipe.pipe !== null ? dirPipe.pipe.toCode() : null)
+            .map((dirPipe) => dirPipe.pipe ? dirPipe.pipe.toCode() : null)
         return arg.map(e => e !== null ? e : '?')
     }
 

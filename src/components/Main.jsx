@@ -8,6 +8,7 @@ import Header from './Header';
 import { prepareEnvironment } from '../api/matefun';
 
 import './Main.scss';
+import Configuration from './modal/Configuration';
 
 export class Main extends React.Component {
     constructor() {
@@ -15,9 +16,7 @@ export class Main extends React.Component {
     }
 
     componentDidMount() {
-
         var userData = this.props.userData;
-
         this.props.prepareEnvironment(userData);
     }
 
@@ -36,6 +35,7 @@ export class Main extends React.Component {
                     </div>
                     <Actions />
                 </div>
+                <Configuration/>
             </div>
         )
     }

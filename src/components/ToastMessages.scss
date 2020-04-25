@@ -1,0 +1,17 @@
+.ToastMessages {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    .fade.toast {
+        height: 0;
+        transition: height 0.1s, margin 0.1s;
+        transition-timing-function: linear;
+        margin-bottom: 0;
+    }
+    .fade.toast.show {
+        height: max-content;
+    }
+    .fade.toast.show:not(:last-child) {
+        margin-bottom: .75rem;
+    }
+}

@@ -4,11 +4,19 @@ import thunk from 'redux-thunk';
 import matrixReducer from './matrix/matrixReducer';
 import userReducer from './user/userReducer';
 import environmentReducer from './environment/environmentReducer';
+import configReducer from './config/configReducer';
+import toastReducer from './toast/toastReducer';
 
 export const middlewares = [thunk];
 export const createStoreWithMiddleware = applyMiddleware(...middlewares)(createStore);
 
-export const reducers = combineReducers({ user: userReducer, matrix: matrixReducer, environment: environmentReducer});
+export const reducers = combineReducers({ 
+  user: userReducer, 
+  matrix: matrixReducer, 
+  environment: environmentReducer,
+  config: configReducer,
+  toast: toastReducer,
+});
 
 const store = createStoreWithMiddleware(
   reducers,

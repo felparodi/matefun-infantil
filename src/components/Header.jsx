@@ -1,8 +1,8 @@
 import React from 'react';
 import { Navbar, Nav, DropdownButton, Dropdown } from 'react-bootstrap';
-import { connect } from 'react-redux'
-
-import { logout } from '../api/user'
+import { connect } from 'react-redux';
+import { openConfig } from '../api/config';
+import { logout } from '../api/user';
 
 
 export class Header extends React.Component {
@@ -18,9 +18,7 @@ export class Header extends React.Component {
                 <Nav className="mr-auto"></Nav>
 
                 <DropdownButton alignRight id="dropdown-basic-button" title={(this.props.userData) ? this.props.userData.nombre + " " + this.props.userData.apellido : ""}>
-                    <Dropdown.Item>Aumentar Complejidad</Dropdown.Item>
-                    <Dropdown.Item>Disminuir Complejidad</Dropdown.Item>
-                    <Dropdown.Item>Borrar Funciones Custom</Dropdown.Item>
+                    <Dropdown.Item onClick={this.props.openConfig}>Configuracion</Dropdown.Item>
                     <Dropdown.Item onClick={this.props.logout}>Cerrar sesión</Dropdown.Item>
                 </DropdownButton>
 
@@ -37,7 +35,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-    logout
+    logout,
+    openConfig
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

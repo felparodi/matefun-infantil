@@ -1,5 +1,6 @@
 import * as services from '../server_connection/services';
 import * as action from '../redux/user/userAction';
+import {createInfoMessage} from './toast';
 import store from '../redux/store';
 
 const USER_SESSION_STORAGE = 'USER_SESSION_STORAGE';

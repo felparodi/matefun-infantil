@@ -1,1 +1,1 @@
-export const DOMAIN_URL= 'localhost:8080'
+export const DOMAIN_URL= process.env.MATEFUN_SERVER;

@@ -21,13 +21,13 @@ export function login(cedula, password) {
     });
 }
 
-export function createFile(user, name) {
+export function createFile(user, name, padreId=5) {
     return axios.post(`/archivo`, {
         cedulaCreador: user.cedula,
         contenido: "",
         nombre: name,
         directorio: false,
-        padreId: 5,
+        padreId: padreId,
         editable: true
     }).then(res => res.data)
     .catch((e) => {
