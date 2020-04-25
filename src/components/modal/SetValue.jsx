@@ -34,7 +34,9 @@ export const SetValue = (props) => {
     delete(modalProps.type);
     delete(modalProps.onHide);
     return (
-        <Modal className={classNames("SetValue", { color: type === VALUES_TYPES.COLOR })} {...modalProps} onHide={() => props.onHide(temValue)}>
+        <Modal {...modalProps} 
+            className={classNames("SetValue", { color: type === VALUES_TYPES.COLOR })} 
+            onHide={() => props.onHide(temValue)}>
             {type !== VALUES_TYPES.COLOR && <ValueInput value={value} type={type} onBlur={setTempValue}/> }
             {type === VALUES_TYPES.COLOR && 
                 <SketchPicker disableAlpha={true} 

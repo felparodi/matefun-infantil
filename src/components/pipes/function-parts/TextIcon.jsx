@@ -3,17 +3,19 @@ import React, { useState } from 'react';
 const fontSize = (text) => {
     if(text.length < 3) {
         return '20px';
-    } else if ( text.length <5) {
+    } else if ( text.length < 5) {
         return '15px';
-    } else if ( text.length < 8) {
-        return '10px';
-    } else {
+    } else if ( text.length < 7) {
         return '8px';
+    } else if ( text.length < 10) {
+        return '6px';
+    } else {
+        return '4px';
     }
 }
 
 const textPrint = (text) => {
-    return text.length < 8 ? text : `${text.substr(0, 6)}...`;
+    return text.length < 11 ? text : `${text.substr(0, 8)}...`;
 }
 
 const TextIcon = ({text, onClick, onDoubleClick}) => {

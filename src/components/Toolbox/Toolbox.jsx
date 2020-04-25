@@ -1,21 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {dropPipe} from '../api/board';
+import {dropPipe} from '../../api/board';
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
-import toolboxGroups, {COMPLEX} from '../constants/toolbox';
+import toolboxGroups, {COMPLEX} from '../../constants/toolbox';
 import ToolboxBody from './ToolboxBody';
-import Icon from './Icon';
+import Icon from '../Icon';
 
 import './Toolbox.scss';
 
-function toolboxPipeSnapshot(toolboxPipe) {
+function toolboxPipeSnapshot(toolboxPipe, maxComplex=COMPLEX) {
     return toolboxPipe
-        .filter(({complex}) => complex <= COMPLEX)
+        .filter(({complex}) => complex <= maxComplex)
         .map(group => ({
-            value: group.value,
-            label: group.label,
-            icon: group.icon,
+            ...group,
             pipes: group.pipes
                 .filter(({complex}) => complex <= COMPLEX)
                 .map(({pipe}) => pipe ? pipe.snapshot() : null)
@@ -38,11 +36,8 @@ export class Toolbox extends React.Component {
     }
 
     componentDidUpdate(prevProp) {
-        if(prevProp.myFunctions != this.props.myFunctions) {
-            var pipeToolsGroup = this.state.pipeToolsGroup;
-            var toolbarCustom = pipeToolsGroup.find((toolbar) => toolbar.value === 'custom');
-            toolbarCustom.pipes = this.props.myFunctions.map(func => func.pipe.snapshot());
-            this.setState({ pipeToolsGroup: [...pipeToolsGroup] });
+        if(prevProp.complex != this.props.complex) {
+            this.setState({ pipeToolsGroup: toolboxPipeSnapshot(toolboxGroups, this.props.complex) });
         }
     }
 
@@ -73,7 +68,7 @@ export class Toolbox extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    myFunctions: state.environment.myFunctions
+    complex: state.config.complex
 });
 
 const mapDispatchToProps = {

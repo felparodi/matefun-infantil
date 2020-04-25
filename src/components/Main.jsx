@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Toolbox from './Toolbox'
-import Board from './Board'
+import Toolbox from './Toolbox/Toolbox'
+import Board from './Board/Board'
 import Actions from './Actions';
 import Header from './Header';
 import { prepareEnvironment } from '../api/matefun';

@@ -1,28 +1,26 @@
 import React from 'react'
 import { DropTarget } from "react-dnd";
-import { Button } from 'react-bootstrap';
-import Pipe from './pipes/Pipe';
+import ToolboxCustom from './ToolboxCustom';
+import PipeButton from './PipeButton';
+
 
 class ToolboxBody extends React.Component {
+
     constructor(props) {
         super(props);
-        this.renderPipeCol = this.renderPipeCol.bind(this);
     }
 
-    renderPipeCol(pipe, index) {
-        const {onDrop} = this.props;
-        return (
-            <Button key={index} className="pipe-button" variant="outline-primary">
-                <Pipe onDrop={onDrop} pipe={pipe} origin="toolbox"/>
-            </Button>
-        );
-    }
     render() {
-        const { group, connectDropTarget } = this.props;
+        const { group, connectDropTarget, onDrop} = this.props;
+      
         return (
             connectDropTarget(
                 <div className="toolbox-body">
-                    { group.pipes.map(this.renderPipeCol) }
+                    {   
+                        group.value !== 'custom' ? 
+                        group.pipes.map((pipe, index) => <PipeButton key={`${index}-${group.value}`} pipe={pipe} onDrop={onDrop}/>) : 
+                        <ToolboxCustom onDrop={onDrop}/>
+                    }
                 </div>
             )
         )

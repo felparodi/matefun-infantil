@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { dropPipe, loadPendingBoard, startWork, endWork, addWorkingPipe, join} from '../api/board';
+import { dropPipe, loadPendingBoard, startWork, endWork, addWorkingPipe, join} from '../../api/board';
 import Cell from './Cell'
 import './Board.scss';
 

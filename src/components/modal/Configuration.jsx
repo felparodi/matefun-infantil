@@ -18,8 +18,11 @@ export class Configuration extends React.Component {
                 show={open}
                 onHide={() => this.props.closeConfig()}>
                 <p className="title">Configuracion</p>
-                <div>
-                    <button onClick={() => this.props.cleanMyFunctions()}>Limpiar mis funciones</button>
+                <div className="body">
+                    <div className="actions">
+                        <p>Acciones</p>
+                        <button onClick={() => this.props.cleanMyFunctions()}>Limpiar mis funciones</button>
+                    </div>
                 </div>
             </Modal>
         )

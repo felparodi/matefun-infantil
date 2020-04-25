@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DropTarget } from "react-dnd";
-import Pipe from './pipes/Pipe';
+import Pipe from '../pipes/Pipe';
 import './Cell.scss';
 
 class Cell extends React.Component {

@@ -1,7 +1,9 @@
 import * as actionTypes from './configActionTypes';
+import { COMPLEX } from '../../constants/toolbox';
 
 const initialState = {
-    openModal: false
+    openModal: false,
+    complex: COMPLEX
 };
 
 export default function configReducer(state = initialState, action) {

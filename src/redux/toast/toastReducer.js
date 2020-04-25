@@ -7,7 +7,6 @@ const initialState = {
 export default function configReducer(state = initialState, action) {
   switch (action.type) {
     case actionTypes.NEW_TOAST_MESSAGE: {
-      debugger
       return {
         ...state, 
         newToast: { ...action.toast }
