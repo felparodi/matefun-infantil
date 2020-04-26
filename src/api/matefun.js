@@ -104,6 +104,7 @@ const regexFunctionBlock = (name)=> RegExp(`{-FS:${name}-}(.|[\n\r])*{-FF:${name
 const METADATA_REGEX = /{-M:.*-}/;
 const COMMENT_REGEX = /{-.*-}/g;
 const FUNCTION_SING_REGEX = /\s*(\w+)\s?::\s?(.*)\s?->\s?(\w+)/g;
+const ICON_REGEX = /{-I:([\w\d-]+)-}/g
 
 function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
 
@@ -119,7 +120,9 @@ function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
         const functionRegex = FUNCTION_SING_REGEX.exec(cleanComments.match(FUNCTION_SING_REGEX)[0]);
         const inType = functionRegex[2].match(/(R|Color|\(R X R\)|Fig|A)\*?/g).map((type) => typeHelper.getMateFunPipeType(type));
         const outType = typeHelper.getMateFunPipeType(functionRegex[3].trim());
-        return new CustomFuncPipe(name, inType, outType, metadata);
+        const funcIconLine = functionBlock[0].match(ICON_REGEX)
+        const funcIcon = funcIconLine ? ICON_REGEX.exec(funcIconLine[0])[1] : '';
+        return new CustomFuncPipe(name, inType, outType, metadata, funcIcon);
     })
 
     dispatch(setMyFunctions(myFunctions));
@@ -147,13 +150,14 @@ export function cleanMyFunctions() {
     }
 }
 
-function newFunctionBlock(name) {
+function newFunctionBlock(name, icon) {
     const functionMetadata = metadataSerialize(name, getMatrixSnapshot());
     const functionDefinition = getFunctionDefinition(name);
-    return `{-FS:${name}-}\n${functionMetadata}\n${functionDefinition.body}\n{-FF:${name}-}`;
+    const iconInfo = icon ?`{-I:${icon}-}\n` : ''
+    return `{-FS:${name}-}\n${iconInfo}${functionMetadata}\n${functionDefinition.body}\n{-FF:${name}-}`;
 }
 
-export function saveInMyFunctions(name) {
+export function saveInMyFunctions(name, icon) {
     return (dispatch) => {
         const { myFunctionsFileData } = store.getState().environment
         const newMyFunctionFileData = {...myFunctionsFileData };
@@ -164,7 +168,7 @@ export function saveInMyFunctions(name) {
         const funcName = name ? name : `func${functionNames ? functionNames.length + 1 : 1}`;
 
         if(!functionNames || functionNames.indexOf(funcName) === -1) {
-            const myFunctionBlock = newFunctionBlock(funcName);
+            const myFunctionBlock = newFunctionBlock(funcName, icon);
             newMyFunctionFileData.contenido = `${contenido}\n${myFunctionBlock}`;
             services.editFile(newMyFunctionFileData)
                 .then((data) => {

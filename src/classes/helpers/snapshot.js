@@ -60,7 +60,7 @@ export function createPipeToSnap(snapshot) {
         case PIPE_TYPES.CONDITION:
             return new ConditionPipe();
         case PIPE_TYPES.CUSTOM:
-            return new CustomFuncPipe(snapshot.name, dirToInTypes(dir), dir.bottom, snapshot.body);
+            return new CustomFuncPipe(snapshot.name, dirToInTypes(dir), dir.bottom, snapshot.body, snapshot.icon);
     }
 }
 

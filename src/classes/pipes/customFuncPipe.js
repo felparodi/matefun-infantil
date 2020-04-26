@@ -6,6 +6,7 @@ import { FuncPipe } from './funcPipe';
 /*
 *   @desc: 
 *   @attr private String body: "JSON de como se costruyo la tuberia"
+*   @attr private String icon:
 */
 export class CustomFuncPipe extends FuncPipe {
 
@@ -17,9 +18,10 @@ export class CustomFuncPipe extends FuncPipe {
     *   @attr String body:
     *   @scope: public
     */
-    constructor(name, inTypes, outType, body="{}") {
+    constructor(name, inTypes, outType, body="{}", icon='') {
        super(name, inTypes, outType);
        this.body = body;
+       this.icon = icon;
     } 
 
     /*
@@ -35,6 +37,7 @@ export class CustomFuncPipe extends FuncPipe {
     snapshot() {
         return {
             ...super.snapshot(),
+            icon: this.icon,
             body: this.body
         }
     }

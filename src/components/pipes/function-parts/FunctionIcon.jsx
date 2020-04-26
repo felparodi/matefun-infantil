@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { METHOD_FUNCTION } from '../../../constants/constants';
+import * as iconType from '../../../constants/icons';
 import TextIcon from './TextIcon';
 import Color from '../../../icons/color.svg'
 import Rotar from '../../../icons/rotar.svg'
@@ -15,8 +16,17 @@ import Resto from '../../../icons/resto.svg';
 import Primero from '../../../icons/primero.svg';
 import Rango from '../../../icons/rango.svg';
 import AFIG from '../../../icons/aFig.svg';
+import WorkHat from '../../../icons/workHat.svg';
+import WindmillTower from '../../../icons/windmillTower.svg'
+import Start from '../../../icons/start.svg';
+import Helicopter from '../../../icons/helicopter.svg';
+import Car from '../../../icons/car.svg'
+import Dron from '../../../icons/dron.svg'
+import StudentHat from '../../../icons/studentHat.svg'
+import Snowman from '../../../icons/snowman.svg';
+import Tshirt from '../../../icons/tshirt.svg';
 
-function nameIcons(name) {
+export function nameIcons(name) {
     switch(name) {
         case METHOD_FUNCTION.COLOR:
             return <Color/>;
@@ -76,8 +86,26 @@ function nameIcons(name) {
     }
 }
 
-function iconIcons(icon) {
+export function iconIcons(icon) {
     switch(icon) {
+        case iconType.WORK_HAT:
+            return <WorkHat/>;
+        case iconType.STUDENT_HAT:
+            return <StudentHat/>;
+        case iconType.TSHIRT:
+            return <Tshirt/>;
+        case iconType.WINDMILL_TOWER:
+            return <WindmillTower/>;
+        case iconType.SNOWMAN:
+            return <Snowman/>;
+        case iconType.START:
+            return <Start/>;
+        case iconType.DRON:
+            return <Dron/>;
+        case iconType.HELICOPTER:
+            return <Helicopter/>;
+        case iconType.CAR:
+            return <Car/>;
         default:
             return <TextIcon text={icon}/>;
     }

@@ -1,1 +1,10 @@
-export const CALCULATOR = 'CALCULATOR';
+export const CALCULATOR = 'caculator';
+export const SNOWMAN = 'snowman';
+export const TSHIRT = 'tshirt';
+export const CAR = 'car';
+export const START = 'start';
+export const DRON = 'dron';
+export const HELICOPTER = 'helicopter';
+export const WORK_HAT = 'work-hat';
+export const STUDENT_HAT = 'student-hat';
+export const WINDMILL_TOWER = 'windmill-tower';

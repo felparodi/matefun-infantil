@@ -1,8 +1,24 @@
 @import './Modal.scss';
 
 .CreateFunction {
-    .body {
+    .modal-body {
         margin: 1rem;
+        .icons {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0.5rem;
+            border: solid 1px #666;
+            border-radius: 5px;
+            .ButtonIcon {
+                flex: 1 0 0;
+                min-width: 4rem;
+                max-width: 4rem;
+                border-radius: 5px;
+                &.selected {
+                    background-color: skyblue;
+                }
+            }
+        }
         .actions {
             
         }
