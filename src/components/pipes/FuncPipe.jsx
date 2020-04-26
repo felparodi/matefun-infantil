@@ -47,7 +47,7 @@ export class FuncPipe extends React.Component {
                 { rightType && <InputRight join={isJoinRigth} onClick={() => this.joinInput(DIRECTION.RIGHT)} type={rightType}/>}
                 { topType && <InputTop join={isJoinTop} onClick={() => this.joinInput(DIRECTION.TOP)} type={topType}/>}
                 <Output join={isJoinBottom} onClick={this.joinOutput} type={bottomType}/>
-                <FuncIcons name={pipe.name}/>
+                <FuncIcons name={pipe.name} icon={pipe.icon}/>
             </svg>
         )
     }

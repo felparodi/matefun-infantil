@@ -81,7 +81,6 @@ function collect(connect, monitor) {
 
 const cardSource = {
     beginDrag(props, monitor, component) {
-        debugger;
         component.setState({drag : true })
         return { pipe: props.pipe };
     },

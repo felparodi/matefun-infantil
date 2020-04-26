@@ -9,7 +9,7 @@ export default function configReducer(state = initialState, action) {
     case actionTypes.NEW_TOAST_MESSAGE: {
       return {
         ...state, 
-        newToast: { ...action.toast }
+        newToast: { ...action.payload }
       };
     }
     default:

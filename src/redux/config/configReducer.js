@@ -20,6 +20,12 @@ export default function configReducer(state = initialState, action) {
         openModal: false
       };
     }
+    case actionTypes.SET_COMPLEX : {
+      return {
+        ...state, 
+        complex: action.level
+      };
+    }
     default:
       return state;
   }

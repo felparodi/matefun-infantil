@@ -11,3 +11,10 @@ export const closeModal = () => {
         type: actionType.CLOSE_CONFIG_MODAL
     }
 }
+
+export const setComplex = (level) => {
+    return {
+        type: actionType.SET_COMPLEX,
+        payload: level
+    }
+}

@@ -16,7 +16,7 @@ import Primero from '../../../icons/primero.svg';
 import Rango from '../../../icons/rango.svg';
 import AFIG from '../../../icons/aFig.svg';
 
-const FunctionIcon = ({name, icon}) => {
+function nameIcons(name) {
     switch(name) {
         case METHOD_FUNCTION.COLOR:
             return <Color/>;
@@ -74,6 +74,17 @@ const FunctionIcon = ({name, icon}) => {
         default:
             return <TextIcon text={name}/>;
     }
+}
+
+function iconIcons(icon) {
+    switch(icon) {
+        default:
+            return <TextIcon text={icon}/>;
+    }
+}
+
+const FunctionIcon = ({name, icon}) => {
+   return icon ? iconIcons(icon) : nameIcons(name)
 }
 
 export default FunctionIcon;

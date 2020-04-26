@@ -3,36 +3,36 @@ import * as toastType from '../../constants/toast';
 
 export const infoToast = (text, title="INFORMACION") => ({
     type: actionType.NEW_TOAST_MESSAGE,
-    toast: {
+    payload: {
         type: toastType.INFO,
-        title: title,
-        text: text
+        text: text,
+        title: title
     }
 })
 
 export const errorToast = (text, title="ERROR") => ({
     type: actionType.NEW_TOAST_MESSAGE,
-    toast: {
+    payload: {
         type: toastType.ERROR,
-        title: title,
-        text: text
+        text: text,
+        title: title
     }
 })
 
 export const warningToast = (text, title="ADEVERTECIA") => ({
     type: actionType.NEW_TOAST_MESSAGE,
-    toast: {
+    payload: {
         type: toastType.WARNING,
-        title: title,
-        text: text
+        text: text,
+        title: title
     }
 })
 
 export const successToast = (text, title="EXITO") => ({
     type: actionType.NEW_TOAST_MESSAGE,
-    toast: {
-        type: toastType.SUCCESS,
-        title: title,
-        text: text
+    payload: {
+        type: toastType.INFO,
+        text: text,
+        title: title
     }
 })
