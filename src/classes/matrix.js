@@ -1,4 +1,4 @@
-import { PIPE_TYPES, DIRECTION, VALUES_TYPES, MATEFUN_TYPE } from '../constants/constants';
+import { PIPE_TYPES, DIRECTION } from '../constants/constants';
 import { invertDirection, directionMove } from './helpers/direction';
 import { getMateFunType } from './helpers/type';
 import { sortPipe, matchPipeTypeDir } from './helpers/pipe';

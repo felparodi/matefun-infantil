@@ -12,6 +12,7 @@ import './Pipe.scss';
 function SwitchPipe(pipe, props) {
     switch(pipe.type) {
         case PIPE_TYPES.FUNCTION:
+        case PIPE_TYPES.CUSTOM:
         case PIPE_TYPES.CONDITION:
             return <FuncPipe {...(props)} />;
         case PIPE_TYPES.VALUE:

@@ -9,8 +9,10 @@ export function login(username, password) {
     return (dispatch) => {
         services.login(username, password)
         .then((userData)=> {
-            sessionStorage.setItem(USER_SESSION_STORAGE, JSON.stringify(userData));
-            dispatch(action.login(userData));
+            if(userData) {
+                sessionStorage.setItem(USER_SESSION_STORAGE, JSON.stringify(userData));
+                dispatch(action.login(userData));
+            }
         })
     }
 }
@@ -23,7 +25,6 @@ export function logout() {
 }
 
 function init() {
-    console.warn("INIT")
     const userDataJSON  = sessionStorage.getItem(USER_SESSION_STORAGE);
     if (userDataJSON) {
         const userData = JSON.parse(userDataJSON);

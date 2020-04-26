@@ -12,13 +12,13 @@ export class ToolboxCustom extends React.Component {
     }
 
     componentDidMount() {
-        const pipes = this.props.myFunctions.map(func => func.pipe.snapshot());
+        const pipes = this.props.myFunctions.map(pipe => pipe.snapshot());
         this.setState({ pipes:pipes });
     }
 
     componentDidUpdate(prevProp) {
         if(prevProp.myFunctions != this.props.myFunctions) {
-            const pipes = this.props.myFunctions.map(func => func.pipe.snapshot());
+            const pipes = this.props.myFunctions.map(pipe => pipe.snapshot());
             this.setState({ pipes:pipes });
         }
     }

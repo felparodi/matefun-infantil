@@ -1,7 +1,7 @@
 
 import {DOMAIN_URL} from './config'
 
-const WEB_SOCKET_URL = `ws://${DOMAIN_URL}/endpoint`;
+const WEB_SOCKET_URL = `${DOMAIN_URL.replace(/^http/, 'ws')}/endpoint`;
 
 let ws = null;
 const listResponseHandlers = [];

@@ -64,6 +64,7 @@ export const PIPE_TYPES= Object.freeze({
     UNDEFINED: '?',
     VARIABLE: 'VARIABLE',
     CONDITION: 'CONDITION',
+    CUSTOM: 'CUSTOM',
 })
 
 export const VALUES_TYPES= Object.freeze({
@@ -82,7 +83,7 @@ export const MATEFUN_TYPE= Object.freeze({
     NUMBER: 'R',
     FIGURE: 'Fig',
     COLOR: 'Color',
-    POINT: '(R x R)',
+    POINT: '(R X R)',
     list: (t) => `${t}*`,
     GENERIC: 'A',
 })

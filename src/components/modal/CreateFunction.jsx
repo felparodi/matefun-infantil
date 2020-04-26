@@ -33,7 +33,7 @@ export class CreateFunction extends React.Component {
 
     saveFunction() {
         const { name } = this.state;
-        this.props.saveInMyFunctions(name);
+        this.props.saveInMyFunctions(name.trim());
         this.setState({open: false});
         this.props.onHide();
     }
@@ -50,7 +50,7 @@ export class CreateFunction extends React.Component {
                     <div><span>Nomber:</span><input tyep='text' maxLength={10} onChange={this.onChangeName}/></div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button onClick={this.saveFunction} disabled={!name}>Salvar</button>
+                    <button onClick={this.saveFunction}>Salvar</button>
                 </Modal.Footer>
             </Modal>
         )

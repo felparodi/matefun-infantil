@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {DOMAIN_URL} from './config'
 
-const SERVICES_URL = `http://${DOMAIN_URL}/servicios`;
+const SERVICES_URL = `${DOMAIN_URL}/servicios`;
 
 axios.defaults.baseURL = SERVICES_URL;
 

@@ -2,7 +2,9 @@
 import * as services from '../server_connection/services';
 import * as webSocket from '../server_connection/webSocket';
 import * as snapHelper from '../classes/helpers/snapshot';
-import { setMateFunValue, getEvaluateFunction, matrixFromSnapshot, getFunctionDefinition, getMatrixSnapshot } from './board';
+import * as typeHelper from '../classes/helpers/type';
+import { CustomFuncPipe } from '../classes/pipes/customFuncPipe'
+import { setMateFunValue, getEvaluateFunction, getFunctionDefinition, getMatrixSnapshot } from './board';
 import { WORKSPACE_FILE_NAME, MY_FUNCTIONS_FILE_NAME } from '../constants/constants';
 import { setEvalInstruction, setWorkspaceFunctionBody } from '../redux/matrix/matrixAction';
 import { setWorkspaceFileData, setMyFunctionsFileData, setMyFunctions } from '../redux/environment/environmentAction';
@@ -97,60 +99,30 @@ export function prepareEnvironment(userData) {
     }
 }
 
-const METADATA_REGEX = /{-.*-}/g;
-const COMMENT_REGEX = /{-.*-}/;
-const FUNCTION_SING_REGEX = /\s*(\w+)\s?::\s?(\w+)\s?->\s?(\w+)/g;
+const regexFunctionBlock = (name)=> RegExp(`{-FS:${name}-}(.|[\n\r])*{-FF:${name}-}`,'g');
+const METADATA_REGEX = /{-M:.*-}/;
+const COMMENT_REGEX = /{-.*-}/g;
+const FUNCTION_SING_REGEX = /\s*(\w+)\s?::\s?(.*)\s?->\s?(\w+)/g;
 
 function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
 
-    var contenido = myFunctionsFileData.contenido;
+    const { contenido } = myFunctionsFileData;
 
-    //console.log(contenido);
+    const functionNames = contenido.match(/{-FS:([\w\d]+)-}/g)
+        .map((name) => /{-FS:([\w\d]+)-}/.exec(name)[1]);
 
-    var metadata= contenido.match(METADATA_REGEX);
-    var c = contenido.replace(COMMENT_REGEX, "").match(FUNCTION_SING_REGEX);
-    //console.log(metadata);
-
-    var functions= contenido.split(/{-.*-}\n/);
-    functions.shift();
-    //console.log(functions);
-
-    var signatures= functions.map(func => {
-        var i= func.indexOf("\n");
-        return func.substring(0,i);
+    const myFunctions = functionNames.map((name) => {
+        const functionBlock = contenido.match(regexFunctionBlock(name));
+        const metadataComment = functionBlock[0].match(METADATA_REGEX)
+        const metadata = metadataComment ? metadataComment[0].replace('{-M:', '').replace('-}', '') : undefined;
+        const cleanComments = functionBlock[0].replace(COMMENT_REGEX, '').trim();
+        const functionRegex = FUNCTION_SING_REGEX.exec(cleanComments.match(FUNCTION_SING_REGEX)[0]);
+        const inType = functionRegex[2].match(/(R|Color|\(R X R\)|Fig|A)\*?/g).map((type) => typeHelper.getMateFunPipeType(type));
+        const outType = typeHelper.getMateFunPipeType(functionRegex[3].trim());
+        return new CustomFuncPipe(name, inType, outType, metadata);
     })
-    //console.log(signatures);
 
-    var equations= functions.map(func => {
-        var i= func.indexOf("\n")+1;
-        return func.substring(i);
-    })
-    //console.log(equations);0
-
-    var mfFunctions= [];
-    if(metadata) {
-        for (var i=0; i<metadata.length; i++){
-            //quito apertura y cierre de comentarios {- y -}
-            var md= metadata[i].substring(2,metadata[i].length-2);
-            
-            var mdJson = JSON.parse(md);
-            var name= mdJson.nombre;
-            var snapshot= mdJson.snapshot;
-
-            var matrixAux= matrixFromSnapshot(snapshot);
-            var pipe= matrixAux.getFunctionPipe(name);
-            
-            mfFunctions.push({
-                name: mdJson.nombre,
-                snapshot: mdJson.snapshot,
-                signature: signatures[i],
-                equation: equations[i],
-                pipe: pipe
-            })
-        }
-    }
-    console.log(mfFunctions);
-    dispatch(setMyFunctions(mfFunctions));
+    dispatch(setMyFunctions(myFunctions));
 }
 
 function metadataSerialize(name, snapshot) {
@@ -159,7 +131,7 @@ function metadataSerialize(name, snapshot) {
         nombre: name,
         snapshot: saveSnap
     }
-    return `{-${JSON.stringify(metadata)}-}`;
+    return `{-M:${JSON.stringify(metadata)}-}`;
 }
 
 export function cleanMyFunctions() {
@@ -178,7 +150,7 @@ export function cleanMyFunctions() {
 function newFunctionBlock(name) {
     const functionMetadata = metadataSerialize(name, getMatrixSnapshot());
     const functionDefinition = getFunctionDefinition(name);
-    return `${functionMetadata}\n${functionDefinition.body}\n`;
+    return `{-FS:${name}-}\n${functionMetadata}\n${functionDefinition.body}\n{-FF:${name}-}`;
 }
 
 export function saveInMyFunctions(name) {
@@ -186,30 +158,35 @@ export function saveInMyFunctions(name) {
         const { myFunctionsFileData } = store.getState().environment
         const newMyFunctionFileData = {...myFunctionsFileData };
         const contenido = myFunctionsFileData.contenido;
-        const metadata = contenido.match(METADATA_REGEX);
-        const funcName = name ? name : `func${metadata ? metadata.length + 1 : 1}`;
-        const myFunctionBlock = newFunctionBlock(funcName);
-        newMyFunctionFileData.contenido = `${contenido}\n${myFunctionBlock}`;
-        
-        services.editFile(newMyFunctionFileData)
-            .then((data) => {
-                const { userData } = store.getState().user;
-                return webSocket.loadFile(userData, data.id)
-                    .then((messages) => {
-                        if(messages.find((message) => message.resultado.startsWith('OUTError:'))) {
-                            console.error(messages)
-                            tost.createErrorMessage('Se no se pudo crear la nueva funcion, revice las piesas con fondo amarillo', funcName)
-                            return services.editFile(myFunctionsFileData);
-                        } else {
-                            tost.createSuccessMessage('Se creo con extito la nueva funcion', funcName)
-                            return data
-                        }
-                    })
-            })
-            .then((data) => {
-                updateMyFunction(dispatch, data);
-                myFunctionsFileToToolboxPipes(dispatch, data);
-            })
-            
+        const functionNames = contenido.match(/{-FS:([\w\d]+)-}/g)
+            .map((name) => /{-FS:([\w\d]+)-}/.exec(name)[1]);
+        const funcName = name ? name : `func${functionNames ? functionNames.length + 1 : 1}`;
+        debugger;
+        if(!functionNames || functionNames.indexOf(funcName) === -1) {
+            const myFunctionBlock = newFunctionBlock(funcName);
+            newMyFunctionFileData.contenido = `${contenido}\n${myFunctionBlock}`;
+            services.editFile(newMyFunctionFileData)
+                .then((data) => {
+                    const { userData } = store.getState().user;
+                    return webSocket.loadFile(userData, data.id)
+                        .then((messages) => {
+                            if(messages.find((message) => message.resultado.startsWith('OUTError:'))) {
+                                console.error(messages)
+                                tost.createErrorMessage('No se pudo crear la funcion, revice las piesas con fondo amarillo', funcName)
+                                return services.editFile(myFunctionsFileData);
+                            } else {
+                                tost.createSuccessMessage('Se creo con extito la nueva funcion', funcName)
+                                return data
+                            }
+                        })
+                })
+                .then((data) => {
+                    updateMyFunction(dispatch, data);
+                    myFunctionsFileToToolboxPipes(dispatch, data);
+                })
+                
+        } else {
+            tost.createErrorMessage('No se pudo crear la funcion, ya existe una funcion con ese nombre', funcName)
+        }
     }
 }

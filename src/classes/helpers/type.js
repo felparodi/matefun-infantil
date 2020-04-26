@@ -47,6 +47,37 @@ export function getMateFunType(type) {
     }
 }
 
+export function listSubTypeMatefun(type) {
+    return type.replace(/\*$/,'');
+}
+
+export function isMatefunList(type) {
+    return type.match(/\*$/)
+}
+
+export function getMateFunPipeType(type) {
+    switch (type) {
+        case MATEFUN_TYPE.NUMBER:
+            return VALUES_TYPES.NUMBER;
+        case MATEFUN_TYPE.FIGURE:
+            return VALUES_TYPES.FIGURE;
+        case MATEFUN_TYPE.POINT:
+            return VALUES_TYPES.POINT;
+        case MATEFUN_TYPE.COLOR:
+            return VALUES_TYPES.COLOR;
+        case MATEFUN_TYPE.GENERIC:
+            return VALUES_TYPES.GENERIC;
+        default:
+            if(isMatefunList(type)) {
+                const subType = listSubTypeMatefun(type)
+                return VALUES_TYPES.list(getMateFunPipeType(subType))
+            }
+            return VALUES_TYPES.UNDEFINED;
+    }
+}
+
+
+
 /*
 *   @desc: Devuelve si dos ValueTypess pueden machear
 *   @attr ValueTypes type1: ValueTypes que se desea comparar
