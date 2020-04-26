@@ -10,6 +10,7 @@ import { setEvalInstruction, setWorkspaceFunctionBody } from '../redux/matrix/ma
 import { setWorkspaceFileData, setMyFunctionsFileData, setMyFunctions } from '../redux/environment/environmentAction';
 import store from '../redux/store';
 import * as tost from './toast';
+import { Toast } from 'react-bootstrap';
 
 function updateWorkspace(dispatch, data) {
     dispatch(setWorkspaceFileData(data));
@@ -207,6 +208,7 @@ export function deleteMyFunctions(name) {
                         tost.createErrorMessage('No se pudo borrar la funcion', name)
                         return services.editFile(myFunctionsFileData);
                     } else {
+                        Toast.createSuccessMessage('Se a borrado la funcion', name)
                         return data
                     }
                 })

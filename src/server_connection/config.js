@@ -1,1 +1,1 @@
-export const DOMAIN_URL= process.env.MATEFUN_SERVER;
+export const DOMAIN_URL= process.env.MATEFUN_SERVER !== 'origin' ? process.env.MATEFUN_SERVER : origin;

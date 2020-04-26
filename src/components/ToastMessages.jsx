@@ -1,8 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import classNames from 'classnames';
+import * as toastType from '../constants/toast'
 import { Toast } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as fas from '@fortawesome/free-solid-svg-icons';
+//exclamation-triangle
 
 import './ToastMessages.scss';
+
+function iconToast(type) {
+    switch(type) {
+        case toastType.ERROR:
+            return <FontAwesomeIcon icon={fas.faTimesCircle}/>
+        case toastType.WARNING:
+            return <FontAwesomeIcon icon={fas.faExclamationTriangle}/>
+        case toastType.SUCCESS:
+            return <FontAwesomeIcon icon={fas.faCheckCircle}/>
+        case toastType.INFO:
+            return <FontAwesomeIcon icon={fas.faInfoCircle}/>
+    }
+}
 
 const ToastMessage = ({toast, onClose}) => {
     const [show, setShow] = useState(true);
@@ -15,13 +33,19 @@ const ToastMessage = ({toast, onClose}) => {
     useEffect(() => {
         setTimeout(handlerClose, 5000)
     })
+    const icon = iconToast(toast.type)
 
     return (
-        <Toast show={show} onClose={handlerClose}>
+        <Toast show={show} onClose={handlerClose}
+            className={classNames({
+                'error': toast.type === toastType.ERROR,
+                'warn': toast.type === toastType.WARNING,
+                'info': toast.type === toastType.INFO,
+                'success': toast.type === toastType.SUCCESS
+            })}>
             <Toast.Header>
-            <strong className="mr-auto">{toast.title}</strong>
+                <span>{icon}<b>{toast.title}:</b> {toast.text}</span>
             </Toast.Header>
-            <Toast.Body>{toast.text}</Toast.Body>
         </Toast>
     )
 }
@@ -33,7 +57,8 @@ export class ToastMessages extends React.Component {
         super(props);
         this.state = {
             toastId: 0,
-            toasts: []
+            toasts: [
+            ]
         }
 
         this.closeMessage = this.closeMessage.bind(this);

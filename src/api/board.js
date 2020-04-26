@@ -10,7 +10,7 @@ let joinList = {start: null, end:null }
 
 export function loadPendingBoard() {
     return (dispatch) => {
-        const matrixJSON = localStorage.getItem('matrix');
+        const matrixJSON = sessionStorage.getItem('matrix');
         if (matrixJSON) {
             const savedMatrix = JSON.parse(matrixJSON);
             matrix = matrixFromSnapshot(savedMatrix)
@@ -153,7 +153,7 @@ function setMateFunValueAux(dispatch, value) {
 function updateMatrix(dispatch) {
     const snapshot = matrix.snapshot();
     const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
-    localStorage.setItem('matrix', JSON.stringify(saveSnap));
+    sessionStorage.setItem('matrix', JSON.stringify(saveSnap));
     dispatch(updateBoard(snapshot));
 }
 

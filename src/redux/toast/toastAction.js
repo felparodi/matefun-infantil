@@ -31,7 +31,7 @@ export const warningToast = (text, title="ADEVERTECIA") => ({
 export const successToast = (text, title="EXITO") => ({
     type: actionType.NEW_TOAST_MESSAGE,
     payload: {
-        type: toastType.INFO,
+        type: toastType.SUCCESS,
         text: text,
         title: title
     }
