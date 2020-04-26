@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {dropPipe} from '../../api/board';
+import { deleteMyFunctions } from '../../api/matefun';
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 import toolboxGroups, {COMPLEX} from '../../constants/toolbox';
@@ -32,7 +33,11 @@ export class Toolbox extends React.Component {
     }
 
     onDrop(drop) {
-        this.props.dropPipe(drop);
+        if(drop.origin !== 'trash') {
+            this.props.dropPipe(drop);
+        } else {
+            this.props.deleteMyFunctions(drop.pipe.name);
+        }
     }
 
     componentDidUpdate(prevProp) {
@@ -72,7 +77,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    dropPipe
+    dropPipe,
+    deleteMyFunctions
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbox);

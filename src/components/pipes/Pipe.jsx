@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DragSource } from 'react-dnd';
+import ReactTooltip from 'react-tooltip';
 import { PIPE_TYPES, DIRECTION } from '../../constants/constants';
 import DummyPipe from './DummyPipe'
 import FuncPipe from './FuncPipe';
@@ -31,18 +32,41 @@ function SwitchPipe(pipe, props) {
 class Pipe extends React.Component {
 
     constructor(props) {
-        super();
+        super(props);
+        this.state = {
+            drag : false
+        }
     }
 
     render() {
-        const { pipe, connectDragSource, origin } = this.props;
+        const { pipe, connectDragSource, origin, key } = this.props;
+        const { drag } = this.state;
+        const tooltipId = pipe.pos ? `${pipe.pos.x}-${pipe.pos.y}-${pipe.name}-${origin}` : `${pipe.name}-${origin}`;
+        const hasErrors = pipe.errors && pipe.errors.length > 0; 
+        const hasWarning = pipe.warnings && pipe.warnings.length > 0;
         const p = (
             <div className={classNames("Pipe", { 
-                    'error': pipe.errors && pipe.errors.length > 0,
-                    'warning': pipe.warnings && pipe.warnings.length > 0,
+                    'error': hasErrors,
+                    'warning': hasWarning,
                     'working': pipe.isWorking,
-                })}>
+                })}
+                data-tip={tooltipId}
+                data-for={tooltipId}>
                     {SwitchPipe(pipe, this.props)}
+                { (hasErrors || hasWarning) && !drag &&
+                    <ReactTooltip
+                        id={tooltipId}
+                        className='tooltip'
+                        multiline={true}
+                        place='bottom'
+                        delayShow={1000}
+                        getContent={() => 
+                            <div>
+                                {pipe.warnings && pipe.warnings.map((m, index) => <p key={index}>AVISO: {m}</p>)}
+                                {pipe.errors && pipe.errors.map((m, index) => <p key={index}>ERROR: {m}</p>)}
+                            </div> }
+                    />
+                }
             </div>
         );
         return connectDragSource(p);
@@ -57,13 +81,16 @@ function collect(connect, monitor) {
 
 const cardSource = {
     beginDrag(props, monitor, component) {
-        const item = { pipe: props.pipe };
-        return item;
+        debugger;
+        component.setState({drag : true })
+        return { pipe: props.pipe };
     },
     endDrag(props, monitor, component) {
-        const {pipe, onDrop} = props
-        if(onDrop) {
-            const {pos, origin, dropEffect} = monitor.getDropResult();
+        component.setState({ drag : false })
+        const {pipe, onDrop} = props;
+        const dropResult = monitor.getDropResult();
+        if(onDrop && dropResult) {
+            const {pos, origin, dropEffect} = dropResult;
             props.onDrop({pos, pipe, origin, dropEffect});
         }
     }

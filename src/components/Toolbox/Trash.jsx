@@ -1,21 +1,22 @@
 import React from 'react';
 import classNames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import * as fas from '@fortawesome/free-solid-svg-icons';
 import { DropTarget } from "react-dnd";
-import Pipe from '../pipes/Pipe';
-import './Cell.scss';
 
-class Cell extends React.Component {
+import './Trash.scss'
+
+export class Trash extends React.Component {
 
     constructor(props) {
         super();
     }
 
     render() {
-        const { isOver, connectDropTarget, content, onDrop, onDoubleClick } = this.props;
+        const { isOver, connectDropTarget } = this.props;
         return connectDropTarget(
-            <div className={classNames('Cell', { 'over': isOver })} 
-                onDoubleClick={onDoubleClick}>
-                { content &&  <Pipe onDrop={onDrop} pipe={content} origin="board"/>}
+            <div className={classNames('Trash', { 'over': isOver })}>
+                <FontAwesomeIcon icon={fas.faTrash}/>
             </div>
         )
     }
@@ -24,8 +25,7 @@ class Cell extends React.Component {
 const spec = {
     drop(props, monitor, component) {
         return { 
-            pos: {x: props.posX, y: props.posY}, 
-            origin: 'board'
+            origin: 'trash',
         };
     }
 };
@@ -39,4 +39,4 @@ function collect(connect, monitor) {
     };
 }
 
-export default DropTarget("SOURCE", spec, collect)(Cell);
+export default DropTarget("SOURCE", spec, collect)(Trash);

@@ -40,9 +40,11 @@ export class CreateFunction extends React.Component {
 
     render() {
         const { open,name } = this.state;
+        const modalProps = {...this.props}
+        delete(modalProps.saveInMyFunctions);
         return (
             <Modal 
-                {...this.props}
+                {...modalProps}
                 show={open}
                 className="CreateFunction">
                 <Modal.Header>Nueva Funcion</Modal.Header>

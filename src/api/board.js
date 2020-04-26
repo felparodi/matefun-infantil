@@ -38,7 +38,7 @@ export function dropPipe(drop) {
             } else if (dropEffect === 'move') {
                 matrix.moverPipe(pos.x, pos.y, pipe.pos);
             }
-        } else if(origin === 'toolbox') {
+        } else {
             if(pipe.pos) {
                 matrix.removePipe(pipe.pos.x, pipe.pos.y);
             }

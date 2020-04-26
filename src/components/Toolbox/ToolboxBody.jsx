@@ -29,7 +29,8 @@ class ToolboxBody extends React.Component {
 
 const spec = {
     drop(props, monitor, component) {
-        return { origin: 'toolbox' };
+        const dropResult = monitor.getDropResult()
+        return { origin: dropResult ? dropResult.origin : 'toolbox' };
     }
 };
 

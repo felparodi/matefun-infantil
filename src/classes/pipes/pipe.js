@@ -70,7 +70,9 @@ export class Pipe {
     */
     addError(e) {
         if (!this.errors) this.errors = [];
-        this.errors.push(e); 
+        if(this.errors.indexOf(e) === -1) {
+            this.errors.push(e); 
+        }
     }
 
     /*
@@ -81,7 +83,9 @@ export class Pipe {
     */
     addWarning(e) {
         if (!this.warnings) this.warnings = [];
-        this.warnings.push(e); 
+        if(this.warnings.indexOf(e) === -1) {
+            this.warnings.push(e); 
+        }
     }
 
 

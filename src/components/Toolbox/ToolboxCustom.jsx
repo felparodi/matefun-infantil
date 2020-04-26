@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PipeButton from './PipeButton'
+import Trash from './Trash';
 
 export class ToolboxCustom extends React.Component {
 
@@ -29,6 +30,7 @@ export class ToolboxCustom extends React.Component {
         return (
             <React.Fragment>
                 { pipes.map((pipe, index) => <PipeButton key={`${index}-custom`} pipe={pipe} onDrop={onDrop}/>) }
+                <Trash/>
             </React.Fragment>
         )
 

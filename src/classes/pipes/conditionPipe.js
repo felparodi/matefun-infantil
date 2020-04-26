@@ -1,4 +1,5 @@
 import { PIPE_TYPES, VALUES_TYPES, DIRECTION } from '../../constants/constants';
+import * as messages from '../../constants/messages';
 import { nextPipeDirection, getParentsPipeNotDummy } from '../helpers/pipe';
 import { FuncPipe } from './funcPipe';
 
@@ -36,7 +37,7 @@ export class ConditionPipe extends FuncPipe {
             const parentsFunction = parents
                 .filter((parent) => parent.getType() === PIPE_TYPES.FUNCTION);
             if(parentsFunction.length) {
-                this.addError('No se puede seguir con una funcion')
+                this.addError(messages.NO_NEXT_FUNC);
             }
         }
     }

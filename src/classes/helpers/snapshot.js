@@ -5,6 +5,7 @@ import { ConstPipe } from '../pipes/constPipe';
 import { DummyPipe } from '../pipes/dummyPipe';
 import { ConditionPipe } from '../pipes/conditionPipe';
 import { VarPipe } from '../pipes/varPipe';
+import { CustomFuncPipe } from '../pipes/customFuncPipe';
 
 /*
 *   @desc: Retorna una lista de Direction apartir de un DirectionType
@@ -44,13 +45,13 @@ function dirToInTypes(dir) {
 *   @scope: public
 */
 export function createPipeToSnap(snapshot) {
+    const dir = snapshot.originDir ? snapshot.originDir: snapshot.dir;
     switch(snapshot.type) {
         case PIPE_TYPES.END:
             return new EndPipe(snapshot.dir.top);
         case PIPE_TYPES.DUMMY:
             return new DummyPipe(...(dirToDirections(snapshot.dir)));
         case PIPE_TYPES.FUNCTION:
-            const dir = snapshot.originDir ? snapshot.originDir: snapshot.dir;
             return new FuncPipe(snapshot.name, dirToInTypes(dir), dir.bottom);
         case PIPE_TYPES.VARIABLE:
             return new VarPipe(snapshot.dir.bottom);
@@ -58,6 +59,8 @@ export function createPipeToSnap(snapshot) {
             return new ConstPipe(snapshot.value);
         case PIPE_TYPES.CONDITION:
             return new ConditionPipe();
+        case PIPE_TYPES.CUSTOM:
+            return new CustomFuncPipe(snapshot.name, dirToInTypes(dir), dir.bottom, snapshot.body);
     }
 }
 

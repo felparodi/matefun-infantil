@@ -107,9 +107,8 @@ const FUNCTION_SING_REGEX = /\s*(\w+)\s?::\s?(.*)\s?->\s?(\w+)/g;
 function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
 
     const { contenido } = myFunctionsFileData;
-
-    const functionNames = contenido.match(/{-FS:([\w\d]+)-}/g)
-        .map((name) => /{-FS:([\w\d]+)-}/.exec(name)[1]);
+    const functionOpenBlock = contenido.match(/{-FS:([\w\d]+)-}/g);
+    const functionNames = functionOpenBlock ? functionOpenBlock.map((name) => /{-FS:([\w\d]+)-}/.exec(name)[1]) : [];
 
     const myFunctions = functionNames.map((name) => {
         const functionBlock = contenido.match(regexFunctionBlock(name));
@@ -158,10 +157,11 @@ export function saveInMyFunctions(name) {
         const { myFunctionsFileData } = store.getState().environment
         const newMyFunctionFileData = {...myFunctionsFileData };
         const contenido = myFunctionsFileData.contenido;
-        const functionNames = contenido.match(/{-FS:([\w\d]+)-}/g)
-            .map((name) => /{-FS:([\w\d]+)-}/.exec(name)[1]);
+
+        const functionOpenBlock = contenido.match(/{-FS:([\w\d]+)-}/g);
+        const functionNames = functionOpenBlock ? functionOpenBlock.map((name) => /{-FS:([\w\d]+)-}/.exec(name)[1]) : [];
         const funcName = name ? name : `func${functionNames ? functionNames.length + 1 : 1}`;
-        debugger;
+
         if(!functionNames || functionNames.indexOf(funcName) === -1) {
             const myFunctionBlock = newFunctionBlock(funcName);
             newMyFunctionFileData.contenido = `${contenido}\n${myFunctionBlock}`;
@@ -188,5 +188,32 @@ export function saveInMyFunctions(name) {
         } else {
             tost.createErrorMessage('No se pudo crear la funcion, ya existe una funcion con ese nombre', funcName)
         }
+    }
+}
+
+export function deleteMyFunctions(name) {
+    return (dispatch) => {
+        const { myFunctionsFileData } = store.getState().environment
+        const newMyFunctionFileData = {...myFunctionsFileData };
+        const contenido = myFunctionsFileData.contenido;
+        newMyFunctionFileData.contenido = contenido.replace(regexFunctionBlock(name), '');
+        services.editFile(newMyFunctionFileData)
+        .then((data) => {
+            const { userData } = store.getState().user;
+            return webSocket.loadFile(userData, data.id)
+                .then((messages) => {
+                    if(messages.find((message) => message.resultado.startsWith('OUTError:'))) {
+                        console.error(messages)
+                        tost.createErrorMessage('No se pudo borrar la funcion', name)
+                        return services.editFile(myFunctionsFileData);
+                    } else {
+                        return data
+                    }
+                })
+            })
+            .then((data) => {
+                updateMyFunction(dispatch, data);
+                myFunctionsFileToToolboxPipes(dispatch, data);
+            })
     }
 }

@@ -9,25 +9,10 @@ export class Board extends React.Component {
 
     constructor(props) {
         super();
-        this.handlerKeyDown = this.handlerKeyDown.bind(this);
-        this.handlerKeyUp = this.handlerKeyUp.bind(this);
         this.onDrop = this.onDrop.bind(this);
         this.addWPipe = this.addWPipe.bind(this);
     }
 
-    handlerKeyDown(e) {
-        if(e.type === 'keydown') {
-            switch(e.keyCode) {
-            }
-        }
-    }
-
-    handlerKeyUp(e) {
-        if(e.type === 'keyup') {
-            switch(e.keyCode) {
-            }
-        }
-    }
 
     addWPipe(x, y) {
         this.props.addWorkingPipe(x, y);
@@ -39,18 +24,9 @@ export class Board extends React.Component {
 
 
     componentDidMount() {
-        window.addEventListener('keydown', this.handlerKeyDown);
-        window.addEventListener('keyup', this.handlerKeyUp);
         if(this.props.hasPending) {
-            //if(confirm('Desa Cargar Pendient')) {
-                this.props.loadPendingBoard();
-            //}
+            this.props.loadPendingBoard();
         }
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('keydown', this.handlerKeyDown);
-        window.removeEventListener('keyup', this.handlerKeyUp);
     }
 
     createRows() {

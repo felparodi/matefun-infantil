@@ -1,4 +1,5 @@
 import { PIPE_TYPES, VALUES_TYPES, DIRECTION} from '../../constants/constants';
+import * as messages from '../../constants/messages';
 import { nextPipeDirection, validateDirType } from '../helpers/pipe';
 import { matchTypes, evalValueType, valueToString } from '../helpers/type';
 import { Pipe } from './pipe';
@@ -38,7 +39,7 @@ export class ConstPipe extends Pipe {
             context.mark(this.getPos());
             const next = nextPipeDirection(this, DIRECTION.BOTTOM);
             if (next.error) { this.addError(next.error); return }
-            if (!next.pipe || !next.connected) { this.addWarning('No esta conectado'); return;}
+            if (!next.pipe || !next.connected) { this.addWarning(messages.NO_CONNECTED); return;}
             const newPath = enterDir ? [...path, this] : [this];
             if(next.dir !== enterDir) { next.pipe.calc(context, board, next.inDir, newPath); }
             const status = validateDirType(this, next);
@@ -76,7 +77,7 @@ export class ConstPipe extends Pipe {
         const type = evalValueType(value);
         const myType = this.getValueType();
         if(!matchTypes(myType, type)) {
-            throw new Error('No se puede asiganar el valor ya que es de otro tipo')
+            throw new Error(message.NO_VALID_TYPE_ASSIGN)
         }
         //Ver aca sis se puede mejorar
         if(type !== VALUES_TYPES.UNDEFINED) {

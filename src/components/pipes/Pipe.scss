@@ -43,4 +43,9 @@
     }
     height: 100%;
     width: 100%;
+    .tooltip {
+        p {
+            margin-bottom: 0.2rem;
+        }
+    }
 }

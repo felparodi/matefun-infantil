@@ -1,6 +1,7 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../../constants/constants';
 import { matchTypes, typeCompare} from '../helpers/type';
-import { processNext, sortPipe, pipeTypeDefined, pipeDirValueType, getAllNextPipe } from '../helpers/pipe';
+import * as messages from '../../constants/messages';
+import { sortPipe, pipeTypeDefined, pipeDirValueType, getAllNextPipe } from '../helpers/pipe';
 import { Pipe } from './pipe';
 
 /*
@@ -117,7 +118,7 @@ export class DummyPipe extends Pipe {
         if (matchTypes(this.tempType, type)) {
             this.tempType = typeCompare(this.tempType, type);
         } else { 
-            this.addError('No machean tipos');
+            this.addError(messages.NO_MATCH_TYPE);
         }
     }
 
@@ -131,13 +132,13 @@ export class DummyPipe extends Pipe {
     addNextPipeInfoTempDir(next) {
         if (next.pipe.isInDir(next.inDir)) {
             if(this.isInDir(next.dir)) {
-                this.addError('Loop');
+                this.addError(messages.LOOP);
             } else {
                 this.addOutTempDir(next.dir);
             }
         } else if(next.pipe.isOutDir(next.inDir)) {
             if(this.isOutDir(next.dir)) {
-                this.addError('Loop');
+                this.addError(messages.LOOP);
             } else {
                 this.addInTempDir(next.dir);
             }
@@ -159,7 +160,7 @@ export class DummyPipe extends Pipe {
     nextPipeCalc(next, context, board, enterDir, path=[]) {
         if(this.errors) { return; }
         if(next.error) { this.addError(next.error); return; }
-        if(!next.pipe || !next.connected) { this.addWarning(`No coneccion ${next.dir}`); return; }
+        if(!next.pipe || !next.connected) { this.addWarning(messages.NO_CONNECTED_DIR(next.dir)); return; }
         const newPath = enterDir ? [...path, this] : [this];
         if(next.dir !== enterDir) { next.pipe.calc(context, board, next.dir, newPath); }
         this.addNextPipeInfoTempDir(next);
@@ -297,7 +298,6 @@ export class DummyPipe extends Pipe {
     *   @overider
     */
     snapshot() {
-        const valueType = this.getValueType();
         const dir = this.getDirectionType();
         return {
             ...(super.snapshot()),

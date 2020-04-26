@@ -1,4 +1,5 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../../constants/constants';
+import * as messages from '../../constants/messages';
 import { matchTypes, typeCompare} from '../helpers/type';
 import { nextPipeDirection, pipeDirValueType } from '../helpers/pipe';
 import { Pipe } from './pipe';
@@ -39,7 +40,7 @@ export class EndPipe extends Pipe {
             const next = nextPipeDirection(this, DIRECTION.TOP);
             //Manejo de errores
             if (next.error) { this.addError(next.error); return }
-            if (!next.pipe || !next.connected) { this.addWarning("No esta conectado a nada"); return; }
+            if (!next.pipe || !next.connected) { this.addWarning(messages.NO_CONNECTED); return; }
             //Process Next
             const newPath = enterDir ? [...path, this] : [this];
             if(next.dir !== enterDir) next.pipe.calc(context, board, next.inDir, newPath);
@@ -48,10 +49,10 @@ export class EndPipe extends Pipe {
             if (matchTypes(this.tempType, type)) {
                 this.tempType = typeCompare(this.tempType, type);
             } else { 
-                this.addError('No machean tipos');
+                this.addError(messages.NO_MATCH_TYPE);
                 return;
             }
-            if (this.tempType === VALUES_TYPES.BOOLEAN) { this.addError('No puede haber Salidas Booleanas'); return; }
+            if (this.tempType === VALUES_TYPES.BOOLEAN) { this.addError(messages.NO_BOOLEAN); return; }
             //Post Process
             if(!this.errors && !pipeDirValueType(this)) {
                 context.unMark(this.getPos());

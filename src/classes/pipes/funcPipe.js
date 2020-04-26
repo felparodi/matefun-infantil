@@ -1,4 +1,5 @@
 import { PIPE_TYPES, VALUES_TYPES, METHOD_FUNCTION, DIRECTION } from '../../constants/constants';
+import * as messages from '../../constants/messages';
 import { matchTypes, isDefined, isGeneric, isList, listGenericSubs, genericReplace} from '../helpers/type';
 import { processNext, sortPipe, pipeTypeDefined, pipeDirValueType } from '../helpers/pipe';
 import { Pipe } from './pipe'
@@ -66,7 +67,7 @@ export class FuncPipe extends Pipe {
             const type = this.getDirValueType(dir);
             if(isDefined(type)) {
                 if(!matchTypes(type, newType)) {
-                    this.addError('No machea tipo');
+                    this.addError(messages.NO_MATCH_TYPE);
                 }
             } else if(isGeneric(type)) {
                 let subsType = newType;
@@ -95,7 +96,7 @@ export class FuncPipe extends Pipe {
     nextPipeCalc(next, context, board, enterDir, path) {
         if (this.errors) { return; }
         if (next.error) { this.addError(next.error); return; }
-        if (!next.pipe || !next.connected) { this.addWarning(`No connectado ${next.dir}`); return; }
+        if (!next.pipe || !next.connected) { this.addWarning(messages.NO_CONNECTED_DIR(next.dir)); return; }
         //Process next pipe
         const newPath = enterDir ? [...path, this] : [this];
         if (next.dir !== enterDir) next.pipe.calc(context, board, next.inDir, newPath);
@@ -117,7 +118,7 @@ export class FuncPipe extends Pipe {
             const notDummy = path
                 .filter((p) => p.getType() !== PIPE_TYPES.DUMMY);
             if(notDummy.length === 1) {
-                this.addError('Loop');
+                this.addError(messages.LOOP);
             }
         } 
     }
