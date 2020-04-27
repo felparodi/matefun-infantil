@@ -31,6 +31,22 @@ import Deer from '../../../icons/deer.svg';
 import Rocket from '../../../icons/rocket.svg'
 import PoliceHat from '../../../icons/policeHat.svg';
 import Plane from '../../../icons/plane.svg';
+import Pizza from '../../../icons/pizza.svg';
+import Pie from '../../../icons/pie.svg';
+import Pancake from '../../../icons/pancake.svg';
+import Bulb from '../../../icons/bulb.svg';
+import Crown from '../../../icons/crown.svg';
+import Leaf from '../../../icons/leaf.svg';
+import Heart from '../../../icons/heart.svg';
+import StartSolid from '../../../icons/startSolid.svg';
+import CookHat from '../../../icons/cookHat.svg';
+import Cloud from '../../../icons/cloud.svg';
+import Bolt from '../../../icons/bolt.svg';
+import Headphone from '../../../icons/headphone.svg';
+import GameController from '../../../icons/game-controller.svg';
+import IceCream from '../../../icons/ice-cream.svg';
+import HeartSolid from '../../../icons/heart-solid.svg';
+import Hamburger from '../../../icons/hamburger.svg';
 
 export function nameIcons(name) {
     switch(name) {
@@ -124,6 +140,38 @@ export function iconIcons(icon) {
             return <PoliceHat/>;
         case iconType.PLANE:
             return <Plane/>;
+        case iconType.PIZZA:
+            return <Pizza/>;
+        case iconType.PIE:
+            return <Pie/>;
+        case iconType.PANCAKE:
+            return <Pancake/>;
+        case iconType.BULB:
+            return <Bulb/>;
+        case iconType.CROWN:
+            return <Crown/>
+        case iconType.LEAF:
+            return <Leaf/>;
+        case iconType.HEART:
+            return <Heart/>;
+        case iconType.START_SOLID:
+            return <StartSolid/>;
+        case iconType.COOK_HAT:
+            return <CookHat/>;
+        case iconType.CLOUD:
+            return <Cloud/>;
+        case iconType.BOLT:
+            return <Bolt/>;
+        case iconType.HEADPHONE:
+            return <Headphone/>;
+        case iconType.GAME_CONTROLLER:
+            return <GameController/>;
+        case iconType.ICE_CREAM:
+            return <IceCream/>;
+        case iconType.HEART_SOLID:
+            return <HeartSolid/>;
+        case iconType.HAMBURGER:
+            return <Hamburger/>;
         default:
             return <TextIcon text={icon}/>;
     }

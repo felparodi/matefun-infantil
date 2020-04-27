@@ -9,6 +9,22 @@ import FunctionIcon from '../pipes/function-parts/FunctionIcon';
 import './CreateFunction.scss';
 
 const ICONS = [
+    iconType.HAMBURGER,
+    iconType.HEART_SOLID,
+    iconType.ICE_CREAM,
+    iconType.GAME_CONTROLLER,
+    iconType.HEADPHONE,
+    iconType.BOLT,
+    iconType.CLOUD,
+    iconType.COOK_HAT,
+    iconType.START_SOLID,
+    iconType.HEART,
+    iconType.LEAF,
+    iconType.CROWN,
+    iconType.BULB,
+    iconType.PANCAKE,
+    iconType.PIE,
+    iconType.PIZZA,
     iconType.HELICOPTER,
     iconType.CAR,
     iconType.DRON,
