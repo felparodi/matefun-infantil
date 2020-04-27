@@ -25,6 +25,12 @@ import Dron from '../../../icons/dron.svg'
 import StudentHat from '../../../icons/studentHat.svg'
 import Snowman from '../../../icons/snowman.svg';
 import Tshirt from '../../../icons/tshirt.svg';
+import School from '../../../icons/school.svg';
+import Rule from '../../../icons/rule.svg';
+import Deer from '../../../icons/deer.svg';
+import Rocket from '../../../icons/rocket.svg'
+import PoliceHat from '../../../icons/policeHat.svg';
+import Plane from '../../../icons/plane.svg';
 
 export function nameIcons(name) {
     switch(name) {
@@ -106,6 +112,18 @@ export function iconIcons(icon) {
             return <Helicopter/>;
         case iconType.CAR:
             return <Car/>;
+        case iconType.SCHOOL:
+            return <School/>;
+        case iconType.RULE:
+            return <Rule/>;
+        case iconType.DEER:
+            return <Deer/>;
+        case iconType.ROCKET:
+            return <Rocket/>;
+        case iconType.POLICE_HAT:
+            return <PoliceHat/>;
+        case iconType.PLANE:
+            return <Plane/>;
         default:
             return <TextIcon text={icon}/>;
     }

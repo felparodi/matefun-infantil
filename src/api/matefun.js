@@ -9,8 +9,7 @@ import { WORKSPACE_FILE_NAME, MY_FUNCTIONS_FILE_NAME } from '../constants/consta
 import { setEvalInstruction, setWorkspaceFunctionBody } from '../redux/matrix/matrixAction';
 import { setWorkspaceFileData, setMyFunctionsFileData, setMyFunctions } from '../redux/environment/environmentAction';
 import store from '../redux/store';
-import * as tost from './toast';
-import { Toast } from 'react-bootstrap';
+import * as toast from './toast';
 
 function updateWorkspace(dispatch, data) {
     dispatch(setWorkspaceFileData(data));
@@ -177,10 +176,10 @@ export function saveInMyFunctions(name, icon) {
                         .then((messages) => {
                             if(messages.find((message) => message.resultado.startsWith('OUTError:'))) {
                                 console.error(messages)
-                                tost.createErrorMessage('No se pudo crear la funcion, revice las piesas con fondo amarillo', funcName)
+                                toast.createErrorMessage('No se pudo crear la funcion, revice las piesas con fondo amarillo', funcName)
                                 return services.editFile(myFunctionsFileData);
                             } else {
-                                tost.createSuccessMessage('Se creo con extito la nueva funcion', funcName)
+                                toast.createSuccessMessage('Se creo con extito la nueva funcion', funcName)
                                 return data
                             }
                         })
@@ -191,7 +190,7 @@ export function saveInMyFunctions(name, icon) {
                 })
                 
         } else {
-            tost.createErrorMessage('No se pudo crear la funcion, ya existe una funcion con ese nombre', funcName)
+            toast.createErrorMessage('No se pudo crear la funcion, ya existe una funcion con ese nombre', funcName)
         }
     }
 }
@@ -209,10 +208,10 @@ export function deleteMyFunctions(name) {
                 .then((messages) => {
                     if(messages.find((message) => message.resultado.startsWith('OUTError:'))) {
                         console.error(messages)
-                        tost.createErrorMessage('No se pudo borrar la funcion', name)
+                        toast.createErrorMessage('No se pudo borrar la funcion', name)
                         return services.editFile(myFunctionsFileData);
                     } else {
-                        Toast.createSuccessMessage('Se a borrado la funcion', name)
+                        toast.createSuccessMessage('Se a borrado la funcion', name)
                         return data
                     }
                 })

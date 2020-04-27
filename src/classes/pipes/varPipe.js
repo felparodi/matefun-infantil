@@ -164,6 +164,9 @@ export class VarPipe extends Pipe {
             dir: {
                 bottom: this.getValueType(),
             },
+            originDir: {
+                bottom: this.type
+            },
             value,
             valueText: valueToString(value, this.getValueType())
         }

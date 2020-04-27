@@ -17,6 +17,13 @@ const ICONS = [
     iconType.WORK_HAT,
     iconType.STUDENT_HAT,
     iconType.TSHIRT,
+    iconType.SCHOOL,
+    iconType.RULE,
+    iconType.DEER,
+    iconType.SNOWMAN,
+    iconType.ROCKET,
+    iconType.POLICE_HAT,
+    iconType.PLANE,
 ];
 
 const ButtonIcon = ({icon, onClick, selected }) => {
@@ -35,7 +42,7 @@ export class CreateFunction extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: true,
+            open: false,
             name: '',
             icon: '',
         }

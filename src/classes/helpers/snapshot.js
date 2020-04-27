@@ -86,6 +86,7 @@ export function cleanSnapshotMatrixInfo(snapshot) {
                     type: pipe.type,
                     dir: pipe.originDir ? pipe.originDir : pipe.dir,
                     name: pipe.name,
+                    icon: pipe.icon,
                     value: pipe.type === PIPE_TYPES.VALUE ? pipe.value : undefined,
                     pos: pipe.pos
                 })  

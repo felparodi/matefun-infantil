@@ -188,6 +188,9 @@ export class EndPipe extends Pipe {
             dir: {
                 top: this.getValueType()
             },
+            originDir: {
+                top: this.type
+            },
             value: this.getValue(),
             valueText: this.getValueText(),
             hasValueError: this.hasValueError(),
