@@ -98,7 +98,7 @@ export class CreateFunction extends React.Component {
         return (
             <Modal 
                 {...modalProps}
-                show={true}
+                show={open}
                 className="CreateFunction">
                 <Modal.Header>Nueva Funcion</Modal.Header>
                 <Modal.Body>
