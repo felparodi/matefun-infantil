@@ -30,3 +30,7 @@ export const GAME_CONTROLLER = 'game-controller';
 export const ICE_CREAM = 'ice-cream';
 export const HEART_SOLID = 'heart-solid';
 export const HAMBURGER = 'hamburger';
+export const AUTUMN_LEAF =  'autumn_leaf'; 
+export const POISON_BOTTLE = 'poison-bottle';
+export const CANDY = 'candy';
+export const GARDENER_HAT = 'gardener-hat';

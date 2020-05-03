@@ -9,6 +9,10 @@ import FunctionIcon from '../pipes/function-parts/FunctionIcon';
 import './CreateFunction.scss';
 
 const ICONS = [
+    iconType.GARDENER_HAT,
+    iconType.CANDY,
+    iconType.POISON_BOTTLE,
+    iconType.AUTUMN_LEAF,
     iconType.HAMBURGER,
     iconType.HEART_SOLID,
     iconType.ICE_CREAM,
@@ -94,7 +98,7 @@ export class CreateFunction extends React.Component {
         return (
             <Modal 
                 {...modalProps}
-                show={open}
+                show={true}
                 className="CreateFunction">
                 <Modal.Header>Nueva Funcion</Modal.Header>
                 <Modal.Body>

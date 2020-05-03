@@ -47,6 +47,10 @@ import GameController from '../../../icons/game-controller.svg';
 import IceCream from '../../../icons/ice-cream.svg';
 import HeartSolid from '../../../icons/heart-solid.svg';
 import Hamburger from '../../../icons/hamburger.svg';
+import AutumnLeaf from '../../../icons/autumn_leaf.svg';
+import PoisonBottle from '../../../icons/poison-bottle.svg';
+import Candy from '../../../icons/candy.svg';
+import GardenerHat from '../../../icons/gardener-hat.svg';
 
 export function nameIcons(name) {
     switch(name) {
@@ -172,6 +176,14 @@ export function iconIcons(icon) {
             return <HeartSolid/>;
         case iconType.HAMBURGER:
             return <Hamburger/>;
+        case iconType.AUTUMN_LEAF:
+            return <AutumnLeaf/>;
+        case iconType.POISON_BOTTLE:
+            return <PoisonBottle/>;
+        case iconType.CANDY:
+            return <Candy/>;
+        case iconType.GARDENER_HAT:
+            return <GardenerHat/>;
         default:
             return <TextIcon text={icon}/>;
     }
