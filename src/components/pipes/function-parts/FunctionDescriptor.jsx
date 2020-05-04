@@ -52,7 +52,7 @@ import PoisonBottle from '../../../icons/poison-bottle.svg';
 import Candy from '../../../icons/candy.svg';
 import GardenerHat from '../../../icons/gardener-hat.svg';
 
-export function nameIcons(name) {
+export function nameDescriptor(name) {
     switch(name) {
         case METHOD_FUNCTION.COLOR:
             return <Color/>;
@@ -112,7 +112,7 @@ export function nameIcons(name) {
     }
 }
 
-export function iconIcons(icon) {
+export function iconDescriptor(icon) {
     switch(icon) {
         case iconType.WORK_HAT:
             return <WorkHat/>;
@@ -189,8 +189,8 @@ export function iconIcons(icon) {
     }
 }
 
-const FunctionIcon = ({name, icon}) => {
-   return icon ? iconIcons(icon) : nameIcons(name)
+const FunctionDescriptor = ({name, icon}) => {
+   return icon ? iconDescriptor(icon) : nameDescriptor(name)
 }
 
-export default FunctionIcon;
+export default FunctionDescriptor;

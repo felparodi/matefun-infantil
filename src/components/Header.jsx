@@ -1,9 +1,10 @@
 import React from 'react';
-import { Navbar, Nav, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { openConfig } from '../api/config';
 import { logout } from '../api/user';
-
+import Icon from '../components/Icon';
+import * as icon from '../constants/icons';
 
 export class Header extends React.Component {
 
@@ -13,14 +14,19 @@ export class Header extends React.Component {
 
     render() {
         return (
-            <Navbar bg="primary" variant="dark" style={{ marginBottom: '15px' }}>
-                <Navbar.Brand >Matefun Infantil</Navbar.Brand>
+            <Navbar variant="dark" style={{ marginBottom: '15px', backgroundColor:'#004BA8'}}>
+                <Navbar.Brand>Matefun Infantil</Navbar.Brand>
                 <Nav className="mr-auto"></Nav>
 
-                <DropdownButton alignRight id="dropdown-basic-button" title={(this.props.userData) ? this.props.userData.nombre + " " + this.props.userData.apellido : ""}>
-                    <Dropdown.Item onClick={this.props.openConfig}>Configuracion</Dropdown.Item>
-                    <Dropdown.Item onClick={this.props.logout}>Cerrar sesión</Dropdown.Item>
-                </DropdownButton>
+                <Dropdown>
+                    <Dropdown.Toggle>
+                        <Icon icon={icon.USER}/> {(this.props.userData) ? this.props.userData.nombre + " " + this.props.userData.apellido : ""}
+                    </Dropdown.Toggle> 
+                    <Dropdown.Menu>
+                        <Dropdown.Item onClick={this.props.openConfig}>Configuracion</Dropdown.Item>
+                        <Dropdown.Item onClick={this.props.logout}>Cerrar sesión</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
 
             </Navbar>
         )

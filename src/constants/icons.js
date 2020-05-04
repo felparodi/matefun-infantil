@@ -1,4 +1,32 @@
-export const CALCULATOR = 'caculator';
+//toolbox
+export const CALCULATOR = 'calculator';
+export const SHAPES = 'shapes';
+
+//ui buttons
+export const USER = 'user';
+export const SAVE = 'save';
+export const CLEAN = 'clean';
+export const PLAY = 'play';
+
+//primitive functions
+export const PLUS = 'plus';
+export const MINUS = 'minus';
+export const TIMES = 'times';
+export const DIVIDE = 'divide';
+
+export const EQUAL = 'equal';
+export const NOT_EQUAL = 'not-equal';
+export const GREATER = 'greater';
+export const GREATER_EQUAL = 'greater-equal';
+export const LESS = 'less';
+export const LESS_EQUAL = 'less-equal';
+
+export const CIRCLE = 'circle';
+export const ROTATE = 'rotate';
+export const PAINT = 'paint';
+export const MOVE = 'move';
+export const SCALE = 'scale';
+
 export const SNOWMAN = 'snowman';
 export const TSHIRT = 'tshirt';
 export const CAR = 'car';

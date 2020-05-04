@@ -5,6 +5,8 @@ import Consola from './Console';
 import { clean } from '../api/board';
 import CreateFunction from './modal/CreateFunction';
 import { loadFunctionDefinition, evaluate } from '../api/matefun';
+import Icon from '../components/Icon';
+import * as icon from '../constants/icons';
 
 const debugMode = localStorage.getItem('debug-mode') === 'true';
 
@@ -39,9 +41,15 @@ export class Actions extends React.Component {
         return( 
             <div className="actions">
                 <div className="actions-button">
-                    <Button variant="primary" onClick={this.clean}>Limpiar</Button>
-                    <Button variant="primary" disabled={!canProcess} onClick={this.evaluate}>Evaluar</Button>
-                    <Button variant="primary" disabled={!canSaveFunction} onClick={() => this.setState({openSaveFunction: true})}>Guardar en Mis funciones</Button>
+                    <Button variant="primary" onClick={this.clean}>
+                        <Icon icon={icon.CLEAN}/> Limpiar
+                    </Button>
+                    <Button variant="primary" disabled={!canProcess} onClick={this.evaluate}>
+                        <Icon icon={icon.PLAY}/> Probar
+                    </Button>
+                    <Button variant="primary" disabled={!canSaveFunction} onClick={() => this.setState({openSaveFunction: true})}>
+                        <Icon icon={icon.SAVE}/> Guardar
+                    </Button>
                 { debugMode && <Button variant="primary" onClick={() => this.setState({openConsole:!openConsole})}>Consola</Button> }
                 </div>
                 <CreateFunction show={openSaveFunction} onHide={() => this.setState({openSaveFunction: false})}/>

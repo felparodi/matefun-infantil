@@ -9,13 +9,23 @@ import * as icon from './icons';
 export const COMPLEX = 0;
 export const ToolboxGroups = [
     {
+        value: 'inputs',
+        label: 'Inputs',
+        icon: null,
+        complex: 0,
+        pipes: [
+            { pipe: new ConstPipe(0), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.NEGATIVO), complex: 1 },
+            { pipe: new ConstPipe({color:'Negro'}, VALUES_TYPES.COLOR), complex: 0 },
+            { pipe: new ConstPipe({x:0, y:0}, VALUES_TYPES.POINT), complex: 0 }
+        ]
+    },
+    {
         value: 'mat',
         label: 'Mate',
         icon: icon.CALCULATOR,
         complex: 0,
         pipes: [
-            { pipe: new ConstPipe(0), complex: 0 },
-            { pipe: getDefaultFunction(METHOD_FUNCTION.NEGATIVO), complex: 1 },
             { pipe: getDefaultFunction(METHOD_FUNCTION.ADD), complex: 0 },
             { pipe: getDefaultFunction(METHOD_FUNCTION.SUB), complex: 0 },
             { pipe: getDefaultFunction(METHOD_FUNCTION.MUL), complex: 0 },
@@ -64,11 +74,9 @@ export const ToolboxGroups = [
     {
         value: 'figures',
         label: 'Figuras',
-        icon: null,
+        icon: icon.SHAPES,
         complex: 0,
         pipes: [
-            { pipe: new ConstPipe({color:'Negro'}, VALUES_TYPES.COLOR), complex: 0 },
-            { pipe: new ConstPipe({x:0, y:0}, VALUES_TYPES.POINT), complex: 0 },
             { pipe: getDefaultFunction(METHOD_FUNCTION.CIRC), complex: 0 },
             { pipe: getDefaultFunction(METHOD_FUNCTION.RECT), complex: 0 },
             //Estos no estan funcionado, LINEA no esta en nuestro interpret

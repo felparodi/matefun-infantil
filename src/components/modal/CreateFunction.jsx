@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { saveInMyFunctions } from '../../api/matefun';
 import * as iconType from '../../constants/icons';
 import Base from '../pipes/function-parts/Base';
-import FunctionIcon from '../pipes/function-parts/FunctionIcon';
+import FunctionDescriptor from '../pipes/function-parts/FunctionDescriptor';
 import './CreateFunction.scss';
 
 const ICONS = [
@@ -51,7 +51,7 @@ const ButtonIcon = ({icon, onClick, selected }) => {
         <div className={classNames('ButtonIcon', {'selected':selected })}>
             <svg viewBox="0 0 40 40" onClick={() => onClick & onClick(icon)}>
                 <Base/>
-                <FunctionIcon icon={icon} />
+                <FunctionDescriptor icon={icon} />
             </svg>
         </div>
     );
