@@ -50,7 +50,11 @@ export class Actions extends React.Component {
                     <Button variant="primary" disabled={!canSaveFunction} onClick={() => this.setState({openSaveFunction: true})}>
                         <Icon icon={icon.SAVE}/> Guardar
                     </Button>
-                { debugMode && <Button variant="primary" onClick={() => this.setState({openConsole:!openConsole})}>Consola</Button> }
+                    { debugMode && 
+                        <Button variant="primary" onClick={() => this.setState({openConsole:!openConsole})}>
+                            <Icon icon={icon.CONSOLE}/> Consola
+                        </Button> 
+                    }
                 </div>
                 <CreateFunction show={openSaveFunction} onHide={() => this.setState({openSaveFunction: false})}/>
                 { debugMode && <Consola openConsole={openConsole}/> }

@@ -53,7 +53,8 @@ export class FuncPipe extends React.Component {
                     <Output join={isJoinBottom} onClick={this.joinOutput} type={bottomType}/>
                     {![METHOD_FUNCTION.ADD,METHOD_FUNCTION.SUB,METHOD_FUNCTION.MUL,METHOD_FUNCTION.DIV,METHOD_FUNCTION.CIRC,
                     METHOD_FUNCTION.COLOR,METHOD_FUNCTION.EQUAL,METHOD_FUNCTION.N_EQUAL,METHOD_FUNCTION.GREAT,METHOD_FUNCTION.E_GREAT,
-                    METHOD_FUNCTION.LEST,METHOD_FUNCTION.E_LEST,METHOD_FUNCTION.MOVER,METHOD_FUNCTION.ESCALAR].includes(pipe.name) &&
+                    METHOD_FUNCTION.LEST,METHOD_FUNCTION.E_LEST,METHOD_FUNCTION.MOVER,METHOD_FUNCTION.ESCALAR,METHOD_FUNCTION.JUNTAR]
+                    .includes(pipe.name) &&
                         <FuncDescriptor name={pipe.name} icon={pipe.icon}/>
                     }
                     {pipe.name===METHOD_FUNCTION.ADD &&
@@ -129,6 +130,11 @@ export class FuncPipe extends React.Component {
                     {pipe.name===METHOD_FUNCTION.ESCALAR &&
                         <svg viewBox="0 0 12 30">
                             <Icon icon={icon.SCALE} color="white"/>
+                        </svg>
+                    }
+                    {pipe.name===METHOD_FUNCTION.JUNTAR &&
+                        <svg viewBox="0 0 12 30">
+                            <Icon icon={icon.GROUP} color="white"/>
                         </svg>
                     }
                 </svg>

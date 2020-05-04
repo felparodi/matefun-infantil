@@ -20,7 +20,9 @@ function getFontAwesomeIcon(icon) {
         case icons.PLAY:
             return fas.faPlay
         case icons.SAVE:
-            return fas.faSave    
+            return fas.faSave
+        case icons.CONSOLE:
+            return fas.faTerminal            
         // primitive functions
         case icons.PLUS:
             return fas.faPlus
@@ -51,7 +53,9 @@ function getFontAwesomeIcon(icon) {
         case icons.MOVE:
             return fas.faArrowsAlt
         case icons.SCALE:
-            return fas.faExpand            
+            return fas.faExpand       
+        case icons.GROUP:
+            return fas.faObjectGroup        
         default:    
             return null;
     }

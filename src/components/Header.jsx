@@ -18,8 +18,8 @@ export class Header extends React.Component {
                 <Navbar.Brand>Matefun Infantil</Navbar.Brand>
                 <Nav className="mr-auto"></Nav>
 
-                <Dropdown>
-                    <Dropdown.Toggle>
+                <Dropdown alignRight>
+                    <Dropdown.Toggle style={{backgroundColor:'transparent',borderStyle:'none'}}>
                         <Icon icon={icon.USER}/> {(this.props.userData) ? this.props.userData.nombre + " " + this.props.userData.apellido : ""}
                     </Dropdown.Toggle> 
                     <Dropdown.Menu>

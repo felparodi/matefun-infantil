@@ -7,6 +7,7 @@ export const USER = 'user';
 export const SAVE = 'save';
 export const CLEAN = 'clean';
 export const PLAY = 'play';
+export const CONSOLE = 'console';
 
 //primitive functions
 export const PLUS = 'plus';
@@ -26,6 +27,7 @@ export const ROTATE = 'rotate';
 export const PAINT = 'paint';
 export const MOVE = 'move';
 export const SCALE = 'scale';
+export const GROUP = 'group';
 
 export const SNOWMAN = 'snowman';
 export const TSHIRT = 'tshirt';
