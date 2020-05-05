@@ -26,10 +26,10 @@ export class Main extends React.Component {
                 <Header />
                 <div className="container">
                     <div className="body">
-                        <div className="toolbox-container">
+                        <div className="toolbox-container col-sm-1">
                             <Toolbox onDrop={this.onDropToolbox} />
                         </div>
-                        <div className="board-container">
+                        <div className="board-container col-sm-4">
                             <Board />
                         </div>
                     </div>
