@@ -39,25 +39,26 @@ export class Actions extends React.Component {
         const { openConsole, openSaveFunction  } = this.state;
         const { canProcess, canSaveFunction } = this.props;
         return( 
-            <div className="actions">
-                <div className="actions-button">
-                    <Button variant="primary" onClick={this.clean}>
+            <div>
+                <div className="action-buttons">
+                    <Button className="mf-button-outline" onClick={this.clean}>
                         <Icon icon={icon.CLEAN}/> Limpiar
                     </Button>
-                    <Button variant="primary" disabled={!canProcess} onClick={this.evaluate}>
-                        <Icon icon={icon.PLAY}/> Probar
-                    </Button>
-                    <Button variant="primary" disabled={!canSaveFunction} onClick={() => this.setState({openSaveFunction: true})}>
-                        <Icon icon={icon.SAVE}/> Guardar
-                    </Button>
                     { debugMode && 
-                        <Button variant="primary" onClick={() => this.setState({openConsole:!openConsole})}>
+                        <Button className="mf-button-outline ml-1" onClick={() => this.setState({openConsole:!openConsole})}>
                             <Icon icon={icon.CONSOLE}/> Consola
                         </Button> 
                     }
+                    <Button className="mf-button-outline ml-1" disabled={!canSaveFunction} onClick={() => this.setState({openSaveFunction: true})}>
+                        <Icon icon={icon.SAVE}/> Guardar
+                    </Button>
+                    <Button className="mf-button-primary ml-5" disabled={!canProcess} onClick={this.evaluate}>
+                        <Icon icon={icon.PLAY}/> Probar
+                    </Button>
                 </div>
                 <CreateFunction show={openSaveFunction} onHide={() => this.setState({openSaveFunction: false})}/>
-                { debugMode && <Consola openConsole={openConsole}/> }
+                
+                {/*{ debugMode && <Consola openConsole={openConsole}/> }*/}
             </div>
         );
     }

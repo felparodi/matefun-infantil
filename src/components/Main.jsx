@@ -6,6 +6,8 @@ import Board from './Board/Board'
 import Actions from './Actions';
 import Header from './Header';
 import { prepareEnvironment } from '../api/matefun';
+import { DisplayResult } from './modal/DisplayResult';
+import { Container, Row, Col } from 'react-bootstrap';
 
 import './Main.scss';
 import Configuration from './modal/Configuration';
@@ -13,6 +15,11 @@ import Configuration from './modal/Configuration';
 export class Main extends React.Component {
     constructor() {
         super();
+        this.state= {
+            pipe: undefined,
+            showResult: false
+        }
+        this.displayResult= this.displayResult.bind(this);
     }
 
     componentDidMount() {
@@ -20,20 +27,47 @@ export class Main extends React.Component {
         this.props.prepareEnvironment(userData);
     }
 
+    displayResult(pipe){
+        this.setState({pipe: pipe, showResult: true});
+    }
+
     render() {
+        var pipe= this.state.pipe;
+        var showResult= this.state.showResult;
         return (
             <div className="Main">
                 <Header />
                 <div className="container">
                     <div className="body">
-                        <div className="toolbox-container col-sm-1">
-                            <Toolbox onDrop={this.onDropToolbox} />
-                        </div>
-                        <div className="board-container col-sm-4">
-                            <Board />
+                        <div className="col-sm-7">
+                            <div className="panel">
+                                <div className="row" style={{height:'100%'}}>
+                                    <div className="toolbox-container col-sm-2">
+                                        <Toolbox onDrop={this.onDropToolbox} />
+                                    </div>
+                                    <div className="col-sm-10" style={{height:'100%'}}>
+                                        <Actions />
+                                        <div class="board-container"> 
+                                            <Board displayResult={this.displayResult}/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                    
+                        <div className="col-sm-5">
+                            <div className="panel">
+                            {pipe && 
+                                <DisplayResult 
+                                    show={showResult}
+                                    value={pipe.value}
+                                    type={pipe.dir.top}
+                                    valuetext={pipe.valueText}
+                                    hasError={pipe.hasValueError}
+                                    onHide={this.handlerHiddenResult} />
+                            }
+                            </div>
                         </div>
                     </div>
-                    <Actions />
                 </div>
                 <Configuration/>
             </div>

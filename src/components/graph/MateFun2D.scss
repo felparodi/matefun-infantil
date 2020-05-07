@@ -16,13 +16,6 @@
     .buttons {
         width: 4rem;
         button {
-            &.inactive {
-                background-color: rgba(216, 216, 216, 0.18);
-                fill: rgba(216, 216, 216, 0.69);
-                border-color: rgba(216, 216, 216, 0.69);
-            }
-            background-color: rgb(216, 216, 216);
-            border-radius: 0.3rem;
             margin: 0.5rem;
             svg {
                 width: 2rem;

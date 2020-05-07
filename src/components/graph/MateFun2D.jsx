@@ -137,11 +137,11 @@ export class MateFun2D extends React.Component {
         return (
             <div className='MateFun2D'>
                 <div className='buttons'>
-                    <button className={classNames({'inactive': !toggleGrid})} onClick={this.toggleGrid}><Grid/></button>
-                    <button className={classNames({'inactive': !toggleAxis})} onClick={this.toggleAxis}><Axis/></button>
-                    <button onClick={this.zoomIn}><FontAwesomeIcon icon={faSearchPlus}/></button>
-                    <button onClick={this.zoomOut}><FontAwesomeIcon icon={faSearchMinus}/></button>
-                    <button onClick={this.recenterPlot}><FontAwesomeIcon icon={faArrowsAlt}/></button>
+                    <button className={"mf-button-outline" + classNames({'inactive': !toggleGrid})} onClick={this.toggleGrid}><Grid/></button>
+                    <button className={"mf-button-outline" + classNames({'inactive': !toggleAxis})} onClick={this.toggleAxis}><Axis/></button>
+                    <button className="mf-button-outline" onClick={this.zoomIn}><FontAwesomeIcon icon={faSearchPlus}/></button>
+                    <button className="mf-button-outline" onClick={this.zoomOut}><FontAwesomeIcon icon={faSearchMinus}/></button>
+                    <button className="mf-button-outline" onClick={this.recenterPlot}><FontAwesomeIcon icon={faArrowsAlt}/></button>
                     {
                         animation && (play ? 
                         <button onClick={this.pause}><FontAwesomeIcon icon={faPause}/></button> :

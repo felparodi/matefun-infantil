@@ -21,14 +21,14 @@ export class DisplayResult extends React.Component {
         delete(modalProps.hasError);
         const graph = type  === VALUES_TYPES.FIGURE  || type === VALUES_TYPES.list(VALUES_TYPES.FIGURE);
         return (
-            <Modal className={classNames("DisplayResult", {'no-graph': !graph} )} {...modalProps}>
+            <div>
                 <p className="title">({hasError ? 'Error' : type})</p>
                 { 
                     !hasError && graph ?
                     <MateFun2D value={value} type={type}/> :
                     <textarea className="info result" readOnly value={valuetext}/>
                 }
-            </Modal>
+            </div>
         )
     }
 }

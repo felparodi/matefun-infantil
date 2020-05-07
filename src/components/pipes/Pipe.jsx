@@ -36,6 +36,11 @@ class Pipe extends React.Component {
         this.state = {
             drag : false
         }
+        this.displayResult= this.displayResult.bind(this);
+    }
+
+    displayResult(pipe){
+        this.props.displayResult(pipe);
     }
 
     render() {

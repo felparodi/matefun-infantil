@@ -1,5 +1,9 @@
+$MainColor: #D55D0D;
+$SecondaryColor: #F8C631;
+
 .Main {
     height: 100vh;
+    background-color: white;
     .container {
         position: relative;
         max-width: none;
@@ -7,8 +11,6 @@
             display: flex;
             height: 90vh;
             .board-container {
-                margin-left: 1rem;
-                border: 2px solid #007bff;
                 height: 100%;
                 max-width: 100%;
                 overflow: scroll;
@@ -33,18 +35,6 @@
         }
     }
     .actions {
-        position: absolute;
-        top: -10px;
-        right: 0;
-        .actions-button {
-            margin-right: 3rem;
-            .btn {
-                margin: 0 0.2rem;
-            }
-            .active {
-                background-color:red;
-            }
-        }
         .actions-info {
             &.hidden{
                 display: none;
@@ -77,4 +67,45 @@
             }
         }
     }
+}
+
+.action-buttons{    
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.mf-button-primary {
+    color: $MainColor;;
+    background-color: $SecondaryColor;
+    border-color: transparent;
+    border-radius: 16px;
+    border-width: 1.5px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.mf-button-primary:hover {
+    background-color: $MainColor;
+    border-color: transparent;
+}
+
+.mf-button-outline {
+    color: $MainColor;
+    background-color: transparent;
+    border-color: $MainColor;
+    border-radius: 16px;
+    border-width: 1.5px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.mf-button-outline:hover {
+    background-color: $MainColor;
+    border-color: transparent;
+}
+
+.panel {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px #ccc;
+    height: 100%
 }

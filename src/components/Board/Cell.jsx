@@ -8,6 +8,11 @@ class Cell extends React.Component {
 
     constructor(props) {
         super();
+        this.displayResult= this.displayResult.bind(this);
+    }
+
+    displayResult(pipe){
+        this.props.displayResult(pipe);
     }
 
     render() {
@@ -15,7 +20,7 @@ class Cell extends React.Component {
         return connectDropTarget(
             <div className={classNames('Cell', { 'over': isOver })} 
                 onDoubleClick={onDoubleClick}>
-                { content &&  <Pipe onDrop={onDrop} pipe={content} origin="board"/>}
+                { content &&  <Pipe onDrop={onDrop} pipe={content} origin="board" displayResult={this.displayResult}/>}
             </div>
         )
     }

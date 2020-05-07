@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { joinInput, isEqualJoin } from '../../api/board';
-import { DisplayResult } from '../modal/DisplayResult';
 import InputTop from './function-parts/InputTop';
 import { VALUES_TYPES, DIRECTION } from '../../constants/constants';
 import TextIcon from './function-parts/TextIcon';
@@ -44,7 +43,8 @@ export class EndPipe extends React.Component {
         const { origin, pipe } = this.props;
         if (origin === 'board') {
             if(pipe.value) {
-                this.setState({showResult : true})
+                this.props.displayResult(pipe);
+                //this.setState({showResult : true})
             }
         }
     }
@@ -66,13 +66,6 @@ export class EndPipe extends React.Component {
         const isSelectJoin = pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.TOP} , endJoin)
         return (
             <React.Fragment>
-                <DisplayResult 
-                    show={showResult}
-                    value={pipe.value}
-                    type={pipe.dir.top}
-                    valuetext={pipe.valueText}
-                    hasError={pipe.hasValueError}
-                    onHide={this.handlerHiddenResult} />
                 <svg onDoubleClick={this.openDisplayResult} viewBox="0 0 40 40">
                     <g transform="rotate(-180 20 20)">
                         <path d="M 20 0 L 0 20 L 10 30 L 10 40 L 30 40 L 30 30 L 40 20 z"/>
