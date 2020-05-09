@@ -1,19 +1,20 @@
 
 import * as matrixAction from '../redux/matrix/matrixActionTypes';
 import { MatrixPipe, equalsPos as equalsPos } from '../classes/matrix';
-import { BOARD_ROWS, BOARD_COLS } from '../constants/constants';
+import { BOARD_ROWS, BOARD_COLS, PIPE_TYPES } from '../constants/constants';
 import * as snapHelper from '../classes/helpers/snapshot';
-import { updateBoard } from '../redux/matrix/matrixAction';
+import * as actions from '../redux/matrix/matrixAction';
+import store from '../redux/store';
 
 let matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
-let joinList = {start: null, end:null }
+let joinList = { start: null, end:null }
 
 export function loadPendingBoard() {
     return (dispatch) => {
         const matrixJSON = sessionStorage.getItem('matrix');
         if (matrixJSON) {
             const savedMatrix = JSON.parse(matrixJSON);
-            matrix = matrixFromSnapshot(savedMatrix)
+            matrix = matrixFromSnapshot(savedMatrix);
         }
         updateMatrix(dispatch);
     }
@@ -22,8 +23,8 @@ export function loadPendingBoard() {
 export function matrixFromSnapshot(savedMatrix) {
     var matrix = new MatrixPipe(savedMatrix.size.x, savedMatrix.size.y);
     const pipesBulk = savedMatrix.pipes.map((snapPipe) => ({
-            pos: snapPipe.pos,
-            pipe: snapHelper.createPipeToSnap(snapPipe)
+        pos: snapPipe.pos,
+        pipe: snapHelper.createPipeToSnap(snapPipe)
     }))
     matrix.addPipeBulk(pipesBulk);
     return matrix;
@@ -31,6 +32,7 @@ export function matrixFromSnapshot(savedMatrix) {
 
 export function dropPipe(drop) {
     return (dispatch) => {
+        const { isEditMode } = store.getState().matrix
         const {origin, pos, dropEffect, pipe} = drop;
         if(origin === 'board') {
             if(!pipe.pos || dropEffect === 'copy') {
@@ -44,20 +46,22 @@ export function dropPipe(drop) {
             }
         }
         matrix.endWork();
-        updateMatrix(dispatch);
+        updateMatrix(dispatch, isEditMode);
     }
 }
 
 export function setPipeValue(x, y, value) {
     return (dispatch) => {
+        const { isEditMode } = store.getState().matrix
         matrix.setPipeValue(x, y, value);
-        updateMatrix(dispatch);
+        updateMatrix(dispatch, isEditMode);
     }
 }
 
 export function clean() {
     return (dispatch) => {
-       cleanAux(dispatch);
+        dispatch(actions.setEditMode(false));
+        cleanAux(dispatch);
     }
 }
 
@@ -68,34 +72,38 @@ function cleanAux(dispatch) {
 
 export function startWork() {
     return (dispatch) => {
+        const { isEditMode } = store.getState().matrix;
         matrix.startWork();
-        updateMatrix(dispatch);
+        updateMatrix(dispatch, isEditMode);
     }
 }
 
 export function endWork() {
     return (dispatch) => {
+        const { isEditMode } = store.getState().matrix;
         matrix.endWork();
-        updateMatrix(dispatch);
+        updateMatrix(dispatch, isEditMode);
     }
 }
 
 export function addWorkingPipe(x, y) {
     return (dispatch) => {
+        const { isEditMode } = store.getState().matrix;
         const pipe = matrix.value(x, y);
         if(pipe && pipe.isWorking) {
             matrix.endWork();
         } else {
             matrix.addWorkPipe({x, y});
         }
-        updateMatrix(dispatch);
+        updateMatrix(dispatch, isEditMode);
     }
 }
 
 export function join(j1, j2) {
     return (dispatch) => {
+        const { isEditMode } = store.getState().matrix;
         matrix.join(j1, j2);
-        updateMatrix(dispatch)
+        updateMatrix(dispatch, isEditMode);
     }
 }
 
@@ -150,11 +158,13 @@ function setMateFunValueAux(dispatch, value) {
     updateMatrix(dispatch);
 }
 
-function updateMatrix(dispatch) {
+function updateMatrix(dispatch, isEditMode) {
     const snapshot = matrix.snapshot();
-    const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
-    sessionStorage.setItem('matrix', JSON.stringify(saveSnap));
-    dispatch(updateBoard(snapshot));
+    if(!isEditMode) {
+        const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
+        sessionStorage.setItem('matrix', JSON.stringify(saveSnap));
+    }
+    dispatch(actions.updateBoard(snapshot));
 }
 
 export function getMatrix() {
@@ -171,4 +181,25 @@ export function getFunctionDefinition(name) {
 
 export function getMatrixSnapshot() {
     return matrix.snapshot();
+}
+
+export function cancelEdit() {
+    return (dispatch) => {
+        dispatch(actions.setEditMode(false));
+        loadPendingBoard()(dispatch);
+    }
+}
+
+export function editCustomFunction(customFuncSnap) {
+    return (dispatch) => {
+        console.log(customFuncSnap);
+        if(customFuncSnap.type === PIPE_TYPES.CUSTOM) {
+            const customMatrix = JSON.parse(customFuncSnap.body);
+            debugger;
+            matrix = matrixFromSnapshot(customMatrix.snapshot);
+            dispatch(actions.setEditMode(true, customFuncSnap.name));
+            debugger;
+            updateMatrix(dispatch, true);
+        }
+    }
 }

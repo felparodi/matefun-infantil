@@ -4,7 +4,7 @@ import * as webSocket from '../server_connection/webSocket';
 import * as snapHelper from '../classes/helpers/snapshot';
 import * as typeHelper from '../classes/helpers/type';
 import { CustomFuncPipe } from '../classes/pipes/customFuncPipe'
-import { setMateFunValue, getEvaluateFunction, getFunctionDefinition, getMatrixSnapshot } from './board';
+import { setMateFunValue, getEvaluateFunction, getFunctionDefinition, getMatrixSnapshot, clean, cancelEdit } from './board';
 import { WORKSPACE_FILE_NAME, MY_FUNCTIONS_FILE_NAME } from '../constants/constants';
 import { setEvalInstruction, setWorkspaceFunctionBody } from '../redux/matrix/matrixAction';
 import { setWorkspaceFileData, setMyFunctionsFileData, setMyFunctions } from '../redux/environment/environmentAction';
@@ -104,6 +104,8 @@ const METADATA_REGEX = /{-M:.*-}/;
 const COMMENT_REGEX = /{-.*-}/g;
 const FUNCTION_SING_REGEX = /\s*(\w+)\s?::\s?(.*)\s?->\s?(\w+)/g;
 const ICON_REGEX = /{-I:([\w\d-]+)-}/g
+const ATTR_REGEX = /{-A:(.*):A-}/g
+const RETURN_REGEX = /{-R:(.*):R-}/g
 
 function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
 
@@ -153,7 +155,32 @@ function newFunctionBlock(name, icon) {
     const functionMetadata = metadataSerialize(name, getMatrixSnapshot());
     const functionDefinition = getFunctionDefinition(name);
     const iconInfo = icon ?`{-I:${icon}-}\n` : ''
-    return `{-FS:${name}-}\n${iconInfo}${functionMetadata}\n${functionDefinition.body}\n{-FF:${name}-}`;
+    //const attr = `{-A:${attrs}:A-}`;
+    //const ret = `{-R:${ret}:R-}`
+    return `{-FS:${name}-}\n${iconInfo}${functionMetadata}\n${functionDefinition.body}\n{-FF:${name}-}\n`;
+}
+
+function editMyFunctionFile(newMyFunctionsFileData, dispatch) {
+    const { myFunctionsFileData } = store.getState().environment;
+    return services.editFile(newMyFunctionsFileData)
+        .then((data) => {
+            const { userData } = store.getState().user;
+            return webSocket.loadFile(userData, data.id)
+                .then((messages) => {
+                    if(messages.find((message) => message.resultado.startsWith('OUTError:'))) {
+                        console.error(messages)
+                        return services.editFile(myFunctionsFileData)
+                            .then(data => ({data, success:false}));
+                    } else {
+                        return { data, success: true }
+                    }
+                })
+            })
+            .then(({data, success}) => {
+                updateMyFunction(dispatch, data);
+                myFunctionsFileToToolboxPipes(dispatch, data);
+                return success ? Promise.resolve(data) : Promise.reject(data);
+            })
 }
 
 export function saveInMyFunctions(name, icon) {
@@ -169,28 +196,43 @@ export function saveInMyFunctions(name, icon) {
         if(!functionNames || functionNames.indexOf(funcName) === -1) {
             const myFunctionBlock = newFunctionBlock(funcName, icon);
             newMyFunctionFileData.contenido = `${contenido}\n${myFunctionBlock}`;
-            services.editFile(newMyFunctionFileData)
-                .then((data) => {
-                    const { userData } = store.getState().user;
-                    return webSocket.loadFile(userData, data.id)
-                        .then((messages) => {
-                            if(messages.find((message) => message.resultado.startsWith('OUTError:'))) {
-                                console.error(messages)
-                                toast.createErrorMessage('No se pudo crear la funcion, revice las piesas con fondo amarillo', funcName)
-                                return services.editFile(myFunctionsFileData);
-                            } else {
-                                toast.createSuccessMessage('Se creo con extito la nueva funcion', funcName)
-                                return data
-                            }
-                        })
+            editMyFunctionFile(newMyFunctionFileData, dispatch)
+                .then(() => {
+                    toast.createSuccessMessage('Se creo con extito la nueva funcion', funcName);
+                    clean()(dispatch);
                 })
-                .then((data) => {
-                    updateMyFunction(dispatch, data);
-                    myFunctionsFileToToolboxPipes(dispatch, data);
-                })
-                
+                .catch(() => {
+                    toast.createErrorMessage('No se pudo crear la funcion, revice las piesas con fondo amarillo', funcName);
+                }) 
         } else {
-            toast.createErrorMessage('No se pudo crear la funcion, ya existe una funcion con ese nombre', funcName)
+            toast.createErrorMessage('No se pudo crear la funcion, ya existe una funcion con ese nombre', funcName);
+        }
+    }
+}
+
+export function saveCustomFunction(name) {
+    return (dispatch) => {
+        debugger;
+        const { myFunctionsFileData } = store.getState().environment
+        const contenido = myFunctionsFileData.contenido;
+        const functionOpenBlock = contenido.match(/{-FS:([\w\d]+)-}/g);
+        const functionNames = functionOpenBlock ? functionOpenBlock.map((name) => /{-FS:([\w\d]+)-}/.exec(name)[1]) : [];
+        if(name && functionNames.indexOf(name) !== -1) {
+            const newMyFunctionFileData = {...myFunctionsFileData };
+            const regexBlock = regexFunctionBlock(name);
+            const oldBlock = regexBlock.exec(contenido)[0];
+            const funcIconLine = oldBlock.match(ICON_REGEX)
+            const oldIcon = funcIconLine ? ICON_REGEX.exec(funcIconLine[0])[1] : '';
+            const newBlock = newFunctionBlock(name, oldIcon);
+            newMyFunctionFileData.contenido = contenido.replace(regexBlock, newBlock);
+            editMyFunctionFile(newMyFunctionFileData, dispatch)
+                .then(() => {
+                    toast.createSuccessMessage('Se pudo salvar con exito la funcion', name);
+                    cancelEdit()(dispatch);
+                })
+                .catch(() => {
+                    toast.createErrorMessage('No se pudo salvar la funcion, revice las piesas con fondo amarillo', name);
+                })
         }
     }
 }
@@ -201,24 +243,14 @@ export function deleteMyFunctions(name) {
         const newMyFunctionFileData = {...myFunctionsFileData };
         const contenido = myFunctionsFileData.contenido;
         newMyFunctionFileData.contenido = contenido.replace(regexFunctionBlock(name), '');
-        services.editFile(newMyFunctionFileData)
-        .then((data) => {
-            const { userData } = store.getState().user;
-            return webSocket.loadFile(userData, data.id)
-                .then((messages) => {
-                    if(messages.find((message) => message.resultado.startsWith('OUTError:'))) {
-                        console.error(messages)
-                        toast.createErrorMessage('No se pudo borrar la funcion', name)
-                        return services.editFile(myFunctionsFileData);
-                    } else {
-                        toast.createSuccessMessage('Se a borrado la funcion', name)
-                        return data
-                    }
-                })
+        editMyFunctionFile(newMyFunctionFileData, dispatch)
+            .then(() => {
+                toast.createSuccessMessage('Se a borrado la funcion', name)
             })
-            .then((data) => {
-                updateMyFunction(dispatch, data);
-                myFunctionsFileToToolboxPipes(dispatch, data);
+            .catch(() => {
+                toast.createErrorMessage('No se pudo borrar la funcion', name)
             })
     }
 }
+
+

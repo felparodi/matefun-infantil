@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {dropPipe} from '../../api/board';
+import { dropPipe, editCustomFunction } from '../../api/board';
 import { deleteMyFunctions } from '../../api/matefun';
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
@@ -38,10 +38,12 @@ export class Toolbox extends React.Component {
     }
 
     onDrop(drop) {
-        if(drop.origin !== 'trash') {
+        if(drop.origin === 'trash') {
+            this.props.deleteMyFunctions(drop.pipe.name);   
+        } else if(drop.origin === 'edit') {
+            this.props.editCustomFunction(drop.pipe);
+        } else if(drop.origin === 'board') {
             this.props.dropPipe(drop);
-        } else {
-            this.props.deleteMyFunctions(drop.pipe.name);
         }
     }
 
@@ -83,7 +85,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     dropPipe,
-    deleteMyFunctions
+    deleteMyFunctions,
+    editCustomFunction,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbox);

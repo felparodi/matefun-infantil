@@ -5,3 +5,4 @@ export const SET_RESULT_EVAL = 'SET_RESULT_EVAL';
 export const SET_START_JOIN = 'SET_START_JOIN';
 export const SET_END_JOIN = 'SET_END_JOIN';
 export const CLEAN_JOIN = 'CLEAN_JOIN';
+export const SET_EDIT_MODE = 'SET_EDIT_MODE';

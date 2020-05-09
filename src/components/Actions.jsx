@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import Consola from './Console';
-import { clean } from '../api/board';
+import { clean, cancelEdit } from '../api/board';
 import CreateFunction from './modal/CreateFunction';
-import { loadFunctionDefinition, evaluate } from '../api/matefun';
+import { loadFunctionDefinition, evaluate, saveCustomFunction } from '../api/matefun';
 import Icon from '../components/Icon';
 import * as icon from '../constants/icons';
 
@@ -37,28 +37,48 @@ export class Actions extends React.Component {
 
     render() {
         const { openConsole, openSaveFunction  } = this.state;
-        const { canProcess, canSaveFunction } = this.props;
+        const { canProcess, canSaveFunction, isEditMode, editFuncName } = this.props;
         return( 
             <div>
                 <div className="action-buttons">
-                    <Button className="mf-button-primary" onClick={this.clean}>
-                        <Icon icon={icon.CLEAN}/> Limpiar
-                    </Button>
+                    { !isEditMode &&    
+                        <Button className="mf-button-primary ml-1" onClick={this.clean}>
+                            <Icon icon={icon.CLEAN}/>Limpiar
+                        </Button> 
+                    }
+                    { isEditMode && 
+                        <Button className="mf-button-primary ml-1" onClick={this.props.cancelEdit}>
+                            Cancel
+                        </Button> 
+                    }
                     { debugMode && 
                         <Button className="mf-button-primary ml-1" onClick={() => this.setState({openConsole:!openConsole})}>
                             <Icon icon={icon.CONSOLE}/> Consola
                         </Button> 
                     }
-                    <Button className="mf-button-primary ml-1" disabled={!canSaveFunction} onClick={() => this.setState({openSaveFunction: true})}>
-                        <Icon icon={icon.SAVE}/> Guardar
-                    </Button>
+                    { !isEditMode && 
+                        <Button className="mf-button-primary ml-1" disabled={!canSaveFunction} onClick={() => this.setState({openSaveFunction: true})}>
+                            <Icon icon={icon.SAVE}/> Guardar
+                        </Button>
+                    }
+                    { isEditMode &&    
+                        <Button className="mf-button-primary ml-1" disabled={!canSaveFunction} onClick={() => this.props.saveCustomFunction(editFuncName)}>
+                            <Icon icon={icon.SAVE}/> Guardar
+                        </Button>
+                    }
+                    { isEditMode && 
+                        <Button variant="primary" disabled={!canSaveFunction} onClick={() => this.setState({openSaveFunction: true})}>
+                            <Icon icon={icon.SAVE}/> Guardar como...
+                        </Button> 
+                    }
+
                     <Button className="mf-button-primary ml-1" disabled={!canProcess} onClick={this.evaluate}>
                         <Icon icon={icon.PLAY}/> Probar
                     </Button>
+           
                 </div>
                 <CreateFunction show={openSaveFunction} onHide={() => this.setState({openSaveFunction: false})}/>
-                
-                {/*{ debugMode && <Consola openConsole={openConsole}/> }*/}
+                { debugMode && <Consola openConsole={openConsole}/> }}
             </div>
         );
     }
@@ -67,11 +87,13 @@ export class Actions extends React.Component {
 const mapStateToProps = state => ({
     canProcess: state.matrix.canProcess,
     canSaveFunction: state.matrix.canSaveFunction,
-    userData: state.user.userData
+    userData: state.user.userData,
+    isEditMode: state.matrix.isEditMode,
+    editFuncName: state.matrix.editFuncName,
 });
 
 const mapDispatchFunction = {
-    loadFunctionDefinition, evaluate, clean
+    loadFunctionDefinition, evaluate, clean, saveCustomFunction, cancelEdit
 }
 
 export default connect(mapStateToProps, mapDispatchFunction)(Actions);
