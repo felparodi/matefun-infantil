@@ -7,7 +7,9 @@ import Actions from './Actions';
 import Header from './Header';
 import { prepareEnvironment } from '../api/matefun';
 import { DisplayResult } from './modal/DisplayResult';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import Icon from './Icon';
+import * as icon from '../constants/icons';
 
 import './Main.scss';
 import Configuration from './modal/Configuration';
@@ -17,9 +19,11 @@ export class Main extends React.Component {
         super();
         this.state= {
             pipe: undefined,
-            showResult: false
+            showResult: false,
+            resultPanelOpen: true,
         }
         this.displayResult= this.displayResult.bind(this);
+        this.openCloseResultPanel= this.openCloseResultPanel.bind(this);
     }
 
     componentDidMount() {
@@ -31,6 +35,10 @@ export class Main extends React.Component {
         this.setState({pipe: pipe, showResult: true});
     }
 
+    openCloseResultPanel() {
+        this.setState({resultPanelOpen: !this.state.resultPanelOpen});
+    }
+
     render() {
         var pipe= this.state.pipe;
         var showResult= this.state.showResult;
@@ -39,32 +47,33 @@ export class Main extends React.Component {
                 <Header />
                 <div className="container">
                     <div className="body">
-                        <div className="col-sm-7">
+                        <div style={{width: this.state.resultPanelOpen?'60%':'95%', paddingLeft: '10px', paddingRight:'10px'}}>
                             <div className="panel">
-                                <div className="row" style={{height:'100%'}}>
-                                    <div className="toolbox-container col-sm-2">
-                                        <Toolbox onDrop={this.onDropToolbox} />
-                                    </div>
-                                    <div className="col-sm-10" style={{height:'100%'}}>
-                                        <Actions />
-                                        <div class="board-container"> 
-                                            <Board displayResult={this.displayResult}/>
-                                        </div>
+                                <Toolbox onDrop={this.onDropToolbox} />
+                                <div className="content" style={{height:'100%'}}>
+                                    <Actions />
+                                    <div class="board-container"> 
+                                        <Board displayResult={this.displayResult}/>
                                     </div>
                                 </div>
                             </div>
                         </div>                    
-                        <div className="col-sm-5">
+                        <div style={{width: this.state.resultPanelOpen?'40%':'5%', paddingLeft: '10px', paddingRight:'10px'}}>
                             <div className="panel">
-                            {pipe && 
-                                <DisplayResult 
-                                    show={showResult}
-                                    value={pipe.value}
-                                    type={pipe.dir.top}
-                                    valuetext={pipe.valueText}
-                                    hasError={pipe.hasValueError}
-                                    onHide={this.handlerHiddenResult} />
-                            }
+                                <div className="content">
+                                    <Button onClick={this.openCloseResultPanel}> 
+                                        <Icon icon={this.state.resultPanelOpen?icon.COLLAPSE:icon.EXPAND}/>
+                                    </Button>
+                                    {pipe && this.state.resultPanelOpen && 
+                                        <DisplayResult 
+                                            show={showResult}
+                                            value={pipe.value}
+                                            type={pipe.dir.top}
+                                            valuetext={pipe.valueText}
+                                            hasError={pipe.hasValueError}
+                                            onHide={this.handlerHiddenResult} />
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>

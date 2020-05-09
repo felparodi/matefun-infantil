@@ -41,18 +41,18 @@ export class Actions extends React.Component {
         return( 
             <div>
                 <div className="action-buttons">
-                    <Button className="mf-button-outline" onClick={this.clean}>
+                    <Button className="mf-button-primary" onClick={this.clean}>
                         <Icon icon={icon.CLEAN}/> Limpiar
                     </Button>
                     { debugMode && 
-                        <Button className="mf-button-outline ml-1" onClick={() => this.setState({openConsole:!openConsole})}>
+                        <Button className="mf-button-primary ml-1" onClick={() => this.setState({openConsole:!openConsole})}>
                             <Icon icon={icon.CONSOLE}/> Consola
                         </Button> 
                     }
-                    <Button className="mf-button-outline ml-1" disabled={!canSaveFunction} onClick={() => this.setState({openSaveFunction: true})}>
+                    <Button className="mf-button-primary ml-1" disabled={!canSaveFunction} onClick={() => this.setState({openSaveFunction: true})}>
                         <Icon icon={icon.SAVE}/> Guardar
                     </Button>
-                    <Button className="mf-button-primary ml-5" disabled={!canProcess} onClick={this.evaluate}>
+                    <Button className="mf-button-primary ml-1" disabled={!canProcess} onClick={this.evaluate}>
                         <Icon icon={icon.PLAY}/> Probar
                     </Button>
                 </div>

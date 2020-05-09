@@ -22,7 +22,11 @@ function getFontAwesomeIcon(icon) {
         case icons.SAVE:
             return fas.faSave
         case icons.CONSOLE:
-            return fas.faTerminal            
+            return fas.faTerminal
+        case icons.COLLAPSE:
+            return fas.faAngleDoubleRight
+        case icons.EXPAND:
+            return fas.faAngleDoubleLeft                            
         // primitive functions
         case icons.PLUS:
             return fas.faPlus

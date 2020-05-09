@@ -1,4 +1,4 @@
-$MainColor: #D55D0D;
+$MainColor: #784b00;
 $SecondaryColor: #F8C631;
 
 .Main {
@@ -70,13 +70,12 @@ $SecondaryColor: #F8C631;
 }
 
 .action-buttons{    
-    margin-top: 10px;
     margin-bottom: 10px;
     text-align: center;
 }
 
 .mf-button-primary {
-    color: $MainColor;;
+    color: $MainColor;
     background-color: $SecondaryColor;
     border-color: transparent;
     border-radius: 16px;
@@ -108,4 +107,8 @@ $SecondaryColor: #F8C631;
     border-radius: 10px;
     box-shadow: 0 0 15px #ccc;
     height: 100%
+}
+
+.content {
+    padding: 10px;
 }

@@ -8,6 +8,8 @@ export const SAVE = 'save';
 export const CLEAN = 'clean';
 export const PLAY = 'play';
 export const CONSOLE = 'console';
+export const COLLAPSE = 'collapse';
+export const EXPAND = 'expand';
 
 //primitive functions
 export const PLUS = 'plus';

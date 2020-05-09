@@ -1,4 +1,4 @@
-$MainColor: #D55D0D;
+$MainColor: #784b00;
 $SecondaryColor: #F8C631;
 
 $button-pipe-size: 4rem;
@@ -6,8 +6,10 @@ $button-pipe-size: 4rem;
 .Toolbox {
     display: flex;
     height: 100%;
+    width: 10rem;
+    float: left;
     .toolbox-header {
-        max-width: 8rem;
+        width:35%;
         .button-group {
             border: none;
             padding: 0 0 1rem 0;
@@ -17,8 +19,8 @@ $button-pipe-size: 4rem;
             width: 100%;
             border-radius: 20px;
             &.selected {
-                background-color: $MainColor;
-                color: white;
+                background-color: $SecondaryColor;
+                color: $MainColor;
             }
             span {
                 writing-mode: vertical-rl;
@@ -32,6 +34,7 @@ $button-pipe-size: 4rem;
     }
     .toolbox-body {
         height: 100%;
+        width: 65%;
         overflow-y: auto;
         text-align: center;
         background-color: #f8c63159;
