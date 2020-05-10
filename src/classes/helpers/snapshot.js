@@ -75,11 +75,11 @@ export function cleanSnapshotMatrixInfo(snapshot) {
     const clean = { 
         pipes:[], 
         size: {
-            x: snapshot.board.length,
-            y: snapshot.board[0].length,
+            x: snapshot.matrix.length,
+            y: snapshot.matrix[0].length,
         }
     };
-    snapshot.board.forEach(row => {
+    snapshot.matrix.forEach(row => {
         row.forEach( pipe => {
             if(pipe) {
                 clean.pipes.push({

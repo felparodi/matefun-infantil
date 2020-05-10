@@ -2,26 +2,25 @@
 import * as services from '../server_connection/services';
 import * as webSocket from '../server_connection/webSocket';
 import * as snapHelper from '../classes/helpers/snapshot';
-import * as typeHelper from '../classes/helpers/type';
 import { CustomFuncPipe } from '../classes/pipes/customFuncPipe'
-import { setMateFunValue, getEvaluateFunction, getFunctionDefinition, getMatrixSnapshot, clean, cancelEdit } from './board';
+import * as board from './board';
 import { WORKSPACE_FILE_NAME, MY_FUNCTIONS_FILE_NAME } from '../constants/constants';
-import { setEvalInstruction, setWorkspaceFunctionBody } from '../redux/matrix/matrixAction';
-import { setWorkspaceFileData, setMyFunctionsFileData, setMyFunctions } from '../redux/environment/environmentAction';
+import * as matrixAction from '../redux/matrix/matrixAction';
+import * as envActions from '../redux/environment/environmentAction';
 import store from '../redux/store';
 import * as toast from './toast';
 
 function updateWorkspace(dispatch, data) {
-    dispatch(setWorkspaceFileData(data));
+    dispatch(envActions.setWorkspaceFileData(data));
 }
 
 export function loadFunctionDefinition(userData, workspaceFileData, myFunctionsFileData) {
     return (dispatch) => {
-        const functionDefinition = getFunctionDefinition();
+        const functionDefinition = board.getFunctionDefinition();
         workspaceFileData.contenido = `incluir ${MY_FUNCTIONS_FILE_NAME}\n\n${functionDefinition.body}`;
         return services.editFile(workspaceFileData)
             .then((data) => {
-                dispatch(setWorkspaceFunctionBody({ body: data.contenido }));
+                dispatch(matrixAction.setWorkspaceFunctionBody({ body: data.contenido }));
                 updateWorkspace(dispatch, data);
                 return webSocket.loadFile(userData, workspaceFileData.id, myFunctionsFileData.id)
             });
@@ -30,10 +29,10 @@ export function loadFunctionDefinition(userData, workspaceFileData, myFunctionsF
 
 export function evaluate(userData) {
     return (dispatch) => {
-        const evalInst = getEvaluateFunction();
+        const evalInst = board.getEvaluateFunction();
         const { environment } = store.getState();
         const { myFunctionsFileData } = environment;
-        let loadFilePromise;
+        let loadFilePromise = Promise.resolve();
         if (evalInst.isFunction) {
             const { workspaceFileData } = environment;
             loadFilePromise = loadFunctionDefinition(userData, workspaceFileData, myFunctionsFileData)(dispatch);
@@ -41,10 +40,10 @@ export function evaluate(userData) {
             loadFilePromise = webSocket.loadFile(userData, myFunctionsFileData.id);
         }
         loadFilePromise.then((message) => {
-            dispatch(setEvalInstruction(evalInst.command))
+            dispatch(matrixAction.setEvalInstruction(evalInst.command))
             webSocket.evalExpression(userData, evalInst.command)
             .then((messages) => {
-                setMateFunValue(messages)(dispatch);
+                board.setMateFunValue(messages)(dispatch);
             })
         });
     }
@@ -79,7 +78,7 @@ function loadWorkspaceFile(userData) {
 }
 
 function updateMyFunction(dispatch, data) {
-    dispatch(setMyFunctionsFileData(data));
+    dispatch(envActions.setMyFunctionsFileData(data));
     myFunctionsFileToToolboxPipes(dispatch, data);
 }
 
@@ -131,7 +130,7 @@ function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
         return new CustomFuncPipe(name, inType, outType, metadata, funcIcon);
     })
 
-    dispatch(setMyFunctions(myFunctions));
+    dispatch(envActions.setMyFunctions(myFunctions));
 }
 
 export function cleanMyFunctions() {
@@ -149,9 +148,10 @@ export function cleanMyFunctions() {
 
 function newFunctionBlock(name, icon) {
     debugger;
-    const matrixSnapshot = snapHelper.cleanSnapshotMatrixInfo(getMatrixSnapshot());
+    const matrix = store.getState().matrix.board;
+    const matrixSnapshot = snapHelper.cleanSnapshotMatrixInfo({matrix});
     const metadata = `{-M:${JSON.stringify(matrixSnapshot)}-}`;
-    const functionDefinition = getFunctionDefinition(name);
+    const functionDefinition = board.getFunctionDefinition(name);
     const initBlock = `{-FS:${name}-}`;
     const endBlock = `{-FF:${name}-}`;
     const iconInfo = icon ?`{-I:${icon}-}` : '';
@@ -200,7 +200,7 @@ export function saveInMyFunctions(name, icon) {
             editMyFunctionFile(newMyFunctionFileData, dispatch)
                 .then(() => {
                     toast.createSuccessMessage('Se creo con extito la nueva funcion', funcName);
-                    clean()(dispatch);
+                    board.clean()(dispatch);
                 })
                 .catch(() => {
                     toast.createErrorMessage('No se pudo crear la funcion, revice las piesas con fondo amarillo', funcName);
@@ -229,7 +229,7 @@ export function saveCustomFunction(name) {
             editMyFunctionFile(newMyFunctionFileData, dispatch)
                 .then(() => {
                     toast.createSuccessMessage('Se pudo salvar con exito la funcion', name);
-                    cancelEdit()(dispatch);
+                    board.cancelEdit()(dispatch);
                 })
                 .catch(() => {
                     toast.createErrorMessage('No se pudo salvar la funcion, revice las piesas con fondo amarillo', name);

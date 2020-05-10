@@ -1,8 +1,6 @@
 import { PIPE_TYPES, DIRECTION } from '../constants/constants';
 import { invertDirection, directionMove } from './helpers/direction';
-import { getMateFunType } from './helpers/type';
 import { sortPipe, matchPipeTypeDir } from './helpers/pipe';
-import { isDefined } from './helpers/type'
 import { DummyPipe } from './pipes/dummyPipe';
 import { Context } from './context';
 import { BFS } from './BFSMatrix';
@@ -118,10 +116,13 @@ export class MatrixPipe {
         const {x, y} = pos;
         if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") }
         const act = this.value(x, y)
-        if(act && act.getType() !== PIPE_TYPES.DUMMY) return;
-        this.addDummyWorkingPipe(pos);
-        this.cleanEndValues();
-        this.updateMatrix();
+        if(act && (act.isWorking || act.getType() !== PIPE_TYPES.DUMMY)) {
+            this.endWork();
+        } else {
+            this.addDummyWorkingPipe(pos);
+            this.cleanEndValues();
+            this.updateMatrix();
+        }
     }
 
     /*
@@ -263,9 +264,11 @@ export class MatrixPipe {
     */
     addPipeSpeed(pos, pipe) {
         const {x, y} = pos;
-        this.values[x][y] = pipe;
-        pipe.setBoard(this);
-        pipe.setPos(x, y);
+        if(this.isValidRange(x, y)) {
+            this.values[x][y] = pipe;
+            pipe.setBoard(this);
+            pipe.setPos(x, y);
+        }
     }
 
     /*
@@ -299,13 +302,15 @@ export class MatrixPipe {
         this.getAllPipes().sort(sortPipe).forEach(p => p.calc(context2, this));
         //Error en caso de mas de un end pipe
         const endPipes = this.getEndPipes();
+
         if(endPipes.length > 1) {
-            endPipes.forEach((endPipe) => endPipe.addError('Hay mas de una salida'))
+            endPipes.forEach((endPipe) => endPipe.addError('more-than-on-end-pipe'))
         }
         //Error en caso de mas de 3 var pipe
         const varPipes = this.getAllVars();
+
         if(varPipes.length > 3) {
-            varPipes.forEach((varPipe) => varPipe.addError('Hay mas de 3 variables'))
+            varPipes.forEach((varPipe) => varPipe.addError('more-than-tree-var-pipes'))
         }
     }
 
@@ -324,38 +329,6 @@ export class MatrixPipe {
     }
 
     /*
-    *   @desc: Retorna si es una funcion lo que se proceso o un instrucion y el conteniod que la misma tiene para
-    *       ejecutarse o guardares en un archivo Matefun para se usada en el futuro
-    *   @attr String name: Nombre de la funcion en caso de que sea una lo que se cosntruye
-    *   @return: ProcessInfo
-    *   @scope: public
-    */
-    getFunctionDefinition(name=DEFAULT_FUNCTION_NAME) {
-        if (this.isFunction()) {
-            const varsPipes = this.getAllVars();
-            const endPipe = this.getEndPipes()[0];
-            return { 
-                isFunction: true, 
-                body:this.getFunctionDefinitionWithName(name),
-                ret: endPipe.getValueType(),
-                attrs: varsPipes.map((varPipe) => varPipe.getValueType())
-            };
-        }
-    }
-
-    /*
-    *   @desc: Retorna el contenido de una una funcion que se puede guardar en un archivo de Matefun
-    *   @attr String name: Nombre de la funcion que se construye
-    *   @return: String
-    *   @scope: private
-    */
-    getFunctionDefinitionWithName(name) {
-        const sig = this.getFunctionSignature(name);
-        const eq = this.getFunctionEquation(name);
-        return `${sig}\n${eq}`;
-    }
-
-    /*
     *   @desc: Debuelve la instrucion que representa el arbol contenido en la matriz.
     *           Se asume que la raiz es el unico EndPipe en la misma
     *   @return: String
@@ -369,51 +342,12 @@ export class MatrixPipe {
     }
 
     /*
-    *   @desc: Devuelve si la matriz contiene una funcion 
-    *   @retrun: Boolean
-    *   @scope: private
-    */
-    isFunction() {
-        return [...this.getAllVars(), ...this.getAllConditions()].length > 0;
-    }
-
-    /*
     *   @desc: Retorna todas las ConditionPipe que estan en la matriz
     *   @return: Boolean
     *   @scope: private
     */
     getAllConditions() {
         return this.getAllPipes().filter((pipe) => pipe.getType() === PIPE_TYPES.CONDITION);
-    }
-
-    /*
-    *   @desc: Retrona la definicion de la funcion que se utiliza en un archivo Matefun
-    *   @attr String name: Nombre de la funcion a definir
-    *   @return: String
-    *   @scope: private
-    */
-    getFunctionSignature(name) {
-        console.log('Matrix.getFunctionSignature')
-        const varsPipes = this.getAllVars();
-        const endPipe = this.getEndPipes()[0];
-        const varsType = varsPipes.reduce(
-            (prev, v, index) => index > 0 ? `${prev} X ${getMateFunType(v.getValueType())}` :`${getMateFunType(v.getValueType())}`, ''
-        );
-        const endType = getMateFunType(endPipe.getValueType());
-        return `${name} :: ${varsType} -> ${endType}`;
-    }
-
-    /*
-    *   @desc: Retorna el codigo representa la implementacion de una funcion para un archivo de Matefun
-    *   @attr String name: Nombre de la funcion que se desa implementar
-    *   @return: String
-    *   @scope: private
-    */
-    getFunctionEquation(name) {
-        const varsPipes = this.getAllVars();
-        const endPipe = this.getEndPipes();
-        const code = endPipe[0].toCode();
-        return `${name}(${varsPipes.map(pipe => pipe.getName()).join(', ')}) = ${code}`
     }
 
     /*
@@ -425,24 +359,6 @@ export class MatrixPipe {
         return this.getAllPipes().filter(pipe => pipe.getType() === PIPE_TYPES.VARIABLE);
     }
 
-    /*
-    *   @desc: Retorna la instrucion de ejecucion de una funcion con los valores cargados en las variables
-    *   @attr String name: Nombre de la funcion que se desea ejecutar
-    *   @return: String
-    *   @scope: public
-    */
-    evaluateFunction(name=DEFAULT_FUNCTION_NAME) {
-        let command = "";
-        const isFunction = this.isFunction();
-        if(isFunction) {
-            const varsPipes = this.getAllVars();
-            const varValueList = varsPipes.map((pipe) => pipe.getValueEval());
-            command = `${name}(${varValueList.join(', ')})`;
-        } else {
-            command = this.processInstruction();
-        }
-        return { isFunction, command };
-    }
 
     /*
     *   @desc: Retorna una estructura de Snapshot de la matriz para trabajar con ella 
@@ -451,26 +367,16 @@ export class MatrixPipe {
     *   @scope: public
     */
     snapshot() {
-        let hasError =  this.getEndPipes().length !== 1;
         const snap = Array(this.maxX).fill([]).map(() => Array(this.maxY));
         for(let x = 0; x < this.maxX; x++) {
             for(let y = 0; y < this.maxY; y++) {
                 const pipe = this.value(x,y);
                 if (pipe) {
                     snap[x][y] = pipe.snapshot();
-                    hasError = hasError || !!snap[x][y].errors
                 }
             }
         }
-        
-        const vars = this.getAllVars();
-        const canFuncEval = vars.reduce((hasValue, pipe) => hasValue && pipe.getValue() !== undefined && pipe.getValue() !== null, true);
-        const isFunction = this.isFunction();
-        const hasGeneric = vars.reduce((hasG, pipe) => hasG || !isDefined(pipe.getValueType()), false);
-        const canSaveFunction = !hasError && isFunction &&  vars.length > 0 && vars.length <= 3 && !hasGeneric;
-        const canProcess = !hasError && (!isFunction || (canFuncEval && canSaveFunction));
-        console.log( { board:snap,  isFunction, canProcess, canSaveFunction });
-        return { board:snap,  isFunction, canProcess, canSaveFunction };
+        return snap;
     }
 
     /*

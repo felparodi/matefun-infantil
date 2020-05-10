@@ -1,12 +1,15 @@
 
 import * as matrixAction from '../redux/matrix/matrixActionTypes';
+import Compiler from '../classes/compiler';
 import { MatrixPipe, equalsPos as equalsPos } from '../classes/matrix';
 import { BOARD_ROWS, BOARD_COLS, PIPE_TYPES } from '../constants/constants';
 import * as snapHelper from '../classes/helpers/snapshot';
 import * as actions from '../redux/matrix/matrixAction';
 import store from '../redux/store';
 
-let matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
+const compiler = new Compiler();
+compiler.newMatrix(BOARD_ROWS, BOARD_COLS);
+
 let joinList = { start: null, end:null }
 
 export function loadPendingBoard() {
@@ -14,38 +17,28 @@ export function loadPendingBoard() {
         const matrixJSON = sessionStorage.getItem('matrix');
         if (matrixJSON) {
             const savedMatrix = JSON.parse(matrixJSON);
-            matrix = matrixFromSnapshot(savedMatrix);
+            compiler.loadSnapMatrix(savedMatrix);
         }
         updateMatrix(dispatch);
     }
 }
 
-export function matrixFromSnapshot(savedMatrix) {
-    var matrix = new MatrixPipe(savedMatrix.size.x, savedMatrix.size.y);
-    const pipesBulk = savedMatrix.pipes.map((snapPipe) => ({
-        pos: snapPipe.pos,
-        pipe: snapHelper.createPipeToSnap(snapPipe)
-    }))
-    matrix.addPipeBulk(pipesBulk);
-    return matrix;
-}
-
 export function dropPipe(drop) {
     return (dispatch) => {
         const { isEditMode } = store.getState().matrix
-        const {origin, pos, dropEffect, pipe} = drop;
+        const { origin, pos, dropEffect, pipe } = drop;
         if(origin === 'board') {
             if(!pipe.pos || dropEffect === 'copy') {
-                matrix.addPipe(pos.x, pos.y, snapHelper.createPipeToSnap(pipe));
+                compiler.addSnapPipeToMatrix(pos.x, pos.y, pipe);
             } else if (dropEffect === 'move') {
-                matrix.moverPipe(pos.x, pos.y, pipe.pos);
+                compiler.getMatrix().moverPipe(pos.x, pos.y, pipe.pos);
             }
         } else {
             if(pipe.pos) {
-                matrix.removePipe(pipe.pos.x, pipe.pos.y);
+                compiler.getMatrix().removePipe(pipe.pos.x, pipe.pos.y);
             }
         }
-        matrix.endWork();
+        compiler.getMatrix().endWork();
         updateMatrix(dispatch, isEditMode);
     }
 }
@@ -53,7 +46,7 @@ export function dropPipe(drop) {
 export function setPipeValue(x, y, value) {
     return (dispatch) => {
         const { isEditMode } = store.getState().matrix
-        matrix.setPipeValue(x, y, value);
+        compiler.getMatrix().setPipeValue(x, y, value);
         updateMatrix(dispatch, isEditMode);
     }
 }
@@ -66,22 +59,14 @@ export function clean() {
 }
 
 function cleanAux(dispatch) {
-    matrix = new MatrixPipe(BOARD_ROWS, BOARD_COLS);
+    compiler.getMatrix().clean();
     updateMatrix(dispatch);
 }
 
 export function startWork() {
     return (dispatch) => {
         const { isEditMode } = store.getState().matrix;
-        matrix.startWork();
-        updateMatrix(dispatch, isEditMode);
-    }
-}
-
-export function endWork() {
-    return (dispatch) => {
-        const { isEditMode } = store.getState().matrix;
-        matrix.endWork();
+        compiler.getMatrix().startWork();
         updateMatrix(dispatch, isEditMode);
     }
 }
@@ -89,12 +74,7 @@ export function endWork() {
 export function addWorkingPipe(x, y) {
     return (dispatch) => {
         const { isEditMode } = store.getState().matrix;
-        const pipe = matrix.value(x, y);
-        if(pipe && pipe.isWorking) {
-            matrix.endWork();
-        } else {
-            matrix.addWorkPipe({x, y});
-        }
+        compiler.getMatrix().addWorkPipe({x, y});
         updateMatrix(dispatch, isEditMode);
     }
 }
@@ -102,7 +82,7 @@ export function addWorkingPipe(x, y) {
 export function join(j1, j2) {
     return (dispatch) => {
         const { isEditMode } = store.getState().matrix;
-        matrix.join(j1, j2);
+        compiler.getMatrix().join(j1, j2);
         updateMatrix(dispatch, isEditMode);
     }
 }
@@ -126,7 +106,7 @@ export function joinInput(j1) {
 function tryJoin(dispatch) {
     return new Promise(() => {
         if(joinList.start && joinList.end) {
-            matrix.join(joinList.start, joinList.end);
+            compiler.getMatrix().join(joinList.start, joinList.end);
             joinList = {start: null, end: null}
             dispatch({type: matrixAction.CLEAN_JOIN});
             updateMatrix(dispatch);
@@ -154,12 +134,12 @@ export function setMateFunValue(value) {
 }
 
 function setMateFunValueAux(dispatch, value) {
-    matrix.setMateFunValue(value);
+    compiler.getMatrix().setMateFunValue(value);
     updateMatrix(dispatch);
 }
 
 function updateMatrix(dispatch, isEditMode) {
-    const snapshot = matrix.snapshot();
+    const snapshot = compiler.snapshot();
     if(!isEditMode) {
         const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
         sessionStorage.setItem('matrix', JSON.stringify(saveSnap));
@@ -167,20 +147,12 @@ function updateMatrix(dispatch, isEditMode) {
     dispatch(actions.updateBoard(snapshot));
 }
 
-export function getMatrix() {
-    return matrix;
-}
-
 export function getEvaluateFunction() {
-    return matrix.evaluateFunction()
+    return compiler.evaluateFunction()
 }
 
 export function getFunctionDefinition(name) {
-    return matrix.getFunctionDefinition(name)
-}
-
-export function getMatrixSnapshot() {
-    return matrix.snapshot();
+    return compiler.getFunctionDefinition(name)
 }
 
 export function cancelEdit() {
@@ -195,7 +167,7 @@ export function editCustomFunction(customFuncSnap) {
         console.log(customFuncSnap);
         if(customFuncSnap.type === PIPE_TYPES.CUSTOM) {
             const customMatrix = JSON.parse(customFuncSnap.body);
-            matrix = matrixFromSnapshot(customMatrix);
+            compiler.loadSnapMatrix(customMatrix);
             dispatch(actions.setEditMode(true, customFuncSnap.name));
             updateMatrix(dispatch, true);
         }

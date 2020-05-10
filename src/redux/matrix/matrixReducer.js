@@ -24,10 +24,10 @@ export const initialState = {
 export default function matrixReducer(state = initialState, action) {
   switch (action.type) {
     case actionTypes.UPDATE_BOARD: {
-      const { board, isFunction, canProcess, canSaveFunction } = action.payload;
+      const { matrix, isFunction, canProcess, canSaveFunction } = action.payload;
       return {
         ...state, 
-        board, isFunction, canProcess, canSaveFunction
+        board:matrix, isFunction, canProcess, canSaveFunction
       };
     }
     case actionTypes.SET_EVAL_INSTRUCTION: {
