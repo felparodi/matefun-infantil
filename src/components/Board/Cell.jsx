@@ -20,7 +20,7 @@ class Cell extends React.Component {
         return connectDropTarget(
             <div className={classNames('Cell', { 'over': isOver })} 
                 onDoubleClick={onDoubleClick}>
-                { content &&  <Pipe onDrop={onDrop} pipe={content} origin="board" displayResult={this.displayResult}/>}
+                { content &&  <Pipe onDrop={onDrop} pipe={content} origin="board" displayResult={this.displayResult} active={true}/>}
             </div>
         )
     }

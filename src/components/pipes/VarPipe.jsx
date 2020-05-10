@@ -82,9 +82,9 @@ export class VarPipe extends React.Component {
     }
 
     openDoor() {
-        const {pipe} = this.props;
+        const { pipe, active } = this.props;
         const type = pipe.dir.bottom;
-        if(origin !== 'toolbox' && hasInputValue(type)) {
+        if(active && hasInputValue(type)) {
             this.setDoorState(true)
         }
     }
@@ -115,8 +115,8 @@ export class VarPipe extends React.Component {
     }
 
     handlerDoubleClickValue() {
-        const {origin, pipe} = this.props;
-        if(origin !== "toolbox" && isDefined(pipe.dir.bottom)) {
+        const {active, pipe} = this.props;
+        if(active && isDefined(pipe.dir.bottom)) {
             this.setState({ editModal:true })
         }
     }

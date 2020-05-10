@@ -43,7 +43,7 @@ export class Board extends React.Component {
                 cells.push(
                     <Cell 
                         key={i + "-" + j} 
-                        content={content} 
+                        content={content}
                         posX={i}
                         posY={j}
                         onDoubleClick={() => this.addWPipe(i, j)}

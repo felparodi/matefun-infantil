@@ -38,15 +38,15 @@ export class ValPipe extends React.Component {
     }
 
     onClickValue() {
-        const {origin, pipe} = this.props;
-        if(origin !== "toolbox" && isDefined(pipe.dir.bottom)) {
+        const {active, pipe} = this.props;
+        if(active && isDefined(pipe.dir.bottom)) {
             this.setState({edit:true})
         }
     }
 
     handlerDoubleClick() {
-        const {origin, pipe} = this.props;
-        if(origin !== "toolbox" && isDefined(pipe.dir.bottom)) {
+        const {active, pipe} = this.props;
+        if(active && isDefined(pipe.dir.bottom)) {
             this.setState({ editModal:true })
         }
     }
