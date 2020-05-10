@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Crallon from '../../../icons/crallon.svg';
 import { VALUES_TYPES } from '../../../constants/constants';
 import { colorByColorValue } from './ValueInfo';
@@ -24,7 +24,14 @@ export function castValue(value, type) {
 
 export const ValueInputNumber = ({value, onBlur}) => {
     const [temValue, setValue] = useState(value ? value : 0);
+    const [input, setInput] = useState(null);
+    useEffect(() => {
+        if(input) {
+            input.focus();
+        }
+    })
     return <input className="value-input"
+                ref={setInput}
                 onChange={(e) => setValue(e.target.value)}
                 value={temValue}
                 onBlur={() => onBlur(temValue)} 

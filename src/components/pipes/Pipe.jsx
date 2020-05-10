@@ -44,7 +44,7 @@ class Pipe extends React.Component {
     }
 
     render() {
-        const { pipe, connectDragSource, origin, key } = this.props;
+        const { pipe, connectDragSource, origin, selected } = this.props;
         const { drag } = this.state;
         const tooltipId = pipe.pos ? `${pipe.pos.x}-${pipe.pos.y}-${pipe.name}-${origin}` : `${pipe.name}-${origin}`;
         const hasErrors = pipe.errors && pipe.errors.length > 0; 
@@ -54,6 +54,7 @@ class Pipe extends React.Component {
                     'error': hasErrors,
                     'warning': hasWarning,
                     'working': pipe.isWorking,
+                    'selected': selected
                 })}
                 data-tip={tooltipId}
                 data-for={tooltipId}>

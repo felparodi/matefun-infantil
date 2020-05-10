@@ -14,7 +14,6 @@ export class ValPipe extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            edit: false,
             editModal: false,
         }
         this.leaveEditing = this.leaveEditing.bind(this);
@@ -32,15 +31,15 @@ export class ValPipe extends React.Component {
     }
 
     leaveEditing(value) {
-        const { pipe } = this.props;
-        this.setState({ edit: false });
+        const { pipe, onSelect } = this.props;
+        onSelect && onSelect(false);
         this.props.setPipeValue(pipe.pos.x, pipe.pos.y, value);
     }
 
     onClickValue() {
-        const {active, pipe} = this.props;
+        const {active, pipe, onSelect} = this.props;
         if(active && isDefined(pipe.dir.bottom)) {
-            this.setState({edit:true})
+            onSelect && onSelect(true);
         }
     }
 
@@ -60,8 +59,8 @@ export class ValPipe extends React.Component {
     }
 
     render() {
-        const { pipe, startJoin } = this.props;
-        const { edit, editModal} = this.state;
+        const { pipe, startJoin, selected } = this.props;
+        const { editModal} = this.state;
         const isSelectJoin = pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.BOTTOM} , startJoin);
         const type = pipe.dir.bottom;
         return (
@@ -73,7 +72,7 @@ export class ValPipe extends React.Component {
                         <Output onClick={this.joinOutput} join={isSelectJoin} type={type}></Output>
                     </g>
                     {   
-                        !edit && 
+                        !selected && 
                         <ValueInfo 
                             type={type}
                             onClick={this.onClickValue}
@@ -81,7 +80,7 @@ export class ValPipe extends React.Component {
                             text={pipe.valueText}/>
                     }
                 </svg>
-                { edit && <ValueInput value={pipe.value} onBlur={this.leaveEditing} type={type}/> }
+                { selected && <ValueInput value={pipe.value} onBlur={this.leaveEditing} type={type}/> }
                 { editModal && <SetValueModal show={true} type={type} value={pipe.value} onHide={this.handlerHideModal}/> }
             </div>
         )
@@ -92,9 +91,9 @@ const mapStateToProps = state => ({
     startJoin: state.matrix.startJoin,
 });
 
-const mapDispath = {
+const mapDispatch = {
     setPipeValue,
     joinOutput
 }
 
-export default connect(mapStateToProps, mapDispath)(ValPipe);
+export default connect(mapStateToProps, mapDispatch)(ValPipe);

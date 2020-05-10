@@ -7,7 +7,7 @@ import './Cell.scss';
 class Cell extends React.Component {
 
     constructor(props) {
-        super();
+        super(props);
         this.displayResult= this.displayResult.bind(this);
     }
 
@@ -16,11 +16,21 @@ class Cell extends React.Component {
     }
 
     render() {
-        const { isOver, connectDropTarget, content, onDrop, onDoubleClick } = this.props;
+        const { isOver, connectDropTarget, content, onDrop, onDoubleClick, selected, onSelect } = this.props;
         return connectDropTarget(
             <div className={classNames('Cell', { 'over': isOver })} 
+                onClick={() => onSelect(!selected)}
                 onDoubleClick={onDoubleClick}>
-                { content &&  <Pipe onDrop={onDrop} pipe={content} origin="board" displayResult={this.displayResult} active={true}/>}
+                { content &&  
+                    <Pipe
+                        onDrop={onDrop}
+                        pipe={content}
+                        origin="board"
+                        onSelect={onSelect}
+                        selected={selected}
+                        displayResult={this.displayResult}
+                        active={true}/>
+                }
             </div>
         )
     }

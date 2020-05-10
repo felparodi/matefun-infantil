@@ -39,6 +39,8 @@ export function dropPipe(drop) {
             }
         }
         updateMatrix(dispatch, isEditMode);
+        dispatch({type: matrixAction.CLEAN_JOIN});
+        dispatch(actions.unselectCell());
     }
 }
 
@@ -46,6 +48,7 @@ export function setPipeValue(x, y, value) {
     return (dispatch) => {
         const { isEditMode } = store.getState().matrix
         compiler.getMatrix().setPipeValue(x, y, value);
+        dispatch({type: matrixAction.CLEAN_JOIN});
         updateMatrix(dispatch, isEditMode);
     }
 }
@@ -59,22 +62,17 @@ export function clean() {
 
 function cleanAux(dispatch) {
     compiler.getMatrix().clean();
+    dispatch({type: matrixAction.CLEAN_JOIN});
     updateMatrix(dispatch);
-}
-
-export function startWork() {
-    return (dispatch) => {
-        const { isEditMode } = store.getState().matrix;
-        compiler.getMatrix().startWork();
-        updateMatrix(dispatch, isEditMode);
-    }
 }
 
 export function addWorkingPipe(x, y) {
     return (dispatch) => {
         const { isEditMode } = store.getState().matrix;
         compiler.getMatrix().addWorkPipe({x, y});
+        dispatch({type: matrixAction.CLEAN_JOIN});
         updateMatrix(dispatch, isEditMode);
+        dispatch(actions.unselectCell());
     }
 }
 
@@ -83,6 +81,7 @@ export function join(j1, j2) {
         const { isEditMode } = store.getState().matrix;
         compiler.getMatrix().join(j1, j2);
         updateMatrix(dispatch, isEditMode);
+        dispatch(actions.unselectCell());
     }
 }
 
@@ -97,8 +96,9 @@ export function joinInput(j1) {
             joinList.start = null;
             dispatch({type: matrixAction.SET_START_JOIN, payload: null })
         }
-        dispatch({type: matrixAction.SET_END_JOIN, payload: joinList.end })
+        dispatch({type: matrixAction.SET_END_JOIN, payload: joinList.end });
         tryJoin(dispatch);
+        dispatch(actions.unselectCell());
     }
 }
 
@@ -121,6 +121,7 @@ export function joinOutput(j2) {
             joinList.end = null;
             dispatch({type: matrixAction.SET_END_JOIN, payload: null })
         }
+        dispatch(actions.unselectCell());
         dispatch({type: matrixAction.SET_START_JOIN, payload: joinList.start })
         tryJoin(dispatch);
     }
@@ -128,16 +129,15 @@ export function joinOutput(j2) {
 
 export function setMateFunValue(value) {
     return (dispatch) => {
-        setMateFunValueAux(dispatch, value);
+        compiler.getMatrix().setMateFunValue(value);
+        dispatch({type: matrixAction.CLEAN_JOIN});
+        dispatch(actions.unselectCell());
+        updateMatrix(dispatch);
     }
 }
 
-function setMateFunValueAux(dispatch, value) {
-    compiler.getMatrix().setMateFunValue(value);
-    updateMatrix(dispatch);
-}
-
 function updateMatrix(dispatch, isEditMode) {
+    debugger;
     const snapshot = compiler.snapshot();
     if(!isEditMode) {
         const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
@@ -170,5 +170,17 @@ export function editCustomFunction(customFuncSnap) {
             dispatch(actions.setEditMode(true, customFuncSnap.name));
             updateMatrix(dispatch, true);
         }
+    }
+}
+
+export function selectCell(pos) {
+    return (dispatch) => {
+        dispatch(actions.selectCell(pos));
+    }
+}
+
+export function unselectCell() {
+    return (dispatch) => {
+        dispatch(actions.unselectCell());
     }
 }

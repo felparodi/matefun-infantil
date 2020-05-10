@@ -18,7 +18,8 @@ export const initialState = {
     isJoining: false,
     endJoin: null,
     startJoin: null,
-    hasPending: !!localStorage.getItem('matrix')
+    hasPending: !!localStorage.getItem('matrix'),
+    selectedCell: null
 };
 
 export default function matrixReducer(state = initialState, action) {
@@ -80,6 +81,16 @@ export default function matrixReducer(state = initialState, action) {
         editFuncName: name
       };
     }
+    case actionTypes.SELECT_CELL:
+      return {
+        ...state,
+        selectedCell: action.payload
+      }
+    case actionTypes.UNSELECT_CELL:
+      return {
+        ...state,
+        selectedCell: null
+      }
     default:
       return state;
   }

@@ -1,5 +1,6 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES  } from '../../constants/constants';
-import { matchTypes, evalValueType, valueToString } from '../helpers/type';
+import * as messages from '../../constants/messages';
+import { matchTypes, evalValueType, valueToString, typeCompare } from '../helpers/type';
 import { processNext, validateDirType, pipeTypeDefined } from '../helpers/pipe';
 import { Pipe } from './pipe';
 
@@ -32,12 +33,13 @@ export class VarPipe extends Pipe {
     *   @scope: public
     */
     setValue(value) {
+        debugger
         const type = evalValueType(value);
         if(!matchTypes(this.getValueType(), type)) {
             throw new Error('No se puede asiganar el valor ya que es de otro tipo')
         }
         this.value = value;
-        this.type = type;
+        this.type = typeCompare(this.type, type);
     }
 
     /*
@@ -78,7 +80,7 @@ export class VarPipe extends Pipe {
 
             const next = processNext(this, board)(DIRECTION.BOTTOM)
             if (next.error) { this.addError(next.error); return; }
-            if (!next.pipe || !next.connected) {this.addWarning('No esta conectado a nada '); return;}
+            if (!next.pipe || !next.connected) {this.addWarning(messages.NO_CONNECTED); return;}
             const newPath = enterDir ? [...path, this] : [this];
             if (next.dir !== enterDir) { next.pipe.calc(context, board, next.inDir, newPath); }
 
@@ -86,7 +88,7 @@ export class VarPipe extends Pipe {
             if (status.error) { this.addError(status.error); return; }
             if (status.warning) { this.addWarning(status.warning); }
             if (status.valid) { this.tempType = status.type; }
-            if (this.tempType === VALUES_TYPES.BOOLEAN) { this.addError('No puede haber variables Booleanas'); return; }
+            if (this.tempType === VALUES_TYPES.BOOLEAN) { this.addError(messages.NO_BOOLEAN); return; }
             if(!this.errors && !pipeTypeDefined(this)) {
                 context.unMark(this.getPos());
             }

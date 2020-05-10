@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { dropPipe, loadPendingBoard, addWorkingPipe, join} from '../../api/board';
+import { dropPipe, loadPendingBoard, addWorkingPipe, join, selectCell, unselectCell} from '../../api/board';
 import Cell from './Cell'
 import './Board.scss';
 
@@ -8,10 +8,11 @@ import './Board.scss';
 export class Board extends React.Component {
 
     constructor(props) {
-        super();
+        super(props);
         this.onDrop = this.onDrop.bind(this);
         this.addWPipe = this.addWPipe.bind(this);
         this.displayResult= this.displayResult.bind(this);
+        this.handlerSelectCell = this.handlerSelectCell.bind(this);
     }
 
     displayResult(pipe){
@@ -33,8 +34,16 @@ export class Board extends React.Component {
         }
     }
 
+    handlerSelectCell(x, y, select) {
+        if(select) {
+            this.props.selectCell({x, y});
+        } else {
+            this.props.unselectCell();
+        }
+    }
+
     createRows() {
-        const { content } = this.props;
+        const { content, selectedCell } = this.props;
         let rows = [];
         for (let i = 0; i < content.length; i++) {
             let cells = []
@@ -43,12 +52,14 @@ export class Board extends React.Component {
                 cells.push(
                     <Cell 
                         key={i + "-" + j} 
+                        selected={selectedCell && selectedCell.x === i && selectedCell.y === j}
                         content={content}
                         posX={i}
                         posY={j}
                         onDoubleClick={() => this.addWPipe(i, j)}
-                        onDrop={this.onDrop}
-                        displayResult={this.displayResult}>
+                        displayResult={this.displayResult}
+                        onSelect={(select) => this.handlerSelectCell(i, j, select)}
+                        onDrop={this.onDrop}>
                     </Cell>
                 );
             }
@@ -70,13 +81,16 @@ const mapStateToProps = state => ({
     content: state.matrix.board,
     hasPending: state.matrix.hasPending,
     isWorking: state.matrix.isWorking,
+    selectedCell: state.matrix.selectedCell
 });
 
 const mapDispatchToProps = {
     dropPipe,
     loadPendingBoard,
     addWorkingPipe,
-    join
+    join,
+    selectCell,
+    unselectCell
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board);

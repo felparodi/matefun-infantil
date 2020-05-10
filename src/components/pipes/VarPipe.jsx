@@ -7,8 +7,21 @@ import SetValueModal from '../modal/SetValue';
 import Output from './function-parts/Output';
 import ValueInfo from './function-parts/ValueInfo';
 import ValueInput, {hasInputValue} from './function-parts/ValueInput';
-import { DIRECTION } from '../../constants/constants';
+import { DIRECTION, VALUES_TYPES } from '../../constants/constants';
 import './ValPipe.scss';
+
+function defaultValueType(type) {
+    switch(type) {
+        case VALUES_TYPES.NUMBER:
+            return 0;
+        case VALUES_TYPES.POINT:
+            return {x:0, y:0}
+        case VALUES_TYPES.COLOR:
+            return { color:'Negro' }
+        default:
+            return null;
+    }
+}
 
 
 const JoinOutput = (props) => (
@@ -107,6 +120,8 @@ export class VarPipe extends React.Component {
         this.setState({ isOpen: isOpen, editingValue: isOpen });
         if(!isOpen) {
             this.props.setPipeValue(pipe.pos.x, pipe.pos.y, null);
+        } else {
+            this.props.setPipeValue(pipe.pos.x, pipe.pos.y, defaultValueType(pipe.dir.bottom));
         }
     }
 

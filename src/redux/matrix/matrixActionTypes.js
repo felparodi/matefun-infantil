@@ -6,3 +6,5 @@ export const SET_START_JOIN = 'SET_START_JOIN';
 export const SET_END_JOIN = 'SET_END_JOIN';
 export const CLEAN_JOIN = 'CLEAN_JOIN';
 export const SET_EDIT_MODE = 'SET_EDIT_MODE';
+export const SELECT_CELL = 'SELECT_CELL';
+export const UNSELECT_CELL = 'UNSELECT_CELL';
