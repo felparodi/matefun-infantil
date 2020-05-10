@@ -59,11 +59,11 @@ export class ConditionPipe extends FuncPipe {
 
     toTree() {
         const leftNext = nextPipeDirection(this, DIRECTION.LEFT)
-        const pass = leftNext.pipe ? leftNext.pipe.toTree() : '?';
+        const pass = leftNext.pipe ? leftNext.pipe.toTree() : null;
         const upNext = nextPipeDirection(this, DIRECTION.TOP);
-        const condition = upNext.pipe ? upNext.pipe.toCode() : '?';
+        const condition = upNext.pipe ? upNext.pipe.toTree() : null;
         const rightNext = nextPipeDirection(this, DIRECTION.RIGHT);
-        const notPass = rightNext.pipe ? rightNext.pipe.toTree() : '?';
+        const notPass = rightNext.pipe ? rightNext.pipe.toTree() : null;
         return { 
             type: 'condition', 
             condition, 

@@ -3,7 +3,7 @@ import { COMPLEX } from '../../constants/toolbox';
 
 const initialState = {
     openModal: false,
-    complex: COMPLEX
+    complex: 5
 };
 
 export default function configReducer(state = initialState, action) {

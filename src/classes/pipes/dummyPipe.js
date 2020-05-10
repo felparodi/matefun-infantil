@@ -116,6 +116,7 @@ export class DummyPipe extends Pipe {
     */
     setTempType(type) {
         if (matchTypes(this.tempType, type)) {
+            debugger;
             this.tempType = typeCompare(this.tempType, type);
         } else { 
             this.addError(messages.NO_MATCH_TYPE);

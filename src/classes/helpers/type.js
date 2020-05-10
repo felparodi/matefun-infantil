@@ -148,8 +148,11 @@ export function isDefined(type) {
 export function typeCompare(t1, t2) {
     if(isDefined(t1)) { return t1; }
     if(isDefined(t2)) { return t2; }
+    if(isList(t1) && isGeneric(t1)) { return t1; }
+    if(isList(t2) && isGeneric(t2)) { return t2; }
     if(isGeneric(t1)) { return t1; }
     if(isGeneric(t2)) { return t2; }
+
     return VALUES_TYPES.UNDEFINED;
 }
 
