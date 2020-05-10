@@ -6,12 +6,12 @@ import { isDefined } from './helpers/type'
 import { DummyPipe } from './pipes/dummyPipe';
 import { Context } from './context';
 import { BFS } from './BFSMatrix';
-import { FuncPipe } from './pipes/funcPipe';
 
 const DEFAULT_FUNCTION_NAME = 'func';
 export function equalsPos(p1, p2) {
     return (!p1 && !p2) || (p1 && p2 && p1.x === p2.x && p1.y === p2.y);
 }
+
 /*
 *   @desc: Esta classe matine la estrcutra de los blockes en forma 
 *           de matriz y 
@@ -229,15 +229,6 @@ export class MatrixPipe {
     }
 
     /*
-    *   @desc: Retrona el tamanio de la matriz
-    *   @return: [Int, Int]
-    *   @scope: public
-    */
-    size() {
-        return [this.maxX, this.maxY];
-    }
-
-    /*
     *   @desc: Devuelve si la posicion esta en un rango valido
     *   @attr Int x: Valor de la posicion en el eje X
     *   @attr Int y: Valor de la posicion en el eje Y
@@ -341,7 +332,14 @@ export class MatrixPipe {
     */
     getFunctionDefinition(name=DEFAULT_FUNCTION_NAME) {
         if (this.isFunction()) {
-            return { isFunction: true, body:this.getFunctionDefinitionWithName(name) };
+            const varsPipes = this.getAllVars();
+            const endPipe = this.getEndPipes()[0];
+            return { 
+                isFunction: true, 
+                body:this.getFunctionDefinitionWithName(name),
+                ret: endPipe.getValueType(),
+                attrs: varsPipes.map((varPipe) => varPipe.getValueType())
+            };
         }
     }
 
@@ -386,14 +384,6 @@ export class MatrixPipe {
     */
     getAllConditions() {
         return this.getAllPipes().filter((pipe) => pipe.getType() === PIPE_TYPES.CONDITION);
-    }
-
-    getFunctionPipe(name){
-        const varsPipes = this.getAllVars();
-        const endPipe = this.getEndPipes()[0];
-        var inputTypes= varsPipes.map(pipe => pipe.getValueType());
-        var outType= endPipe.getValueType()
-        return new FuncPipe(name, inputTypes, outType);
     }
 
     /*

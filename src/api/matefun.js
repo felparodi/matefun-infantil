@@ -100,12 +100,12 @@ export function prepareEnvironment(userData) {
 }
 
 const regexFunctionBlock = (name)=> RegExp(`{-FS:${name}-}(.|[\n\r])*{-FF:${name}-}`,'g');
-const METADATA_REGEX = /{-M:.*-}/;
+const MATRIX_REGEX = /{-M:.*-}/;
 const COMMENT_REGEX = /{-.*-}/g;
-const FUNCTION_SING_REGEX = /\s*(\w+)\s?::\s?(.*)\s?->\s?(\w+)/g;
+//const FUNCTION_SING_REGEX = /\s*(\w+)\s?::\s?(.*)\s?->\s?(\w+)/g;
 const ICON_REGEX = /{-I:([\w\d-]+)-}/g
-const ATTR_REGEX = /{-A:(.*):A-}/g
-const RETURN_REGEX = /{-R:(.*):R-}/g
+const ATTR_REGEX = /{-A:(.*)-}/g
+const RETURN_REGEX = /{-R:(.*)-}/g
 
 function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
 
@@ -114,28 +114,24 @@ function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
     const functionNames = functionOpenBlock ? functionOpenBlock.map((name) => /{-FS:([\w\d]+)-}/.exec(name)[1]) : [];
 
     const myFunctions = functionNames.map((name) => {
-        const functionBlock = contenido.match(regexFunctionBlock(name));
-        const metadataComment = functionBlock[0].match(METADATA_REGEX)
+        const functionBlockQuery = contenido.match(regexFunctionBlock(name));
+        const functionBlock = functionBlockQuery[0];
+        const metadataComment = functionBlock.match(MATRIX_REGEX)
         const metadata = metadataComment ? metadataComment[0].replace('{-M:', '').replace('-}', '') : undefined;
-        const cleanComments = functionBlock[0].replace(COMMENT_REGEX, '').trim();
-        const functionRegex = FUNCTION_SING_REGEX.exec(cleanComments.match(FUNCTION_SING_REGEX)[0]);
-        const inType = functionRegex[2].match(/(R|Color|\(R X R\)|Fig|A)\*?/g).map((type) => typeHelper.getMateFunPipeType(type));
-        const outType = typeHelper.getMateFunPipeType(functionRegex[3].trim());
-        const funcIconLine = functionBlock[0].match(ICON_REGEX)
+        const inTypesLine = functionBlock.match(ATTR_REGEX);
+        const outLine = functionBlock.match(RETURN_REGEX);
+        const inType = inTypesLine ? JSON.parse(ATTR_REGEX.exec(inTypesLine[0])[1]) : []
+        const outType = outLine ? RETURN_REGEX.exec(outLine)[1] : '';
+        //const cleanComments = functionBlock.replace(COMMENT_REGEX, '').trim();
+        //const functionRegex = FUNCTION_SING_REGEX.exec(cleanComments.match(FUNCTION_SING_REGEX)[0]);
+        //const inType = functionRegex[2].match(/(R|Color|\(R X R\)|Fig|A)\*?/g).map((type) => typeHelper.getMateFunPipeType(type));
+        //const outType = typeHelper.getMateFunPipeType(functionRegex[3].trim());
+        const funcIconLine = functionBlock.match(ICON_REGEX)
         const funcIcon = funcIconLine ? ICON_REGEX.exec(funcIconLine[0])[1] : '';
         return new CustomFuncPipe(name, inType, outType, metadata, funcIcon);
     })
 
     dispatch(setMyFunctions(myFunctions));
-}
-
-function metadataSerialize(name, snapshot) {
-    var saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
-    var metadata = {
-        nombre: name,
-        snapshot: saveSnap
-    }
-    return `{-M:${JSON.stringify(metadata)}-}`;
 }
 
 export function cleanMyFunctions() {
@@ -152,12 +148,17 @@ export function cleanMyFunctions() {
 }
 
 function newFunctionBlock(name, icon) {
-    const functionMetadata = metadataSerialize(name, getMatrixSnapshot());
+    debugger;
+    const matrixSnapshot = snapHelper.cleanSnapshotMatrixInfo(getMatrixSnapshot());
+    const metadata = `{-M:${JSON.stringify(matrixSnapshot)}-}`;
     const functionDefinition = getFunctionDefinition(name);
-    const iconInfo = icon ?`{-I:${icon}-}\n` : ''
-    //const attr = `{-A:${attrs}:A-}`;
-    //const ret = `{-R:${ret}:R-}`
-    return `{-FS:${name}-}\n${iconInfo}${functionMetadata}\n${functionDefinition.body}\n{-FF:${name}-}\n`;
+    const initBlock = `{-FS:${name}-}`;
+    const endBlock = `{-FF:${name}-}`;
+    const iconInfo = icon ?`{-I:${icon}-}` : '';
+    const attr = `{-A:${JSON.stringify(functionDefinition.attrs)}-}`;
+    const ret = `{-R:${functionDefinition.ret}-}`;
+    const code = functionDefinition.body;
+    return `${initBlock}\n${iconInfo}\n${attr}\n${ret}\n${metadata}\n${code}\n${endBlock}\n`;
 }
 
 function editMyFunctionFile(newMyFunctionsFileData, dispatch) {

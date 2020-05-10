@@ -195,10 +195,8 @@ export function editCustomFunction(customFuncSnap) {
         console.log(customFuncSnap);
         if(customFuncSnap.type === PIPE_TYPES.CUSTOM) {
             const customMatrix = JSON.parse(customFuncSnap.body);
-            debugger;
-            matrix = matrixFromSnapshot(customMatrix.snapshot);
+            matrix = matrixFromSnapshot(customMatrix);
             dispatch(actions.setEditMode(true, customFuncSnap.name));
-            debugger;
             updateMatrix(dispatch, true);
         }
     }
