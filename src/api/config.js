@@ -11,3 +11,9 @@ export function closeConfig() {
         dispatch(actions.closeModal());
     }
 }
+
+export function setComplex(value) {
+    return (dispatch) => {
+        dispatch(actions.setComplex(Number(value)));
+    }
+}

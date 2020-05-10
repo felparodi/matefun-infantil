@@ -23,7 +23,7 @@ export default function configReducer(state = initialState, action) {
     case actionTypes.SET_COMPLEX : {
       return {
         ...state, 
-        complex: action.level
+        complex: action.payload
       };
     }
     default:

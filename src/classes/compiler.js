@@ -181,7 +181,7 @@ export class Compiler {
 
         const isFunction = this.isFunction();
 
-        const canSaveFunction = errors.length === 0;
+        const canSaveFunction = vars.length > 0 && errors.length === 0;
         const canProcess = canFuncEval && errors.length === 0
      
         return { matrix:snap,  isFunction, canProcess, canSaveFunction };

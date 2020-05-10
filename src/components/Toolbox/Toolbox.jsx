@@ -16,7 +16,7 @@ function toolboxPipeSnapshot(toolboxPipe, maxComplex=COMPLEX) {
         .map(group => ({
             ...group,
             pipes: group.pipes
-                .filter(({complex}) => complex <= COMPLEX)
+                .filter(({complex}) => complex <= maxComplex)
                 .map(({pipe}) => pipe ? pipe.snapshot() : null)
         })
     );
