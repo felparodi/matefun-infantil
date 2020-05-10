@@ -38,7 +38,6 @@ export function dropPipe(drop) {
                 compiler.getMatrix().removePipe(pipe.pos.x, pipe.pos.y);
             }
         }
-        compiler.getMatrix().endWork();
         updateMatrix(dispatch, isEditMode);
     }
 }

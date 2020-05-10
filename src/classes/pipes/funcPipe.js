@@ -326,6 +326,15 @@ export class FuncPipe extends Pipe {
         return this.getInDirections().indexOf(dir) >= 0;
     }
 
+    toTree() {
+        const args = this.getArgs();
+        return { 
+            type: 'func', 
+            name: this.getName(), 
+            args: args.map((pipe) => pipe.toTree())
+        }
+    }
+
 
     /*
     *   @desc: Devulve el SnapPipe que represta a esta FunctionPipe

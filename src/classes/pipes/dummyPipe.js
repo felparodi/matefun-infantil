@@ -203,6 +203,11 @@ export class DummyPipe extends Pipe {
         return this.toCodeArg().join(', ');
     }
 
+    toTree() {
+        const args = this.getArgs();
+        return args.length === 1 ? args[0].toTree() : null;
+    }
+
     /*
     *   @desc: Devuelve el PipeType que representa el dummyPipe
     *   @return: PipeType

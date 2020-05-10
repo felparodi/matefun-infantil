@@ -221,10 +221,15 @@ export class Pipe {
     *   @TODO como se accede al board
     */
     toCodeArg() {
-        const parentPipe = this.getChildrens();
-        const arg = parentPipe
+        const childrens = this.getChildrens();
+        const arg = childrens
             .map((dirPipe) => dirPipe.pipe ? dirPipe.pipe.toCode() : null)
         return arg.map(e => e !== null ? e : '?')
+    }
+
+    getArgs() {
+        const childrens = this.getChildrens();
+        return childrens.map((dirPipe) => dirPipe.pipe ? dirPipe.pipe : null)
     }
 
     /*
@@ -234,6 +239,10 @@ export class Pipe {
     */
     toCode() {
         return `???`;
+    }
+
+    toTree() {
+        return {};
     }
 
     /*

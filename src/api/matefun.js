@@ -147,7 +147,6 @@ export function cleanMyFunctions() {
 }
 
 function newFunctionBlock(name, icon) {
-    debugger;
     const matrix = store.getState().matrix.board;
     const matrixSnapshot = snapHelper.cleanSnapshotMatrixInfo({matrix});
     const metadata = `{-M:${JSON.stringify(matrixSnapshot)}-}`;
@@ -213,7 +212,6 @@ export function saveInMyFunctions(name, icon) {
 
 export function saveCustomFunction(name) {
     return (dispatch) => {
-        debugger;
         const { myFunctionsFileData } = store.getState().environment
         const contenido = myFunctionsFileData.contenido;
         const functionOpenBlock = contenido.match(/{-FS:([\w\d]+)-}/g);

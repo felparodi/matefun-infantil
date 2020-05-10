@@ -114,7 +114,7 @@ export class MatrixPipe {
     */
     addWorkPipe(pos) {
         const {x, y} = pos;
-        if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") }
+        if (this.isInvalidRange(x,y)) { throw new Error("Exist pipe in this position") }
         const act = this.value(x, y)
         if(act && (act.isWorking || act.getType() !== PIPE_TYPES.DUMMY)) {
             this.endWork();
@@ -225,7 +225,7 @@ export class MatrixPipe {
     *   @scope: public
     */
     value(x, y) {
-        if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position")} 
+        if (this.isInvalidRange(x,y)) { throw new Error("Exist pipe in this position")} 
         return this.values[x][y];
     }
 
@@ -236,7 +236,7 @@ export class MatrixPipe {
     *   @return: Boolean
     *   @scope: private 
     */
-    isValidRange(x, y) {
+    isInvalidRange(x, y) {
         return x < 0 || x >= this.maxX || y < 0 || y >= this.maxY
     }
 
@@ -262,13 +262,11 @@ export class MatrixPipe {
     *   @return: void
     *   @scope: private
     */
-    addPipeSpeed(pos, pipe) {
-        const {x, y} = pos;
-        if(this.isValidRange(x, y)) {
-            this.values[x][y] = pipe;
-            pipe.setBoard(this);
-            pipe.setPos(x, y);
-        }
+    addPipeSpeed({x, y}, pipe) {
+        if(this.isInvalidRange(x, y)) return;
+        this.values[x][y] = pipe;
+        pipe.setBoard(this);
+        pipe.setPos(x, y);
     }
 
     /*
@@ -280,7 +278,8 @@ export class MatrixPipe {
     *   @scope: public
     */
     addPipe(x, y, pipe) {
-        if (this.isValidRange(x,y)) { throw new Error("Exist pipe in this position") }
+        if (this.isInvalidRange(x,y)) { throw new Error("Exist pipe in this position") }
+        this.endWork();
         this.addPipeSpeed({x, y}, pipe)
         this.cleanEndValues();
         this.updateMatrix();
@@ -434,5 +433,10 @@ export class MatrixPipe {
     */
     cleanEndValues() {
         this.getEndPipes().forEach(p => p.setValue(null));
+    }
+
+    getTree() {
+        const endPipes = this.getEndPipes();
+        return endPipes.length === 1 ? endPipes[0].toTree() : null;
     }
 }

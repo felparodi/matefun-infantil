@@ -126,6 +126,15 @@ export class ConstPipe extends Pipe {
         return dir === DIRECTION.BOTTOM;
     }
 
+    toTree() {
+        return { 
+            type: 'value',
+            subType: 'const',
+            value: this.getValue(),
+            valueType: this.getValueType()
+        };
+    }
+
     /*
     *   @desc: Devulve el SnapPipe que represta a esta ConstPipe
     *   @return: SnapPipe

@@ -57,6 +57,21 @@ export class ConditionPipe extends FuncPipe {
         return `${left} si ${up} \n\t o ${right}`;
     }
 
+    toTree() {
+        const leftNext = nextPipeDirection(this, DIRECTION.LEFT)
+        const pass = leftNext.pipe ? leftNext.pipe.toTree() : '?';
+        const upNext = nextPipeDirection(this, DIRECTION.TOP);
+        const condition = upNext.pipe ? upNext.pipe.toCode() : '?';
+        const rightNext = nextPipeDirection(this, DIRECTION.RIGHT);
+        const notPass = rightNext.pipe ? rightNext.pipe.toTree() : '?';
+        return { 
+            type: 'condition', 
+            condition, 
+            pass, 
+            notPass 
+        };
+    }
+
     /*
     *   @desc: Devuelve el PipeType que repesenta a la ConditionPipe
     *   @return: PipeValue

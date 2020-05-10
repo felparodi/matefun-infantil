@@ -34,6 +34,14 @@ export class CustomFuncPipe extends FuncPipe {
         return PIPE_TYPES.CUSTOM;
     }
 
+    toTree() {
+        const tree = super.toTree();
+        return {
+            ...tree,
+            subType: 'custom'
+        };
+    }
+
     snapshot() {
         return {
             ...super.snapshot(),

@@ -131,6 +131,16 @@ export class VarPipe extends Pipe {
         return `${this.getName()}`;
     }
 
+    toTree() {
+        return { 
+            type: 'value',
+            subType: 'var', 
+            name: this.getName(), 
+            value: this.getValue(), 
+            valueType: this.getValueType()
+        }
+    }
+
     /*
     *   @desc: Devuelve el valor que esta contenido en la VarPipe
     *   @return: String

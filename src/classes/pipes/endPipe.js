@@ -82,6 +82,11 @@ export class EndPipe extends Pipe {
         return `${arg[0]}`;
     }
 
+    toTree() {
+        const args = this.getArgs()
+        return args.length === 1 ? args[0].toTree() : null;
+    }
+
     /*
     *   @desc: Devuelv el PipeType que repesenta a la EndPipe
     *   @return: PipeValue
