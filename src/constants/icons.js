@@ -10,6 +10,13 @@ export const PLAY = 'play';
 export const CONSOLE = 'console';
 export const COLLAPSE = 'collapse';
 export const EXPAND = 'expand';
+export const TRASH = 'trash';
+
+//graphic buttons
+export const ZOOM_IN = 'zoom-in';
+export const ZOOM_OUT = 'zoom-out';
+export const CENTER = 'center';
+export const DOWNLOAD = 'download';
 
 //primitive functions
 export const PLUS = 'plus';

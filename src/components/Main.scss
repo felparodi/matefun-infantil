@@ -1,37 +1,18 @@
-$MainColor: #784b00;
-$SecondaryColor: #F8C631;
+$MainColor: #0496FF;
+$DarkColor: #004CA6;
+$LightColor: #BED8D4;
+$DisabledColor: #fdebb7;
+$DisabledFont: #784b00a8;
 
 .Main {
     height: 100vh;
-    background-color: white;
+    background-color: $DarkColor;
     .container {
         position: relative;
         max-width: none;
         .body {
             display: flex;
             height: 90vh;
-            .board-container {
-                height: 100%;
-                max-width: 100%;
-                overflow: scroll;
-            }
-            .board-container::-webkit-scrollbar {
-                -webkit-appearance: none;
-            }
-            
-            .board-container::-webkit-scrollbar:vertical {
-                width: 11px;
-            }
-            
-            .board-container::-webkit-scrollbar:horizontal {
-                height: 11px;
-            }
-            
-            .board-container::-webkit-scrollbar-thumb {
-                border-radius: 8px;
-                border: 2px solid white; /* should match background, can't be transparent */
-                background-color: rgba(0, 0, 0, .5);
-            }
         }
     }
     .actions {
@@ -74,28 +55,35 @@ $SecondaryColor: #F8C631;
     text-align: center;
 }
 
-.mf-button-primary {
-    color: $MainColor;
-    background-color: $SecondaryColor;
-    border-color: transparent;
+
+.mf-button-primary, .mf-button-outline {
     border-radius: 16px;
     border-width: 1.5px;
     padding-top: 8px;
     padding-bottom: 8px;
 }
-.mf-button-primary:hover {
+
+.mf-button-primary {
     background-color: $MainColor;
+    color: white;
+    border-color: transparent;
+}
+
+.mf-button-primary:hover {
+    background-color: #F49F0A;
+    border-color: transparent;
+}
+
+.mf-button-primary:disabled {
+    background-color: $DisabledColor;
+    color: $DisabledFont;
     border-color: transparent;
 }
 
 .mf-button-outline {
-    color: $MainColor;
     background-color: transparent;
+    color: $MainColor;
     border-color: $MainColor;
-    border-radius: 16px;
-    border-width: 1.5px;
-    padding-top: 8px;
-    padding-bottom: 8px;
 }
 .mf-button-outline:hover {
     background-color: $MainColor;
@@ -103,12 +91,77 @@ $SecondaryColor: #F8C631;
 }
 
 .panel {
+    display: flex;
+    width: 100%;
+    height: 100%;
     background-color: white;
     border-radius: 10px;
-    box-shadow: 0 0 15px #ccc;
-    height: 100%
+    //box-shadow: 0 0 15px #ccc;
+}
+
+.sidebar {
+    height: 100%;
+    border-right-style: solid;
+    border-color: #fdebb7;
 }
 
 .content {
     padding: 10px;
+}
+
+.board-container {
+    height: 92%;
+    max-width: 100%;
+    overflow: scroll;
+    
+}
+.board-container::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.board-container::-webkit-scrollbar:vertical {
+    width: 11px;
+}
+
+.board-container::-webkit-scrollbar:horizontal {
+    height: 11px;
+}
+
+.board-container::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    border: 2px solid white; /* should match background, can't be transparent */
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.trash {
+    position: absolute;
+    bottom: 2px;
+    margin-bottom: 10px;
+    margin-left: 30px;
+}
+
+.graphic-buttons {
+    width: 100%;
+    background-color: #0496ff;
+    border-radius: 16px;
+    text-align: center;
+}
+
+.mf-button-toolbar {
+    color: white;
+    background-color: transparent;
+    border-style: none;
+    margin-right: 14px;
+    svg {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.pipe-base {
+    fill: #0B132B;
+}
+
+.test{
+    fill: #F49F0A;
 }

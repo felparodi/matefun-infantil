@@ -49,10 +49,15 @@ export class Main extends React.Component {
                     <div className="body">
                         <div style={{width: this.state.resultPanelOpen?'60%':'95%', paddingLeft: '10px', paddingRight:'10px'}}>
                             <div className="panel">
-                                <Toolbox onDrop={this.onDropToolbox} />
-                                <div className="content" style={{height:'100%'}}>
+                                <div className="sidebar" style={{width: this.state.resultPanelOpen?'15%':'10%'}}>
+                                    <Toolbox onDrop={this.onDropToolbox} />
+                                    <div className="trash">
+                                        <Icon icon={icon.TRASH} size='30px'></Icon>
+                                    </div>
+                                </div>
+                                <div className="content" style={{width: this.state.resultPanelOpen?'85%':'90%'}}>
                                     <Actions />
-                                    <div class="board-container"> 
+                                    <div className="board-container"> 
                                         <Board displayResult={this.displayResult}/>
                                     </div>
                                 </div>
@@ -60,7 +65,7 @@ export class Main extends React.Component {
                         </div>                    
                         <div style={{width: this.state.resultPanelOpen?'40%':'5%', paddingLeft: '10px', paddingRight:'10px'}}>
                             <div className="panel">
-                                <div className="content">
+                                <div style={{width:'100%'}}>
                                     <Button onClick={this.openCloseResultPanel}> 
                                         <Icon icon={this.state.resultPanelOpen?icon.COLLAPSE:icon.EXPAND}/>
                                     </Button>

@@ -62,7 +62,7 @@ export class Toolbox extends React.Component {
                             className={classNames("button-group", {'selected': select === toolbar.value })}
                             onClick={()=> this.setState({select: toolbar.value})}>
                             {toolbar.icon ?
-                                <Icon icon={toolbar.icon}/>
+                                <Icon icon={toolbar.icon} size='30px'/>
                                 : <span>{toolbar.label}</span>
                             }
                         </Button>

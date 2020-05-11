@@ -14,7 +14,7 @@ export class Header extends React.Component {
 
     render() {
         return (
-            <Navbar variant="dark" style={{ marginBottom: '15px', backgroundColor:'#004BA8'}}>
+            <Navbar variant="dark" style={{ marginBottom: '15px', backgroundColor:'#0496FF'}}>
                 <Navbar.Brand>Matefun Infantil</Navbar.Brand>
                 <Nav className="mr-auto"></Nav>
 

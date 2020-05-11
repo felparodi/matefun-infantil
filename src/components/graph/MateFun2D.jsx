@@ -10,6 +10,8 @@ import SpeedNormal from '../../icons/speedNormal.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDownload, faArrowsAlt, faSearchMinus, faSearchPlus, faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 import './MateFun2D.scss';
+import Icon from '../../components/Icon';
+import * as icon from '../../constants/icons';
 
 export class MateFun2D extends React.Component {
 
@@ -136,12 +138,16 @@ export class MateFun2D extends React.Component {
         const animation = type === VALUES_TYPES.list(VALUES_TYPES.FIGURE);
         return (
             <div className='MateFun2D'>
-                <div className='buttons'>
-                    <button className={"mf-button-outline" + classNames({'inactive': !toggleGrid})} onClick={this.toggleGrid}><Grid/></button>
-                    <button className={"mf-button-outline" + classNames({'inactive': !toggleAxis})} onClick={this.toggleAxis}><Axis/></button>
-                    <button className="mf-button-outline" onClick={this.zoomIn}><FontAwesomeIcon icon={faSearchPlus}/></button>
-                    <button className="mf-button-outline" onClick={this.zoomOut}><FontAwesomeIcon icon={faSearchMinus}/></button>
-                    <button className="mf-button-outline" onClick={this.recenterPlot}><FontAwesomeIcon icon={faArrowsAlt}/></button>
+                <div className='graphic'>
+                    <div ref={this.graphDiv} id="graph-container">
+                    </div>
+                </div>
+                <div className='graphic-buttons'>
+                    <button className={classNames("mf-button-toolbar", {'inactive': !toggleGrid})} onClick={this.toggleGrid}><Grid className="test"/></button>
+                    <button className={classNames("mf-button-toolbar",{'inactive': !toggleAxis})} onClick={this.toggleAxis}><Axis/></button>
+                    <button className="mf-button-toolbar" onClick={this.zoomIn}><Icon icon={icon.ZOOM_IN} size='30px'/></button>
+                    <button className="mf-button-toolbar" onClick={this.zoomOut}><Icon icon={icon.ZOOM_OUT} size='30px'/></button>
+                    <button className="mf-button-toolbar" onClick={this.recenterPlot}><Icon icon={icon.CENTER} size='30px'/></button>
                     {
                         animation && (play ? 
                         <button onClick={this.pause}><FontAwesomeIcon icon={faPause}/></button> :
@@ -150,11 +156,7 @@ export class MateFun2D extends React.Component {
                     { animation && <button disabled={!play} className={classNames({'inactive': !play})} onClick={this.moreSpeed}><SpeedMore/></button> }
                     { animation && <button disabled={!play} className={classNames({'inactive': !play})} onClick={this.normalSpeed}><SpeedNormal/></button> }
                     { animation && <button disabled={!play} className={classNames({'inactive': !play})} onClick={this.lestSpeed}><SpeedLest/></button> }
-                    <button onClick={this.exportPlot}><FontAwesomeIcon icon={faDownload}/></button>
-                </div>
-                <div className='graphic'>
-                    <div ref={this.graphDiv} id="graph-container">
-                    </div>
+                    <button className="mf-button-toolbar" onClick={this.exportPlot}><Icon icon={icon.DOWNLOAD} size='30px'/></button>
                 </div>
             </div>
         )

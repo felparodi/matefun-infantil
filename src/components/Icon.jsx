@@ -26,7 +26,18 @@ function getFontAwesomeIcon(icon) {
         case icons.COLLAPSE:
             return fas.faAngleDoubleRight
         case icons.EXPAND:
-            return fas.faAngleDoubleLeft                            
+            return fas.faAngleDoubleLeft
+        case icons.TRASH:
+            return fas.faTrash
+        // graphic buttons
+        case icons.ZOOM_IN:
+            return fas.faSearchPlus
+        case icons.ZOOM_OUT:
+            return fas.faSearchMinus
+        case icons.CENTER:
+            return fas.faArrowsAlt
+        case icons.DOWNLOAD:
+            return fas.faDownload
         // primitive functions
         case icons.PLUS:
             return fas.faPlus
@@ -65,10 +76,10 @@ function getFontAwesomeIcon(icon) {
     }
 }
 
-const Icon = ({icon, color}) => {
+const Icon = ({icon, color, size}) => {
     var faIcon= getFontAwesomeIcon(icon);
     if (faIcon){
-        return <FontAwesomeIcon icon={faIcon} color={color}/>
+        return <FontAwesomeIcon icon={faIcon} color={color} style={(size)?{width: size, height: size}:{}}/>
     } else {
         return <span>{icon}</span>;
     }
