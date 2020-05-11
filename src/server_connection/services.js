@@ -16,8 +16,6 @@ export function login(cedula, password) {
     }).then(res => {
         axios.defaults.headers.common = { 'Authorization': `Bearer ${res.data.token}` }
         return res.data;
-    }).catch((e) => {
-        console.warn("Error:Login", e)
     });
 }
 

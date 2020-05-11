@@ -14,6 +14,13 @@ export class Login extends React.Component {
         }
         this.loginInvitado = this.loginInvitado.bind(this);
         this.login = this.login.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this)
+    }
+
+    handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            this.login();
+        }
     }
 
     loginInvitado() {
@@ -36,12 +43,20 @@ export class Login extends React.Component {
                             <Form>
                                 <Form.Group controlId="formBasicEmail">
                                     <Form.Label style={{ color: "white" }}>Usuario</Form.Label>
-                                    <Form.Control onChange={(e) => this.setState({username: e.target.value})} value={username} type="email" placeholder="Ingrese usuario" />
+                                    <Form.Control 
+                                        onChange={(e) => this.setState({username: e.target.value})} 
+                                        value={username} type="email" 
+                                        onKeyDown={this.handleKeyDown}
+                                        placeholder="Ingrese usuario" />
                                 </Form.Group>
 
                                 <Form.Group controlId="formBasicPassword">
                                     <Form.Label style={{ color: "white" }}>Contraseña</Form.Label>
-                                    <Form.Control onChange={(e) => this.setState({password: e.target.value})} value={password} type="password" placeholder="Ingrese contraseña" />
+                                    <Form.Control onChange={(e) => this.setState({password: e.target.value})} 
+                                        value={password}
+                                        onKeyDown={this.handleKeyDown}
+                                        type="password" 
+                                        placeholder="Ingrese contraseña" />
                                 </Form.Group>
 
                                 <Row>

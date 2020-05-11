@@ -1,7 +1,7 @@
 import * as services from '../server_connection/services';
 import * as action from '../redux/user/userAction';
 import * as board from './board';
-import {createInfoMessage} from './toast';
+import {createErrorMessage} from './toast';
 import store from '../redux/store';
 
 const USER_SESSION_STORAGE = 'USER_SESSION_STORAGE';
@@ -14,6 +14,9 @@ export function login(username, password) {
                 sessionStorage.setItem(USER_SESSION_STORAGE, JSON.stringify(userData));
                 dispatch(action.login(userData));
             }
+        })
+        .catch(() => {
+            createErrorMessage('Error al iniciar session, revice sus credenciales')
         })
     }
 }
