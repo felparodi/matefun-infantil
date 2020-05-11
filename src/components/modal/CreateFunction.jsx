@@ -118,7 +118,7 @@ export class CreateFunction extends React.Component {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button onClick={this.saveFunction}>Salvar</button>
+                    <button disabled={!icon && !name} onClick={this.saveFunction}>Salvar</button>
                 </Modal.Footer>
             </Modal>
         )

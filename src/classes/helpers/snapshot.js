@@ -1,11 +1,11 @@
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES, MATEFUN_TYPE } from '../../constants/constants';
-import { FuncPipe } from '../pipes/funcPipe';
 import { EndPipe } from '../pipes/endPipe';
 import { ConstPipe } from '../pipes/constPipe';
 import { DummyPipe } from '../pipes/dummyPipe';
 import { ConditionPipe } from '../pipes/conditionPipe';
 import { VarPipe } from '../pipes/varPipe';
 import { CustomFuncPipe } from '../pipes/customFuncPipe';
+import { getDefaultFunction } from '../../constants/functions';
 
 /*
 *   @desc: Retorna una lista de Direction apartir de un DirectionType
@@ -44,7 +44,7 @@ function dirToInTypes(dir) {
 *   @return: Pipe
 *   @scope: public
 */
-export function createPipeToSnap(snapshot) {
+export function createPipeToSnap(snapshot, customFuncDefinition) {
     const dir = snapshot.originDir ? snapshot.originDir: snapshot.dir;
     switch(snapshot.type) {
         case PIPE_TYPES.END:
@@ -52,7 +52,7 @@ export function createPipeToSnap(snapshot) {
         case PIPE_TYPES.DUMMY:
             return new DummyPipe(...(dirToDirections(snapshot.dir)));
         case PIPE_TYPES.FUNCTION:
-            return new FuncPipe(snapshot.name, dirToInTypes(dir), dir.bottom);
+            return getDefaultFunction(snapshot.name);
         case PIPE_TYPES.VARIABLE:
             return new VarPipe(snapshot.dir.bottom);
         case PIPE_TYPES.VALUE:
@@ -60,7 +60,9 @@ export function createPipeToSnap(snapshot) {
         case PIPE_TYPES.CONDITION:
             return new ConditionPipe();
         case PIPE_TYPES.CUSTOM:
-            return new CustomFuncPipe(snapshot.name, dirToInTypes(dir), dir.bottom, snapshot.body, snapshot.icon);
+            if(!customFuncDefinition) return null;
+            const def = customFuncDefinition.get(snapshot.name);
+            return def ? new CustomFuncPipe(snapshot.name, def.inTypes, def.outType, def.metadata, def.icon) : null;
     }
 }
 
@@ -86,7 +88,6 @@ export function cleanSnapshotMatrixInfo(snapshot) {
                     type: pipe.type,
                     dir: pipe.originDir ? pipe.originDir : pipe.dir,
                     name: pipe.name,
-                    icon: pipe.icon,
                     value: pipe.type === PIPE_TYPES.VALUE ? pipe.value : undefined,
                     pos: pipe.pos
                 })  

@@ -33,7 +33,6 @@ export class VarPipe extends Pipe {
     *   @scope: public
     */
     setValue(value) {
-        debugger
         const type = evalValueType(value);
         if(!matchTypes(this.getValueType(), type)) {
             throw new Error('No se puede asiganar el valor ya que es de otro tipo')

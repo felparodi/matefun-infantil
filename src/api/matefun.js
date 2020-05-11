@@ -85,7 +85,10 @@ function updateMyFunction(dispatch, data) {
 function loadFiles(userData) {
     return (dispatch) => {
         loadMyFunctionFile(userData)
-            .then((data) => updateMyFunction(dispatch, data));
+            .then((data) => updateMyFunction(dispatch, data))
+            .then(() => {
+                board.loadPendingBoard()(dispatch);
+            });
         loadWorkspaceFile(userData)
             .then((data) => updateWorkspace(dispatch, data));
     }
@@ -112,6 +115,7 @@ function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
     const functionOpenBlock = contenido.match(/{-FS:([\w\d]+)-}/g);
     const functionNames = functionOpenBlock ? functionOpenBlock.map((name) => /{-FS:([\w\d]+)-}/.exec(name)[1]) : [];
 
+    const customFunctionDef = new Map();
     const myFunctions = functionNames.map((name) => {
         const functionBlockQuery = contenido.match(regexFunctionBlock(name));
         const functionBlock = functionBlockQuery[0];
@@ -119,17 +123,20 @@ function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
         const metadata = metadataComment ? metadataComment[0].replace('{-M:', '').replace('-}', '') : undefined;
         const inTypesLine = functionBlock.match(ATTR_REGEX);
         const outLine = functionBlock.match(RETURN_REGEX);
-        const inType = inTypesLine ? JSON.parse(ATTR_REGEX.exec(inTypesLine[0])[1]) : []
+        const inTypes = inTypesLine ? JSON.parse(ATTR_REGEX.exec(inTypesLine[0])[1]) : []
         const outType = outLine ? RETURN_REGEX.exec(outLine)[1] : '';
         //const cleanComments = functionBlock.replace(COMMENT_REGEX, '').trim();
         //const functionRegex = FUNCTION_SING_REGEX.exec(cleanComments.match(FUNCTION_SING_REGEX)[0]);
         //const inType = functionRegex[2].match(/(R|Color|\(R X R\)|Fig|A)\*?/g).map((type) => typeHelper.getMateFunPipeType(type));
         //const outType = typeHelper.getMateFunPipeType(functionRegex[3].trim());
         const funcIconLine = functionBlock.match(ICON_REGEX)
-        const funcIcon = funcIconLine ? ICON_REGEX.exec(funcIconLine[0])[1] : '';
-        return new CustomFuncPipe(name, inType, outType, metadata, funcIcon);
+        const icon = funcIconLine ? ICON_REGEX.exec(funcIconLine[0])[1] : '';
+        customFunctionDef.set(name, { inTypes, outType, metadata, icon });
+        return new CustomFuncPipe(name, inTypes, outType, metadata, icon);
     })
 
+
+    board.getCompiler().setCustomFunctionsDefinition(customFunctionDef);
     dispatch(envActions.setMyFunctions(myFunctions));
 }
 

@@ -1,5 +1,6 @@
 import * as services from '../server_connection/services';
 import * as action from '../redux/user/userAction';
+import * as board from './board';
 import {createInfoMessage} from './toast';
 import store from '../redux/store';
 
@@ -19,8 +20,9 @@ export function login(username, password) {
 
 export function logout() {
     return (dispatch) => {
-        sessionStorage.clear();
+        board.restartCompiler(dispatch);
         dispatch(action.logout());
+        sessionStorage.clear();
     }
 }
 

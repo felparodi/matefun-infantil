@@ -25,16 +25,20 @@ export class Compiler {
     }
 
     addSnapPipeToMatrix(x, y, snapPipe) {
+        debugger
         const { matrix } = this;
-        matrix.addPipe(x, y, snapHelper.createPipeToSnap(snapPipe));
+        const pipe = snapHelper.createPipeToSnap(snapPipe, this.customFunctionsMap);
+        if(pipe) {
+            matrix.addPipe(x, y, pipe);
+        }
     }
 
     loadSnapMatrix(snapMatrix) {
         this.matrix.clean();
         const pipesBulk = snapMatrix.pipes.map((snapPipe) => ({
             pos: snapPipe.pos,
-            pipe: snapHelper.createPipeToSnap(snapPipe)
-        }))
+            pipe: snapHelper.createPipeToSnap(snapPipe, this.customFunctionsMap)
+        })).filter((data) => data.pipe)
         this.matrix.addPipeBulk(pipesBulk);
     }
 
@@ -187,6 +191,9 @@ export class Compiler {
         return { matrix:snap,  isFunction, canProcess, canSaveFunction };
     }
 
+    setCustomFunctionsDefinition(definition) {
+        this.customFunctionsMap = definition;
+    }
 }
 
 

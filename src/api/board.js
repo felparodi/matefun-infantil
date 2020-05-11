@@ -7,7 +7,7 @@ import * as snapHelper from '../classes/helpers/snapshot';
 import * as actions from '../redux/matrix/matrixAction';
 import store from '../redux/store';
 
-const compiler = new Compiler();
+let compiler = new Compiler();
 compiler.newMatrix(BOARD_ROWS, BOARD_COLS);
 
 let joinList = { start: null, end:null }
@@ -137,7 +137,6 @@ export function setMateFunValue(value) {
 }
 
 function updateMatrix(dispatch, isEditMode) {
-    debugger;
     const snapshot = compiler.snapshot();
     if(!isEditMode) {
         const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);
@@ -183,4 +182,14 @@ export function unselectCell() {
     return (dispatch) => {
         dispatch(actions.unselectCell());
     }
+}
+
+export function getCompiler() {
+    return compiler;
+}
+
+export function restartCompiler(dispatch) {
+    compiler = new Compiler();
+    compiler.newMatrix(BOARD_ROWS, BOARD_COLS);
+    updateMatrix(dispatch);
 }

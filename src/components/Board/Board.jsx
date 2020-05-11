@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { dropPipe, loadPendingBoard, addWorkingPipe, join, selectCell, unselectCell} from '../../api/board';
+import { dropPipe, addWorkingPipe, join, selectCell, unselectCell} from '../../api/board';
 import Cell from './Cell'
 import './Board.scss';
 
@@ -25,13 +25,6 @@ export class Board extends React.Component {
 
     onDrop(drop) {
         this.props.dropPipe(drop);
-    }
-
-
-    componentDidMount() {
-        if(this.props.hasPending) {
-            this.props.loadPendingBoard();
-        }
     }
 
     handlerSelectCell(x, y, select) {
@@ -79,14 +72,12 @@ export class Board extends React.Component {
 
 const mapStateToProps = state => ({
     content: state.matrix.board,
-    hasPending: state.matrix.hasPending,
     isWorking: state.matrix.isWorking,
     selectedCell: state.matrix.selectedCell
 });
 
 const mapDispatchToProps = {
     dropPipe,
-    loadPendingBoard,
     addWorkingPipe,
     join,
     selectCell,
