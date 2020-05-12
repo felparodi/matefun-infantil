@@ -51,11 +51,6 @@ export class Actions extends React.Component {
                             Cancel
                         </Button> 
                     }
-                    { debugMode && 
-                        <Button className="mf-button-primary ml-1" onClick={() => this.setState({openConsole:!openConsole})}>
-                            <Icon icon={icon.CONSOLE}/> Consola
-                        </Button> 
-                    }
                     { !isEditMode && 
                         <Button className="mf-button-primary ml-1" disabled={!canSaveFunction} onClick={() => this.setState({openSaveFunction: true})}>
                             <Icon icon={icon.SAVE}/> Guardar
@@ -71,14 +66,12 @@ export class Actions extends React.Component {
                             <Icon icon={icon.SAVE}/> Guardar como...
                         </Button> 
                     }
-
                     <Button className="mf-button-primary ml-1" disabled={!canProcess} onClick={this.evaluate}>
                         <Icon icon={icon.PLAY}/> Probar
                     </Button>
            
                 </div>
                 <CreateFunction show={openSaveFunction} onHide={() => this.setState({openSaveFunction: false})}/>
-                { debugMode && <Consola openConsole={openConsole}/> }}
             </div>
         );
     }
