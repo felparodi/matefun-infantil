@@ -68,7 +68,7 @@ export class EndPipe extends React.Component {
             <React.Fragment>
                 <svg onDoubleClick={this.openDisplayResult} viewBox="0 0 40 40">
                     <g transform="rotate(-180 20 20)">
-                        <path class="pipe-base" d="M 20 0 L 0 20 L 10 30 L 10 40 L 30 40 L 30 30 L 40 20 z"/>
+                        <path className="pipe-base" d="M 20 0 L 0 20 L 10 30 L 10 40 L 30 40 L 30 30 L 40 20 z"/>
                     </g>
                     <InputTop onClick={this.joinInput} join={isSelectJoin} type={pipe.dir.top}/>
                     <OutPutValue pipe={pipe}/>
