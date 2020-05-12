@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { connect } from 'react-redux';
 
 import Toolbox from './Toolbox/Toolbox'
@@ -47,23 +48,22 @@ export class Main extends React.Component {
                 <Header />
                 <div className="container">
                     <div className="body">
-                        <div style={{width: this.state.resultPanelOpen?'60%':'95%', paddingLeft: '10px', paddingRight:'10px'}}>
-                            <div className="panel">
-                                <div className="sidebar" style={{width: this.state.resultPanelOpen?'15%':'10%'}}>
-                                    <Toolbox onDrop={this.onDropToolbox} />
-                                    <div className="trash">
-                                        <Icon icon={icon.TRASH} size='30px'></Icon>
-                                    </div>
-                                </div>
-                                <div className="content" style={{width: this.state.resultPanelOpen?'85%':'90%'}}>
-                                    <Actions />
-                                    <div className="board-container"> 
-                                        <Board displayResult={this.displayResult}/>
-                                    </div>
-                                </div>
+                        <div className="sidebar">
+                            <Toolbox onDrop={this.onDropToolbox} />
+                            <div className="trash drop-zone">
+                                <Icon icon={icon.TRASH} size='30px'></Icon>
                             </div>
-                        </div>                    
-                        <div style={{width: this.state.resultPanelOpen?'40%':'5%', paddingLeft: '10px', paddingRight:'10px'}}>
+                        </div>
+                        <div className="content">
+                            <Actions />
+                            <div className="board-container"> 
+                                <Board displayResult={this.displayResult}/>
+                            </div>
+                        </div>                   
+                        <div className={classNames('info', {
+                                    'open': this.state.resultPanelOpen,
+                                    'close': !this.state.resultPanelOpen
+                                })}>
                             <div className="panel">
                                 <div style={{width:'100%'}}>
                                     <Button onClick={this.openCloseResultPanel}> 

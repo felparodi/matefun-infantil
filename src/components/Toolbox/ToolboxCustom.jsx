@@ -4,6 +4,8 @@ import PipeButton from './PipeButton'
 import Trash from './Trash';
 import Edit from './Edit';
 
+import './ToolboxCustom.scss';
+
 export class ToolboxCustom extends React.Component {
 
     constructor(props) {
@@ -29,11 +31,11 @@ export class ToolboxCustom extends React.Component {
         const {onDrop} = this.props;
         const { pipes } = this.state;
         return (
-            <React.Fragment>
-                { pipes.map((pipe, index) => <PipeButton key={`${index}-custom`} pipe={pipe} onDrop={onDrop}/>) }
+            <div className="ToolboxCustom">
                 <Edit/>
+                { pipes.map((pipe, index) => <PipeButton key={`${index}-custom`} pipe={pipe} onDrop={onDrop}/>) }
                 <Trash/>
-            </React.Fragment>
+            </div>
         )
 
     }

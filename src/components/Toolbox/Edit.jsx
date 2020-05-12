@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import * as fas from '@fortawesome/free-solid-svg-icons';
 import { DropTarget } from "react-dnd";
 
-import './Trash.scss'
-
 export class Edit extends React.Component {
 
     constructor(props) {
@@ -15,7 +13,7 @@ export class Edit extends React.Component {
     render() {
         const { isOver, connectDropTarget } = this.props;
         return connectDropTarget(
-            <div className={classNames('Trash', { 'over': isOver })}>
+            <div className={classNames('Edit drop-zone', { 'over': isOver })}>
                 <FontAwesomeIcon icon={fas.faEdit}/>
             </div>
         )

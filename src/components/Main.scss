@@ -13,6 +13,37 @@ $DisabledFont: #784b00a8;
         .body {
             display: flex;
             height: 90vh;
+            .sidebar {
+                background-color: white;
+                width: 8rem;
+                border: none;
+                border-top-left-radius: 15px;
+                border-bottom-left-radius: 15px;
+                .trash {
+                    margin: 0.3rem 0 0.3rem 0.3rem;
+                    padding: 0.5rem;
+                    text-align: center;
+                }
+            }
+            .content {
+                background-color: white;
+                flex: 3 0 0;
+                overflow: scroll;
+                border-top-right-radius: 15px;
+                border-bottom-right-radius: 15px;
+            }
+            .info {
+                background-color: white;
+                border-radius: 15px;
+                margin-left: 1rem;
+                padding: 0.5rem;
+                &.close {
+                    width: 3.5rem;
+                }
+                &.open {
+                    flex: 2 0 0;
+                }
+            }
         }
     }
     .actions {
@@ -48,6 +79,12 @@ $DisabledFont: #784b00a8;
             }
         }
     }
+}
+
+.drop-zone {
+    background-color: rgb(197, 197, 197);
+    border: dashed  grey;
+    border-radius: 5px;
 }
 
 .action-buttons{    
@@ -131,13 +168,6 @@ $DisabledFont: #784b00a8;
     border-radius: 8px;
     border: 2px solid white; /* should match background, can't be transparent */
     background-color: rgba(0, 0, 0, .5);
-}
-
-.trash {
-    position: absolute;
-    bottom: 2px;
-    margin-bottom: 10px;
-    margin-left: 30px;
 }
 
 .graphic-buttons {

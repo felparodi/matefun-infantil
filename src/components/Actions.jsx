@@ -39,7 +39,7 @@ export class Actions extends React.Component {
         const { openConsole, openSaveFunction  } = this.state;
         const { canProcess, canSaveFunction, isEditMode, editFuncName } = this.props;
         return( 
-            <div>
+            <div className="Actions">
                 <div className="action-buttons">
                     { !isEditMode &&    
                         <Button className="mf-button-primary ml-1" onClick={this.clean}>

@@ -15,7 +15,6 @@ export const ToolboxGroups = [
         complex: 0,
         pipes: [
             { pipe: new ConstPipe(0), complex: 0 },
-            { pipe: getDefaultFunction(METHOD_FUNCTION.NEGATIVO), complex: 1 },
             { pipe: new ConstPipe({color:'Negro'}, VALUES_TYPES.COLOR), complex: 0 },
             { pipe: new ConstPipe({x:0, y:0}, VALUES_TYPES.POINT), complex: 0 }
         ]
@@ -30,6 +29,7 @@ export const ToolboxGroups = [
             { pipe: getDefaultFunction(METHOD_FUNCTION.SUB), complex: 0 },
             { pipe: getDefaultFunction(METHOD_FUNCTION.MUL), complex: 0 },
             { pipe: getDefaultFunction(METHOD_FUNCTION.DIV), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.NEGATIVO), complex: 1 },
             { pipe: getDefaultFunction(METHOD_FUNCTION.EXP), complex: 2 },
             { pipe: getDefaultFunction(METHOD_FUNCTION.RAIZ), complex: 2 },
             { pipe: getDefaultFunction(METHOD_FUNCTION.SEN), complex: 2},
@@ -42,16 +42,12 @@ export const ToolboxGroups = [
         icon: null,
         complex: 0,
         pipes: [
-            { pipe: new VarPipe(VALUES_TYPES.GENERIC), complex: 0 },
             { pipe: new EndPipe(VALUES_TYPES.GENERIC), complex: 0 },
+            { pipe: new VarPipe(VALUES_TYPES.GENERIC), complex: 0 },
             { pipe: new VarPipe(VALUES_TYPES.NUMBER), complex: 0 },
-            { pipe: new EndPipe(VALUES_TYPES.NUMBER), complex: 0 },
             { pipe: new VarPipe(VALUES_TYPES.POINT), complex: 0 },
-            { pipe: new EndPipe(VALUES_TYPES.POINT), complex: 0 },
             { pipe: new VarPipe(VALUES_TYPES.COLOR), complex: 0 },
-            { pipe: new EndPipe(VALUES_TYPES.COLOR), complex: 0 },
             { pipe: new VarPipe(VALUES_TYPES.FIGURE), complex: 0 },
-            { pipe: new EndPipe(VALUES_TYPES.FIGURE), complex: 0 },
         ],
     },
     {  
