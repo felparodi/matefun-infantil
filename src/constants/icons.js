@@ -18,7 +18,8 @@ export const ZOOM_OUT = 'zoom-out';
 export const CENTER = 'center';
 export const DOWNLOAD = 'download';
 
-//primitive functions
+// PRIMITIVE FUNCTIONS
+// math
 export const PLUS = 'plus';
 export const MINUS = 'minus';
 export const TIMES = 'times';
@@ -30,7 +31,7 @@ export const GREATER = 'greater';
 export const GREATER_EQUAL = 'greater-equal';
 export const LESS = 'less';
 export const LESS_EQUAL = 'less-equal';
-
+// figures
 export const CIRCLE = 'circle';
 export const ROTATE = 'rotate';
 export const PAINT = 'paint';
@@ -38,38 +39,39 @@ export const MOVE = 'move';
 export const SCALE = 'scale';
 export const GROUP = 'group';
 
+// CUSTOM FUNCTIONS
+// random objects
 export const SNOWMAN = 'snowman';
-export const TSHIRT = 'tshirt';
-export const CAR = 'car';
-export const START = 'start';
-export const DRON = 'dron';
-export const HELICOPTER = 'helicopter';
-export const WORK_HAT = 'work-hat';
-export const STUDENT_HAT = 'student-hat';
-export const WINDMILL_TOWER = 'windmill-tower';
-export const SCHOOL = 'school';
-export const RULE = 'rule';
-export const DEER = 'deer';
-export const ROCKET = 'rocket';
-export const POLICE_HAT = 'police-hat';
-export const PLANE = 'plane';
-export const PIZZA = 'pizza';
-export const PIE = 'pie';
-export const PANCAKE = 'pancake';
-export const BULB = 'bulb';
-export const CROWN = 'crown';
-export const LEAF = 'left';
+export const UMBRELLA = 'umbrella';
 export const HEART = 'heart';
-export const START_SOLID = 'start-solid';
-export const COOK_HAT = 'cook-hat';
-export const CLOUD = 'cloud';
-export const BOLT = 'bolt';
-export const HEADPHONE = 'headphone';
-export const GAME_CONTROLLER = 'game-controller';
-export const ICE_CREAM = 'ice-cream';
-export const HEART_SOLID = 'heart-solid';
+export const DICE = 'dice';
+export const CROWN = 'crown';
+// astronomy
+export const MOON = 'moon';
+export const STAR = 'star';
+export const SUN = 'sun';
+// food
 export const HAMBURGER = 'hamburger';
-export const AUTUMN_LEAF =  'autumn_leaf'; 
-export const POISON_BOTTLE = 'poison-bottle';
-export const CANDY = 'candy';
-export const GARDENER_HAT = 'gardener-hat';
+export const PIZZA = 'pizza';
+export const ICE_CREAM = 'ice-cream';
+// transport
+export const PLANE = 'plane';
+export const CAR = 'car';
+export const BICYCLE = 'bicycle';
+// animals
+export const DOG = 'dog';
+export const CAT = 'cat';
+export const SPIDER = 'spider';
+export const FISH = 'fish';
+// music
+export const MUSIC = 'music';
+export const DRUM = 'drum';
+export const GUITAR = 'guitar'
+// sports
+export const BASKETBALL_BALL = 'basketball-ball'
+// wearable
+export const COWBOY_HAT = 'cowboy-hat';
+export const GLASSES = 'glasses';
+export const TSHIRT = 'tshirt';
+export const SOCKS = 'socks';
+export const MASK = 'mask';

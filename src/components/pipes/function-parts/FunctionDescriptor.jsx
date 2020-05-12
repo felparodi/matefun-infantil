@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { METHOD_FUNCTION } from '../../../constants/constants';
-import * as iconType from '../../../constants/icons';
 import TextIcon from './TextIcon';
 import Color from '../../../icons/color.svg'
 import Rotar from '../../../icons/rotar.svg'
@@ -16,41 +15,8 @@ import Resto from '../../../icons/resto.svg';
 import Primero from '../../../icons/primero.svg';
 import Rango from '../../../icons/rango.svg';
 import AFIG from '../../../icons/aFig.svg';
-import WorkHat from '../../../icons/workHat.svg';
-import WindmillTower from '../../../icons/windmillTower.svg'
-import Start from '../../../icons/start.svg';
-import Helicopter from '../../../icons/helicopter.svg';
-import Car from '../../../icons/car.svg'
-import Dron from '../../../icons/dron.svg'
-import StudentHat from '../../../icons/studentHat.svg'
-import Snowman from '../../../icons/snowman.svg';
-import Tshirt from '../../../icons/tshirt.svg';
-import School from '../../../icons/school.svg';
-import Rule from '../../../icons/rule.svg';
-import Deer from '../../../icons/deer.svg';
-import Rocket from '../../../icons/rocket.svg'
-import PoliceHat from '../../../icons/policeHat.svg';
-import Plane from '../../../icons/plane.svg';
-import Pizza from '../../../icons/pizza.svg';
-import Pie from '../../../icons/pie.svg';
-import Pancake from '../../../icons/pancake.svg';
-import Bulb from '../../../icons/bulb.svg';
-import Crown from '../../../icons/crown.svg';
-import Leaf from '../../../icons/leaf.svg';
-import Heart from '../../../icons/heart.svg';
-import StartSolid from '../../../icons/startSolid.svg';
-import CookHat from '../../../icons/cookHat.svg';
-import Cloud from '../../../icons/cloud.svg';
-import Bolt from '../../../icons/bolt.svg';
-import Headphone from '../../../icons/headphone.svg';
-import GameController from '../../../icons/game-controller.svg';
-import IceCream from '../../../icons/ice-cream.svg';
-import HeartSolid from '../../../icons/heart-solid.svg';
-import Hamburger from '../../../icons/hamburger.svg';
-import AutumnLeaf from '../../../icons/autumn_leaf.svg';
-import PoisonBottle from '../../../icons/poison-bottle.svg';
-import Candy from '../../../icons/candy.svg';
-import GardenerHat from '../../../icons/gardener-hat.svg';
+
+import Icon from '../../Icon';
 
 export function nameDescriptor(name) {
     switch(name) {
@@ -112,85 +78,13 @@ export function nameDescriptor(name) {
     }
 }
 
-export function iconDescriptor(icon) {
-    switch(icon) {
-        case iconType.WORK_HAT:
-            return <WorkHat/>;
-        case iconType.STUDENT_HAT:
-            return <StudentHat/>;
-        case iconType.TSHIRT:
-            return <Tshirt/>;
-        case iconType.WINDMILL_TOWER:
-            return <WindmillTower/>;
-        case iconType.SNOWMAN:
-            return <Snowman/>;
-        case iconType.START:
-            return <Start/>;
-        case iconType.DRON:
-            return <Dron/>;
-        case iconType.HELICOPTER:
-            return <Helicopter/>;
-        case iconType.CAR:
-            return <Car/>;
-        case iconType.SCHOOL:
-            return <School/>;
-        case iconType.RULE:
-            return <Rule/>;
-        case iconType.DEER:
-            return <Deer/>;
-        case iconType.ROCKET:
-            return <Rocket/>;
-        case iconType.POLICE_HAT:
-            return <PoliceHat/>;
-        case iconType.PLANE:
-            return <Plane/>;
-        case iconType.PIZZA:
-            return <Pizza/>;
-        case iconType.PIE:
-            return <Pie/>;
-        case iconType.PANCAKE:
-            return <Pancake/>;
-        case iconType.BULB:
-            return <Bulb/>;
-        case iconType.CROWN:
-            return <Crown/>
-        case iconType.LEAF:
-            return <Leaf/>;
-        case iconType.HEART:
-            return <Heart/>;
-        case iconType.START_SOLID:
-            return <StartSolid/>;
-        case iconType.COOK_HAT:
-            return <CookHat/>;
-        case iconType.CLOUD:
-            return <Cloud/>;
-        case iconType.BOLT:
-            return <Bolt/>;
-        case iconType.HEADPHONE:
-            return <Headphone/>;
-        case iconType.GAME_CONTROLLER:
-            return <GameController/>;
-        case iconType.ICE_CREAM:
-            return <IceCream/>;
-        case iconType.HEART_SOLID:
-            return <HeartSolid/>;
-        case iconType.HAMBURGER:
-            return <Hamburger/>;
-        case iconType.AUTUMN_LEAF:
-            return <AutumnLeaf/>;
-        case iconType.POISON_BOTTLE:
-            return <PoisonBottle/>;
-        case iconType.CANDY:
-            return <Candy/>;
-        case iconType.GARDENER_HAT:
-            return <GardenerHat/>;
-        default:
-            return <TextIcon text={icon}/>;
-    }
-}
-
 const FunctionDescriptor = ({name, icon}) => {
-   return icon ? iconDescriptor(icon) : nameDescriptor(name)
+   return icon ? 
+    <svg viewBox="0 0 12 30">
+        <Icon icon={icon} color="white"/>
+    </svg>
+    : 
+    nameDescriptor(name)
 }
 
 export default FunctionDescriptor;

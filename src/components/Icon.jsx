@@ -38,7 +38,8 @@ function getFontAwesomeIcon(icon) {
             return fas.faArrowsAlt
         case icons.DOWNLOAD:
             return fas.faDownload
-        // primitive functions
+        // PRIMITIVE FUNCTIONS
+        // math
         case icons.PLUS:
             return fas.faPlus
         case icons.MINUS:
@@ -58,7 +59,8 @@ function getFontAwesomeIcon(icon) {
         case icons.LESS:
             return fas.faLessThan  
         case icons.LESS_EQUAL:
-            return fas.faLessThanEqual                
+            return fas.faLessThanEqual 
+        // figures               
         case icons.CIRCLE:
             return far.faCircle 
         case icons.ROTATE:
@@ -70,7 +72,70 @@ function getFontAwesomeIcon(icon) {
         case icons.SCALE:
             return fas.faExpand       
         case icons.GROUP:
-            return fas.faObjectGroup        
+            return fas.faObjectGroup
+        // CUSTOM FUNCTIONS
+        // random objects
+        case icons.SNOWMAN:
+            return fas.faSnowman
+        case icons.UMBRELLA:
+            return fas.faUmbrella
+        case icons.HEART:
+            return fas.faHeart
+        case icons.DICE:
+            return fas.faDice
+        case icons.CROWN:
+            return fas.faCrown
+        // astronomy
+        case icons.MOON:
+            return fas.faMoon
+        case icons.STAR:
+            return fas.faStar
+        case icons.SUN:
+            return fas.faSun
+        // food
+        case icons.HAMBURGER:
+            return fas.faHamburger     
+        case icons.PIZZA:
+            return fas.faPizzaSlice
+        case icons.ICE_CREAM:
+            return fas.faIceCream
+        // transport
+        case icons.PLANE:
+            return fas.faPlane
+        case icons.CAR:
+            return fas.faCarSide
+        case icons.BICYCLE:
+            return fas.faBicycle
+        // animals
+        case icons.DOG:
+            return fas.faDog
+        case icons.CAT:
+            return fas.faCat
+        case icons.SPIDER:
+            return fas.faSpider
+        case icons.FISH:
+            return fas.faFish
+        // music
+        case icons.MUSIC:
+            return fas.faMusic
+        case icons.DRUM:
+            return fas.faDrum
+        case icons.GUITAR:
+            return fas.faGuitar
+        // sports
+        case icons.BASKETBALL_BALL:
+            return fas.faBasketballBall
+        // wearable
+        case icons.COWBOY_HAT:
+            return fas.faHatCowboy
+        case icons.GLASSES:
+                return fas.faGlasses
+        case icons.TSHIRT:
+            return fas.faTshirt
+        case icons.SOCKS:
+            return fas.faSocks
+        case icons.MASK:
+                return fas.faMask
         default:    
             return null;
     }

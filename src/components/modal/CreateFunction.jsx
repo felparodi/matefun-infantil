@@ -3,47 +3,47 @@ import { connect } from 'react-redux';
 import { Modal } from 'react-bootstrap';
 import classNames from 'classnames';
 import { saveInMyFunctions } from '../../api/matefun';
-import * as iconType from '../../constants/icons';
+import * as icons from '../../constants/icons';
 import Base from '../pipes/function-parts/Base';
 import FunctionDescriptor from '../pipes/function-parts/FunctionDescriptor';
 import './CreateFunction.scss';
 
 const ICONS = [
-    iconType.GARDENER_HAT,
-    iconType.CANDY,
-    iconType.POISON_BOTTLE,
-    iconType.AUTUMN_LEAF,
-    iconType.HAMBURGER,
-    iconType.HEART_SOLID,
-    iconType.ICE_CREAM,
-    iconType.GAME_CONTROLLER,
-    iconType.HEADPHONE,
-    iconType.BOLT,
-    iconType.CLOUD,
-    iconType.COOK_HAT,
-    iconType.START_SOLID,
-    iconType.HEART,
-    iconType.LEAF,
-    iconType.CROWN,
-    iconType.BULB,
-    iconType.PANCAKE,
-    iconType.PIE,
-    iconType.PIZZA,
-    iconType.HELICOPTER,
-    iconType.CAR,
-    iconType.DRON,
-    iconType.START,
-    iconType.WINDMILL_TOWER,
-    iconType.WORK_HAT,
-    iconType.STUDENT_HAT,
-    iconType.TSHIRT,
-    iconType.SCHOOL,
-    iconType.RULE,
-    iconType.DEER,
-    iconType.SNOWMAN,
-    iconType.ROCKET,
-    iconType.POLICE_HAT,
-    iconType.PLANE,
+    //random objects
+    icons.SNOWMAN,
+    icons.UMBRELLA,
+    icons.HEART,
+    icons.DICE,
+    icons.CROWN,
+    //astronomy
+    icons.MOON,
+    icons.STAR,
+    icons.SUN,
+    //food
+    icons.HAMBURGER,
+    icons.PIZZA,
+    icons.ICE_CREAM,
+    //transport
+    icons.PLANE,
+    icons.CAR,
+    icons.BICYCLE,
+    //animals
+    icons.DOG,
+    icons.CAT,
+    icons.SPIDER,
+    icons.FISH,
+    //music
+    icons.MUSIC,
+    icons.DRUM,
+    icons.GUITAR,
+    //sports
+    icons.BASKETBALL_BALL,
+    //wearable
+    icons.COWBOY_HAT,
+    icons.GLASSES,
+    icons.TSHIRT,
+    icons.SOCKS,
+    icons.MASK
 ];
 
 const ButtonIcon = ({icon, onClick, selected }) => {
@@ -103,11 +103,11 @@ export class CreateFunction extends React.Component {
                 <Modal.Header>Nueva Funcion</Modal.Header>
                 <Modal.Body>
                     <div>
-                        <span>Nomber:</span>
+                        <span>Nombre:</span>
                         <input tyep='text' maxLength={10} value={name} onChange={this.onChangeName}/>
                     </div>
                     <div>
-                        <p>Selecionear Icono</p>
+                        <p>Seleccionar Icono</p>
                         <div className="icons">
                             { ICONS.map((iconName) => <ButtonIcon 
                                                         key={iconName} 
