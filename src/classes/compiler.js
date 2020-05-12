@@ -25,7 +25,6 @@ export class Compiler {
     }
 
     addSnapPipeToMatrix(x, y, snapPipe) {
-        debugger
         const { matrix } = this;
         const pipe = snapHelper.createPipeToSnap(snapPipe, this.customFunctionsMap);
         if(pipe) {
