@@ -17,17 +17,6 @@ export class Info extends React.Component {
                     <Button className='btn-collapse' onClick={closeOpenPanel}> 
                         <Icon icon={!collapsed ? icon.COLLAPSE : icon.EXPAND}/>
                     </Button>
-                    <div className='btn-actions'>
-                        <Button className='btn-action'> 
-                            <Icon icon={icon.CLEAN}/>
-                        </Button>
-                        <Button className='btn-action'> 
-                            <Icon icon={icon.SAVE}/>
-                        </Button>
-                        <Button className='btn-action'> 
-                            <Icon icon={icon.PLAY}/>
-                        </Button>
-                    </div>
                 </div>
                 { !collapsed && <DisplayResult/> }
             </div>

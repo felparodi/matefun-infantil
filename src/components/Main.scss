@@ -38,13 +38,13 @@ $DisabledFont: #784b00a8;
                 border-radius: 15px;
                 margin-left: 1rem;
                 padding: 0.5rem;
-                max-width: 30rem;
+                max-width: 40rem;
                 &.close {
                     width: 3.5rem;
                     opacity: 1;
                 }
                 &.open {
-                    flex: 2 0 0;
+                    flex: 3 0 0;
                 }
             }
         }
