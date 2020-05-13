@@ -7,13 +7,14 @@ $DisabledFont: #784b00a8;
 .Main {
     height: 100vh;
     background-color: $DarkColor;
+    overflow: hidden;
     .container {
         position: relative;
         max-width: none;
         .body {
             display: flex;
             height: 90vh;
-            .sidebar {
+            >.sidebar {
                 background-color: white;
                 width: 8rem;
                 border: none;
@@ -25,18 +26,19 @@ $DisabledFont: #784b00a8;
                     text-align: center;
                 }
             }
-            .content {
+            >.content {
                 background-color: white;
                 flex: 3 0 0;
                 overflow: scroll;
                 border-top-right-radius: 15px;
                 border-bottom-right-radius: 15px;
             }
-            .info {
+            >.info {
                 background-color: white;
                 border-radius: 15px;
                 margin-left: 1rem;
                 padding: 0.5rem;
+                max-width: 30rem;
                 &.close {
                     width: 3.5rem;
                     opacity: 1;
@@ -169,13 +171,6 @@ $DisabledFont: #784b00a8;
     border-radius: 8px;
     border: 2px solid white; /* should match background, can't be transparent */
     background-color: rgba(0, 0, 0, .5);
-}
-
-.graphic-buttons {
-    width: 100%;
-    background-color: #0496ff;
-    border-radius: 16px;
-    text-align: center;
 }
 
 .mf-button-toolbar {

@@ -14,6 +14,7 @@ export class Compiler {
 
     constructor() {
         this.matrix = new MatrixPipe(5,5);
+        this.lastEvalValue = { hasError: false, value: null, text: '', type: null };
     }
 
     newMatrix(x, y) {
@@ -158,7 +159,7 @@ export class Compiler {
     *   @scope: public
     */
     snapshot() {
-        const { matrix } = this;
+        const { matrix, lastEvalValue } = this;
         const errors = [];
         const warnings = [];
 
@@ -186,12 +187,28 @@ export class Compiler {
 
         const canSaveFunction = vars.length > 0 && errors.length === 0;
         const canProcess = canFuncEval && errors.length === 0
-     
-        return { matrix:snap,  isFunction, canProcess, canSaveFunction };
+        
+        return { matrix:snap,  isFunction, canProcess, canSaveFunction, lastEvalValue };
     }
 
     setCustomFunctionsDefinition(definition) {
         this.customFunctionsMap = definition;
+    }
+
+    setMateFunValue(value) {
+        const { matrix } = this
+        matrix.setMateFunValue(value);
+        const endPipe = matrix.getEndPipes()[0];
+        this.lastEvalValue = {
+            hasError: endPipe.hasValueError(),
+            type: endPipe.getValueType(),
+            text: endPipe.getValueText(),
+            value: endPipe.getValue()
+        }
+    }
+
+    cleanLastValue() {
+        this.lastEvalValue = { hasError: false, value: null, text: '', type: null };
     }
 }
 

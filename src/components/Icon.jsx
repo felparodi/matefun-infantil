@@ -29,6 +29,8 @@ function getFontAwesomeIcon(icon) {
             return fas.faAngleDoubleLeft
         case icons.TRASH:
             return fas.faTrash
+        case icons.EXPAND_WINDOWS:
+            return fas.faExpand;
         // graphic buttons
         case icons.ZOOM_IN:
             return fas.faSearchPlus

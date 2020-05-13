@@ -62,6 +62,7 @@ export function clean() {
 
 function cleanAux(dispatch) {
     compiler.getMatrix().clean();
+    compiler.cleanLastValue();
     dispatch({type: matrixAction.CLEAN_JOIN});
     updateMatrix(dispatch);
 }
@@ -129,7 +130,7 @@ export function joinOutput(j2) {
 
 export function setMateFunValue(value) {
     return (dispatch) => {
-        compiler.getMatrix().setMateFunValue(value);
+        compiler.setMateFunValue(value);
         dispatch({type: matrixAction.CLEAN_JOIN});
         dispatch(actions.unselectCell());
         updateMatrix(dispatch);
@@ -166,6 +167,7 @@ export function editCustomFunction(customFuncSnap) {
         if(customFuncSnap.type === PIPE_TYPES.CUSTOM) {
             const customMatrix = JSON.parse(customFuncSnap.body);
             compiler.loadSnapMatrix(customMatrix);
+            compiler.cleanLastValue();
             dispatch(actions.setEditMode(true, customFuncSnap.name));
             updateMatrix(dispatch, true);
         }
