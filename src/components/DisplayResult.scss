@@ -1,0 +1,45 @@
+.DisplayResult {
+    margin: 1rem 0;
+    border: dashed 1px;
+    border-color: #bbbbbb;
+    border-radius: 5px;
+    height: 7rem;
+    &.graph {
+     height: 25rem;
+    }
+    .title {
+        text-align: center;
+        position: relative;
+        >p {
+            margin: 0;
+        }
+        >button {
+            border-radius: 5px;
+            overflow: hidden;
+            width: 2rem;
+            height: 2rem;
+            position: absolute;
+            top: 0;
+            right: 0.5rem;
+        }
+  
+    }
+    .modal-dialog {
+        max-width: 80%;
+    }
+    .modal-body {
+        height: 90vh;
+    }
+    .info.result {
+        resize: none;
+        width: -webkit-fill-available;
+        margin: 1rem;
+    }
+    .text-value {
+        margin: 2rem;
+        text-align: center;
+    }
+    .info.result{
+        text-align: center;
+    }
+}

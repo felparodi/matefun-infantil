@@ -33,8 +33,9 @@ export class ToolboxCustom extends React.Component {
         return (
             <div className="ToolboxCustom">
                 <Edit/>
-                { pipes.map((pipe, index) => <PipeButton key={`${index}-custom`} pipe={pipe} onDrop={onDrop}/>) }
-                <Trash/>
+                <div className="pipes">
+                    { pipes.map((pipe, index) => <PipeButton key={`${index}-custom`} pipe={pipe} onDrop={onDrop}/>) }
+                </div>
             </div>
         )
 

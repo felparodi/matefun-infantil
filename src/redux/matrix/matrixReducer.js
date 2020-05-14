@@ -6,6 +6,7 @@ const initBoardGrid = new Array(BOARD_ROWS)
 
 export const initialState = {
     board: initBoardGrid,
+    lastEvalValue: {},
     isEditMode: false,
     editFuncName: '',
     isFunction: false,
@@ -25,10 +26,14 @@ export const initialState = {
 export default function matrixReducer(state = initialState, action) {
   switch (action.type) {
     case actionTypes.UPDATE_BOARD: {
-      const { matrix, isFunction, canProcess, canSaveFunction } = action.payload;
+      const { matrix, isFunction, canProcess, canSaveFunction, lastEvalValue } = action.payload;
       return {
         ...state, 
-        board:matrix, isFunction, canProcess, canSaveFunction
+        board:matrix, 
+        isFunction, 
+        canProcess, 
+        canSaveFunction, 
+        lastEvalValue
       };
     }
     case actionTypes.SET_EVAL_INSTRUCTION: {

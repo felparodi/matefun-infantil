@@ -1,0 +1,29 @@
+.Info {
+    height: 100%;
+    width: 100%;
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+        .btn-actions {
+            .btn-action {
+                margin-left: 1rem;
+                border-radius: 2rem;
+                width: 2.5rem;
+            }
+        }
+    }
+    &.collapsed {
+        .buttons {
+            flex-direction: column;
+            justify-content: start;
+            height: 100%;
+            .btn-actions {
+                margin-top: 3rem;
+                .btn-action {
+                    margin-left: 0;
+                    margin-top: 1rem;
+                }
+            }
+        }
+    }
+}

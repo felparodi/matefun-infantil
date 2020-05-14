@@ -1,4 +1,4 @@
-import React , {useState}  from 'react';
+import React  from 'react';
 import {VALUES_TYPES, } from '../../../constants/constants';
 import TextIcon from './TextIcon';
 import Crallon from '../../../icons/crallon.svg';
@@ -17,41 +17,21 @@ export function colorByColorValue(value) {
             return value
     }
 }
-//TODO Agrear Mas Variantes para COLOR u otros
-//TODO dobleClick
-const ValueInfo = ({onClick, onDoubleClick, text, type}) => {
-    const [timer, setTimer] = useState(null);
-    const handlerClick = (event) => {
-        if(timer) return;
-        console.log('handlerOnClick')
-        if(onDoubleClick && onClick) {
-            setTimer(setTimeout(() => {
-                setTimer(null);
-                onClick(event);
-            }, 200));
-        } else if(onClick) {
-            onClick(event);
-        }
-    } 
-    const handlerDoubleClick = (event) => {
-        console.log('handlerDoubleClick')
-        if (timer) {
-            clearTimeout(timer);
-            setTimer(null);
-        }
-        onDoubleClick && onDoubleClick(event)
-    } 
+
+const ValueInfo = ({onClick, text, type}) => {
     switch(type) {
         case VALUES_TYPES.COLOR:
-            return <Crallon 
-                onClick={handlerClick}
-                onDoubleClick={handlerDoubleClick}
-                style={{fill: colorByColorValue(text)}}/>;
+            return (
+                <Crallon 
+                    onClick={onClick}
+                    style={{fill: colorByColorValue(text)}}/>
+            );
         default:
-            return <TextIcon 
-                onClick={handlerClick} 
-                onDoubleClick={handlerDoubleClick}
-                text={text}/>;
+            return (
+                <TextIcon 
+                    onClick={onClick} 
+                    text={text}/>
+            );
     }
     
 }

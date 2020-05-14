@@ -7,6 +7,8 @@ import classNames from 'classnames';
 import toolboxGroups, {COMPLEX} from '../../constants/toolbox';
 import ToolboxBody from './ToolboxBody';
 import Icon from '../Icon';
+import Trash from './Trash';
+import * as icons from '../../constants/icons';
 
 import './Toolbox.scss';
 
@@ -57,23 +59,26 @@ export class Toolbox extends React.Component {
         const {select, pipeToolsGroup} = this.state;
         return (
             <div className="Toolbox">
-                <div className="toolbox-header">
-                { 
-                    pipeToolsGroup.map((toolbar, index) => (
-                        <Button key={index}
-                            className={classNames("button-group", {'selected': select === toolbar.value })}
-                            onClick={()=> this.setState({select: toolbar.value})}>
-                            {toolbar.icon ?
-                                <Icon icon={toolbar.icon} size='30px'/>
-                                : <span>{toolbar.label}</span>
-                            }
-                        </Button>
-                    )) 
-                }
+                <div className="tabs">
+                    <div className="toolbox-header">
+                    { 
+                        pipeToolsGroup.map((toolbar, index) => (
+                            <Button key={index}
+                                className={classNames("button-group", {'selected': select === toolbar.value })}
+                                onClick={()=> this.setState({select: toolbar.value})}>
+                                {toolbar.icon ?
+                                    <Icon icon={toolbar.icon} size='30px'/>
+                                    : <span>{toolbar.label}</span>
+                                }
+                            </Button>
+                        )) 
+                    }
+                    </div>
+                    <ToolboxBody
+                        onDrop={this.onDrop}
+                        group={pipeToolsGroup.find((toolbar) => toolbar.value === select)}/>
                 </div>
-                <ToolboxBody
-                    onDrop={this.onDrop}
-                    group={pipeToolsGroup.find((toolbar) => toolbar.value === select)}/>
+                <Trash/>
             </div>
         )
     }

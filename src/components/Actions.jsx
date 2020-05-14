@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import Consola from './Console';
 import { clean, cancelEdit } from '../api/board';
 import CreateFunction from './modal/CreateFunction';
 import { loadFunctionDefinition, evaluate, saveCustomFunction } from '../api/matefun';
 import Icon from '../components/Icon';
-import * as icon from '../constants/icons';
+import * as icons from '../constants/icons';
 
-const debugMode = localStorage.getItem('debug-mode') === 'true';
+import './Actions.scss';
+import { iconDescriptor } from './pipes/function-parts/FunctionDescriptor';
 
 export class Actions extends React.Component {
     constructor() {
@@ -42,32 +42,48 @@ export class Actions extends React.Component {
             <div className="Actions">
                 <div className="action-buttons">
                     { !isEditMode &&    
-                        <Button className="mf-button-primary ml-1" onClick={this.clean}>
-                            <Icon icon={icon.CLEAN}/>Limpiar
+                        <Button className="mf-button-primary ml-1" 
+                            title="Limpiar"
+                            onClick={this.clean}>
+                            <Icon icon={icons.CLEAN}/>
                         </Button> 
                     }
                     { isEditMode && 
-                        <Button className="mf-button-primary ml-1" onClick={this.props.cancelEdit}>
-                            Cancel
+                        <Button className="mf-button-primary ml-1" 
+                            title="Cancelar"
+                            onClick={this.props.cancelEdit}>
+                            <Icon icon={icons.CANCEL}/>
                         </Button> 
                     }
                     { !isEditMode && 
-                        <Button className="mf-button-primary ml-1" disabled={!canSaveFunction} onClick={() => this.setState({openSaveFunction: true})}>
-                            <Icon icon={icon.SAVE}/> Guardar
+                        <Button className="mf-button-primary ml-1" 
+                            title="Guardar"
+                            disabled={!canSaveFunction} 
+                            onClick={() => this.setState({openSaveFunction: true})}>
+                            <Icon icon={icons.SAVE}/>
                         </Button>
                     }
                     { isEditMode &&    
-                        <Button className="mf-button-primary ml-1" disabled={!canSaveFunction} onClick={() => this.props.saveCustomFunction(editFuncName)}>
-                            <Icon icon={icon.SAVE}/> Guardar
+                        <Button className="mf-button-primary ml-1" 
+                            disabled={!canSaveFunction} 
+                            title="Salvar"
+                            onClick={() => this.props.saveCustomFunction(editFuncName)}>
+                            <Icon icon={icons.SAVE_ALT}/>
                         </Button>
                     }
                     { isEditMode && 
-                        <Button variant="primary" disabled={!canSaveFunction} onClick={() => this.setState({openSaveFunction: true})}>
-                            <Icon icon={icon.SAVE}/> Guardar como...
+                        <Button className="mf-button-primary ml-1" 
+                            disabled={!canSaveFunction} 
+                            title="Guardar como ..."
+                            onClick={() => this.setState({openSaveFunction: true})}>
+                            <Icon icon={icons.SAVE}/>
                         </Button> 
                     }
-                    <Button className="mf-button-primary ml-1" disabled={!canProcess} onClick={this.evaluate}>
-                        <Icon icon={icon.PLAY}/> Probar
+                    <Button className="mf-button-primary ml-1" 
+                        title="Probar"
+                        disabled={!canProcess} 
+                        onClick={this.evaluate}>
+                        <Icon icon={icons.PLAY}/>
                     </Button>
            
                 </div>

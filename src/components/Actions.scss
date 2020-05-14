@@ -1,0 +1,17 @@
+.Actions {
+    position: absolute;
+    right: 2rem;
+    top:  0.5rem;
+    .action-buttons {
+        >.btn {
+            border-radius: 2rem;
+            width: 3rem;
+            height: 3rem;
+            box-shadow: -1px 3px 26px 0px rgba(0, 0, 0, 0.75);
+            >svg {
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+}

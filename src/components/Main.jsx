@@ -7,10 +7,7 @@ import Board from './Board/Board'
 import Actions from './Actions';
 import Header from './Header';
 import { prepareEnvironment } from '../api/matefun';
-import { DisplayResult } from './modal/DisplayResult';
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import Icon from './Icon';
-import * as icon from '../constants/icons';
+import Info from './Info';
 
 import './Main.scss';
 import Configuration from './modal/Configuration';
@@ -50,9 +47,6 @@ export class Main extends React.Component {
                     <div className="body">
                         <div className="sidebar">
                             <Toolbox onDrop={this.onDropToolbox} />
-                            <div className="trash drop-zone">
-                                <Icon icon={icon.TRASH} size='30px'></Icon>
-                            </div>
                         </div>
                         <div className="content">
                             <Actions />
@@ -64,22 +58,9 @@ export class Main extends React.Component {
                                     'open': this.state.resultPanelOpen,
                                     'close': !this.state.resultPanelOpen
                                 })}>
-                            <div className="panel">
-                                <div style={{width:'100%'}}>
-                                    <Button onClick={this.openCloseResultPanel}> 
-                                        <Icon icon={this.state.resultPanelOpen?icon.COLLAPSE:icon.EXPAND}/>
-                                    </Button>
-                                    {pipe && this.state.resultPanelOpen && 
-                                        <DisplayResult 
-                                            show={showResult}
-                                            value={pipe.value}
-                                            type={pipe.dir.top}
-                                            valuetext={pipe.valueText}
-                                            hasError={pipe.hasValueError}
-                                            onHide={this.handlerHiddenResult} />
-                                    }
-                                </div>
-                            </div>
+                            <Info 
+                                closeOpenPanel={this.openCloseResultPanel}
+                                collapsed={!this.state.resultPanelOpen}/>
                         </div>
                     </div>
                 </div>

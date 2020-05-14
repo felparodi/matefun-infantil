@@ -21,6 +21,8 @@ function getFontAwesomeIcon(icon) {
             return fas.faPlay
         case icons.SAVE:
             return fas.faSave
+        case icons.SAVE_ALT:
+            return far.faSave
         case icons.CONSOLE:
             return fas.faTerminal
         case icons.COLLAPSE:
@@ -29,6 +31,10 @@ function getFontAwesomeIcon(icon) {
             return fas.faAngleDoubleLeft
         case icons.TRASH:
             return fas.faTrash
+        case icons.EXPAND_WINDOWS:
+            return fas.faExpand;
+        case icons.CANCEL: 
+            return fas.faTimes;
         // graphic buttons
         case icons.ZOOM_IN:
             return fas.faSearchPlus
