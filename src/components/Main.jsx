@@ -7,10 +7,6 @@ import Board from './Board/Board'
 import Actions from './Actions';
 import Header from './Header';
 import { prepareEnvironment } from '../api/matefun';
-import { DisplayResult } from './DisplayResult';
-import { Button } from 'react-bootstrap';
-import Icon from './Icon';
-import * as icon from '../constants/icons';
 import Info from './Info';
 
 import './Main.scss';
@@ -51,9 +47,6 @@ export class Main extends React.Component {
                     <div className="body">
                         <div className="sidebar">
                             <Toolbox onDrop={this.onDropToolbox} />
-                            <div className="trash drop-zone">
-                                <Icon icon={icon.TRASH} size='30px'></Icon>
-                            </div>
                         </div>
                         <div className="content">
                             <Actions />

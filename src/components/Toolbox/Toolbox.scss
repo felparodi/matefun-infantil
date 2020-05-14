@@ -5,46 +5,57 @@ $button-pipe-size: 4rem;
 
 .Toolbox {
     display: flex;
-    height: 90%;
-    .toolbox-header {
-        width: 3rem;
-        padding-right: 2px;
-        padding-left: 2px;
-        .button-group {
-            border: none;
-            padding: 0 0 1rem 0;
-            height: 5rem;
-            background-color: transparent;
-            color: $MainColor;
-            width: 100%;
-            border-radius: 20px;
-            &.selected {
-                background-color: $SecondaryColor;
+    flex-direction: column;
+    height: 100%;
+    .tabs {
+        display: flex;
+        flex:  1 0 0;
+        .toolbox-header {
+            width: 3rem;
+            padding-left: 0.5rem;
+            .button-group {
+                border: none;
+                padding: 0 0 1rem 0;
+                height: 5rem;
+                background-color: transparent;
                 color: $MainColor;
+                width: 100%;
+                border-radius: 20px;
+                &.selected {
+                    background-color: $SecondaryColor;
+                    color: $MainColor;
+                }
+                span {
+                    writing-mode: vertical-rl;
+                    text-orientation: sideways;
+                    transform: rotate(180deg);
+                    height: 100%;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
             }
-            span {
-                writing-mode: vertical-rl;
-                text-orientation: sideways;
-                transform: rotate(180deg);
-                height: 100%;
-                text-overflow: ellipsis;
-                overflow: hidden;
+        }
+        .toolbox-body {
+            height: 100%;
+            overflow-y: auto;
+            text-align: center;
+            background-color: #f8c63159;
+            text-align: center;
+            .pipe-button {
+                width: $button-pipe-size;
+                height: $button-pipe-size;
+                margin: 0.2rem;
+                background: white;
+                padding: .4rem;
+                border-color: lightgray;
             }
         }
     }
-    .toolbox-body {
-        height: 100%;
-        overflow-y: auto;
-        text-align: center;
-        background-color: #f8c63159;
-        text-align: center;
-        .pipe-button {
-            width: $button-pipe-size;
-            height: $button-pipe-size;
-            margin: 0.2rem;
-            background: white;
-            padding: .4rem;
-            border-color: lightgray;
+    >.Trash {
+        height: 5rem;
+        margin: 0.5rem 0 0.5rem 0.5rem;
+        &.over {
+            background-color: #f99494;
         }
     }
 }

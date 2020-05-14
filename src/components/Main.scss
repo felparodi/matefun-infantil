@@ -82,13 +82,19 @@ $DisabledFont: #784b00a8;
             }
         }
     }
+    .drop-zone {
+        padding: 15%;
+        background-color: rgb(197, 197, 197);
+        border: dashed  grey;
+        border-radius: 5px;
+        svg {
+            height: 100%;
+            width: 100%;
+        }
+    }
 }
 
-.drop-zone {
-    background-color: rgb(197, 197, 197);
-    border: dashed  grey;
-    border-radius: 5px;
-}
+
 
 .action-buttons{    
     margin-bottom: 10px;
@@ -146,13 +152,16 @@ $DisabledFont: #784b00a8;
 }
 
 .content {
-    padding: 10px;
+    padding: 1rem;
+    position: relative;
+    padding-top: 2rem;
 }
 
 .board-container {
-    height: 92%;
+    height: 100%;
     max-width: 100%;
     overflow: scroll;
+    border: dashed 1px #dadada;
     
 }
 .board-container::-webkit-scrollbar {

@@ -6,12 +6,14 @@ export const SHAPES = 'shapes';
 export const USER = 'user';
 export const EXPAND = 'expand'
 export const SAVE = 'save';
+export const SAVE_ALT = 'save-alt';
 export const CLEAN = 'clean';
 export const PLAY = 'play';
 export const CONSOLE = 'console';
 export const COLLAPSE = 'collapse';
 export const EXPAND_WINDOWS = 'expand-windows';
 export const TRASH = 'trash';
+export const CANCEL = 'cancel';
 
 //graphic buttons
 export const ZOOM_IN = 'zoom-in';
