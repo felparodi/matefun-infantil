@@ -198,7 +198,9 @@ export function saveInMyFunctions(name, icon) {
 
         const functionOpenBlock = contenido.match(/{-FS:([\w\d]+)-}/g);
         const functionNames = functionOpenBlock ? functionOpenBlock.map((name) => /{-FS:([\w\d]+)-}/.exec(name)[1]) : [];
-        const funcName = name ? name : `func${functionNames ? functionNames.length + 1 : 1}`;
+        const lastN = functionNames.map((name) => Number(name.replace('func','')))
+                        .reduce((n, m) => n > m ? n : m, 0)
+        const funcName = name ? name : `func${lastN ? lastN + 1 : 1}`;
 
         if(!functionNames || functionNames.indexOf(funcName) === -1) {
             const myFunctionBlock = newFunctionBlock(funcName, icon);

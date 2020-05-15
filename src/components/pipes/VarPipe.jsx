@@ -82,16 +82,13 @@ export class VarPipe extends React.Component {
     constructor() {
         super();
         this.state = {
-            editingValue: false,
-            editModal: false,
+            edit: false,
         }
         this.leaveEditing = this.leaveEditing.bind(this);
         this.setDoorState = this.setDoorState.bind(this);
         this.setEditingValue = this.setEditingValue.bind(this);
         this.joinOutput = this.joinOutput.bind(this);
         this.openDoor = this.openDoor.bind(this);
-        this.handlerDoubleClickValue = this.handlerDoubleClickValue.bind(this);
-        this.handlerHideModal = this.handlerHideModal.bind(this);
     }
 
     openDoor() {
@@ -111,13 +108,13 @@ export class VarPipe extends React.Component {
 
     leaveEditing(value) {
         const { pipe } = this.props;
-        this.setState({ editingValue: false });
+        this.setState({ edit: false });
         this.props.setPipeValue(pipe.pos.x, pipe.pos.y, value);
     }
 
     setDoorState(isOpen) {
         const { pipe } = this.props;
-        this.setState({ isOpen: isOpen, editingValue: isOpen });
+        this.setState({ isOpen: isOpen, edit: isOpen });
         if(!isOpen) {
             this.props.setPipeValue(pipe.pos.x, pipe.pos.y, null);
         } else {
@@ -126,32 +123,16 @@ export class VarPipe extends React.Component {
     }
 
     setEditingValue(value) {
-        this.setState({ editingValue: value });
+        this.setState({ edit: value });
     }
-
-    handlerDoubleClickValue() {
-        const {active, pipe} = this.props;
-        if(active && isDefined(pipe.dir.bottom)) {
-            this.setState({ editModal:true })
-        }
-    }
-
-    handlerHideModal(value) {
-        this.setState({ editModal: false });
-        if(value !== undefined) {
-            const { pipe } = this.props;
-            this.props.setPipeValue(pipe.pos.x, pipe.pos.y, value);
-        }
-    }
-
 
     render() {
-        const { isOpen, editingValue, editModal } = this.state;
-        const { pipe, startJoin } = this.props;
+        const { isOpen, edit } = this.state;
+        const { pipe, startJoin, selected } = this.props;
         if (pipe.value || isOpen) {
             return (
                 <div className="VarPipe">
-                    { editingValue && <ValueInput value={pipe.value} type={pipe.dir.bottom} onBlur={this.leaveEditing}/> }
+                    { selected && edit && <ValueInput value={pipe.value} type={pipe.dir.bottom} onBlur={this.leaveEditing}/> }
                     <DoorOpen pipe={pipe}
                         startJoin={startJoin}
                         onClickOutput={this.joinOutput}

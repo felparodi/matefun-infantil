@@ -76,7 +76,7 @@ export class CreateFunction extends React.Component {
 
     componentDidUpdate(prevProp) {
         if(prevProp.show !== this.props.show) {
-            this.setState({ open: this.props.show })
+            this.setState({ open: this.props.show, name: '' , icon: ''})
         }
     }
 
