@@ -2,18 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {isDefined} from '../../classes/helpers/type';
 import { setPipeValue, joinOutput, isEqualJoin } from '../../api/board';
-import './ValPipe.scss';
 import { DIRECTION } from '../../constants/constants';
 import ValueInfo from './function-parts/ValueInfo';
 import Output from './function-parts/Output';
 import ValueInput from './function-parts/ValueInput';
 
-export class ValPipe extends React.Component {
+import './ValuePipe.scss';
+
+export class ValuePipe extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            editModal: false,
+            edit: false,
         }
         this.leaveEditing = this.leaveEditing.bind(this);
         this.joinOutput = this.joinOutput.bind(this);
@@ -30,21 +31,23 @@ export class ValPipe extends React.Component {
     leaveEditing(value) {
         const { pipe } = this.props;
         this.props.setPipeValue(pipe.pos.x, pipe.pos.y, value);
+        this.setState({ edit: false });
     }
 
     onClickValue() {
-        const {active, pipe, onSelect} = this.props;
+        const { active, pipe } = this.props;
         if(active && isDefined(pipe.dir.bottom)) {
-            onSelect && onSelect(true);
+            this.setState({edit: true });
         }
     }
 
     render() {
         const { pipe, startJoin, selected } = this.props;
+        const { edit } = this.state;
         const isSelectJoin = pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.BOTTOM} , startJoin);
         const type = pipe.dir.bottom;
         return (
-            <div className="ValPipe">
+            <div className="ValuePipe">
                 <svg viewBox="0 0 40 40">
                     <g>
                         <title>Value Bottom</title>
@@ -52,10 +55,11 @@ export class ValPipe extends React.Component {
                         <Output onClick={this.joinOutput} join={isSelectJoin} type={type}></Output>
                     </g>
                     <ValueInfo 
+                        onClick={this.onClickValue}
                         type={type}
                         text={pipe.valueText}/>
                 </svg>
-                { selected && <ValueInput value={pipe.value} onBlur={this.leaveEditing} type={type}/> }
+                { selected && edit && <ValueInput value={pipe.value} onBlur={this.leaveEditing} type={type}/> }
             </div>
         )
     }
@@ -70,4 +74,4 @@ const mapDispatch = {
     joinOutput
 }
 
-export default connect(mapStateToProps, mapDispatch)(ValPipe);
+export default connect(mapStateToProps, mapDispatch)(ValuePipe);

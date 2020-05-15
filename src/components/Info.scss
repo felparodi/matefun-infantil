@@ -45,6 +45,11 @@
             left: 14px;
             >p {
                 margin: 0;
+                .action {
+                    cursor: pointer;
+                    font-weight: bold;
+                    margin: 0 0.2rem;
+                }
             }
         }
     }

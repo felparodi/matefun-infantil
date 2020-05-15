@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { VALUES_TYPES, PIPE_TYPES } from '../constants/constants';
 import { setPipeValue } from '../api/board';
@@ -30,11 +31,13 @@ const ColorInput  = ({onBlur, value, selected}) => {
     const [tempValue, setTempValue] = useState(value);
     useEffect(() => { setTempValue(value); }, [value]);
     return (
-        <SketchPicker disableAlpha={true} 
-            onBlur={console.log}
-            onChangeComplete={(color) => onBlur({color: `rgb(${color.rgb.r},${color.rgb.g},${color.rgb.b})`}, selected)}
-            color={valueToColor(tempValue)} 
-            onChange={(color) => setTempValue({color: `rgb(${color.rgb.r},${color.rgb.g},${color.rgb.b})`}) }/>
+        <div className="ColorInput">
+            <SketchPicker disableAlpha={true} 
+                onBlur={console.log}
+                onChangeComplete={(color) => onBlur({color: `rgb(${color.rgb.r},${color.rgb.g},${color.rgb.b})`}, selected)}
+                color={valueToColor(tempValue)} 
+                onChange={(color) => setTempValue({color: `rgb(${color.rgb.r},${color.rgb.g},${color.rgb.b})`}) }/>
+        </div>
     );
 }
 
@@ -83,6 +86,9 @@ const PointInput = ({value, onBlur, selected}) => {
 export class SelectPipeInfo extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            minimized: false
+        }
         this.handlerOnChange = this.handlerOnChange.bind(this);
     }
 
@@ -92,6 +98,7 @@ export class SelectPipeInfo extends React.Component {
 
     render() {
         const { selected, matrix} = this.props;
+        const {minimized} = this.state;
         if(!selected) return null;
         const selectedPipe = matrix[selected.x][selected.y];
         if(!selectedPipe || (selectedPipe.type !== PIPE_TYPES.VALUE && selectedPipe.type !== PIPE_TYPES.VARIABLE)) {
@@ -105,11 +112,26 @@ export class SelectPipeInfo extends React.Component {
         return (
             <div className="SelectPipeInfo info-panel">
                 <div className="title">
-                    <p>{selectedPipe.type === PIPE_TYPES.VALUE ? 'Valor' :  'Variable' }: {typeTranslate(type)}</p>
+                    <p>
+                        <span className='action' onClick={() => this.setState({minimized:!minimized})}>{minimized ? '+' : '-'}</span>
+                        {selectedPipe.type === PIPE_TYPES.VALUE ? 'Valor' :  'Variable' }: {typeTranslate(type)}
+                    </p>
                 </div>
-                { type === VALUES_TYPES.NUMBER && <NumberInput value={selectedPipe.value} selected={selected} onBlur={this.handlerOnChange}/> }
-                { type === VALUES_TYPES.COLOR && <ColorInput onBlur={this.handlerOnChange} selected={selected} value={selectedPipe.value}/> }
-                { type === VALUES_TYPES.POINT && <PointInput value={selectedPipe.value} selected={selected} onBlur={this.handlerOnChange} />}
+                { !minimized && type === VALUES_TYPES.NUMBER &&
+                     <NumberInput value={selectedPipe.value}
+                        selected={selected}
+                        onBlur={this.handlerOnChange}/> 
+                }
+                { !minimized && type === VALUES_TYPES.COLOR && 
+                    <ColorInput onBlur={this.handlerOnChange} 
+                        selected={selected} 
+                        value={selectedPipe.value}/> 
+                }
+                { !minimized && type === VALUES_TYPES.POINT && 
+                    <PointInput value={selectedPipe.value} 
+                        selected={selected} 
+                        onBlur={this.handlerOnChange}/>
+                }
             </div>
         )
     }

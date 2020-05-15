@@ -1,38 +1,34 @@
 .SelectPipeInfo {
-    display: flex;
-    justify-content: center;
-    &.color {
-        .modal-dialog {
-            min-width: 0;
-            .modal-content {
-                padding: 0;
-                .sketch-picker {
-                    > div:nth-child(3) {
-                        > div:first-child {
-                            display: none;
-                        }
-                        > div {
-                            padding-left: 0 !important;
-                            padding-right: 0.2rem;
-                            > div {
-                            display: flex;
-                            padding-bottom: 0.2rem;
-                            span {
-                                padding-left: 0.5rem;
-                            }
-                        }
-                        }
-                    }
-                    input {
-                        text-align: center;
+    .ColorInput {
+        display: flex;
+        justify-content: center;
+        .sketch-picker {
+            > div:nth-child(3) {
+                > div:first-child {
+                    display: none;
+                }
+                > div {
+                    padding-left: 0 !important;
+                    padding-right: 0.2rem;
+                    > div {
+                    display: flex;
+                    padding-bottom: 0.2rem;
+                    flex-direction: row-reverse;
+                    span {
+                        padding: 0.2rem;
                     }
                 }
+                }
             }
-        } 
+            input {
+                text-align: center;
+            }
+        }
     }
     .value-info {
        display: flex;
        justify-content: space-between;
+       align-items: baseline;
        .label {
            width: 4rem;
        }

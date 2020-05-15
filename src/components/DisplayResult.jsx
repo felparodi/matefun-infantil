@@ -65,31 +65,35 @@ export class DisplayResult extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            graphModal: false
+            graphModal: false,
+            minimized: false
         }
     }
 
     render() {
         const { lastEvalValue } = this.props;
         const { hasError, value, text, type } = lastEvalValue;
-        const { graphModal } = this.state;
+        const { graphModal, minimized } = this.state;
         if(!type) return null;
         const graph = type  === VALUES_TYPES.FIGURE  || type === VALUES_TYPES.list(VALUES_TYPES.FIGURE);
 
         return (
-            <div className={classNames("DisplayResult info-panel", { 'graph' : graph })}>
+            <div className={classNames("DisplayResult info-panel", { 'graph' : graph, 'minimized': minimized})}>
                 <div className="title">
-                    <p>Resultado: {hasError ? 'Error' : typeTranslate(type)}</p>
+                    <p>
+                        <span className='action' onClick={() => this.setState({minimized:!minimized})}>{minimized ? '+' : '-'}</span>
+                        Resultado: {hasError ? 'Error' : typeTranslate(type)}
+                    </p>
                    
                 </div>
-                { graph && 
+                { graph && !minimized &&
                     <button className="expand-button" 
                         onClick={() => this.setState({graphModal: true})}>
                         <Icon icon={icons.EXPAND_WINDOWS}/>
                     </button> 
                 }
-                <DisplayValue hasError={hasError} type={type} value={value} text={text}/>
-                { graphModal && graph && 
+                { !minimized && <DisplayValue hasError={hasError} type={type} value={value} text={text}/> }
+                { graphModal && graph && !minimized &&
                     <ModalGraphic 
                         open={graphModal}
                         onClose={() => this.setState({graphModal: false})} 

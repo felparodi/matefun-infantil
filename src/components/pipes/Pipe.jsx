@@ -6,7 +6,7 @@ import { PIPE_TYPES, DIRECTION } from '../../constants/constants';
 import DummyPipe from './DummyPipe'
 import FuncPipe from './FuncPipe';
 import EndPipe from './EndPipe';
-import ValPipe from './ValPipe';
+import ValuePipe from './ValuePipe';
 import VarPipe from './VarPipe';
 import './Pipe.scss';
 
@@ -17,7 +17,7 @@ function SwitchPipe(pipe, props) {
         case PIPE_TYPES.CONDITION:
             return <FuncPipe {...(props)} />;
         case PIPE_TYPES.VALUE:
-            return <ValPipe {...(props)} />;
+            return <ValuePipe {...(props)} />;
         case PIPE_TYPES.END:
             return <EndPipe {...(props)} />;
         case PIPE_TYPES.DUMMY:
