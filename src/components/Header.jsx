@@ -6,6 +6,8 @@ import { logout } from '../api/user';
 import Icon from '../components/Icon';
 import * as icon from '../constants/icons';
 
+import './Header.scss';
+
 export class Header extends React.Component {
 
     constructor() {
@@ -14,7 +16,7 @@ export class Header extends React.Component {
 
     render() {
         return (
-            <Navbar variant="dark" style={{ marginBottom: '15px', backgroundColor:'#0496FF'}}>
+            <Navbar variant="dark" className="Header">
                 <Navbar.Brand>Matefun Infantil</Navbar.Brand>
                 <Nav className="mr-auto"></Nav>
 
@@ -23,8 +25,8 @@ export class Header extends React.Component {
                         <Icon icon={icon.USER}/> {(this.props.userData) ? this.props.userData.nombre + " " + this.props.userData.apellido : ""}
                     </Dropdown.Toggle> 
                     <Dropdown.Menu>
-                        <Dropdown.Item onClick={this.props.openConfig}>Configuracion</Dropdown.Item>
-                        <Dropdown.Item onClick={this.props.logout}>Cerrar sesión</Dropdown.Item>
+                        <Dropdown.Item onClick={this.props.openConfig}><Icon icon={icon.CONFIG}/>Configuracion</Dropdown.Item>
+                        <Dropdown.Item onClick={this.props.logout}><Icon icon={icon.LOGOUT}/>Cerrar sesión</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
 

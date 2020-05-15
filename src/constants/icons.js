@@ -17,6 +17,8 @@ export const COLLAPSE = 'collapse';
 export const EXPAND_WINDOWS = 'expand-windows';
 export const TRASH = 'trash';
 export const CANCEL = 'cancel';
+export const CONFIG = 'config';
+export const LOGOUT = 'logout'
 
 //graphic buttons
 export const ZOOM_IN = 'zoom-in';
@@ -30,6 +32,8 @@ export const PLUS = 'plus';
 export const MINUS = 'minus';
 export const TIMES = 'times';
 export const DIVIDE = 'divide';
+export const ROOT = 'root';
+export const EXP = 'exp';
 
 export const EQUAL = 'equal';
 export const NOT_EQUAL = 'not-equal';

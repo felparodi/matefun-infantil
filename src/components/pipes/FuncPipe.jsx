@@ -51,15 +51,12 @@ export class FuncPipe extends React.Component {
                     { rightType && <InputRight join={isJoinRigth} onClick={() => this.joinInput(DIRECTION.RIGHT)} type={rightType}/>}
                     { topType && <InputTop join={isJoinTop} onClick={() => this.joinInput(DIRECTION.TOP)} type={topType}/>}
                     <Output join={isJoinBottom} onClick={this.joinOutput} type={bottomType}/>
-                    {![METHOD_FUNCTION.ADD,METHOD_FUNCTION.SUB,METHOD_FUNCTION.MUL,METHOD_FUNCTION.DIV,METHOD_FUNCTION.CIRC,
-                    METHOD_FUNCTION.COLOR,METHOD_FUNCTION.EQUAL,METHOD_FUNCTION.N_EQUAL,METHOD_FUNCTION.GREAT,METHOD_FUNCTION.E_GREAT,
-                    METHOD_FUNCTION.LEST,METHOD_FUNCTION.E_LEST,METHOD_FUNCTION.MOVER,METHOD_FUNCTION.ESCALAR,METHOD_FUNCTION.JUNTAR]
-                    .includes(pipe.name) ? 
-                        <FuncDescriptor name={pipe.name} icon={pipe.icon}/>
+                    {   !getIconForMethod(pipe.name) ? 
+                            <FuncDescriptor name={pipe.name} icon={pipe.icon}/>
                         :
-                        <svg viewBox="0 0 12 30">
-                            <Icon icon={getIconForMethod(pipe.name)} color="white"/>
-                        </svg>
+                            <svg viewBox="0 0 12 30">
+                                <Icon icon={getIconForMethod(pipe.name)} color="white"/>
+                            </svg>
                     }
                 </svg>
             </div>
@@ -73,11 +70,16 @@ function getIconForMethod(name) {
         case METHOD_FUNCTION.ADD:
             return icon.PLUS
         case METHOD_FUNCTION.SUB:
+        case METHOD_FUNCTION.NEGATIVO:
             return icon.MINUS
         case METHOD_FUNCTION.MUL:
             return icon.TIMES
         case METHOD_FUNCTION.DIV:
             return icon.DIVIDE
+        case METHOD_FUNCTION.RAIZ:
+            return icon.ROOT;
+        case METHOD_FUNCTION.EXP:
+            return icon.EXP;
         case METHOD_FUNCTION.EQUAL:
             return icon.EQUAL
         case METHOD_FUNCTION.N_EQUAL:

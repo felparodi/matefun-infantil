@@ -35,6 +35,10 @@ function getFontAwesomeIcon(icon) {
             return fas.faExpand;
         case icons.CANCEL: 
             return fas.faTimes;
+        case icons.CONFIG:
+            return fas.faCogs
+        case icons.LOGOUT:
+            return fas.faPowerOff
         // graphic buttons
         case icons.ZOOM_IN:
             return fas.faSearchPlus
@@ -66,6 +70,10 @@ function getFontAwesomeIcon(icon) {
             return fas.faLessThan  
         case icons.LESS_EQUAL:
             return fas.faLessThanEqual 
+        case icons.ROOT:
+            return fas.faSquareRootAlt;
+        case icons.EXP:
+            return fas.faSuperscript;
         // figures               
         case icons.CIRCLE:
             return far.faCircle 
