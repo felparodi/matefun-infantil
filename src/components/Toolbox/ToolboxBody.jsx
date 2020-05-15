@@ -18,8 +18,17 @@ class ToolboxBody extends React.Component {
                 <div className="toolbox-body">
                     {   
                         group.value !== 'custom' ? 
-                        group.pipes.map((pipe, index) => <PipeButton key={`${index}-${group.value}`} pipe={pipe} onDrop={onDrop}/>) : 
-                        <ToolboxCustom onDrop={onDrop}/>
+                            <div className="standard">
+                                <div className="container">
+                                { group.pipes.map((pipe, index) => 
+                                    <PipeButton
+                                        key={`${index}-${group.value}`} 
+                                        pipe={pipe} onDrop={onDrop}/>) 
+                                }   
+                                </div>
+                            </div>
+                        : 
+                            <ToolboxCustom onDrop={onDrop}/>
                     }
                 </div>
             )

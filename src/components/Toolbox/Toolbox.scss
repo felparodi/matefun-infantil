@@ -46,6 +46,16 @@ $button-pipe-size: 4rem;
             text-align: center;
             background-color: #f8c63159;
             text-align: center;
+            .standard {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                .container  {
+                    flex: 1 0 0;
+                    padding: 0;
+                    overflow: scroll;
+                }
+            }
             .pipe-button {
                 width: $button-pipe-size;
                 height: $button-pipe-size;
