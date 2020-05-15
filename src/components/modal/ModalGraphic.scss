@@ -1,0 +1,47 @@
+.ModalGraphic {
+    &.modal.show { 
+        .modal-dialog {
+            margin: 2.5%;
+            height: 95vh;
+            width: 95vw;
+            max-width: none;
+            .modal-content {
+                height: 100%;
+                width: 100%;
+                .MateFun2D {
+                    height: 100%;
+                    width: 100%;
+                    .graphic {
+                        height: 100%;
+                    }
+                    .graphic-animation {
+                        left: 1rem;
+                        top: 21rem;
+                        width: 3rem;
+                        height: auto;
+                        flex-direction: column;
+                        justify-content: normal;
+                        > button {
+                            margin: 0.5rem 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .btn-close {
+        position: absolute;
+        right: 0;
+        background-color: transparent;
+        border: none;
+        color: grey;
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 0;
+        outline: none;
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}

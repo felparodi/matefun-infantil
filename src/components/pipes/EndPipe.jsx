@@ -8,7 +8,7 @@ import Image from '../../icons/imagen.svg';
 import Error from '../../icons/error.svg';
 import Lupa from '../../icons/lupa.svg';
 
-const TEXT_LENGTH = 3
+const TEXT_LENGTH = 10
 
 const OutPutValue = ({pipe}) => {
     const {value, valueText, dir, hasValueError} = pipe;

@@ -36,7 +36,8 @@ export class MateFun2D extends React.Component {
         this.state = {
             toggleGrid: true,
             toggleAxis: false,
-            play: true
+            play: true,
+            idTimestamp: Date.now()
         }
 
     }
@@ -134,12 +135,12 @@ export class MateFun2D extends React.Component {
 
     render() {
         const {type} = this.props;
-        const {toggleAxis, toggleGrid, play} = this.state;
+        const {toggleAxis, toggleGrid, play, idTimestamp} = this.state;
         const animation = type === VALUES_TYPES.list(VALUES_TYPES.FIGURE);
         return (
             <div className='MateFun2D'>
                 <div className='graphic'>
-                    <div ref={this.graphDiv} id="graph-container">
+                    <div ref={this.graphDiv} id={"graph-container-" + idTimestamp}>
                     </div>
                 </div>
                 <div className='graphic-buttons'>
@@ -148,16 +149,19 @@ export class MateFun2D extends React.Component {
                     <button className="mf-button-toolbar" onClick={this.zoomIn}><Icon icon={icon.ZOOM_IN} size='30px'/></button>
                     <button className="mf-button-toolbar" onClick={this.zoomOut}><Icon icon={icon.ZOOM_OUT} size='30px'/></button>
                     <button className="mf-button-toolbar" onClick={this.recenterPlot}><Icon icon={icon.CENTER} size='30px'/></button>
-                    {
-                        animation && (play ? 
-                        <button onClick={this.pause}><FontAwesomeIcon icon={faPause}/></button> :
-                        <button onClick={this.play}><FontAwesomeIcon icon={faPlay}/></button> )
-                    }
-                    { animation && <button disabled={!play} className={classNames({'inactive': !play})} onClick={this.moreSpeed}><SpeedMore/></button> }
-                    { animation && <button disabled={!play} className={classNames({'inactive': !play})} onClick={this.normalSpeed}><SpeedNormal/></button> }
-                    { animation && <button disabled={!play} className={classNames({'inactive': !play})} onClick={this.lestSpeed}><SpeedLest/></button> }
                     <button className="mf-button-toolbar" onClick={this.exportPlot}><Icon icon={icon.DOWNLOAD} size='30px'/></button>
                 </div>
+                { animation && 
+                    <div className="graphic-animation">
+                        { play ? 
+                            <button onClick={this.pause}><FontAwesomeIcon icon={faPause}/></button> :
+                            <button onClick={this.play}><FontAwesomeIcon icon={faPlay}/></button> 
+                        }
+                        <button disabled={!play} className={classNames({'inactive': !play})} onClick={this.moreSpeed}><SpeedMore/></button>
+                        <button disabled={!play} className={classNames({'inactive': !play})} onClick={this.normalSpeed}><SpeedNormal/></button>
+                        <button disabled={!play} className={classNames({'inactive': !play})} onClick={this.lestSpeed}><SpeedLest/></button>
+                    </div>
+                }
             </div>
         )
     }

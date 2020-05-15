@@ -18,7 +18,7 @@ export class Main extends React.Component {
         this.state= {
             pipe: undefined,
             showResult: false,
-            resultPanelOpen: true,
+            resultPanelOpen: false,
         }
         this.displayResult= this.displayResult.bind(this);
         this.openCloseResultPanel= this.openCloseResultPanel.bind(this);
@@ -30,7 +30,7 @@ export class Main extends React.Component {
     }
 
     displayResult(pipe){
-        this.setState({pipe: pipe, showResult: true});
+        this.setState({ resultPanelOpen: true });
     }
 
     openCloseResultPanel() {

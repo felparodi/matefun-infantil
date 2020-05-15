@@ -11,7 +11,8 @@ function onMessageHandler(evt) {
     const message = JSON.parse(evt.data)
     if (!message.tipo || message.tipo === 'ack' || message.tipo === 'prompt') { return; }
     if(listResponseHandlers.length > 0) {
-        if (message.resultado.startsWith('IN:') ) {
+        if (typeof message.resultado === 'string'
+            && message.resultado.startsWith('IN:') ) {
             console.log(message.resultado);
         } else if (message.resultado === "") {
             const responseHandler = listResponseHandlers.shift(0,1);

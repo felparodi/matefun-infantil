@@ -4,7 +4,6 @@ import {isDefined} from '../../classes/helpers/type';
 import { setPipeValue, joinOutput, isEqualJoin } from '../../api/board';
 import './ValPipe.scss';
 import { DIRECTION } from '../../constants/constants';
-import SetValueModal from '../modal/SetValue';
 import ValueInfo from './function-parts/ValueInfo';
 import Output from './function-parts/Output';
 import ValueInput from './function-parts/ValueInput';
@@ -19,8 +18,6 @@ export class ValPipe extends React.Component {
         this.leaveEditing = this.leaveEditing.bind(this);
         this.joinOutput = this.joinOutput.bind(this);
         this.onClickValue = this.onClickValue.bind(this);
-        this.handlerDoubleClick = this.handlerDoubleClick.bind(this);
-        this.handlerHideModal = this.handlerHideModal.bind(this);
     }
 
     joinOutput() {
@@ -31,8 +28,7 @@ export class ValPipe extends React.Component {
     }
 
     leaveEditing(value) {
-        const { pipe, onSelect } = this.props;
-        onSelect && onSelect(false);
+        const { pipe } = this.props;
         this.props.setPipeValue(pipe.pos.x, pipe.pos.y, value);
     }
 
@@ -43,24 +39,8 @@ export class ValPipe extends React.Component {
         }
     }
 
-    handlerDoubleClick() {
-        const {active, pipe} = this.props;
-        if(active && isDefined(pipe.dir.bottom)) {
-            this.setState({ editModal:true })
-        }
-    }
-
-    handlerHideModal(value) {
-        this.setState({ editModal: false });
-        if(value !== undefined) {
-            const { pipe } = this.props;
-            this.props.setPipeValue(pipe.pos.x, pipe.pos.y, value);
-        }
-    }
-
     render() {
         const { pipe, startJoin, selected } = this.props;
-        const { editModal} = this.state;
         const isSelectJoin = pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.BOTTOM} , startJoin);
         const type = pipe.dir.bottom;
         return (
@@ -71,17 +51,11 @@ export class ValPipe extends React.Component {
                         <path className="pipe-base" d="M 20 0 C 10 0 0 10 0 20 C 0 30 10 20 10 30 L 10 33 L 30 33 L 30 30 C 30 20 40 30 40 20 C 40 0 20 0 20 0 z"/>
                         <Output onClick={this.joinOutput} join={isSelectJoin} type={type}></Output>
                     </g>
-                    {   
-                        !selected && 
-                        <ValueInfo 
-                            type={type}
-                            onClick={this.onClickValue}
-                            onDoubleClick={this.handlerDoubleClick}
-                            text={pipe.valueText}/>
-                    }
+                    <ValueInfo 
+                        type={type}
+                        text={pipe.valueText}/>
                 </svg>
                 { selected && <ValueInput value={pipe.value} onBlur={this.leaveEditing} type={type}/> }
-                { editModal && <SetValueModal show={true} type={type} value={pipe.value} onHide={this.handlerHideModal}/> }
             </div>
         )
     }

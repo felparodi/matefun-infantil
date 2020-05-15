@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { typeToClass, isDefined } from '../../classes/helpers/type';
 import { setPipeValue, joinOutput, isEqualJoin } from '../../api/board';
-import SetValueModal from '../modal/SetValue';
 import Output from './function-parts/Output';
 import ValueInfo from './function-parts/ValueInfo';
 import ValueInput, {hasInputValue} from './function-parts/ValueInput';
@@ -151,7 +150,6 @@ export class VarPipe extends React.Component {
         if (pipe.value || isOpen) {
             return (
                 <div className="VarPipe">
-                    { editModal && <SetValueModal show={true} onHide={this.handlerHideModal} value={pipe.value} type={pipe.dir.bottom}/> }
                     { editingValue && <ValueInput value={pipe.value} type={pipe.dir.bottom} onBlur={this.leaveEditing}/> }
                     <DoorOpen pipe={pipe}
                         startJoin={startJoin}

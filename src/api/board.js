@@ -25,7 +25,7 @@ export function loadPendingBoard() {
 
 export function dropPipe(drop) {
     return (dispatch) => {
-        const { isEditMode } = store.getState().matrix
+        const { isEditMode } = store.getState().matrix;
         const { origin, pos, dropEffect, pipe } = drop;
         if(origin === 'board') {
             if(!pipe.pos || dropEffect === 'copy') {
@@ -40,7 +40,7 @@ export function dropPipe(drop) {
         }
         updateMatrix(dispatch, isEditMode);
         dispatch({type: matrixAction.CLEAN_JOIN});
-        dispatch(actions.unselectCell());
+        dispatch(actions.selectCell(pos));
     }
 }
 
@@ -73,7 +73,6 @@ export function addWorkingPipe(x, y) {
         compiler.getMatrix().addWorkPipe({x, y});
         dispatch({type: matrixAction.CLEAN_JOIN});
         updateMatrix(dispatch, isEditMode);
-        dispatch(actions.unselectCell());
     }
 }
 
@@ -82,7 +81,6 @@ export function join(j1, j2) {
         const { isEditMode } = store.getState().matrix;
         compiler.getMatrix().join(j1, j2);
         updateMatrix(dispatch, isEditMode);
-        dispatch(actions.unselectCell());
     }
 }
 
@@ -99,7 +97,6 @@ export function joinInput(j1) {
         }
         dispatch({type: matrixAction.SET_END_JOIN, payload: joinList.end });
         tryJoin(dispatch);
-        dispatch(actions.unselectCell());
     }
 }
 

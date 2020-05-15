@@ -173,7 +173,8 @@ export class EndPipe extends Pipe {
                 })
                 return messages;
             } else if(this.value.length === 1) {
-                return this.value[0].resultado.replace('OUT', '');
+                const {resultado} = this.value[0];
+                return typeof resultado === 'string' && resultado.replace('OUT', '');
             }
         } else if(this.value && this.value.tipo === 'salida') {
             return this.value.resultado.replace('OUT', '');

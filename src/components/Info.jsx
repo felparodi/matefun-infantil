@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap';
 import DisplayResult from './DisplayResult';
 import Icon from './Icon';
 import * as icon from '../constants/icons';
+import SelectPipeInfo from './SelectPipeInfo';
 
 import './Info.scss';
 
@@ -18,7 +19,10 @@ export class Info extends React.Component {
                         <Icon size="30px" icon={!collapsed ? icon.COLLAPSE : icon.EXPAND}/>
                     </div>
                 </div>
-                { !collapsed && <DisplayResult/> }
+                <div className='info'>
+                    { !collapsed && <DisplayResult/> }
+                    { !collapsed && <SelectPipeInfo/> }
+                </div>
             </div>
         );
     }

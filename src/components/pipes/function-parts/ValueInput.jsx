@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Crallon from '../../../icons/crallon.svg';
 import { VALUES_TYPES } from '../../../constants/constants';
 import { colorByColorValue } from './ValueInfo';
@@ -23,9 +23,11 @@ export function castValue(value, type) {
 }
 
 export const ValueInputNumber = ({value, onBlur}) => {
+    const [fistTime, setFirstTime] = useState(true);
     const [temValue, setValue] = useState(value ? value : 0);
+    useEffect(() => setValue(value), [value]);
     return <input className="value-input"
-                ref={(input) => setTimeout(() => input && input.focus())}
+                ref={(input) => fistTime && setTimeout(() =>  { input && input.focus(); setFirstTime(false); })}
                 onChange={(e) => setValue(e.target.value)}
                 value={temValue}
                 onBlur={() => onBlur(temValue)} 
@@ -50,6 +52,7 @@ export const ValueInputColor = ({value, onBlur}) => {
 export const ValueInputPoint = ({value, onBlur}) => {
     const [valueX, setValueX] = useState(value ? value.x ? value.x : 0 : 0);
     const [valueY, setValueY] = useState(value ? value.y ? value.y : 0 : 0);
+    useEffect(() => { setValueX(value.x); setValueY(value.y); }, [value]);
     return (
         <div className="value-input point">
             <input value={valueX} 
@@ -89,7 +92,7 @@ export const ValueInput = ({value, type, onBlur}) => {
         case VALUES_TYPES.POINT:
             return <ValueInputPoint value={value} onBlur={handlerBlur}/>;
         default:
-            return <ValueInputText value={value} onBlur={handlerBlur}/>;
+            return null;
     }
 }
 

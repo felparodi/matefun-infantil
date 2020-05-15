@@ -19,7 +19,7 @@ class Cell extends React.Component {
         const { isOver, connectDropTarget, content, onDrop, onDoubleClick, selected, onSelect } = this.props;
         return connectDropTarget(
             <div className={classNames('Cell', { 'over': isOver })} 
-                onClick={() => onSelect(!selected)}
+                onClick={() => onSelect(true)}
                 onDoubleClick={onDoubleClick}>
                 { content &&  
                     <Pipe

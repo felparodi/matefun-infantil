@@ -1,5 +1,6 @@
-.SetValue {
-    display: flex !important;
+.SelectPipeInfo {
+    display: flex;
+    justify-content: center;
     &.color {
         .modal-dialog {
             min-width: 0;
@@ -29,22 +30,16 @@
             }
         } 
     }
-    .modal-dialog {
-        min-width: 70vh;
-        margin: auto;
-        .modal-content {
-            padding: 1rem;
-        }
-    }
-    .value-input {
-        text-align: center;
-        &.point {
-            display: flex;
-            padding: 0;
-            .number {
-                text-align: center;
-                min-width: 50%;
-            }
-        }
+    .value-info {
+       display: flex;
+       justify-content: space-between;
+       .label {
+           width: 4rem;
+       }
+       .value {
+           flex: 1 0 0;
+           margin: 0 1rem;
+           text-align: center;
+       }
     }
 }
