@@ -3,7 +3,12 @@
         display: flex;
         justify-content: center;
         .sketch-picker {
+            position: relative;
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+            padding-left: 3.5rem !important;
             > div:nth-child(3) {
+                display: none !important;
                 > div:first-child {
                     display: none;
                 }
@@ -23,7 +28,18 @@
             input {
                 text-align: center;
             }
+            > div:nth-child(4) {
+                position: absolute !important;
+                top: 5px;
+                left: 17px;
+                width: 4rem;
+                padding: 0 !important;
+                height: 11rem;
+                overflow: hidden;
+                border: none !important;
+            }
         }
+      
     }
     .value-info {
        display: flex;

@@ -8,6 +8,11 @@
     &.working {
         background-color: #61f5bc4f;
     }
+    &.selected {
+        .ValuePipe, .VarPipe {
+            outline: -webkit-focus-ring-color auto 5px;
+        }
+    }
     svg {
         width: 100%;
     }
@@ -49,3 +54,4 @@
         }
     }
 }
+

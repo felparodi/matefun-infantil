@@ -26,6 +26,11 @@ function valueToColor(value) {
         return 'rgb(0,0,0)';
     }
 }
+const defaultColors = [
+        '#D0021B', '#F5A623', '#F8E71C', '#8B572A', 
+        '#7ED321', '#417505', '#BD10E0', '#9013FE', 
+        '#4A90E2', '#50E3C2', '#B8E986', '#000000', 
+        '#9B9B9B', '#FFFFFF']
 
 const ColorInput  = ({onBlur, value, selected}) => {
     const [tempValue, setTempValue] = useState(value);
@@ -36,6 +41,7 @@ const ColorInput  = ({onBlur, value, selected}) => {
                 onBlur={console.log}
                 onChangeComplete={(color) => onBlur({color: `rgb(${color.rgb.r},${color.rgb.g},${color.rgb.b})`}, selected)}
                 color={valueToColor(tempValue)} 
+                presetColors={defaultColors}
                 onChange={(color) => setTempValue({color: `rgb(${color.rgb.r},${color.rgb.g},${color.rgb.b})`}) }/>
         </div>
     );
