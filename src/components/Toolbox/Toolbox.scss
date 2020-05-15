@@ -12,12 +12,13 @@ $button-pipe-size: 4rem;
         flex:  1 0 0;
         .toolbox-header {
             width: 3rem;
+            padding-top: 0.5rem;
             padding-left: 0.3rem;
             padding-right: 0.3rem;            
             .button-group {
                 border: none;
-                padding: 0 0 1rem 0;
-                height: 5rem;
+                padding: 1rem 0.2rem;
+                height: 4rem;
                 background-color: transparent;
                 color: $MainColor;
                 width: 100%;
@@ -33,6 +34,9 @@ $button-pipe-size: 4rem;
                     height: 100%;
                     text-overflow: ellipsis;
                     overflow: hidden;
+                }
+                svg {
+                    fill: currentColor;
                 }
             }
         }

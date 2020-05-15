@@ -1,0 +1,19 @@
+@import './Modal.scss';
+
+.DeleteFunction {
+    .modal-body {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-evenly;
+        p {
+            margin: 0;
+            span {
+                font-weight: bold;
+            }
+        }
+        .Pipe {
+            height: 5rem;
+            width: 5rem;
+        }
+    }
+}

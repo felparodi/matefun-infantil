@@ -87,7 +87,9 @@ export class Actions extends React.Component {
                     </Button>
            
                 </div>
-                <CreateFunction show={openSaveFunction} onHide={() => this.setState({openSaveFunction: false})}/>
+                { openSaveFunction &&
+                    <CreateFunction show={true} onHide={() => this.setState({openSaveFunction: false})}/>
+                }
             </div>
         );
     }

@@ -1,14 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import { dropPipe, editCustomFunction } from '../../api/board';
-import { deleteMyFunctions } from '../../api/matefun';
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 import toolboxGroups, {COMPLEX} from '../../constants/toolbox';
 import ToolboxBody from './ToolboxBody';
 import Icon from '../Icon';
+import DeleteModal from '../modal/DeleteFunction';
 import Trash from './Trash';
-import * as icons from '../../constants/icons';
 
 import './Toolbox.scss';
 
@@ -30,7 +29,8 @@ export class Toolbox extends React.Component {
         this.onDrop = this.onDrop.bind(this);
         this.state = {
             select: toolboxGroups[0].value,
-            pipeToolsGroup:  toolboxPipeSnapshot(toolboxGroups)
+            pipeToolsGroup:  toolboxPipeSnapshot(toolboxGroups),
+            deletePipe: null,
         }
     }
 
@@ -41,7 +41,7 @@ export class Toolbox extends React.Component {
 
     onDrop(drop) {
         if(drop.origin === 'trash') {
-            this.props.deleteMyFunctions(drop.pipe.name);   
+            this.setState({ deletePipe:drop.pipe });
         } else if(drop.origin === 'edit') {
             this.props.editCustomFunction(drop.pipe);
         } else if(drop.origin === 'board') {
@@ -56,7 +56,7 @@ export class Toolbox extends React.Component {
     }
 
     render() {
-        const {select, pipeToolsGroup} = this.state;
+        const {select, pipeToolsGroup, deletePipe} = this.state;
         return (
             <div className="Toolbox">
                 <div className="tabs">
@@ -79,6 +79,10 @@ export class Toolbox extends React.Component {
                         group={pipeToolsGroup.find((toolbar) => toolbar.value === select)}/>
                 </div>
                 <Trash/>
+                { deletePipe && 
+                    <DeleteModal pipe={deletePipe} show={!!deletePipe}
+                        onHide={() => this.setState({deletePipe: null})}/> 
+                }
             </div>
         )
     }
@@ -90,7 +94,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     dropPipe,
-    deleteMyFunctions,
     editCustomFunction,
 }
 
