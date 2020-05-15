@@ -90,7 +90,7 @@ export const ToolboxGroups = [
     {
         value: 'list',
         label: 'Listas',
-        icon: null,
+        icon: icon.LIST,
         complex: 5,
         pipes: [
             { pipe: new ConstPipe([], VALUES_TYPES.list(VALUES_TYPES.GENERIC)), complex: 5 },
