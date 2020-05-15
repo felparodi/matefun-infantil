@@ -1,4 +1,6 @@
 //toolbox
+export const INPUT = 'input';
+export const WINDOW = 'window';
 export const CALCULATOR = 'calculator';
 export const SHAPES = 'shapes';
 

@@ -29,7 +29,7 @@ $DisabledFont: #784b00a8;
             >.content {
                 background-color: white;
                 flex: 3 0 0;
-                overflow: scroll;
+                overflow: hidden;
                 border-top-right-radius: 15px;
                 border-bottom-right-radius: 15px;
             }
@@ -115,6 +115,12 @@ $DisabledFont: #784b00a8;
     border-color: transparent;
 }
 
+.mf-button-transparent, .mf-button-transparent:hover, .mf-button-transparent:focus, .mf-button-transparent:active {
+    background-color: transparent;
+    color: $DarkColor;
+    border-color: transparent;
+}
+
 .mf-button-primary:hover {
     background-color: #F49F0A;
     border-color: transparent;
@@ -160,9 +166,7 @@ $DisabledFont: #784b00a8;
 .board-container {
     height: 100%;
     max-width: 100%;
-    overflow: scroll;
-    border: dashed 1px #dadada;
-    
+    overflow: scroll;    
 }
 .board-container::-webkit-scrollbar {
     -webkit-appearance: none;

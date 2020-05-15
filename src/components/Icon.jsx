@@ -26,9 +26,9 @@ function getFontAwesomeIcon(icon) {
         case icons.CONSOLE:
             return fas.faTerminal
         case icons.COLLAPSE:
-            return fas.faAngleDoubleRight
+            return fas.faChevronRight
         case icons.EXPAND:
-            return fas.faAngleDoubleLeft
+            return fas.faChevronLeft
         case icons.TRASH:
             return fas.faTrash
         case icons.EXPAND_WINDOWS:
@@ -147,12 +147,44 @@ function getFontAwesomeIcon(icon) {
     }
 }
 
+function getCustomIcon(icon) {
+
+    switch(icon) {
+        // toolbox
+        case icons.INPUT:
+            return (
+                <path d="M 20 0 C 10 0 0 10 0 20 C 0 30 10 20 10 30 L 10 33 L 30 33 L 30 30 C 30 20 40 30 40 20 C 40 0 20 0 20 0 z"/>
+            )
+        case icons.WINDOW:
+            return (   
+                <g>
+                    <path id="p1" d="M 5 5 L 5 30 L 35 30 L 35 5 Z" style={
+                        {'fill': 'transparent', 'stroke': 'black', 'strokeWidth': 4}}/>      
+                    <line x1="20" y1="5" x2="20" y2="30" style={{'stroke':'black', 'strokeWidth':4}}/>
+                    <circle cx="18.6" cy="17" r="0.5" stroke="black" fill="red" strokeWidth="6"/>
+                    <circle cx="21.4" cy="17" r="0.5" stroke="black" fill="red" strokeWidth="6"/>
+                </g>
+            )
+        default:    
+            return null;
+    }
+}
+
 const Icon = ({icon, color, size}) => {
     var faIcon= getFontAwesomeIcon(icon);
     if (faIcon){
         return <FontAwesomeIcon icon={faIcon} color={color} style={(size)?{width: size, height: size}:{}}/>
     } else {
-        return <span>{icon}</span>;
+        var customIcon= getCustomIcon(icon);
+        if (customIcon) {
+            return (
+                <svg viewBox="0 0 40 40" fill={color}>
+                    {customIcon}
+                </svg>
+            )
+        } else {
+            return <span>{icon}</span>;
+        }
     }
 }
 

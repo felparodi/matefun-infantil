@@ -11,7 +11,7 @@ export const ToolboxGroups = [
     {
         value: 'inputs',
         label: 'Inputs',
-        icon: null,
+        icon: icon.INPUT,
         complex: 0,
         pipes: [
             { pipe: new ConstPipe(0), complex: 0 },
@@ -19,6 +19,20 @@ export const ToolboxGroups = [
             { pipe: new ConstPipe({x:0, y:0}, VALUES_TYPES.POINT), complex: 0 },
             { pipe: new EndPipe(VALUES_TYPES.GENERIC), complex: 0 },
         ]
+    },
+    { 
+        value: 'val',
+        label: 'Valores',
+        icon: icon.WINDOW,
+        complex: 0,
+        pipes: [
+            { pipe: new EndPipe(VALUES_TYPES.GENERIC), complex: 0 },
+            { pipe: new VarPipe(VALUES_TYPES.GENERIC), complex: 0 },
+            { pipe: new VarPipe(VALUES_TYPES.NUMBER), complex: 0 },
+            { pipe: new VarPipe(VALUES_TYPES.POINT), complex: 0 },
+            { pipe: new VarPipe(VALUES_TYPES.COLOR), complex: 0 },
+            { pipe: new VarPipe(VALUES_TYPES.FIGURE), complex: 0 },
+        ],
     },
     {
         value: 'mat',
@@ -37,24 +51,10 @@ export const ToolboxGroups = [
             { pipe: getDefaultFunction(METHOD_FUNCTION.COS),complex: 2 },
         ]
     },
-    { 
-        value: 'val',
-        label: 'Valores',
-        icon: null,
-        complex: 0,
-        pipes: [
-            { pipe: new EndPipe(VALUES_TYPES.GENERIC), complex: 0 },
-            { pipe: new VarPipe(VALUES_TYPES.GENERIC), complex: 0 },
-            { pipe: new VarPipe(VALUES_TYPES.NUMBER), complex: 0 },
-            { pipe: new VarPipe(VALUES_TYPES.POINT), complex: 0 },
-            { pipe: new VarPipe(VALUES_TYPES.COLOR), complex: 0 },
-            { pipe: new VarPipe(VALUES_TYPES.FIGURE), complex: 0 },
-        ],
-    },
     {  
         value: 'cond',
         label: 'Condiciones',
-        icon: null,
+        icon: icon.GREATER_EQUAL,
         complex: 0,
         pipes: [
             { pipe: new ConditionPipe(), complex: 0 },
