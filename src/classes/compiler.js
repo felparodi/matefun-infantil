@@ -126,7 +126,6 @@ export class Compiler {
         const { matrix } = this;
         const varsPipes = matrix.getAllVars();
         const endPipe = matrix.getEndPipes();
-        console.log(matrix.getTree());
         const code = endPipe[0].toCode();
         return `${name}(${varsPipes.map(pipe => pipe.getName()).join(', ')}) = ${code}`
     }
@@ -148,7 +147,6 @@ export class Compiler {
         } else {
             command = this.processInstruction();
         }
-        console.log(this.matrix.getTree());
         return { isFunction, command };
     }
 

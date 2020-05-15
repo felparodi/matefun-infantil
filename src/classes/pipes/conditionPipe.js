@@ -49,11 +49,11 @@ export class ConditionPipe extends FuncPipe {
     */
     toCode() {
         const leftNext = nextPipeDirection(this, DIRECTION.LEFT)
-        const left = leftNext.pipe ? leftNext.pipe.toCode() : '?';
+        const left = leftNext.pipe ? leftNext.pipe.toCode() : '()';
         const upNext = nextPipeDirection(this, DIRECTION.TOP);
-        const up = upNext.pipe ? upNext.pipe.toCode() : '?';
+        const up = upNext.pipe ? upNext.pipe.toCode() : '()';
         const rightNext = nextPipeDirection(this, DIRECTION.RIGHT);
-        const right = rightNext.pipe ? rightNext.pipe.toCode() : '?';
+        const right = rightNext.pipe ? rightNext.pipe.toCode() : '()';
         return `${left} si ${up} \n\t o ${right}`;
     }
 

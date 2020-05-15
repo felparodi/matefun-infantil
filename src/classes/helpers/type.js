@@ -205,7 +205,7 @@ export function evalValueType(value) {
 *   @scope: public
 */
 export const valueToString = (value, type) => {
-    if(value === null || value == undefined) return '?';
+    if(value === null || value == undefined) return '()';
     if(type === VALUES_TYPES.NUMBER) return `${value}`;
     if(type === VALUES_TYPES.BOOLEAN) return `${value}`;
     if(type === VALUES_TYPES.COLOR) return `${value.color}`;

@@ -61,7 +61,7 @@ export const PIPE_TYPES= Object.freeze({
     FUNCTION: 'FUNCTION',
     VALUE: 'VALUE',
     END: 'END',
-    UNDEFINED: '?',
+    UNDEFINED: 'UNDEFINED',
     VARIABLE: 'VARIABLE',
     CONDITION: 'CONDITION',
     CUSTOM: 'CUSTOM',

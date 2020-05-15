@@ -224,7 +224,7 @@ export class Pipe {
         const childrens = this.getChildrens();
         const arg = childrens
             .map((dirPipe) => dirPipe.pipe ? dirPipe.pipe.toCode() : null)
-        return arg.map(e => e !== null ? e : '?')
+        return arg.map(e => e !== null ? e : '()')
     }
 
     getArgs() {
