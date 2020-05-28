@@ -76,8 +76,7 @@ export const ToolboxGroups = [
         pipes: [
             { pipe: getDefaultFunction(METHOD_FUNCTION.CIRC), complex: 0 },
             { pipe: getDefaultFunction(METHOD_FUNCTION.RECT), complex: 0 },
-            //Estos no estan funcionado, LINEA no esta en nuestro interpret
-            //{ pipe: getDefaultFunction(METHOD_FUNCTION.LINEA), complex: 0 },
+            { pipe: getDefaultFunction(METHOD_FUNCTION.LINEA), complex: 0 },
             { pipe: getDefaultFunction(METHOD_FUNCTION.POLI), complex: 5 },
             { pipe: getDefaultFunction(METHOD_FUNCTION.COLOR), complex: 0 },
             { pipe: getDefaultFunction(METHOD_FUNCTION.ROTAR), complex: 0 },
