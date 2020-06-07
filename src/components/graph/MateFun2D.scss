@@ -1,3 +1,7 @@
+$MainColor: #0496FF;
+$DarkColor: #004CA6;
+$LightColor: #C5F4E0;
+
 .MateFun2D {
     padding: 0.5rem;
     position: relative;
@@ -17,7 +21,6 @@
         top: 0;
         margin-left: 0.5rem;
         width: 3rem;
-        background-color: none;
         button {
             margin: 0.5rem 0;
         }
@@ -34,14 +37,15 @@
     }
     .graphic-buttons, .graphic-animation {
         button {
-            background-color: gray;
+            background-color: $LightColor;
             opacity: 1;
-            width: 2.2rem;
-            height: 2.2rem;
+            width: 2.5rem;
+            height: 2.5rem;
             text-align: center;
             outline: none;
             border-radius: 2rem;
-           
+            //border-style: none;
+
             &.inactive {
                opacity: 0.70;
             }
@@ -49,8 +53,8 @@
         
 
             svg {
-                fill: white;
-                color: white;
+                fill: $DarkColor;
+                color: $DarkColor;
                 width: 100% !important;
                 height: 100% !important;
             }

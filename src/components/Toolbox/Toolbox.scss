@@ -1,5 +1,6 @@
-$MainColor: #784b00;
-$SecondaryColor: #F8C631;
+$MainColor: #0496FF;
+$DarkColor: #004CA6;
+$LightColor: #C5F4E0;
 
 $button-pipe-size: 4rem;
 
@@ -20,12 +21,12 @@ $button-pipe-size: 4rem;
                 padding: 1rem 0.2rem;
                 height: 4rem;
                 background-color: transparent;
-                color: $MainColor;
+                color: $DarkColor;
                 width: 100%;
                 border-radius: 20px;
                 &.selected {
-                    background-color: $SecondaryColor;
-                    color: $MainColor;
+                    background-color: $MainColor;
+                    color: white;
                 }
                 span {
                     writing-mode: vertical-rl;
@@ -44,7 +45,7 @@ $button-pipe-size: 4rem;
             height: 100%;
             overflow-y: auto;
             text-align: center;
-            background-color: #f8c63159;
+            background-color: $LightColor;
             text-align: center;
             .standard {
                 display: flex;
@@ -53,7 +54,7 @@ $button-pipe-size: 4rem;
                 .container  {
                     flex: 1 0 0;
                     padding: 0;
-                    overflow: scroll;
+                    overflow: auto;
                 }
             }
             .pipe-button {

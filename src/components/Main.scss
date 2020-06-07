@@ -1,6 +1,6 @@
 $MainColor: #0496FF;
 $DarkColor: #004CA6;
-$LightColor: #BED8D4;
+$LightColor: #C5F4E0;
 $DisabledColor: #fdebb7;
 $DisabledFont: #784b00a8;
 
@@ -185,17 +185,6 @@ $DisabledFont: #784b00a8;
     border-radius: 8px;
     border: 2px solid white; /* should match background, can't be transparent */
     background-color: rgba(0, 0, 0, .5);
-}
-
-.mf-button-toolbar {
-    color: white;
-    background-color: transparent;
-    border-style: none;
-    margin-right: 14px;
-    svg {
-        width: 30px;
-        height: 30px;
-    }
 }
 
 .pipe-base {
