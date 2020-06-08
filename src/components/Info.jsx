@@ -21,7 +21,6 @@ export class Info extends React.Component {
                 </div>
                 <div className='info'>
                     { !collapsed && <DisplayResult/> }
-                    { !collapsed && <SelectPipeInfo/> }
                 </div>
             </div>
         );
