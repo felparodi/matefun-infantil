@@ -28,7 +28,7 @@ export const ValueInputNumber = ({value, onBlur}) => {
     useEffect(() => setValue(value), [value]);
     return <input className="value-input"
                 ref={(input) => fistTime && setTimeout(() =>  { input && input.focus(); setFirstTime(false); })}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) => e.target.value.length < 8 && setValue(e.target.value)}
                 value={temValue}
                 onBlur={() => onBlur(temValue)} 
                 type="number"/> 
@@ -56,12 +56,12 @@ export const ValueInputPoint = ({value, onBlur}) => {
     return (
         <div className="value-input point">
             <input value={valueX} 
-                onChange={(e) => setValueX(e.target.value)}
+                onChange={(e) => e.target.value.length < 4 && setValueX(e.target.value)}
                 onBlur={() => onBlur({ x:valueX,  y:valueY})}
-                className="number" 
+                className="number"
                 type="number"/>
             <input  value={valueY} 
-                onChange={(e) => setValueY(e.target.value)}
+                onChange={(e) => e.target.value.length < 4 && setValueY(e.target.value)}
                 onBlur={() => onBlur({ x:valueX,  y:valueY})}
                 className="number"
                 type="number"/>
