@@ -15,7 +15,12 @@
         }
     }
     .info {
-        overflow: scroll;;
+        overflow: scroll;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 2rem;
     }
     &.collapsed {
         .buttons {

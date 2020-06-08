@@ -2,6 +2,10 @@
     margin: 1rem 0;
     border-color: #bbbbbb;
     border-radius: 5px;
+    width: 100%;
+    .title {
+        display: none;
+    }
     .expand-button {
         border-radius: 5px;
         overflow: hidden;
