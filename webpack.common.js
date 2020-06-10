@@ -1,6 +1,5 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require(`html-webpack-plugin`);
-const { WebpackWarPlugin } = require('webpack-war-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -35,17 +34,13 @@ module.exports = {
   },
   output: {
     path: __dirname + '/dist',
-    publicPath: '/matefun-infantil',
     filename: 'bundle.js'
   },
   plugins: [
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
           template: './src/index.html'
-      }),
-      new WebpackWarPlugin({
-        archiveName: 'matefun-infantil',
-      }),
+      })
   ],
   devServer: {
     contentBase: './dist',
