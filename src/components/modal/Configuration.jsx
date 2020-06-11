@@ -1,18 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Modal } from 'react-bootstrap';
+import { Modal, Form, Button } from 'react-bootstrap';
 import { closeConfig, setComplex } from '../../api/config';
 import { cleanMyFunctions } from '../../api/matefun';
 import './Configuration.scss';
+import Icon from '../../components/Icon';
+import * as icon from '../../constants/icons';
 
 const ComplexSelect = ({ onChange, value }) => (
     <div>
-        <label>Selecionar Dificulatd</label>
-        <select value={value} onChange={onChange}>
-            <option value={0}>Basico</option>
+        <label>Seleccionar dificultad</label>
+        <Form.Control as="select" value={value} onChange={onChange}>
+            <option value={0}>Básico</option>
             <option value={3}>Avanzado</option>
             <option value={5}>Completo</option>
-        </select>
+        </Form.Control>
     </div>
 )
 
@@ -28,12 +30,15 @@ export class Configuration extends React.Component {
             <Modal className="Configuration" 
                 show={open}
                 onHide={() => this.props.closeConfig()}>
-                <p className="title">Configuracion</p>
+                <Modal.Header style={{backgroundColor: '#C2F1F2'}} closeButton>
+                    <h5 style={{marginBottom: '0px'}}><Icon icon={icon.CONFIG}/> Configuración</h5>
+                </Modal.Header>
                 <div className="body">
                     <div className="actions">
                         <ComplexSelect value={complex} onChange={(event) => this.props.setComplex(event.target.value)}/>
+                        <hr></hr>
                         <p>Acciones</p>
-                        <button onClick={() => this.props.cleanMyFunctions()}>Limpiar mis funciones</button>
+                        <Button variant="primary" onClick={() => this.props.cleanMyFunctions()}>Limpiar mis funciones</Button>
                     </div>
                 </div>
             </Modal>

@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Modal } from 'react-bootstrap';
+import { Modal, Form, Button } from 'react-bootstrap';
 import classNames from 'classnames';
 import { saveInMyFunctions } from '../../api/matefun';
 import * as icons from '../../constants/icons';
 import Base from '../pipes/function-parts/Base';
 import FunctionDescriptor from '../pipes/function-parts/FunctionDescriptor';
 import './CreateFunction.scss';
+import Icon from '../../components/Icon';
 
 const ICONS = [
     //random objects
@@ -100,14 +101,16 @@ export class CreateFunction extends React.Component {
                 {...modalProps}
                 show={open}
                 className="CreateFunction">
-                <Modal.Header>Nueva Funcion</Modal.Header>
+                <Modal.Header style={{backgroundColor: '#C2F1F2'}} closeButton>
+                    <h5 style={{marginBottom: '0px'}}><Icon icon={icons.SAVE}/> Guardar función</h5>
+                </Modal.Header>
                 <Modal.Body>
                     <div>
-                        <span>Nombre:</span>
-                        <input tyep='text' maxLength={10} value={name} onChange={this.onChangeName}/>
+                        <Form.Label>Nombre</Form.Label>
+                        <Form.Control type="text" maxLength={10} value={name} onChange={this.onChangeName}/>
                     </div>
                     <div>
-                        <p>Seleccionar Icono</p>
+                        <Form.Label>Seleccionar ícono</Form.Label>
                         <div className="icons">
                             { ICONS.map((iconName) => <ButtonIcon 
                                                         key={iconName} 
@@ -118,7 +121,7 @@ export class CreateFunction extends React.Component {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button disabled={!icon && !name} onClick={this.saveFunction}>Salvar</button>
+                    <Button variant="primary" disabled={!icon && !name} onClick={this.saveFunction}>Guardar</Button>
                 </Modal.Footer>
             </Modal>
         )

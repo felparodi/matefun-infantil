@@ -36,7 +36,7 @@ function getFontAwesomeIcon(icon) {
         case icons.CANCEL: 
             return fas.faTimes;
         case icons.CONFIG:
-            return fas.faCogs
+            return fas.faCog
         case icons.LOGOUT:
             return fas.faPowerOff
         // graphic buttons

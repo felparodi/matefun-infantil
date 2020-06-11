@@ -1,8 +1,9 @@
 $MainColor: #0496FF;
+$MainColorHover: #047CD3;
 $DarkColor: #004CA6;
-$LightColor: #C5F4E0;
-$DisabledColor: #fdebb7;
-$DisabledFont: #784b00a8;
+$LightColor: #C2F1F2;
+$DisabledColor: #D8D9D6;
+$DisabledFont: #706C61;
 
 .Main {
     height: 100vh;
@@ -123,7 +124,7 @@ $DisabledFont: #784b00a8;
 }
 
 .mf-button-primary:hover {
-    background-color: #F49F0A;
+    background-color: $MainColorHover;
     border-color: transparent;
 }
 
