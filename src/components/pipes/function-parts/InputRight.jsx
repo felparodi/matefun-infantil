@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {typeToClass} from '../../../classes/helpers/type';
+import { typeToClass } from '../../../classes/helpers/type';
 
 const InputRight = ({type, join, onClick}) => (
     <g className={classNames(typeToClass(type), {'join': join})} onClick={onClick}>

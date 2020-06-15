@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { DragSource } from 'react-dnd';
 import ReactTooltip from 'react-tooltip';
-import { PIPE_TYPES, DIRECTION } from '../../constants/constants';
+import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../../constants/constants';
 import DummyPipe from './DummyPipe'
 import FuncPipe from './FuncPipe';
 import EndPipe from './EndPipe';
@@ -27,6 +27,11 @@ function SwitchPipe(pipe, props) {
         default:
             return null;   
     }
+}
+
+function isColorPipe(pipe) {
+    return (pipe.type === PIPE_TYPES.VALUE || pipe.type === PIPE_TYPES.VARIABLE) 
+        && pipe.dir.bottom === VALUES_TYPES.COLOR;
 }
 
 class Pipe extends React.Component {
@@ -75,7 +80,8 @@ class Pipe extends React.Component {
                 }
             </div>
         );
-        return connectDragSource(p);
+
+        return selected && isColorPipe(pipe) ? p : connectDragSource(p);
     }
 }
 

@@ -105,7 +105,6 @@ export class Compiler {
     *   @scope: private
     */
     getFunctionSignature(name) {
-        console.log('Compiler.getFunctionSignature')
         const { matrix } = this;
         const varsPipes = matrix.getAllVars();
         const endPipe = matrix.getEndPipes()[0];

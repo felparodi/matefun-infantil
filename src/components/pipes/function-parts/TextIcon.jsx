@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const fontSize = (text) => {
     if(text.length < 3) {
@@ -6,16 +6,14 @@ const fontSize = (text) => {
     } else if ( text.length < 5) {
         return '15px';
     } else if ( text.length < 7) {
-        return '8px';
-    } else if ( text.length < 10) {
-        return '6px';
+        return '10px';
     } else {
-        return '4px';
+        return '8px';
     }
 }
 
 const textPrint = (text) => {
-    return text.length < 11 ? text : `${text.substr(0, 8)}...`;
+    return text.length < 12 ? text : `${text.substr(0, 8)}...`;
 }
 
 const TextIcon = ({text, onClick, onDoubleClick}) => {
