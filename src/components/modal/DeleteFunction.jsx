@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Modal } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import { deleteMyFunctions } from '../../api/matefun';
 import Pipe from '../pipes/Pipe';
+import Icon from '../../components/Icon';
+import * as icons from '../../constants/icons';
 
 import './DeleteFunction.scss';
 
@@ -50,13 +52,16 @@ export class DeleteFunction extends React.Component {
                 {...modalProps}
                 show={open}
                 className="DeleteFunction">
+                <Modal.Header style={{backgroundColor: '#C2F1F2'}} closeButton>
+                    <h5 style={{marginBottom: '0px'}}><Icon icon={icons.TRASH}/> Borrar función</h5>
+                </Modal.Header>
                 <Modal.Body>
-                    <p>Desea Borrar la Funcion <span>{pipe.name}</span>?</p>
+                    <p>¿Desea borrar la función <span>{pipe.name}</span>?</p>
                     <Pipe pipe={pipe}/>
                 </Modal.Body>
                 <Modal.Footer>
-                    <button onClick={this.cancel}>Cancelar</button>
-                    <button onClick={this.deleteFunction}>Borrar</button>
+                    <Button variant="primary" className="mf-primary-button" onClick={this.deleteFunction}>Borrar</Button>
+                    <Button variant="secondary" className="mf-secondary-button" onClick={this.cancel}>Cancelar</Button>
                 </Modal.Footer>
             </Modal>
         )

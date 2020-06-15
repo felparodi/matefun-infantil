@@ -1,0 +1,39 @@
+$MainColor: #0496FF;
+$MainColorHover: #047CD3;
+$DarkColor: #004CA6;
+$DarkColorHover: #003F89;
+$LightColor: #C2F1F2;
+$DisabledColor: #D8D9D6;
+$DisabledFont: #706C61;
+
+.mf-primary-button {
+    background-color: $MainColor;
+    border-color: $MainColor
+}
+
+.mf-primary-button :hover {
+    background-color: $MainColorHover;
+    border-color: $MainColorHover
+}
+
+.mf-primary-button :disabled {
+    background-color: $DisabledColor;
+    border-color: $DisabledColor;
+    color: $DisabledFont;
+}
+
+.mf-primary-button[disabled] { 
+    background-color: $DisabledColor;
+    border-color: $DisabledColor;
+    color: $DisabledFont;
+}
+
+.mf-secondary-button {
+    background-color: $DarkColor;
+    border-color: $DarkColor;
+}
+
+.mf-secondary-button :hover {
+    background-color: $DarkColorHover;
+    border-color: $DarkColorHover;
+}

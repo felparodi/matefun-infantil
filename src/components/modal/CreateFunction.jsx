@@ -104,12 +104,12 @@ export class CreateFunction extends React.Component {
                 <Modal.Header style={{backgroundColor: '#C2F1F2'}} closeButton>
                     <h5 style={{marginBottom: '0px'}}><Icon icon={icons.SAVE}/> Guardar función</h5>
                 </Modal.Header>
-                <Modal.Body>
-                    <div>
+                <div className="body">
+                    <Form.Group>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control type="text" maxLength={10} value={name} onChange={this.onChangeName}/>
-                    </div>
-                    <div>
+                    </Form.Group>
+                    <Form.Group>
                         <Form.Label>Seleccionar ícono</Form.Label>
                         <div className="icons">
                             { ICONS.map((iconName) => <ButtonIcon 
@@ -118,10 +118,10 @@ export class CreateFunction extends React.Component {
                                                         icon={iconName} 
                                                         selected={iconName === icon}/>)}
                         </div>
-                    </div>
-                </Modal.Body>
+                    </Form.Group>
+                </div>
                 <Modal.Footer>
-                    <Button variant="primary" disabled={!icon && !name} onClick={this.saveFunction}>Guardar</Button>
+                    <Button variant="primary" className="mf-primary-button" disabled={!icon && !name} onClick={this.saveFunction}>Guardar</Button>
                 </Modal.Footer>
             </Modal>
         )

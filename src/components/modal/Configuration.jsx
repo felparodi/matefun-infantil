@@ -6,16 +6,17 @@ import { cleanMyFunctions } from '../../api/matefun';
 import './Configuration.scss';
 import Icon from '../../components/Icon';
 import * as icon from '../../constants/icons';
+import '../../components/Common.scss';
 
 const ComplexSelect = ({ onChange, value }) => (
-    <div>
-        <label>Seleccionar dificultad</label>
+    <Form.Group>
+        <Form.Label>Seleccionar dificultad</Form.Label>
         <Form.Control as="select" value={value} onChange={onChange}>
             <option value={0}>Básico</option>
             <option value={3}>Avanzado</option>
             <option value={5}>Completo</option>
         </Form.Control>
-    </div>
+    </Form.Group>
 )
 
 export class Configuration extends React.Component {
@@ -37,8 +38,12 @@ export class Configuration extends React.Component {
                     <div className="actions">
                         <ComplexSelect value={complex} onChange={(event) => this.props.setComplex(event.target.value)}/>
                         <hr></hr>
-                        <p>Acciones</p>
-                        <Button variant="primary" onClick={() => this.props.cleanMyFunctions()}>Limpiar mis funciones</Button>
+                        <Form.Group>
+                            <Form.Label>Acciones</Form.Label>
+                            <div>
+                                <Button variant="primary" className="mf-primary-button" onClick={() => this.props.cleanMyFunctions()}>Limpiar mis funciones</Button>
+                            </div>
+                        </Form.Group>
                     </div>
                 </div>
             </Modal>
