@@ -35,9 +35,9 @@ export class Login extends React.Component {
     render() {
         const { username, password } = this.state;
         return (
-            <div>
+            <div style={{ height: '100vh', backgroundColor: '#004CA6', overflow: 'hidden'}}>
                 <Container>
-                    <Card style={{ maxWidth: '600px', backgroundColor: "#007bff", marginTop: "80px", marginLeft: "auto", marginRight: "auto" }}>
+                    <Card style={{ maxWidth: '600px', backgroundColor: "#0496FF", marginTop: "80px", marginLeft: "auto", marginRight: "auto" }}>
                         <Card.Body>
                             <h2 className="text-center" style={{ color: "white", margin: "40px" }}>MateFun Infantil</h2>
                             <Form>

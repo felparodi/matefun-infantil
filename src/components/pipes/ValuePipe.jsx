@@ -28,10 +28,10 @@ export class ValuePipe extends React.Component {
         }
     }
 
-    leaveEditing(value) {
+    leaveEditing(value, end=false) {
         const { pipe } = this.props;
         this.props.setPipeValue(pipe.pos.x, pipe.pos.y, value);
-        this.setState({ edit: false });
+        this.setState({ edit: end });
     }
 
     onClickValue() {

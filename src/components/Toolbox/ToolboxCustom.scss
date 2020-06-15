@@ -4,7 +4,7 @@
     height: 100%;
     .pipes {
         flex: 1 0 0;
-        overflow: scroll;
+        overflow: auto;
     }
     .drop-zone {
         &.Edit.over {

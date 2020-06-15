@@ -15,8 +15,8 @@ export const ToolboxGroups = [
         complex: 0,
         pipes: [
             { pipe: new ConstPipe(0), complex: 0 },
-            { pipe: new ConstPipe({color:'Negro'}, VALUES_TYPES.COLOR), complex: 0 },
             { pipe: new ConstPipe({x:0, y:0}, VALUES_TYPES.POINT), complex: 0 },
+            { pipe: new ConstPipe({color:'Negro'}, VALUES_TYPES.COLOR), complex: 0 },
             { pipe: new EndPipe(VALUES_TYPES.GENERIC), complex: 0 },
         ]
     },

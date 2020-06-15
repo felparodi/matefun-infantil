@@ -46,7 +46,7 @@ export function dropPipe(drop) {
 
 export function setPipeValue(x, y, value) {
     return (dispatch) => {
-        const { isEditMode } = store.getState().matrix
+        const { isEditMode } = store.getState().matrix;
         compiler.getMatrix().setPipeValue(x, y, value);
         dispatch({type: matrixAction.CLEAN_JOIN});
         updateMatrix(dispatch, isEditMode);
@@ -160,7 +160,6 @@ export function cancelEdit() {
 
 export function editCustomFunction(customFuncSnap) {
     return (dispatch) => {
-        console.log(customFuncSnap);
         if(customFuncSnap.type === PIPE_TYPES.CUSTOM) {
             const customMatrix = JSON.parse(customFuncSnap.body);
             compiler.loadSnapMatrix(customMatrix);

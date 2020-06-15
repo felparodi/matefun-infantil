@@ -106,9 +106,9 @@ export class VarPipe extends React.Component {
         }
     }
 
-    leaveEditing(value) {
+    leaveEditing(value, end=false) {
         const { pipe } = this.props;
-        this.setState({ edit: false });
+        this.setState({ edit: end });
         this.props.setPipeValue(pipe.pos.x, pipe.pos.y, value);
     }
 
@@ -132,7 +132,7 @@ export class VarPipe extends React.Component {
         if (pipe.value || isOpen) {
             return (
                 <div className="VarPipe">
-                    { selected && edit && <ValueInput value={pipe.value} type={pipe.dir.bottom} onBlur={this.leaveEditing}/> }
+                    { selected && <ValueInput value={pipe.value} type={pipe.dir.bottom} onBlur={this.leaveEditing}/> }
                     <DoorOpen pipe={pipe}
                         startJoin={startJoin}
                         onClickOutput={this.joinOutput}
@@ -150,9 +150,9 @@ const mapStateToProps = (state) => ({
     startJoin: state.matrix.startJoin,
 });
 
-const mapDispath = {
+const mapDispatch = {
     setPipeValue,
     joinOutput
 }
 
-export default connect(mapStateToProps, mapDispath)(VarPipe);
+export default connect(mapStateToProps, mapDispatch)(VarPipe);

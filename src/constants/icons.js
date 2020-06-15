@@ -20,6 +20,9 @@ export const CANCEL = 'cancel';
 export const CONFIG = 'config';
 export const LOGOUT = 'logout'
 
+//color button
+export const PALETTE = 'palette';
+
 //graphic buttons
 export const ZOOM_IN = 'zoom-in';
 export const ZOOM_OUT = 'zoom-out';

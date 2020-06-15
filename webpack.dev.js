@@ -8,10 +8,13 @@ module.exports = merge(common, {
     devServer: {
         contentBase: './dist',
     },
+    output: {
+        publicPath: '/'
+    },
     plugins: [
         ...common.plugins,
         new webpack.DefinePlugin({
             'process.env.MATEFUN_SERVER': JSON.stringify('http://localhost:8080')
-        }),
+        })
     ]
 });

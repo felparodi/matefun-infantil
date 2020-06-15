@@ -16,7 +16,6 @@ import * as icon from '../../constants/icons';
 export class MateFun2D extends React.Component {
 
     constructor(props) {
-        console.log('matefunGraph', MateFunGraph2D)
         super(props);
         this.graphDiv = React.createRef();
         this.matFun = null;
@@ -144,12 +143,12 @@ export class MateFun2D extends React.Component {
                     </div>
                 </div>
                 <div className='graphic-buttons'>
-                    <button className={classNames("mf-button-toolbar", {'inactive': !toggleGrid})} onClick={this.toggleGrid}><Grid className="test"/></button>
-                    <button className={classNames("mf-button-toolbar",{'inactive': !toggleAxis})} onClick={this.toggleAxis}><Axis/></button>
-                    <button className="mf-button-toolbar" onClick={this.zoomIn}><Icon icon={icon.ZOOM_IN} size='30px'/></button>
-                    <button className="mf-button-toolbar" onClick={this.zoomOut}><Icon icon={icon.ZOOM_OUT} size='30px'/></button>
-                    <button className="mf-button-toolbar" onClick={this.recenterPlot}><Icon icon={icon.CENTER} size='30px'/></button>
-                    <button className="mf-button-toolbar" onClick={this.exportPlot}><Icon icon={icon.DOWNLOAD} size='30px'/></button>
+                    <button className={classNames({'inactive': !toggleGrid})} onClick={this.toggleGrid}><Grid className="test"/></button>
+                    <button className={classNames({'inactive': !toggleAxis})} onClick={this.toggleAxis}><Axis/></button>
+                    <button onClick={this.zoomIn}><Icon icon={icon.ZOOM_IN} size='30px'/></button>
+                    <button onClick={this.zoomOut}><Icon icon={icon.ZOOM_OUT} size='30px'/></button>
+                    <button onClick={this.recenterPlot}><Icon icon={icon.CENTER} size='30px'/></button>
+                    <button onClick={this.exportPlot}><Icon icon={icon.DOWNLOAD} size='30px'/></button>
                 </div>
                 { animation && 
                     <div className="graphic-animation">
