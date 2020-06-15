@@ -16,7 +16,6 @@ import * as icon from '../../constants/icons';
 export class MateFun2D extends React.Component {
 
     constructor(props) {
-        console.log('matefunGraph', MateFunGraph2D)
         super(props);
         this.graphDiv = React.createRef();
         this.matFun = null;

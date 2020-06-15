@@ -92,14 +92,13 @@ function createWebSocket(userData) {
     }
 }
 
-export function editarWorkspace(contenido) {
+export function editWorkspace(contenido) {
     workspaceFile.contenido = contenido;
     return editarArchivo2(workspaceFile)
         .then((fileData) => {
             workspaceFile = fileData;
-            return uplaodFile(workspaceFile)
+            return uploadFile(workspaceFile)
                 .then((message) => {
-                    console.log(message);
                     return { ...fileData, message};
                 })
         })
@@ -118,7 +117,7 @@ export function sendCommand(comando) {
     return sendInstruction({comando});
 }
 
-function uplaodFile(fileData, extraDep = []) {
+function uploadFile(fileData, extraDep = []) {
     return sendInstruction({load: fileData.id, dependencias: [...extraDep, fileData.id]})
 }
 

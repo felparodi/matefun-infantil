@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Crallon from '../../../icons/crallon.svg';
+import classNames from 'classnames';
+import SpecificColorInput from '../../SpecificColorInput';
 import { VALUES_TYPES } from '../../../constants/constants';
 import { colorByColorValue } from './ValueInfo';
+import Icon from '../../Icon';
+import * as icons from '../../../constants/icons';
 
 export function hasInputValue(type) {
     return type === VALUES_TYPES.NUMBER ||
@@ -14,9 +17,9 @@ export function castValue(value, type) {
         case VALUES_TYPES.NUMBER:
             return Number(value);
         case VALUES_TYPES.COLOR:
-            return { color:value }
+            return value.color ? value : { color:value };
         case VALUES_TYPES.POINT:
-            return { x:Number(value.x), y: Number(value.y) }
+            return { x:Number(value.x), y: Number(value.y) };
         default:
             return value;
     }
@@ -36,15 +39,24 @@ export const ValueInputNumber = ({value, onBlur}) => {
 
 export const ValueInputColor = ({value, onBlur}) => {
     const colorStyle = value ? colorByColorValue(value.color) : 'black';
+    const [more, setMore] = useState(false);
     return (
-        <div className="value-input color">
-            <Crallon style={{fill: colorStyle}}/>
-            <div className="color-options">
-                <div className="option black" onClick={() => onBlur('Negro') }/>
-                <div className="option red"  onClick={() => onBlur('Rojo') }/>
-                <div className="option blue"  onClick={() => onBlur('Azul') }/>
-                <div className="option green" onClick={() => onBlur('Verde') }/>
-            </div>
+        <div className={ classNames("value-input color", { 'more': more })}>
+            { !more &&
+                <div className="color-options">
+                    <div className="option black" onClick={() => onBlur('Negro') }/>
+                    <div className="option red"  onClick={() => onBlur('Rojo') }/>
+                    <div className="option blue"  onClick={() => onBlur('Azul') }/>
+                    <div className="option green" onClick={() => onBlur('Verde') }/>
+                    <div className="more-colors" onClick={() => setMore(true) }><Icon icon={icons.PALETTE}/></div>
+                </div>
+            }
+            { more &&
+               <SpecificColorInput
+                    onBlur={(color) => onBlur(color, true)} 
+                    value={value}/>
+            }
+
         </div>
     );
 }
@@ -80,8 +92,8 @@ export const ValueInputText = ({value, onBlur}) => {
 
 
 export const ValueInput = ({value, type, onBlur}) => {
-    const handlerBlur = (temValue) => {
-        onBlur(castValue(temValue, type))
+    const handlerBlur = (temValue, end=false) => {
+        onBlur(castValue(temValue, type), end);
     }
 
     switch(type) {
