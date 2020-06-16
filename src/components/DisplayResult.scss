@@ -1,3 +1,6 @@
+$DarkColor: #004CA6;
+$LightColor: #C2F1F2;
+
 .DisplayResult {
     margin: 1rem 0;
     border-color: #bbbbbb;
@@ -15,6 +18,8 @@
         top: 2px;
         right: 5px;
         z-index: 100;
+        background-color: $LightColor;
+        color: $DarkColor;
     }
     &.graph {
         &.minimized {

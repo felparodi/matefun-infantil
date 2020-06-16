@@ -15,9 +15,9 @@ export class Info extends React.Component {
         return (
             <div className={classNames("Info", { 'collapsed': collapsed })}>
                 <div className="buttons">
-                    <div onClick={closeOpenPanel} style={{cursor: 'pointer'}}> 
+                    <Button onClick={closeOpenPanel} className='expand-collapse-icon'> 
                         <Icon size="30px" icon={!collapsed ? icon.COLLAPSE : icon.EXPAND}/>
-                    </div>
+                    </Button>
                 </div>
                 <div className='info'>
                     { !collapsed && <DisplayResult/> }
