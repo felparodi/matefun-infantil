@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import ReactTooltip from 'react-tooltip';
 import PipeButton from './PipeButton'
-import Trash from './Trash';
 import Edit from './Edit';
 
 import './ToolboxCustom.scss';
@@ -34,7 +34,25 @@ export class ToolboxCustom extends React.Component {
             <div className="ToolboxCustom">
                 <Edit/>
                 <div className="pipes">
-                    { pipes.map((pipe, index) => <PipeButton key={`${index}-custom`} pipe={pipe} onDrop={onDrop}/>) }
+                    { pipes.map((pipe, index) => 
+                        <React.Fragment key={`${index}-custom`} >
+                            <PipeButton
+                                pipe={pipe} 
+                                onDrop={onDrop}
+                                data-tip={`${index}-custom`}
+                                data-for={`${index}-custom`}/>
+                            <ReactTooltip
+                                key={`${index}-custom}`} 
+                                id={`${index}-custom`} 
+                                effect='solid'
+                                place='right'
+                                className='pipe-button-tooltip'
+                                delayShow={500}
+                                getContent={() =><p>{pipe.name}</p>}
+                                />
+                        </React.Fragment>
+                    ) 
+                    }
                 </div>
             </div>
         )

@@ -187,6 +187,12 @@ function getCustomIcon(icon) {
                     <circle cx="20" cy="35" r="1" stroke="currentColor" fill="currentColor" strokeWidth="6"/>
                 </g>
             );
+        case icons.END:
+            return (
+                <g transform="rotate(-180 20 20)">
+                    <path d="M 20 0 L 0 20 L 10 30 L 10 40 L 30 40 L 30 30 L 40 20 z"/>
+                </g>
+            );
         default:    
             return null;
     }

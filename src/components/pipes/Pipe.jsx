@@ -69,6 +69,7 @@ class Pipe extends React.Component {
                         id={tooltipId}
                         className='tooltip'
                         multiline={true}
+                        effect='solid'
                         place='bottom'
                         delayShow={1000}
                         getContent={() => 

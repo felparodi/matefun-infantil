@@ -1,6 +1,7 @@
 //toolbox
 export const INPUT = 'input';
 export const WINDOW = 'window';
+export const END = 'end';
 export const LIST = 'list';
 export const CALCULATOR = 'calculator';
 export const SHAPES = 'shapes';

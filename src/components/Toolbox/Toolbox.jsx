@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { dropPipe, editCustomFunction } from '../../api/board';
 import { Button } from 'react-bootstrap';
+import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
 import {PIPE_TYPES} from '../../constants/constants';
 import toolboxGroups, {COMPLEX} from '../../constants/toolbox';
@@ -19,7 +20,7 @@ function toolboxPipeSnapshot(toolboxPipe, maxComplex=COMPLEX) {
             ...group,
             pipes: group.pipes
                 .filter(({complex}) => complex <= maxComplex)
-                .map(({pipe}) => pipe ? pipe.snapshot() : null)
+                .map(({pipe, tooltip}) => pipe ? { ...(pipe.snapshot()), tooltip} : null)
         })
     );
 }
@@ -64,14 +65,26 @@ export class Toolbox extends React.Component {
                     <div className="toolbox-header">
                     { 
                         pipeToolsGroup.map((toolbar, index) => (
-                            <Button key={index}
-                                className={classNames("button-group", {'selected': select === toolbar.value })}
-                                onClick={()=> this.setState({select: toolbar.value})}>
-                                {toolbar.icon ?
-                                    <Icon icon={toolbar.icon} size='30px'/>
-                                    : <span>{toolbar.label}</span>
-                                }
-                            </Button>
+                            <React.Fragment>
+                                <Button key={index}
+                                    className={classNames("button-group", {'selected': select === toolbar.value })}
+                                    onClick={()=> this.setState({select: toolbar.value})}
+                                    data-tip={`${toolbar.value}-toolbar`}
+                                    data-for={`${toolbar.value}-toolbar`} >
+                                    {toolbar.icon ?
+                                        <Icon icon={toolbar.icon} size='30px'/>
+                                        : <span>{toolbar.label}</span>
+                                    }
+                                </Button>
+                                <ReactTooltip
+                                    id={`${toolbar.value}-toolbar`} 
+                                    effect='solid'
+                                    place='right'
+                                    className='pipe-button-tooltip'
+                                    delayShow={500}
+                                    getContent={() =><p>{toolbar.label}</p>}
+                                />
+                            </React.Fragment>
                         )) 
                     }
                     </div>
