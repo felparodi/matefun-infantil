@@ -18,7 +18,8 @@ export const EXPAND_WINDOWS = 'expand-windows';
 export const TRASH = 'trash';
 export const CANCEL = 'cancel';
 export const CONFIG = 'config';
-export const LOGOUT = 'logout'
+export const LOGOUT = 'logout';
+export const FOLDER = 'folder';
 
 //color button
 export const PALETTE = 'palette';

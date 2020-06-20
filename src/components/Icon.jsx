@@ -39,6 +39,8 @@ function getFontAwesomeIcon(icon) {
             return fas.faCogs;
         case icons.LOGOUT:
             return fas.faPowerOff;
+        case icons.FOLDER:
+            return fas.faFolder;
         // color button
         case icons.PALETTE:
             return fas.faPalette;

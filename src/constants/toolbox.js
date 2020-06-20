@@ -102,7 +102,7 @@ export const ToolboxGroups = [
     {
         value: 'custom',
         label: 'Custom',
-        icon: icon.SAVE,
+        icon: icon.FOLDER,
         complex: 0,
         pipes: [
         ]
