@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import { dropPipe, editCustomFunction } from '../../api/board';
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
+import {PIPE_TYPES} from '../../constants/constants';
 import toolboxGroups, {COMPLEX} from '../../constants/toolbox';
 import ToolboxBody from './ToolboxBody';
 import Icon from '../Icon';
@@ -40,7 +41,7 @@ export class Toolbox extends React.Component {
     }
 
     onDrop(drop) {
-        if(drop.origin === 'trash') {
+        if(drop.origin === 'trash' && drop.pipe.type === PIPE_TYPES.CUSTOM) {
             this.setState({ deletePipe:drop.pipe });
         } else if(drop.origin === 'edit') {
             this.props.editCustomFunction(drop.pipe);

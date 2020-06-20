@@ -45,8 +45,9 @@ export class DeleteFunction extends React.Component {
     render() {
         const { open } = this.state;
         const modalProps = {...this.props}
-        const {pipe} = this.props;
+        const { pipe } = this.props;
         delete modalProps.pipe;
+        delete modalProps.deleteMyFunctions;
         return ( 
             <Modal 
                 {...modalProps}
