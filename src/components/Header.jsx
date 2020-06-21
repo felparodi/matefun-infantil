@@ -17,7 +17,7 @@ export class Header extends React.Component {
     render() {
         return (
             <Navbar variant="dark" className="Header">
-                <Navbar.Brand>Matefun Infantil</Navbar.Brand>
+                <Navbar.Brand>MateFun Infantil</Navbar.Brand>
                 <Nav className="mr-auto"></Nav>
 
                 <Dropdown alignRight>
