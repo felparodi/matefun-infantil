@@ -65,28 +65,24 @@ export class Toolbox extends React.Component {
                     <div className="toolbox-header">
                     { 
                         pipeToolsGroup.map((toolbar, index) => (
-                            <React.Fragment>
                                 <Button key={index}
                                     className={classNames("button-group", {'selected': select === toolbar.value })}
                                     onClick={()=> this.setState({select: toolbar.value})}
-                                    data-tip={`${toolbar.value}-toolbar`}
-                                    data-for={`${toolbar.value}-toolbar`} >
+                                    data-tip={toolbar.label}
+                                    data-for='button-toolbar'>
                                     {toolbar.icon ?
                                         <Icon icon={toolbar.icon} size='30px'/>
                                         : <span>{toolbar.label}</span>
                                     }
                                 </Button>
-                                <ReactTooltip
-                                    id={`${toolbar.value}-toolbar`} 
-                                    effect='solid'
-                                    place='right'
-                                    className='pipe-button-tooltip'
-                                    delayShow={500}
-                                    getContent={() =><p>{toolbar.label}</p>}
-                                />
-                            </React.Fragment>
                         )) 
                     }
+                     <ReactTooltip
+                        id='button-toolbar'
+                        effect='solid'
+                        place='right'
+                        className='pipe-button-tooltip'
+                        delayShow={500}/>
                     </div>
                     <ToolboxBody
                         onDrop={this.onDrop}

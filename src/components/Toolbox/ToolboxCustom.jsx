@@ -34,24 +34,25 @@ export class ToolboxCustom extends React.Component {
             <div className="ToolboxCustom">
                 <Edit/>
                 <div className="pipes">
-                    { pipes.map((pipe, index) => 
-                        <React.Fragment key={`${index}-custom`} >
+                    { 
+                        pipes.map((pipe, index) => 
                             <PipeButton
+                                key={`${index}-custom`}
                                 pipe={pipe} 
                                 onDrop={onDrop}
-                                data-tip={`${index}-custom`}
-                                data-for={`${index}-custom`}/>
-                            <ReactTooltip
-                                key={`${index}-custom}`} 
-                                id={`${index}-custom`} 
-                                effect='solid'
-                                place='right'
-                                className='pipe-button-tooltip'
-                                delayShow={500}
-                                getContent={() =><p>{pipe.name}</p>}
-                                />
-                        </React.Fragment>
-                    ) 
+                                data-tip={`${pipe.name}`}
+                                data-for='pipe-button-tool-item-custom' />
+                        ) 
+                    }
+                    { pipes.length > 0 && 
+                        <ReactTooltip
+                            key={pipes.reduce((p, c) => `${p}-${c}`, '')}
+                            id='pipe-button-tool-item-custom' 
+                            effect='solid'
+                            place='right'
+                            className='pipe-button-tooltip'
+                            delayShow={500}
+                        />
                     }
                 </div>
             </div>

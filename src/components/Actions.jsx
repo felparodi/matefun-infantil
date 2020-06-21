@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
+import ReactTooltip from 'react-tooltip';
 import { clean, cancelEdit } from '../api/board';
 import CreateFunction from './modal/CreateFunction';
 import { loadFunctionDefinition, evaluate, saveCustomFunction } from '../api/matefun';
@@ -43,21 +44,24 @@ export class Actions extends React.Component {
                 <div className="action-buttons">
                     { !isEditMode &&    
                         <Button className="mf-button-primary ml-1" 
-                            title="Limpiar"
+                            data-tip="Limpiar"
+                            data-for='actions'
                             onClick={this.clean}>
                             <Icon icon={icons.CLEAN}/>
                         </Button> 
                     }
                     { isEditMode && 
                         <Button className="mf-button-primary ml-1" 
-                            title="Cancelar"
+                            data-tip="Cancelar"
+                            data-for='actions'
                             onClick={this.props.cancelEdit}>
                             <Icon icon={icons.CANCEL}/>
                         </Button> 
                     }
                     { !isEditMode && 
                         <Button className="mf-button-primary ml-1" 
-                            title="Guardar"
+                            data-tip="Guardar"
+                            data-for='actions'
                             disabled={!canSaveFunction} 
                             onClick={() => this.setState({openSaveFunction: true})}>
                             <Icon icon={icons.SAVE}/>
@@ -66,7 +70,8 @@ export class Actions extends React.Component {
                     { isEditMode &&    
                         <Button className="mf-button-primary ml-1" 
                             disabled={!canSaveFunction} 
-                            title="Salvar"
+                            data-tip="Guardar"
+                            data-for='actions'
                             onClick={() => this.props.saveCustomFunction(editFuncName)}>
                             <Icon icon={icons.SAVE_ALT}/>
                         </Button>
@@ -74,18 +79,26 @@ export class Actions extends React.Component {
                     { isEditMode && 
                         <Button className="mf-button-primary ml-1" 
                             disabled={!canSaveFunction} 
-                            title="Guardar como ..."
+                            data-tip="Guardar como ..."
+                            data-for='actions'
                             onClick={() => this.setState({openSaveFunction: true})}>
                             <Icon icon={icons.SAVE}/>
                         </Button> 
                     }
                     <Button className="mf-button-primary ml-1" 
-                        title="Probar"
+                        data-tip="Correr"
+                        data-for='actions'
                         disabled={!canProcess} 
                         onClick={this.evaluate}>
                         <Icon icon={icons.PLAY}/>
                     </Button>
-           
+                    <ReactTooltip
+                        key={`action-${isEditMode ? 'edit-mode' : 'normal'}`}
+                        id='actions' 
+                        effect='solid'
+                        place='top'
+                        delayShow={500}
+                    />    
                 </div>
                 { openSaveFunction &&
                     <CreateFunction show={true} onHide={() => this.setState({openSaveFunction: false})}/>

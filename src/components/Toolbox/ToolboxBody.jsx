@@ -22,29 +22,27 @@ class ToolboxBody extends React.Component {
                             <div className="standard">
                                 <div className="container">
                                 { group.pipes.map((pipe, index) =>
-                                    <React.Fragment  key={`${index}-${group.value}`} >
                                         <PipeButton
+                                            key={`${index}-${group.value}`} 
                                             pipe={pipe} onDrop={onDrop}
-                                            data-tip={`${index}-${group.value}`}
-                                            data-for={`${index}-${group.value}`}/> 
-                                        { pipe.tooltip && 
-                                            <ReactTooltip
-                                                id={`${index}-${group.value}`} 
-                                                effect='solid'
-                                                place='right'
-                                                className='pipe-button-tooltip'
-                                                delayShow={500}
-                                                getContent={() =><p>{pipe.tooltip}</p>}
-                                            />
-                                        }
-                                    </React.Fragment>
-                                )
-                                }      
+                                            data-tip={`${pipe.tooltip}`}
+                                            data-for={ pipe.tooltip ? `pipe-button-tool-item-${group.value}` : 'no-tooltip'}/> 
+                                    )
+                                }  
+                                <ReactTooltip
+                                        key={`pipe-button-tool-item-${group.value}`}
+                                        id={`pipe-button-tool-item-${group.value}`} 
+                                        effect='solid'
+                                        place='right'
+                                        className='pipe-button-tooltip'
+                                        delayShow={500}
+                                    />    
                                 </div>
                             </div>
                         : 
                             <ToolboxCustom onDrop={onDrop}/>
                     }
+                 
                 </div>
             )
         )
