@@ -87,9 +87,10 @@ $DisabledFont: #706C61;
     }
     .drop-zone {
         padding: 15%;
-        background-color: rgb(197, 197, 197);
+        background-color: lightgray;
         border: dashed  grey;
         border-radius: 5px;
+        color: #4c4b4b;
         svg {
             height: 100%;
             width: 100%;
