@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { DragSource } from 'react-dnd';
 import ReactTooltip from 'react-tooltip';
+import i18n from 'i18next';
 import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../../constants/constants';
 import DummyPipe from './DummyPipe'
 import FuncPipe from './FuncPipe';
@@ -74,9 +75,10 @@ class Pipe extends React.Component {
                         delayShow={1000}
                         getContent={() => 
                             <div>
-                                {pipe.warnings && pipe.warnings.map((m, index) => <p key={index}>AVISO: {m}</p>)}
-                                {pipe.errors && pipe.errors.map((m, index) => <p key={index}>ERROR: {m}</p>)}
-                            </div> }
+                                {pipe.warnings && pipe.warnings.map((m, index) => <p key={index}>AVISO: {i18n.t(m)}</p>)}
+                                {pipe.errors && pipe.errors.map((m, index) => <p key={index}>ERROR: {i18n.t(m)}</p>)}
+                            </div> 
+                        }
                     />
                 }
             </div>
