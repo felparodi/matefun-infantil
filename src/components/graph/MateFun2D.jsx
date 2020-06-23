@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import ReactTooltip from 'react-tooltip';
 import { VALUES_TYPES } from '../../constants/constants';
 import { MateFunGraph2D } from 'matefun-graph/lib/2D';
 import Grid from '../../icons/grid.svg';
@@ -143,24 +144,83 @@ export class MateFun2D extends React.Component {
                     </div>
                 </div>
                 <div className='graphic-buttons'>
-                    <button className={classNames({'inactive': !toggleGrid})} onClick={this.toggleGrid}><Grid className="test"/></button>
-                    <button className={classNames({'inactive': !toggleAxis})} onClick={this.toggleAxis}><Axis/></button>
-                    <button onClick={this.zoomIn}><Icon icon={icon.ZOOM_IN} size='30px'/></button>
-                    <button onClick={this.zoomOut}><Icon icon={icon.ZOOM_OUT} size='30px'/></button>
-                    <button onClick={this.recenterPlot}><Icon icon={icon.CENTER} size='30px'/></button>
-                    <button onClick={this.exportPlot}><Icon icon={icon.DOWNLOAD} size='30px'/></button>
+                    <button className={classNames({'inactive': !toggleGrid})}
+                        data-tip='Mostrar Grilla'
+                        data-for='graph-tooltip'
+                        onClick={this.toggleGrid}>
+                        <Grid className="test"/>
+                    </button>
+                    <button className={classNames({'inactive': !toggleAxis})}
+                        data-tip='Mostrar Numeros'
+                        data-for='graph-tooltip'
+                        onClick={this.toggleAxis}>
+                        <Axis/>
+                    </button>
+                    <button onClick={this.zoomIn}
+                        data-tip='Acercar'
+                        data-for='graph-tooltip'>
+                        <Icon icon={icon.ZOOM_IN} size='30px'/>
+                    </button>
+                    <button onClick={this.zoomOut}
+                        data-tip='Alejar'
+                        data-for='graph-tooltip'>
+                        <Icon icon={icon.ZOOM_OUT} size='30px'/>
+                    </button>
+                    <button onClick={this.recenterPlot}
+                        data-tip='Tamaño original'
+                        data-for='graph-tooltip'>
+                        <Icon icon={icon.CENTER} size='30px'/>
+                    </button>
+                    <button onClick={this.exportPlot}
+                        data-tip='Descargar'
+                        data-for='graph-tooltip'>
+                        <Icon icon={icon.DOWNLOAD} size='30px'/>
+                    </button>
                 </div>
                 { animation && 
                     <div className="graphic-animation">
                         { play ? 
-                            <button onClick={this.pause}><FontAwesomeIcon icon={faPause}/></button> :
-                            <button onClick={this.play}><FontAwesomeIcon icon={faPlay}/></button> 
+                            <button onClick={this.pause}
+                                data-tip='Pausar'
+                                data-for='graph-tooltip'>
+                                <FontAwesomeIcon icon={faPause}/>
+                            </button> :
+                            <button onClick={this.play}
+                                data-tip='Play'
+                                data-for='graph-tooltip'>
+                                <FontAwesomeIcon icon={faPlay}/>
+                            </button> 
                         }
-                        <button disabled={!play} className={classNames({'inactive': !play})} onClick={this.moreSpeed}><SpeedMore/></button>
-                        <button disabled={!play} className={classNames({'inactive': !play})} onClick={this.normalSpeed}><SpeedNormal/></button>
-                        <button disabled={!play} className={classNames({'inactive': !play})} onClick={this.lestSpeed}><SpeedLest/></button>
+                        <button disabled={!play}
+                            className={classNames({'inactive': !play})}
+                            data-tip='Aumentar Velocidad'
+                            data-for='graph-tooltip'
+                            onClick={this.moreSpeed}>
+                                <SpeedMore/>
+                            </button>
+                        <button disabled={!play}
+                            className={classNames({'inactive': !play})}
+                            data-tip='Velocidad Normal'
+                            data-for='graph-tooltip'
+                            onClick={this.normalSpeed}>
+                            <SpeedNormal/>
+                        </button>
+                        <button disabled={!play}
+                            className={classNames({'inactive': !play})}
+                            data-tip='Disminuir Velocidad'
+                            data-for='graph-tooltip'
+                            onClick={this.lestSpeed}>
+                            <SpeedLest/>
+                        </button>
                     </div>
                 }
+                <ReactTooltip
+                    key={`graph-${animation ? 'animation' : 'normal'}-${play ? 'play' : 'stop'}`}
+                    id='graph-tooltip' 
+                    effect='solid'
+                    place='right'
+                    delayShow={500}
+                />    
             </div>
         )
     }

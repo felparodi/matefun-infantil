@@ -13,12 +13,13 @@
                     width: 100%;
                     .graphic {
                         height: 100%;
+                        margin-left: 1.5rem;
                     }
                     .graphic-animation {
                         left: 1rem;
-                        top: 21rem;
+                        top: 22rem;
                         width: 3rem;
-                        height: auto;
+                        height: 15rem;
                         flex-direction: column;
                         justify-content: normal;
                         > button {
