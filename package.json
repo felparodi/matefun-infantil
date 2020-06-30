@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --open --config webpack.dev.js --mode development --port 8081",
+    "stage": "webpack-dev-server --open --config webpack.stage.js --mode development --port 8081",
     "build": "webpack --config webpack.prod.js",
     "test": "jest",
     "postinstall": "rm -rf node_modules/*/.git"
