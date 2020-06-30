@@ -145,13 +145,13 @@ export class MateFun2D extends React.Component {
                 </div>
                 <div className='graphic-buttons'>
                     <button className={classNames({'inactive': !toggleGrid})}
-                        data-tip='Mostrar Grilla'
+                        data-tip='Mostrar/ocultar cuadrícula'
                         data-for='graph-tooltip'
                         onClick={this.toggleGrid}>
                         <Grid className="test"/>
                     </button>
                     <button className={classNames({'inactive': !toggleAxis})}
-                        data-tip='Mostrar Numeros'
+                        data-tip='Mostrar/ocultar valores de los ejes'
                         data-for='graph-tooltip'
                         onClick={this.toggleAxis}>
                         <Axis/>
@@ -167,7 +167,7 @@ export class MateFun2D extends React.Component {
                         <Icon icon={icon.ZOOM_OUT} size='30px'/>
                     </button>
                     <button onClick={this.recenterPlot}
-                        data-tip='Tamaño original'
+                        data-tip='Centrar'
                         data-for='graph-tooltip'>
                         <Icon icon={icon.CENTER} size='30px'/>
                     </button>
@@ -186,28 +186,28 @@ export class MateFun2D extends React.Component {
                                 <FontAwesomeIcon icon={faPause}/>
                             </button> :
                             <button onClick={this.play}
-                                data-tip='Play'
+                                data-tip='Reanudar'
                                 data-for='graph-tooltip'>
                                 <FontAwesomeIcon icon={faPlay}/>
                             </button> 
                         }
                         <button disabled={!play}
                             className={classNames({'inactive': !play})}
-                            data-tip='Aumentar Velocidad'
+                            data-tip='Aumentar velocidad'
                             data-for='graph-tooltip'
                             onClick={this.moreSpeed}>
                                 <SpeedMore/>
                             </button>
                         <button disabled={!play}
                             className={classNames({'inactive': !play})}
-                            data-tip='Velocidad Normal'
+                            data-tip='Velocidad normal'
                             data-for='graph-tooltip'
                             onClick={this.normalSpeed}>
                             <SpeedNormal/>
                         </button>
                         <button disabled={!play}
                             className={classNames({'inactive': !play})}
-                            data-tip='Disminuir Velocidad'
+                            data-tip='Disminuir velocidad'
                             data-for='graph-tooltip'
                             onClick={this.lestSpeed}>
                             <SpeedLest/>

@@ -89,7 +89,7 @@ export class DisplayResult extends React.Component {
                 { graph && !minimized && 
                     <React.Fragment>
                         <button className="expand-button"
-                            data-tip='Expandir'
+                            data-tip='Pantalla completa'
                             data-for='expands'
                             onClick={() => this.setState({graphModal: true})}>
                             <Icon icon={icons.EXPAND_WINDOWS}/>

@@ -207,14 +207,14 @@ export function saveInMyFunctions(name, icon) {
             newMyFunctionFileData.contenido = `${contenido}\n${myFunctionBlock}`;
             editMyFunctionFile(newMyFunctionFileData, dispatch)
                 .then(() => {
-                    toast.createSuccessMessage('Se creo con extito la nueva funcion', funcName);
+                    toast.createSuccessMessage('La función se creó con éxito', funcName);
                     board.clean()(dispatch);
                 })
                 .catch(() => {
-                    toast.createErrorMessage('No se pudo crear la funcion, revice las piesas con fondo amarillo', funcName);
+                    toast.createErrorMessage('No se pudo crear la función. Revise las piezas con fondo amarillo', funcName);
                 }) 
         } else {
-            toast.createErrorMessage('No se pudo crear la funcion, ya existe una funcion con ese nombre', funcName);
+            toast.createErrorMessage('No se pudo crear la función. Ya existe una función con ese nombre', funcName);
         }
     }
 }
@@ -235,11 +235,11 @@ export function saveCustomFunction(name) {
             newMyFunctionFileData.contenido = contenido.replace(regexBlock, newBlock);
             editMyFunctionFile(newMyFunctionFileData, dispatch)
                 .then(() => {
-                    toast.createSuccessMessage('Se pudo salvar con exito la funcion', name);
+                    toast.createSuccessMessage('La función se guardó con éxito', name);
                     board.cancelEdit()(dispatch);
                 })
                 .catch(() => {
-                    toast.createErrorMessage('No se pudo salvar la funcion, revice las piesas con fondo amarillo', name);
+                    toast.createErrorMessage('No se pudo guardar la función. Revise las piezas con fondo amarillo', name);
                 })
         }
     }
@@ -253,10 +253,10 @@ export function deleteMyFunctions(name) {
         newMyFunctionFileData.contenido = contenido.replace(regexFunctionBlock(name), '');
         editMyFunctionFile(newMyFunctionFileData, dispatch)
             .then(() => {
-                toast.createSuccessMessage('Se a borrado la funcion', name)
+                toast.createSuccessMessage('La función se borró con éxito', name)
             })
             .catch(() => {
-                toast.createErrorMessage('No se pudo borrar la funcion', name)
+                toast.createErrorMessage('No se pudo borrar la función', name)
             })
     }
 }
