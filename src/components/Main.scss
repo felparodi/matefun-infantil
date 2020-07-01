@@ -4,6 +4,7 @@ $DarkColor: #004CA6;
 $LightColor: #C2F1F2;
 $DisabledColor: #D8D9D6;
 $DisabledFont: #706C61;
+$ScrollColor: #A0C7C8;
 
 .Main {
     height: 100vh;
@@ -187,7 +188,7 @@ $DisabledFont: #706C61;
 .board-container::-webkit-scrollbar-thumb {
     border-radius: 8px;
     border: 2px solid white; /* should match background, can't be transparent */
-    background-color: grey;
+    background-color: $ScrollColor;
 }
 
 .pipe-base {

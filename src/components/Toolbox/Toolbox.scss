@@ -1,6 +1,7 @@
 $MainColor: #0496FF;
 $DarkColor: #004CA6;
 $LightColor: #c2f1f2;
+$ScrollColor: #A0C7C8;
 
 $button-pipe-size: 4rem;
 
@@ -72,7 +73,7 @@ $button-pipe-size: 4rem;
                 .container::-webkit-scrollbar-thumb {
                     border-radius: 8px;
                     border: 2px solid white; /* should match background, can't be transparent */
-                    background-color: grey;
+                    background-color: $ScrollColor;
                 }
             }
             .pipe-button {
