@@ -19,4 +19,4 @@ Las demás herramientas se encarga de instalar sus paquetes NPM
 * `npm install`: Para instalar todas las dependencias.
 * `npm start`: Para levantar el servidor de desarrollo en el puerto 8081 y consumiendo los servicios en el puerto 8080.
 * `npm run stage`: Para levantar el servidor de desarrollo en el puerto 8081 y consumir los servicos en https://matefun.math.psico.edu.uy/.
-* `npm run build`: Para generar el `war` que consume los servicios en el mismo servidor en el que fue levantado.
+* `npm run build`: Para generar el `war` en la carpeta `dist/`y este consume los servicios en el mismo servidor en el que fue levantado, además de correr sobre la sub dirección '/matefun-infantil/`.
