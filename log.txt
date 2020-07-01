@@ -1,4 +1,0 @@
-
-> minimal-react-webpack-babel-setup@1.0.0 test /Users/felipeparodi/Git/personal/proto2
-> jest
-
