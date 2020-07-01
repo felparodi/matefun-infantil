@@ -90,7 +90,7 @@ export const ToolboxGroups = [
             { pipe: getDefaultFunction(METHOD_FUNCTION.JUNTAR), complex: 0, tooltip: 'Agrupar' },
             { pipe: getDefaultFunction(METHOD_FUNCTION.ESCALAR), complex: 0, tooltip: 'Escalar' },
             { pipe: getDefaultFunction(METHOD_FUNCTION.MOVER), complex: 0, tooltip: 'Mover' },
-            { pipe: getDefaultFunction(METHOD_FUNCTION.AFIG), complex: 1, tooltip: 'Transformar en Figura' },
+            //{ pipe: getDefaultFunction(METHOD_FUNCTION.AFIG), complex: 1, tooltip: 'Transformar en Figura' },
         ]
     },
     {

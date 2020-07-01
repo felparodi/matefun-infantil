@@ -1,6 +1,6 @@
 $MainColor: #0496FF;
 $DarkColor: #004CA6;
-$LightColor: #C2F1F2;
+$LightColor: #c2f1f2;
 
 $button-pipe-size: 4rem;
 
@@ -55,6 +55,24 @@ $button-pipe-size: 4rem;
                     flex: 1 0 0;
                     padding: 0;
                     overflow: auto;
+                }
+
+                .container::-webkit-scrollbar {
+                    -webkit-appearance: none;
+                }
+                
+                .container::-webkit-scrollbar:vertical {
+                    width: 11px;
+                }
+                
+                .container::-webkit-scrollbar:horizontal {
+                    height: 11px;
+                }
+                
+                .container::-webkit-scrollbar-thumb {
+                    border-radius: 8px;
+                    border: 2px solid white; /* should match background, can't be transparent */
+                    background-color: grey;
                 }
             }
             .pipe-button {
