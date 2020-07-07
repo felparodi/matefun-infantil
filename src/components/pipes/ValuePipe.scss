@@ -1,3 +1,6 @@
+$LightColor: #C2F1F2;
+$DarkColor: #004CA6;
+
 .ValuePipe, .VarPipe {
     height:100%; 
     width:100%;
@@ -70,10 +73,19 @@
                     grid-column-start: 1;
                     grid-column-end: 3;
                     text-align: center;
-                    background-color: gray; 
                     margin: 5%;
-                    border: solid 1px;
+                    border-width: 1px;
                     border-radius: 3px;
+                    border-style: solid;
+                    border-color: gray;
+                    background-color: $LightColor;
+                    opacity: 1;
+                    outline: none;
+
+                    svg {
+                        fill: $DarkColor;
+                        color: $DarkColor;
+                    }
                 }
             }
             &.more {
