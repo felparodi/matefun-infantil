@@ -86,7 +86,7 @@ export class Actions extends React.Component {
                         </Button> 
                     }
                     <Button className="mf-button-primary ml-1" 
-                        data-tip="Correr"
+                        data-tip="Probar"
                         data-for='actions'
                         disabled={!canProcess} 
                         onClick={this.evaluate}>
