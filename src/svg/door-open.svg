@@ -1,8 +1,0 @@
-<svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
-   <g>
-      <path id="p1" d="M 10 30 L 10 40 L 30 40 L 30 30 Z" style="     fill: black"/>
-      <path id="p1" d="M 5 5 L 0 10 L 0 35 L 5 30 Z" style="     fill: saddlebrown;stroke: black;stroke-width:0.3 "/>
-      <path id="p1" d="M 5 5 L 5 30 L 35 30 L 35 5 Z" style="     fill: #000000d6;stroke: black;stroke-width:0.3 "/>
-      <path id="p1" d="M 35 5 L 40 10 L 40 35 L 35 30 Z" style="     fill: saddlebrown;stroke: black;stroke-width:0.3 "/>
-   </g>
-</svg>
