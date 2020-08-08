@@ -30,7 +30,7 @@ export class Configuration extends React.Component {
             <Modal className="Configuration" 
                 show={open}
                 onHide={() => this.props.closeConfig()}>
-                <Modal.Header style={{backgroundColor: '#C2F1F2'}} closeButton>
+                <Modal.Header closeButton>
                     <h5 style={{marginBottom: '0px'}}><Icon icon={icon.CONFIG}/> Configuración</h5>
                 </Modal.Header>
                 <div className="body">

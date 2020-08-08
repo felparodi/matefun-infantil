@@ -102,7 +102,7 @@ export class CreateFunction extends React.Component {
                 {...modalProps}
                 show={open}
                 className="CreateFunction">
-                <Modal.Header style={{backgroundColor: '#C2F1F2'}} closeButton>
+                <Modal.Header closeButton>
                     <h5 style={{marginBottom: '0px'}}><Icon icon={icons.SAVE}/> Guardar función</h5>
                 </Modal.Header>
                 <div className="body">
