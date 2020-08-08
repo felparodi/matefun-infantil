@@ -7,7 +7,7 @@ import * as icons from '../../constants/icons';
 import Base from '../pipes/function-parts/Base';
 import FunctionDescriptor from '../pipes/function-parts/FunctionDescriptor';
 import './CreateFunction.scss';
-import Icon from '../../components/Icon';
+import Icon from '../icons/Icon';
 
 const ICONS = [
     //random objects

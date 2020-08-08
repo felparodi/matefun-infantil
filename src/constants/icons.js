@@ -39,13 +39,13 @@ export const TIMES = 'times';
 export const DIVIDE = 'divide';
 export const ROOT = 'root';
 export const EXP = 'exp';
-
 export const EQUAL = 'equal';
 export const NOT_EQUAL = 'not-equal';
 export const GREATER = 'greater';
 export const GREATER_EQUAL = 'greater-equal';
 export const LESS = 'less';
 export const LESS_EQUAL = 'less-equal';
+
 // figures
 export const CIRCLE = 'circle';
 export const ROTATE = 'rotate';
@@ -53,6 +53,17 @@ export const PAINT = 'paint';
 export const MOVE = 'move';
 export const SCALE = 'scale';
 export const GROUP = 'group';
+export const RECT = 'rect';
+export const LINE = 'line';
+export const POLYGON = 'polygon';
+export const A_FIG = 'a-fig'
+
+// list
+export const CONCAT = 'concat';
+export const TAIL = 'tail';
+export const FIRST = 'first';
+export const RANGE = 'range';
+
 
 // CUSTOM FUNCTIONS
 // random objects

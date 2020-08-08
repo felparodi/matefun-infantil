@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { joinInput, isEqualJoin } from '../../api/board';
 import InputTop from './function-parts/InputTop';
 import { VALUES_TYPES, DIRECTION } from '../../constants/constants';
-import TextIcon from './function-parts/TextIcon';
+import TextIcon from '../icons/TextIcon';
 import Image from '../../icons/imagen.svg';
 import Error from '../../icons/error.svg';
 import Lupa from '../../icons/lupa.svg';

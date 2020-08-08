@@ -8,9 +8,6 @@ import InputTop from './function-parts/InputTop';
 import Output from './function-parts/Output';
 import { DIRECTION } from '../../constants/constants';
 import FuncDescriptor from './function-parts/FunctionDescriptor';
-import Icon from '../../components/Icon';
-import * as icon from '../../constants/icons';
-import { METHOD_FUNCTION } from '../../constants/constants';
 
 export class FuncPipe extends React.Component {
     constructor(props) {
@@ -41,69 +38,20 @@ export class FuncPipe extends React.Component {
         const bottomType = pipe.dir.bottom;
         const isJoinLeft =  pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.LEFT} , endJoin);
         const isJoinTop =  pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.TOP} , endJoin);
-        const isJoinRigth =  pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.RIGHT} , endJoin);
+        const isJoinRight =  pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.RIGHT} , endJoin);
         const isJoinBottom =  pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.BOTTOM} , startJoin);
         return (
             <div>
                 <svg viewBox="0 0 40 40">
                     <Base/>
                     { leftType && <InputLeft join={isJoinLeft} onClick={() => this.joinInput(DIRECTION.LEFT)} type={leftType}/> }
-                    { rightType && <InputRight join={isJoinRigth} onClick={() => this.joinInput(DIRECTION.RIGHT)} type={rightType}/>}
+                    { rightType && <InputRight join={isJoinRight} onClick={() => this.joinInput(DIRECTION.RIGHT)} type={rightType}/>}
                     { topType && <InputTop join={isJoinTop} onClick={() => this.joinInput(DIRECTION.TOP)} type={topType}/>}
                     <Output join={isJoinBottom} onClick={this.joinOutput} type={bottomType}/>
-                    {   !getIconForMethod(pipe.name) ? 
-                            <FuncDescriptor name={pipe.name} icon={pipe.icon}/>
-                        :
-                            <svg viewBox="0 0 12 30">
-                                <Icon icon={getIconForMethod(pipe.name)} color="white"/>
-                            </svg>
-                    }
+                    <FuncDescriptor name={pipe.name} icon={pipe.icon}/>
                 </svg>
             </div>
         )
-    }
-}
-
-function getIconForMethod(name) {
-
-    switch(name){
-        case METHOD_FUNCTION.ADD:
-            return icon.PLUS
-        case METHOD_FUNCTION.SUB:
-        case METHOD_FUNCTION.NEGATIVO:
-            return icon.MINUS
-        case METHOD_FUNCTION.MUL:
-            return icon.TIMES
-        case METHOD_FUNCTION.DIV:
-            return icon.DIVIDE
-        case METHOD_FUNCTION.RAIZ:
-            return icon.ROOT;
-        case METHOD_FUNCTION.EXP:
-            return icon.EXP;
-        case METHOD_FUNCTION.EQUAL:
-            return icon.EQUAL
-        case METHOD_FUNCTION.N_EQUAL:
-            return icon.NOT_EQUAL
-        case METHOD_FUNCTION.GREAT:
-            return icon.GREATER
-        case METHOD_FUNCTION.E_GREAT:
-            return icon.GREATER_EQUAL
-        case METHOD_FUNCTION.LEST:
-            return icon.LESS
-        case METHOD_FUNCTION.E_LEST:
-            return icon.LESS_EQUAL
-        case METHOD_FUNCTION.CIRC:
-            return icon.CIRCLE
-        case METHOD_FUNCTION.ROTAR:
-            return icon.ROTATE
-        case METHOD_FUNCTION.COLOR:
-            return icon.PAINT
-        case METHOD_FUNCTION.MOVER:
-            return icon.MOVE
-        case METHOD_FUNCTION.ESCALAR:
-            return icon.SCALE
-        case METHOD_FUNCTION.JUNTAR:
-            return icon.GROUP
     }
 }
 

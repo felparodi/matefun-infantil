@@ -1,6 +1,6 @@
 import React  from 'react';
 import {VALUES_TYPES, } from '../../../constants/constants';
-import TextIcon from './TextIcon';
+import TextIcon from '../../icons/TextIcon';
 import Crallon from '../../../icons/crallon.svg';
 
 export function colorByColorValue(value) {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { deleteMyFunction } from '../../api/matefun';
 import Pipe from '../pipes/Pipe';
-import Icon from '../../components/Icon';
+import Icon from '../icons/Icon';
 import * as icons from '../../constants/icons';
 
 import './DeleteFunction.scss';

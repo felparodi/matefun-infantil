@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 import MateFun2D from '../graph/MateFun2D';
-import Icon from '../Icon';
+import Icon from '../icons/Icon';
 import * as icons from '../../constants/icons';
 
 import './ModalGraphic.scss';

@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import {PIPE_TYPES} from '../../constants/constants';
 import toolboxGroups, {COMPLEX} from '../../constants/toolbox';
 import ToolboxBody from './ToolboxBody';
-import Icon from '../Icon';
+import Icon from '../icons/Icon';
 import Trash from './Trash';
 
 import './Toolbox.scss';

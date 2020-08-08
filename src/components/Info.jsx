@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Button } from 'react-bootstrap';
 import DisplayResult from './DisplayResult';
-import Icon from './Icon';
+import Icon from './icons/Icon';
 import * as icon from '../constants/icons';
 
 import './Info.scss';

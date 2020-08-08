@@ -4,7 +4,7 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { closeConfig, setComplex } from '../../api/config';
 import { cleanMyFunctions } from '../../api/matefun';
 import './Configuration.scss';
-import Icon from '../../components/Icon';
+import Icon from '../icons/Icon';
 import * as icon from '../../constants/icons';
 import '../../components/Common.scss';
 

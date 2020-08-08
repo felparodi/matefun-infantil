@@ -11,7 +11,7 @@ import SpeedNormal from '../../icons/speedNormal.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDownload, faArrowsAlt, faSearchMinus, faSearchPlus, faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 import './MateFun2D.scss';
-import Icon from '../../components/Icon';
+import Icon from '../icons/Icon';
 import * as icon from '../../constants/icons';
 
 export class MateFun2D extends React.Component {

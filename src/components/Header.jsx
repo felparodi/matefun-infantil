@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { openConfig } from '../api/config';
 import { logout } from '../api/user';
 
-import Icon from '../components/Icon';
+import Icon from './icons/Icon';
 import * as icon from '../constants/icons';
 import Configuration from './modal/Configuration';
 

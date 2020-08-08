@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import SpecificColorInput from '../../SpecificColorInput';
 import { VALUES_TYPES } from '../../../constants/constants';
 import { colorByColorValue } from './ValueInfo';
-import Icon from '../../Icon';
+import Icon from '../../icons/Icon';
 import * as icons from '../../../constants/icons';
 
 export function hasInputValue(type) {

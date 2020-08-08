@@ -4,7 +4,7 @@ import ReactTooltip from 'react-tooltip';
 import {isList, listSubType} from '../classes/helpers/type'
 import { connect } from 'react-redux';
 import { VALUES_TYPES } from '../constants/constants';
-import Icon from './Icon';
+import Icon from './icons/Icon';
 import * as icons from '../constants/icons';
 import MateFun2D from './graph/MateFun2D';
 import ModalGraphic from './modal/ModalGraphic';

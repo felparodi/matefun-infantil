@@ -5,7 +5,7 @@ import ReactTooltip from 'react-tooltip';
 import { clean, cancelEdit } from '../api/board';
 import CreateFunction from './modal/CreateFunction';
 import { loadFunctionDefinition, evaluate, editMyFunction } from '../api/matefun';
-import Icon from '../components/Icon';
+import Icon from './icons/Icon';
 import * as icons from '../constants/icons';
 import './Actions.scss';
 

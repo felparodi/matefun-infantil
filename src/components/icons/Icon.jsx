@@ -2,10 +2,23 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import * as fas from '@fortawesome/free-solid-svg-icons';
 import * as far from '@fortawesome/free-regular-svg-icons';
-import * as icons from './../constants/icons'
+import * as icons from '../../constants/icons';
+import TextIcon from './TextIcon';
+
+import RectIcon from './custom/RectIcon';
+import LineIcon from './custom/LineIcon';
+import PolygonIcon from './custom/PolygonIcon';
+import TailIcon from './custom/TailIcon';
+import FirstIcon from './custom/FirstIcon';
+import RangeIcon from './custom/RangeIcon';
+import AFigIcon from './custom/AFigIcon';
+import EndIcon from './custom/EndIcon';
+import InputIcon from './custom/InputIcon';
+import WindowIcon from './custom/WindowIcon';
+import ListIcon from './custom/ListIcon';
+import ConcatIcon from './custom/ConcatIcon';
 
 function getFontAwesomeIcon(icon) {
-
     switch(icon) {
         // toolbox
         case icons.CALCULATOR:
@@ -161,38 +174,32 @@ function getFontAwesomeIcon(icon) {
 }
 
 function getCustomIcon(icon) {
-
     switch(icon) {
         // toolbox
         case icons.INPUT:
-            return (
-                <path d="M 20 0 C 10 0 0 10 0 20 C 0 30 10 20 10 30 L 10 33 L 30 33 L 30 30 C 30 20 40 30 40 20 C 40 0 20 0 20 0 z"/>
-            )
+            return <InputIcon/>;
         case icons.WINDOW:
-            return (   
-                <g>
-                    <path id="p1" d="M 5 5 L 5 30 L 35 30 L 35 5 Z" style={
-                        {'fill': 'transparent', 'stroke': 'currentColor', 'strokeWidth': 4}}/>      
-                    <line x1="20" y1="5" x2="20" y2="30" style={{'stroke':'currentColor', 'strokeWidth':4}}/>
-                    <circle cx="18.6" cy="17" r="0.5" stroke="currentColor" fill="red" strokeWidth="6"/>
-                    <circle cx="21.4" cy="17" r="0.5" stroke="currentColor" fill="red" strokeWidth="6"/>
-                </g>
-            )
+            return <WindowIcon/>;
         case icons.LIST:
-            return (
-                <g>
-                    <circle cx="20" cy="5" r="1" stroke="currentColor" fill="currentColor" strokeWidth="6"/>
-                    <circle cx="20" cy="15" r="1" stroke="currentColor" fill="currentColor" strokeWidth="6"/>
-                    <circle cx="20" cy="25" r="1" stroke="currentColor" fill="currentColor" strokeWidth="6"/>
-                    <circle cx="20" cy="35" r="1" stroke="currentColor" fill="currentColor" strokeWidth="6"/>
-                </g>
-            );
+            return <ListIcon/>;
         case icons.END:
-            return (
-                <g transform="rotate(-180 20 20)">
-                    <path d="M 20 0 L 0 20 L 10 30 L 10 40 L 30 40 L 30 30 L 40 20 z"/>
-                </g>
-            );
+            return <EndIcon/>;
+        case icons.RECT:
+            return <RectIcon/>;
+        case icons.LINE:
+            return <LineIcon/>
+        case icons.POLYGON:
+            return <PolygonIcon/>;
+        case icons.CONCAT:
+            return <ConcatIcon/>;
+        case icons.TAIL:
+            return <TailIcon/>;
+        case icons.FIRST:
+            return <FirstIcon/>;
+        case icons.RANGE:
+            return <RangeIcon/>;
+        case icons.A_FIG:
+            return <AFigIcon/>;
         default:    
             return null;
     }
