@@ -1,10 +1,4 @@
-$MainColor: #0496FF;
-$MainColorHover: #047CD3;
-$DarkColor: #004CA6;
-$LightColor: #C2F1F2;
-$DisabledColor: #D8D9D6;
-$DisabledFont: #706C61;
-$ScrollColor: #A0C7C8;
+@import './Common.scss';
 
 .Main {
     height: 100vh;

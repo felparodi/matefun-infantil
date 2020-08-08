@@ -6,7 +6,6 @@ import { cleanMyFunctions } from '../../api/matefun';
 import './Configuration.scss';
 import Icon from '../icons/Icon';
 import * as icon from '../../constants/icons';
-import '../../components/Common.scss';
 
 const ComplexSelect = ({ onChange, value }) => (
     <Form.Group>

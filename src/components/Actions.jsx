@@ -14,7 +14,6 @@ export class Actions extends React.Component {
         super();
         this.state = {
             evaluationResult: '',
-            openConsole: false,
             openSaveFunction: false,
         };
         this.loadFunctionDefinition = this.loadFunctionDefinition.bind(this);
@@ -35,7 +34,7 @@ export class Actions extends React.Component {
     }
 
     render() {
-        const { openConsole, openSaveFunction  } = this.state;
+        const { openSaveFunction  } = this.state;
         const { canProcess, canSaveFunction, isEditMode, editFuncName } = this.props;
         return( 
             <div className="Actions">

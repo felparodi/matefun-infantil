@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Button } from 'react-bootstrap';
-import DisplayResult from './DisplayResult';
+import DisplayResult from './util/DisplayResult';
 import Icon from './icons/Icon';
 import * as icon from '../constants/icons';
 

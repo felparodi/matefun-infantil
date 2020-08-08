@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
-import SpecificColorInput from '../../SpecificColorInput';
+import SpecificColorInput from '../../util/SpecificColorInput';
 import { VALUES_TYPES } from '../../../constants/constants';
 import { colorByColorValue } from './ValueInfo';
 import Icon from '../../icons/Icon';

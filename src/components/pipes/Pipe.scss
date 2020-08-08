@@ -1,12 +1,26 @@
+$UndefinedColor: black;
+$NumberColor: #F99D07;
+$FigureColor: #29BF12;
+$ColorColor: #F9E104;
+$PointColor: #F62DAE;
+$BooleanColor: #724E91;
+$GenericColor: gray;
+$ListColor: pink;
+$JoinInOutColor: tomato;
+
+$ErrorPipeColor: #ff000061;
+$WorkingPipeColor: #61f5bc4f;
+$WarningPipeColor: #ffff004f;
+
 .Pipe {
     &.error, &.error.warning, &.error.working {
-        background-color: #ff000061;
+        background-color: $ErrorPipeColor;
     }
     &.warning {
-        background-color: #ffff004f;
+        background-color: $WarningPipeColor;
     }
     &.working {
-        background-color: #61f5bc4f;
+        background-color: $WorkingPipeColor;
     }
     &.selected {
         .ValuePipe, .VarPipe {
@@ -17,33 +31,33 @@
         width: 100%;
     }
     .UNDEFINED {
-        fill: black;
+        fill: $UndefinedColor;
     }
     .NUMBER {
-        fill: #F99D07;
+        fill: $NumberColor
     }
     .FIGURE {
-        fill: #29BF12;
+        fill: $FigureColor
     }
     .COLOR {
-        fill: #F9E104;
+        fill: $ColorColor
     }
     .POINT {
-        fill:#F62DAE;
+        fill: $PointColor;
     }
     .BOOLEAN {
-        fill: #724E91;
+        fill: $BooleanColor;
     }
     .GENERIC {
-        fill: gray;
+        fill: $GenericColor;
     }
     .LIST .border {
-        fill: pink;
+        fill: $ListColor;
     }
     .join {
-        fill: tomato!important;
+        fill: $JoinInOutColor!important;
         .border {
-            fill: tomato;
+            fill: $JoinInOutColor;
         }
     }
     height: 100%;
