@@ -3,6 +3,7 @@ import { Container, Row, Button, Card, Form } from 'react-bootstrap';
 import { connect } from 'react-redux'
 
 import { login } from '../api/user'
+import './Login.scss';
 
 export class Login extends React.Component {
 
@@ -35,14 +36,14 @@ export class Login extends React.Component {
     render() {
         const { username, password } = this.state;
         return (
-            <div style={{ height: '100vh', backgroundColor: '#004CA6', overflow: 'hidden'}}>
+            <div className="Login">
                 <Container>
-                    <Card style={{ maxWidth: '600px', backgroundColor: "#0496FF", marginTop: "80px", marginLeft: "auto", marginRight: "auto" }}>
+                    <Card>
                         <Card.Body>
-                            <h2 className="text-center" style={{ color: "white", margin: "40px" }}>MateFun Infantil</h2>
+                            <h2 className="text-center">MateFun Infantil</h2>
                             <Form>
                                 <Form.Group controlId="formBasicEmail">
-                                    <Form.Label style={{ color: "white" }}>Usuario</Form.Label>
+                                    <Form.Label className="label">Usuario</Form.Label>
                                     <Form.Control 
                                         onChange={(e) => this.setState({username: e.target.value})} 
                                         value={username} type="email" 
@@ -51,7 +52,7 @@ export class Login extends React.Component {
                                 </Form.Group>
 
                                 <Form.Group controlId="formBasicPassword">
-                                    <Form.Label style={{ color: "white" }}>Contraseña</Form.Label>
+                                    <Form.Label className="label">Contraseña</Form.Label>
                                     <Form.Control onChange={(e) => this.setState({password: e.target.value})} 
                                         value={password}
                                         onKeyDown={this.handleKeyDown}
@@ -60,12 +61,12 @@ export class Login extends React.Component {
                                 </Form.Group>
 
                                 <Row>
-                                    <div style={{ margin: "0 auto", marginTop: "30px", marginBottom: "30px" }}>
-                                        <Button variant="primary" size="lg" type="button" style={{ borderColor: "white" }} 
+                                    <div className="buttons">
+                                        <Button variant="primary" size="lg" type="button" 
                                             onClick={this.login}>
                                             Iniciar sesión
                                         </Button>
-                                        <Button variant="primary" size="lg" type="button" style={{ borderColor: "white", marginLeft: "30px" }}
+                                        <Button variant="primary" size="lg" type="button"
                                             onClick={this.loginInvitado}>
                                             Invitado
                                         </Button>

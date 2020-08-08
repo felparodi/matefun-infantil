@@ -1,0 +1,31 @@
+@import './Common.scss';
+
+.Login {
+    height: 100vh;
+    background-color: $DarkColor;
+    overflow: hidden; 
+    .card {
+        max-width: 600px;
+        background-color: $MainColor;
+        margin-top: 80px;
+        margin-left: auto;
+        margin-right: auto;
+        .text-center {
+            color: white;
+            margin: 40px;
+        }
+        .label {
+            color: white;
+        }
+        .buttons {
+            margin: 30px auto;
+            button {
+                border-color: white;
+                margin-left: 30px;
+            }
+            button:first-child {
+                margin-left: 0;
+            }
+        }
+    }
+}
