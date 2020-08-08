@@ -72,7 +72,7 @@ export const DoorClosed = (props) => {
         <svg viewBox="0 0 40 40">
             <JoinOutput className={classNames(typeToClass(pipe.dir.bottom), {'join':isSelectJoin})}/>
             <DoorsClosed onClick={onClickDoor}/>
-            <Output onClick={onClickOutput} join={isSelectJoin} type={pipe.dir.bottom}></Output>
+            <Output onClick={onClickOutput} join={isSelectJoin} type={pipe.dir.bottom}/>
         </svg>
     );
 }

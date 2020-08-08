@@ -61,7 +61,7 @@ const DisplayValue = ({ hasError, type, value, text}) => {
     }
 }
 
-const ExpandButton = (onClick) => (
+const ExpandButton = ({onClick}) => (
     <React.Fragment>
         <button className="expand-button"
             data-tip='Pantalla completa'
