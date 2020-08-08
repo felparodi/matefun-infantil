@@ -94,6 +94,7 @@ export class CreateFunction extends React.Component {
 
     render() {
         const { open, name, icon } = this.state;
+        const validName = name ? /^[a-z][\w\n]*$/.test(name) : true;
         const modalProps = {...this.props}
         delete(modalProps.saveMyFunction);
         return (
@@ -121,7 +122,7 @@ export class CreateFunction extends React.Component {
                     </Form.Group>
                 </div>
                 <Modal.Footer>
-                    <Button variant="primary" className="mf-primary-button" disabled={!icon && !name} onClick={this.saveFunction}>Guardar</Button>
+                    <Button variant="primary" className="mf-primary-button" disabled={!validName || (!icon && !name)} onClick={this.saveFunction}>Guardar</Button>
                 </Modal.Footer>
             </Modal>
         )
