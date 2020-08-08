@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
-import { deleteMyFunctions } from '../../api/matefun';
+import { deleteMyFunction } from '../../api/matefun';
 import Pipe from '../pipes/Pipe';
 import Icon from '../../components/Icon';
 import * as icons from '../../constants/icons';
@@ -37,7 +37,7 @@ export class DeleteFunction extends React.Component {
 
     deleteFunction() {
         const {pipe, onHide} = this.props;
-        this.props.deleteMyFunctions(pipe.name);
+        this.props.deleteMyFunction(pipe.name);
         this.setState({ open :false });
         onHide && onHide();
     }
@@ -47,7 +47,7 @@ export class DeleteFunction extends React.Component {
         const modalProps = {...this.props}
         const { pipe } = this.props;
         delete modalProps.pipe;
-        delete modalProps.deleteMyFunctions;
+        delete modalProps.deleteMyFunction;
         return ( 
             <Modal 
                 {...modalProps}
@@ -73,7 +73,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchFunction = {
-    deleteMyFunctions,
+    deleteMyFunction,
 }
 
 export default connect(mapStateToProps, mapDispatchFunction)(DeleteFunction);

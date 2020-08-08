@@ -7,9 +7,9 @@ import ValueInfo from './function-parts/ValueInfo';
 import Output from './function-parts/Output';
 import ValueInput from './function-parts/ValueInput';
 
-import './ValuePipe.scss';
+import './ConstPipe.scss';
 
-export class ValuePipe extends React.Component {
+export class ConstPipe extends React.Component {
 
     constructor(props) {
         super(props);
@@ -47,7 +47,7 @@ export class ValuePipe extends React.Component {
         const isSelectJoin = pipe.pos && isEqualJoin({...pipe.pos, dir:DIRECTION.BOTTOM} , startJoin);
         const type = pipe.dir.bottom;
         return (
-            <div className="ValuePipe">
+            <div className="ConstPipe">
                 <svg viewBox="0 0 40 40">
                     <g>
                         <path className="pipe-base" d="M 20 0 C 10 0 0 10 0 20 C 0 30 10 20 10 30 L 10 33 L 30 33 L 30 30 C 30 20 40 30 40 20 C 40 0 20 0 20 0 z"/>
@@ -73,4 +73,4 @@ const mapDispatch = {
     joinOutput
 }
 
-export default connect(mapStateToProps, mapDispatch)(ValuePipe);
+export default connect(mapStateToProps, mapDispatch)(ConstPipe);

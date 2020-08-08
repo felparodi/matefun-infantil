@@ -61,6 +61,24 @@ const DisplayValue = ({ hasError, type, value, text}) => {
     }
 }
 
+const ExpandButton = (onClick) => (
+    <React.Fragment>
+        <button className="expand-button"
+            data-tip='Pantalla completa'
+            data-for='expands'
+            onClick={onClick}>
+            <Icon icon={icons.EXPAND_WINDOWS}/>
+        </button>
+        <ReactTooltip
+            key='expands'
+            id='expands' 
+            effect='solid'
+            place='bottom'
+            delayShow={500}
+        />    
+    </React.Fragment>
+)
+
 export class DisplayResult extends React.Component {
 
     constructor(props) {
@@ -87,24 +105,16 @@ export class DisplayResult extends React.Component {
                     </p>
                 </div>
                 { graph && !minimized && 
-                    <React.Fragment>
-                        <button className="expand-button"
-                            data-tip='Pantalla completa'
-                            data-for='expands'
-                            onClick={() => this.setState({graphModal: true})}>
-                            <Icon icon={icons.EXPAND_WINDOWS}/>
-                        </button>
-                        <ReactTooltip
-                            key='expands'
-                            id='expands' 
-                            effect='solid'
-                            place='bottom'
-                            delayShow={500}
-                        />    
-                    </React.Fragment>
-
+                    <ExpandButton
+                        onClick={() => this.setState({graphModal: true})}/>
                 }
-                { !minimized && <DisplayValue hasError={hasError} type={type} value={value} text={text}/> }
+                { !minimized && 
+                    <DisplayValue 
+                        hasError={hasError} 
+                        type={type} 
+                        value={value}
+                        text={text}/> 
+                }
                 { graphModal && graph && !minimized &&
                     <ModalGraphic 
                         open={graphModal}

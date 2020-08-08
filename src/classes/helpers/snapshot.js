@@ -55,7 +55,7 @@ export function createPipeToSnap(snapshot, customFuncDefinition) {
             return getDefaultFunction(snapshot.name);
         case PIPE_TYPES.VARIABLE:
             return new VarPipe(snapshot.dir.bottom);
-        case PIPE_TYPES.VALUE:
+        case PIPE_TYPES.CONST:
             return new ConstPipe(snapshot.value);
         case PIPE_TYPES.CONDITION:
             return new ConditionPipe();
@@ -88,7 +88,7 @@ export function cleanSnapshotMatrixInfo(snapshot) {
                     type: pipe.type,
                     dir: pipe.originDir ? pipe.originDir : pipe.dir,
                     name: pipe.name,
-                    value: pipe.type === PIPE_TYPES.VALUE ? pipe.value : undefined,
+                    value: pipe.type === PIPE_TYPES.CONST ? pipe.value : undefined,
                     pos: pipe.pos
                 })  
             }

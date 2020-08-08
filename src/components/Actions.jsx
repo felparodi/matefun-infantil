@@ -4,12 +4,10 @@ import { Button } from 'react-bootstrap';
 import ReactTooltip from 'react-tooltip';
 import { clean, cancelEdit } from '../api/board';
 import CreateFunction from './modal/CreateFunction';
-import { loadFunctionDefinition, evaluate, saveCustomFunction } from '../api/matefun';
+import { loadFunctionDefinition, evaluate, editMyFunction } from '../api/matefun';
 import Icon from '../components/Icon';
 import * as icons from '../constants/icons';
-
 import './Actions.scss';
-import { iconDescriptor } from './pipes/function-parts/FunctionDescriptor';
 
 export class Actions extends React.Component {
     constructor() {
@@ -72,7 +70,7 @@ export class Actions extends React.Component {
                             disabled={!canSaveFunction} 
                             data-tip="Guardar"
                             data-for='actions'
-                            onClick={() => this.props.saveCustomFunction(editFuncName)}>
+                            onClick={() => this.props.editMyFunction(editFuncName)}>
                             <Icon icon={icons.SAVE_ALT}/>
                         </Button>
                     }
@@ -117,7 +115,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchFunction = {
-    loadFunctionDefinition, evaluate, clean, saveCustomFunction, cancelEdit
+    loadFunctionDefinition, evaluate, clean, editMyFunction, cancelEdit
 }
 
 export default connect(mapStateToProps, mapDispatchFunction)(Actions);

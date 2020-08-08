@@ -4,7 +4,6 @@ import { Button } from 'react-bootstrap';
 import DisplayResult from './DisplayResult';
 import Icon from './Icon';
 import * as icon from '../constants/icons';
-import SelectPipeInfo from './SelectPipeInfo';
 
 import './Info.scss';
 

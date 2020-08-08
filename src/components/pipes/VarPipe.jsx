@@ -8,7 +8,7 @@ import ValueInfo from './function-parts/ValueInfo';
 import ValueInput, {hasInputValue} from './function-parts/ValueInput';
 import { DIRECTION, VALUES_TYPES } from '../../constants/constants';
 
-import './ValuePipe.scss';
+import './ConstPipe.scss';
 
 function defaultValueType(type) {
     switch(type) {

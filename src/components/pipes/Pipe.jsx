@@ -7,7 +7,7 @@ import { PIPE_TYPES, DIRECTION, VALUES_TYPES } from '../../constants/constants';
 import DummyPipe from './DummyPipe'
 import FuncPipe from './FuncPipe';
 import EndPipe from './EndPipe';
-import ValuePipe from './ValuePipe';
+import ConstPipe from './ConstPipe';
 import VarPipe from './VarPipe';
 import './Pipe.scss';
 
@@ -17,8 +17,8 @@ function SwitchPipe(pipe, props) {
         case PIPE_TYPES.CUSTOM:
         case PIPE_TYPES.CONDITION:
             return <FuncPipe {...(props)} />;
-        case PIPE_TYPES.VALUE:
-            return <ValuePipe {...(props)} />;
+        case PIPE_TYPES.CONST:
+            return <ConstPipe {...(props)} />;
         case PIPE_TYPES.END:
             return <EndPipe {...(props)} />;
         case PIPE_TYPES.DUMMY:
@@ -31,7 +31,7 @@ function SwitchPipe(pipe, props) {
 }
 
 function isColorPipe(pipe) {
-    return (pipe.type === PIPE_TYPES.VALUE || pipe.type === PIPE_TYPES.VARIABLE) 
+    return (pipe.type === PIPE_TYPES.CONST || pipe.type === PIPE_TYPES.VARIABLE) 
         && pipe.dir.bottom === VALUES_TYPES.COLOR;
 }
 

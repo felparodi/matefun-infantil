@@ -112,7 +112,7 @@ export class ConstPipe extends Pipe {
     *   @override
     */
     getType() {
-        return PIPE_TYPES.VALUE;
+        return PIPE_TYPES.CONST;
     }
 
     /*

@@ -190,7 +190,7 @@ function editMyFunctionFile(newMyFunctionsFileData, dispatch) {
             })
 }
 
-export function saveInMyFunctions(name, icon) {
+export function saveMyFunction(name, icon) {
     return (dispatch) => {
         const { myFunctionsFileData } = store.getState().environment
         const newMyFunctionFileData = {...myFunctionsFileData };
@@ -219,7 +219,7 @@ export function saveInMyFunctions(name, icon) {
     }
 }
 
-export function saveCustomFunction(name) {
+export function editMyFunction(name) {
     return (dispatch) => {
         const { myFunctionsFileData } = store.getState().environment
         const contenido = myFunctionsFileData.contenido;
@@ -245,7 +245,7 @@ export function saveCustomFunction(name) {
     }
 }
 
-export function deleteMyFunctions(name) {
+export function deleteMyFunction(name) {
     return (dispatch) => {
         const { myFunctionsFileData } = store.getState().environment
         const newMyFunctionFileData = {...myFunctionsFileData };

@@ -59,7 +59,7 @@ export const METHOD_FUNCTION = Object.freeze({
 export const PIPE_TYPES= Object.freeze({
     DUMMY: 'DUMMY',
     FUNCTION: 'FUNCTION',
-    VALUE: 'VALUE',
+    CONST: 'CONST',
     END: 'END',
     UNDEFINED: 'UNDEFINED',
     VARIABLE: 'VARIABLE',

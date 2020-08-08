@@ -10,7 +10,7 @@ import { prepareEnvironment } from '../api/matefun';
 import Info from './Info';
 
 import './Main.scss';
-import Configuration from './modal/Configuration';
+
 
 export class Main extends React.Component {
     constructor() {
@@ -64,7 +64,6 @@ export class Main extends React.Component {
                         </div>
                     </div>
                 </div>
-                <Configuration/>
             </div>
         )
     }

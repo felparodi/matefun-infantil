@@ -1,7 +1,7 @@
 
 import * as matrixAction from '../redux/matrix/matrixActionTypes';
 import Compiler from '../classes/compiler';
-import { MatrixPipe, equalsPos as equalsPos } from '../classes/matrix';
+import { equalsPos as equalsPos } from '../classes/matrix';
 import { BOARD_ROWS, BOARD_COLS, PIPE_TYPES } from '../constants/constants';
 import * as snapHelper from '../classes/helpers/snapshot';
 import * as actions from '../redux/matrix/matrixAction';
@@ -23,22 +23,27 @@ export function loadPendingBoard() {
     }
 }
 
-export function dropPipe(drop) {
+export function addPipe(pos, pipe) {
     return (dispatch) => {
-        const { isEditMode } = store.getState().matrix;
-        const { origin, pos, dropEffect, pipe } = drop;
-        if(origin === 'board') {
-            if(!pipe.pos || dropEffect === 'copy') {
-                compiler.addSnapPipeToMatrix(pos.x, pos.y, pipe);
-            } else if (dropEffect === 'move') {
-                compiler.getMatrix().moverPipe(pos.x, pos.y, pipe.pos);
-            }
-        } else {
-            if(pipe.pos) {
-                compiler.getMatrix().removePipe(pipe.pos.x, pipe.pos.y);
-            }
-        }
-        updateMatrix(dispatch, isEditMode);
+        compiler.addSnapPipeToMatrix(pos.x, pos.y, pipe);
+        updateMatrix(dispatch);
+        dispatch({type: matrixAction.CLEAN_JOIN});
+        dispatch(actions.selectCell(pos));
+    }
+}
+
+export function removePipe(pipe) {
+    return (dispatch) => {
+        compiler.getMatrix().removePipe(pipe.pos.x, pipe.pos.y);
+        updateMatrix(dispatch);
+        dispatch({type: matrixAction.CLEAN_JOIN});
+    }
+}
+
+export function movePipe(pos, pipe) {
+    return (dispatch) => {
+        compiler.getMatrix().moverPipe(pos.x, pos.y, pipe.pos);
+        updateMatrix(dispatch);
         dispatch({type: matrixAction.CLEAN_JOIN});
         dispatch(actions.selectCell(pos));
     }
@@ -46,10 +51,9 @@ export function dropPipe(drop) {
 
 export function setPipeValue(x, y, value) {
     return (dispatch) => {
-        const { isEditMode } = store.getState().matrix;
         compiler.getMatrix().setPipeValue(x, y, value);
         dispatch({type: matrixAction.CLEAN_JOIN});
-        updateMatrix(dispatch, isEditMode);
+        updateMatrix(dispatch);
     }
 }
 
@@ -69,10 +73,9 @@ function cleanAux(dispatch) {
 
 export function addWorkingPipe(x, y) {
     return (dispatch) => {
-        const { isEditMode } = store.getState().matrix;
         compiler.getMatrix().addWorkPipe({x, y});
         dispatch({type: matrixAction.CLEAN_JOIN});
-        updateMatrix(dispatch, isEditMode);
+        updateMatrix(dispatch);
     }
 }
 
@@ -134,7 +137,8 @@ export function setMateFunValue(value) {
     }
 }
 
-function updateMatrix(dispatch, isEditMode) {
+function updateMatrix(dispatch) {
+    const { isEditMode } = store.getState().matrix;
     const snapshot = compiler.snapshot();
     if(!isEditMode) {
         const saveSnap = snapHelper.cleanSnapshotMatrixInfo(snapshot);

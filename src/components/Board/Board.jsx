@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { dropPipe, addWorkingPipe, join, selectCell, unselectCell} from '../../api/board';
+import { addPipe, movePipe, removePipe, addWorkingPipe, join, selectCell, unselectCell} from '../../api/board';
 import Cell from './Cell'
 import './Board.scss';
 
@@ -24,7 +24,14 @@ export class Board extends React.Component {
     }
 
     onDrop(drop) {
-        this.props.dropPipe(drop);
+        const { origin, pos, dropEffect, pipe } = drop;
+        if(origin !== 'board') {
+            this.props.removePipe(pipe);
+        } else if(!pipe.pos || dropEffect === 'copy') {
+            this.props.addPipe(pos, pipe);
+        } else if (dropEffect === 'move') {
+            this.props.movePipe(pos, pipe);
+        }
     }
 
     handlerSelectCell(x, y, select) {
@@ -77,7 +84,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-    dropPipe,
+    addPipe,
+    movePipe,
+    removePipe,
     addWorkingPipe,
     join,
     selectCell,

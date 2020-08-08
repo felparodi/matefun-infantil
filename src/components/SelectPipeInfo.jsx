@@ -67,7 +67,7 @@ export class SelectPipeInfo extends React.Component {
         const {minimized} = this.state;
         if(!selected) return null;
         const selectedPipe = matrix[selected.x][selected.y];
-        if(!selectedPipe || (selectedPipe.type !== PIPE_TYPES.VALUE && selectedPipe.type !== PIPE_TYPES.VARIABLE)) {
+        if(!selectedPipe || (selectedPipe.type !== PIPE_TYPES.CONST && selectedPipe.type !== PIPE_TYPES.VARIABLE)) {
             return null;
         }
         if(selectedPipe.value === null || selectedPipe.value === undefined) {
@@ -80,7 +80,7 @@ export class SelectPipeInfo extends React.Component {
                 <div className="title">
                     <p>
                         <span className='action' onClick={() => this.setState({minimized:!minimized})}>{minimized ? '+' : '-'}</span>
-                        {selectedPipe.type === PIPE_TYPES.VALUE ? 'Valor' :  'Variable' }: {typeTranslate(type)}
+                        {selectedPipe.type === PIPE_TYPES.CONST ? 'Valor' :  'Variable' }: {typeTranslate(type)}
                     </p>
                 </div>
                 { !minimized && type === VALUES_TYPES.NUMBER &&

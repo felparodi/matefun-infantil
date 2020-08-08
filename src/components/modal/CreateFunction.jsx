@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Form, Button } from 'react-bootstrap';
 import classNames from 'classnames';
-import { saveInMyFunctions } from '../../api/matefun';
+import { saveMyFunction } from '../../api/matefun';
 import * as icons from '../../constants/icons';
 import Base from '../pipes/function-parts/Base';
 import FunctionDescriptor from '../pipes/function-parts/FunctionDescriptor';
@@ -87,7 +87,7 @@ export class CreateFunction extends React.Component {
 
     saveFunction() {
         const { name, icon } = this.state;
-        this.props.saveInMyFunctions(name.trim(), icon);
+        this.props.saveMyFunction(name.trim(), icon);
         this.setState({open: false});
         this.props.onHide();
     }
@@ -95,7 +95,7 @@ export class CreateFunction extends React.Component {
     render() {
         const { open, name, icon } = this.state;
         const modalProps = {...this.props}
-        delete(modalProps.saveInMyFunctions);
+        delete(modalProps.saveMyFunction);
         return (
             <Modal 
                 {...modalProps}
@@ -132,7 +132,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchFunction = {
-    saveInMyFunctions
+    saveMyFunction
 }
 
 export default connect(mapStateToProps, mapDispatchFunction)(CreateFunction);
