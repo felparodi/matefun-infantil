@@ -44,6 +44,8 @@ function getIconForMethod(name) {
             return icons.SCALE
         case METHOD_FUNCTION.JUNTAR:
             return icons.GROUP
+        case METHOD_FUNCTION.POINT:
+            return icons.POINT;
         case METHOD_FUNCTION.RECT:
             return icons.RECT
         case METHOD_FUNCTION.LINEA:

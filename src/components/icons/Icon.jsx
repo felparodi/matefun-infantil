@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import * as fas from '@fortawesome/free-solid-svg-icons';
 import * as far from '@fortawesome/free-regular-svg-icons';
 import * as icons from '../../constants/icons';
-import TextIcon from './TextIcon';
 
 import RectIcon from './custom/RectIcon';
 import LineIcon from './custom/LineIcon';
@@ -17,6 +16,7 @@ import InputIcon from './custom/InputIcon';
 import WindowIcon from './custom/WindowIcon';
 import ListIcon from './custom/ListIcon';
 import ConcatIcon from './custom/ConcatIcon';
+import PointIcon from './custom/PointIcon';
 
 function getFontAwesomeIcon(icon) {
     switch(icon) {
@@ -200,6 +200,8 @@ function getCustomIcon(icon) {
             return <RangeIcon/>;
         case icons.A_FIG:
             return <AFigIcon/>;
+        case icons.POINT:
+            return <PointIcon/>;
         default:    
             return null;
     }

@@ -47,6 +47,7 @@ export const LESS = 'less';
 export const LESS_EQUAL = 'less-equal';
 
 // figures
+export const POINT = 'point';
 export const CIRCLE = 'circle';
 export const ROTATE = 'rotate';
 export const PAINT = 'paint';

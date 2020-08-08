@@ -81,6 +81,7 @@ export const ToolboxGroups = [
         icon: icon.SHAPES,
         complex: 0,
         pipes: [
+            { pipe: getDefaultFunction(METHOD_FUNCTION.POINT), complex: 0, tooltip:'Punto' },
             { pipe: getDefaultFunction(METHOD_FUNCTION.CIRC), complex: 0, tooltip:'Círculo' },
             { pipe: getDefaultFunction(METHOD_FUNCTION.RECT), complex: 0, tooltip: 'Rectángulo'},
             { pipe: getDefaultFunction(METHOD_FUNCTION.LINEA), complex: 0, tooltip: 'Línea' },

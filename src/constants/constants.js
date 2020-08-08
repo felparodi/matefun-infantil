@@ -19,6 +19,7 @@ export const METHOD_FUNCTION = Object.freeze({
     SEN: 'sen', // "sen :: R -> R"
     NEGATIVO: '-', // "- :: R -> R"
     //IMAGENS
+    POINT: 'POINT',
     COLOR: 'color', // "color :: (Fig X Color) -> Fig"
     RGB: 'rgb', // "rgb :: (R X R X R) -> Color"
     ROTAR: 'rotar', // "rotar :: (Fig X R) -> Fig"s

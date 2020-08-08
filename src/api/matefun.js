@@ -198,7 +198,7 @@ export function saveMyFunction(name, icon) {
 
         const functionOpenBlock = contenido.match(/{-FS:([\w\d]+)-}/g);
         const functionNames = functionOpenBlock ? functionOpenBlock.map((name) => /{-FS:([\w\d]+)-}/.exec(name)[1]) : [];
-        const lastN = functionNames.filter((name) => /func\d+/.test(name))
+        const lastN = functionNames.filter((name) => /^func\d+$/.test(name))
                         .map((name) => Number(name.replace('func','')))
                         .reduce((n, m) => n > m ? n : m, 0)
         const funcName = name ? name : `func${lastN ? lastN + 1 : 1}`;

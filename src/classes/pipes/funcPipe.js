@@ -210,7 +210,9 @@ export class FuncPipe extends Pipe {
             case METHOD_FUNCTION.EXP:
                 return `(${arg[0]} ^ ${arg[1]})`;
             case METHOD_FUNCTION.CONCAT:
-                    return `${arg[0]} : ${arg[1]}`;
+                return `${arg[0]} : ${arg[1]}`;
+            case METHOD_FUNCTION.POINT:
+                return `(${arg[0]}, ${arg[1]})`;
             default:
                 return `${this.name}(${arg.join(', ')})`;
         }
