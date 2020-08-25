@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import ReactTooltip from 'react-tooltip';
 import { clean, cancelEdit } from '../api/board';
 import CreateFunction from './modal/CreateFunction';
-import { loadFunctionDefinition, evaluate, editMyFunction } from '../api/matefun';
+import { loadFunctionDefinition, evaluate, editMyFunction, exportFunction } from '../api/matefun';
 import Icon from './icons/Icon';
 import * as icons from '../constants/icons';
 import './Actions.scss';
@@ -53,6 +53,14 @@ export class Actions extends React.Component {
                             data-for='actions'
                             onClick={this.props.cancelEdit}>
                             <Icon icon={icons.CANCEL}/>
+                        </Button> 
+                    }
+                    { isEditMode && 
+                        <Button className="mf-button-primary ml-1" 
+                            data-tip="Exportar"
+                            data-for='actions'
+                            onClick={() => this.props.exportFunction(editFuncName)}>
+                            <Icon icon={icons.EXPORT}/>
                         </Button> 
                     }
                     { !isEditMode && 
@@ -114,7 +122,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchFunction = {
-    loadFunctionDefinition, evaluate, clean, editMyFunction, cancelEdit
+    loadFunctionDefinition, evaluate, clean, editMyFunction, cancelEdit, exportFunction
 }
 
 export default connect(mapStateToProps, mapDispatchFunction)(Actions);

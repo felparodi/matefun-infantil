@@ -16,7 +16,7 @@ export function login(username, password) {
             }
         })
         .catch(() => {
-            createErrorMessage('Error al iniciar session, revice sus credenciales')
+            createErrorMessage('Error al iniciar session, revise sus credenciales')
         })
     }
 }
