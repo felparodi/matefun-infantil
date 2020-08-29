@@ -15,8 +15,10 @@
                     outline: none;
                 }
                 &.select {
+                    opacity: 100%;
                     background-color: skyblue;
                 }
+                opacity: 50%;
             }
         }
     }
