@@ -4,6 +4,8 @@ export const initialState = {
     workspaceFileData: null,
     myFunctionsFileData: null,
     myFunctions: [],
+    modalImport: false,
+    modalExport: false
 };
 
 export default function environmentReducer(state = initialState, action) {
@@ -27,6 +29,30 @@ export default function environmentReducer(state = initialState, action) {
       return {
         ...state, 
         myFunctions: myFunctions,
+      };
+    }
+    case actionTypes.OPEN_EXPORT_MODAL : {
+      return {
+        ...state, 
+        modalExport: true,
+      };
+    }
+    case actionTypes.CLOSE_EXPORT_MODAL : {
+      return {
+        ...state, 
+        modalExport: false,
+      };
+    }
+    case actionTypes.OPEN_IMPORT_MODAL : {
+      return {
+        ...state, 
+        modalImport: true,
+      };
+    }
+    case actionTypes.CLOSE_IMPORT_MODAL : {
+      return {
+        ...state, 
+        modalImport: false,
       };
     }
     default:

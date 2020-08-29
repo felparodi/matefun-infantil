@@ -2,6 +2,7 @@
 import * as services from '../server_connection/services';
 import * as webSocket from '../server_connection/webSocket';
 import * as snapHelper from '../classes/helpers/snapshot';
+import Compiler from '../classes/compiler';
 import { CustomFuncPipe } from '../classes/pipes/customFuncPipe'
 import * as board from './board';
 import { WORKSPACE_FILE_NAME, MY_FUNCTIONS_FILE_NAME } from '../constants/constants';
@@ -80,7 +81,9 @@ function loadWorkspaceFile(userData) {
 
 function updateMyFunction(dispatch, data) {
     dispatch(envActions.setMyFunctionsFileData(data));
-    myFunctionsFileToToolboxPipes(dispatch, data);
+    const myFunctions = getCustomFunctionsByFile(data);
+    board.getCompiler().setCustomFunctionsDefinition(myFunctions);
+    dispatch(envActions.setMyFunctions(myFunctions));
 }
 
 function loadFiles(userData) {
@@ -104,41 +107,33 @@ export function prepareEnvironment(userData) {
 
 const regexFunctionBlock = (name)=> RegExp(`{-FS:${name}-}(.|[\n\r])*{-FF:${name}-}`,'g');
 const MATRIX_REGEX = /{-M:.*-}/;
-const COMMENT_REGEX = /{-.*-}/g;
 //const FUNCTION_SING_REGEX = /\s*(\w+)\s?::\s?(.*)\s?->\s?(\w+)/g;
 const ICON_REGEX = /{-I:([\w\d-]+)-}/g
 const ATTR_REGEX = /{-A:(.*)-}/g
 const RETURN_REGEX = /{-R:(.*)-}/g
 
-function myFunctionsFileToToolboxPipes(dispatch, myFunctionsFileData) {
+function getCustomFunctionByName(name, contenido) {
+    const functionBlockQuery = contenido.match(regexFunctionBlock(name));
+    const functionBlock = functionBlockQuery[0];
+    const metadataComment = functionBlock.match(MATRIX_REGEX)
+    const metadata = metadataComment ? metadataComment[0].replace('{-M:', '').replace('-}', '') : undefined;
+    const inTypesLine = functionBlock.match(ATTR_REGEX);
+    const outLine = functionBlock.match(RETURN_REGEX);
+    const inTypes = inTypesLine ? JSON.parse(ATTR_REGEX.exec(inTypesLine[0])[1]) : []
+    const outType = outLine ? RETURN_REGEX.exec(outLine)[1] : '';
+    const funcIconLine = functionBlock.match(ICON_REGEX)
+    const icon = funcIconLine ? ICON_REGEX.exec(funcIconLine[0])[1] : '';
+    return new CustomFuncPipe(name, inTypes, outType, metadata, icon);
+}
 
-    const { contenido } = myFunctionsFileData;
-    const functionOpenBlock = contenido.match(/{-FS:([\w\d]+)-}/g);
+function getCustomFunctionsByFile( myFunctionsFileData) {
+    return getCustomFunctionsByText(myFunctionsFileData.contenido);
+}
+
+export function getCustomFunctionsByText(text) {
+    const functionOpenBlock = text.match(/{-FS:([\w\d]+)-}/g);
     const functionNames = functionOpenBlock ? functionOpenBlock.map((name) => /{-FS:([\w\d]+)-}/.exec(name)[1]) : [];
-
-    const customFunctionDef = new Map();
-    const myFunctions = functionNames.map((name) => {
-        const functionBlockQuery = contenido.match(regexFunctionBlock(name));
-        const functionBlock = functionBlockQuery[0];
-        const metadataComment = functionBlock.match(MATRIX_REGEX)
-        const metadata = metadataComment ? metadataComment[0].replace('{-M:', '').replace('-}', '') : undefined;
-        const inTypesLine = functionBlock.match(ATTR_REGEX);
-        const outLine = functionBlock.match(RETURN_REGEX);
-        const inTypes = inTypesLine ? JSON.parse(ATTR_REGEX.exec(inTypesLine[0])[1]) : []
-        const outType = outLine ? RETURN_REGEX.exec(outLine)[1] : '';
-        //const cleanComments = functionBlock.replace(COMMENT_REGEX, '').trim();
-        //const functionRegex = FUNCTION_SING_REGEX.exec(cleanComments.match(FUNCTION_SING_REGEX)[0]);
-        //const inType = functionRegex[2].match(/(R|Color|\(R X R\)|Fig|A)\*?/g).map((type) => typeHelper.getMateFunPipeType(type));
-        //const outType = typeHelper.getMateFunPipeType(functionRegex[3].trim());
-        const funcIconLine = functionBlock.match(ICON_REGEX)
-        const icon = funcIconLine ? ICON_REGEX.exec(funcIconLine[0])[1] : '';
-        customFunctionDef.set(name, { inTypes, outType, metadata, icon });
-        return new CustomFuncPipe(name, inTypes, outType, metadata, icon);
-    })
-
-
-    board.getCompiler().setCustomFunctionsDefinition(customFunctionDef);
-    dispatch(envActions.setMyFunctions(myFunctions));
+    return functionNames.map((name) => getCustomFunctionByName(name, text));
 }
 
 export function cleanMyFunctions() {
@@ -147,18 +142,19 @@ export function cleanMyFunctions() {
         const myFunctionsFileData = state.environment.myFunctionsFileData;
         const cleanMyFunctionsFileData = { ...myFunctionsFileData, contenido: '' }
         services.editFile(cleanMyFunctionsFileData)
-            .then((data) => {
-                updateMyFunction(dispatch, data);
-                myFunctionsFileToToolboxPipes(dispatch, data);
-            })
+            .then((data) => updateMyFunction(dispatch, data));
     }
 }
 
 function newFunctionBlock(name, icon) {
-    const matrix = store.getState().matrix.board;
-    const matrixSnapshot = snapHelper.cleanSnapshotMatrixInfo({matrix});
+    const compiler = board.getCompiler();
+    return getFunctionBlockByComplier(name, icon, compiler);
+}
+
+function getFunctionBlockByComplier(name, icon, compiler) {
+    const matrixSnapshot = snapHelper.cleanSnapshotMatrixInfo(compiler.snapshot());
     const metadata = `{-M:${JSON.stringify(matrixSnapshot)}-}`;
-    const functionDefinition = board.getFunctionDefinition(name);
+    const functionDefinition = compiler.getFunctionDefinition(name);
     const initBlock = `{-FS:${name}-}`;
     const endBlock = `{-FF:${name}-}`;
     const iconInfo = icon ?`{-I:${icon}-}` : '';
@@ -166,6 +162,17 @@ function newFunctionBlock(name, icon) {
     const ret = `{-R:${functionDefinition.ret}-}`;
     const code = functionDefinition.body;
     return `${initBlock}\n${iconInfo}\n${attr}\n${ret}\n${metadata}\n${code}\n${endBlock}\n`;
+}
+
+function getFunctionBlockByCustomSnapFunction(customSnap) {
+    const name = customSnap.name;
+    const icon = customSnap.icon;
+    const compiler = new Compiler();
+    const customMatrix = JSON.parse(customSnap.body);
+    compiler.loadSnapMatrix(customMatrix);
+    compiler.cleanLastValue();
+
+    return getFunctionBlockByComplier(name, icon, compiler);
 }
 
 function editMyFunctionFile(newMyFunctionsFileData, dispatch) {
@@ -186,7 +193,6 @@ function editMyFunctionFile(newMyFunctionsFileData, dispatch) {
             })
             .then(({data, success}) => {
                 updateMyFunction(dispatch, data);
-                myFunctionsFileToToolboxPipes(dispatch, data);
                 return success ? Promise.resolve(data) : Promise.reject(data);
             })
 }
@@ -263,20 +269,60 @@ export function deleteMyFunction(name) {
     }
 }
 
-export function exportFunction(name) {
+export function exportFunctions(name, snapCFuncs) {
+    return (dispatch) => {
+        const body = snapCFuncs.reduce((acc, snapCFunc) => {
+            acc += getFunctionBlockByCustomSnapFunction(snapCFunc) + '\n';
+            return acc;
+        }, '');
+        var blob = new Blob([body], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, name + ".mf");
+    }
+}
+
+export function importFunctions(file) {
+    return (dispatch) => {
+
+    }
+}
+
+
+export function openImportModal() {
+    return (dispatch) => {
+        dispatch(envActions.openImportModal());
+    }
+}
+
+export function closeImportModal() {
+    return (dispatch) => {
+        dispatch(envActions.closeImportModal());
+    }
+}
+
+export function openExportModal() {
+    return (dispatch) => {
+        dispatch(envActions.openExportModal());
+    }
+}
+
+export function closeExportModal() {
+    return (dispatch) => {
+        dispatch(envActions.closeExportModal());
+    }
+}
+
+export function amendMyFunctions(name, text) {
     return (dispatch) => {
         const { myFunctionsFileData } = store.getState().environment
         const contenido = myFunctionsFileData.contenido;
-        const functionOpenBlock = contenido.match(/{-FS:([\w\d]+)-}/g);
-        const functionNames = functionOpenBlock ? functionOpenBlock.map((name) => /{-FS:([\w\d]+)-}/.exec(name)[1]) : [];
-        if(name && functionNames.indexOf(name) !== -1) {
-            const regexBlock = regexFunctionBlock(name);
-            const oldBlock = regexBlock.exec(contenido)[0];
-            const funcIconLine = oldBlock.match(ICON_REGEX)
-            const oldIcon = funcIconLine ? ICON_REGEX.exec(funcIconLine[0])[1] : '';
-            const newBlock = newFunctionBlock(name, oldIcon);
-            var blob = new Blob([newBlock], {type: "text/plain;charset=utf-8"});
-            saveAs(blob, name+".mf");
-        }
+        const newMyFunctionFileData = {...myFunctionsFileData };
+        newMyFunctionFileData.contenido = `${contenido}\n${text}`;
+        editMyFunctionFile(newMyFunctionFileData, dispatch)
+            .then(() => {
+                toast.createSuccessMessage('Se cargo con exito', name);
+            })
+            .catch(() => {
+                toast.createErrorMessage('No se pudo cargar el archivo', name);
+            }) 
     }
 }

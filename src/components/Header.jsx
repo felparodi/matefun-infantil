@@ -3,10 +3,12 @@ import { Navbar, Nav, Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { openConfig } from '../api/config';
 import { logout } from '../api/user';
-
+import { openImportModal, openExportModal } from '../api/matefun';
 import Icon from './icons/Icon';
 import * as icon from '../constants/icons';
 import Configuration from './modal/Configuration';
+import Import from './modal/Import';
+import Export from './modal/Export';
 
 import './Header.scss';
 
@@ -14,9 +16,14 @@ export class Header extends React.Component {
 
     constructor() {
         super();
+        this.state = {
+            importModal: false,
+            exportModal: false
+        }
     }
 
     render() {
+        const {importModal, exportModal} = this.state
         return (
             <React.Fragment>
                 <Navbar variant="dark" className="Header">
@@ -28,12 +35,16 @@ export class Header extends React.Component {
                             <Icon icon={icon.USER}/> {(this.props.userData) ? this.props.userData.nombre + " " + this.props.userData.apellido : ""}
                         </Dropdown.Toggle> 
                         <Dropdown.Menu>
+                            <Dropdown.Item onClick={this.props.openExportModal}><Icon icon={icon.EXPORT}/>Exportar Tuberias</Dropdown.Item>
+                            <Dropdown.Item onClick={this.props.openImportModal}><Icon icon={icon.IMPORT}/>Importart Tuberias</Dropdown.Item>
                             <Dropdown.Item onClick={this.props.openConfig}><Icon icon={icon.CONFIG}/>Configuracion</Dropdown.Item>
                             <Dropdown.Item onClick={this.props.logout}><Icon icon={icon.LOGOUT}/>Cerrar sesión</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </Navbar>
                 <Configuration/>
+                <Import/>
+                <Export/>
             </React.Fragment>
         )
     }
@@ -48,7 +59,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     logout,
-    openConfig
+    openConfig,
+    openImportModal,
+    openExportModal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

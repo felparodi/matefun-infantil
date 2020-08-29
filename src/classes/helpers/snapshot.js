@@ -31,11 +31,7 @@ function dirToDirections(dir) {
 *   @scope: private
 */
 function dirToInTypes(dir) {
-    const inTypes = []
-    if(dir.left !== undefined) { inTypes.push(dir.left); }
-    if(dir.top !== undefined) { inTypes.push(dir.top); }
-    if(dir.right !== undefined) { inTypes.push(dir.right); }
-    return inTypes;
+    return [dir.left, dir.top, dir.right].filter(d => d);
 }
 
 /*
@@ -44,7 +40,7 @@ function dirToInTypes(dir) {
 *   @return: Pipe
 *   @scope: public
 */
-export function createPipeToSnap(snapshot, customFuncDefinition) {
+export function createPipeToSnap(snapshot) {
     const dir = snapshot.originDir ? snapshot.originDir: snapshot.dir;
     switch(snapshot.type) {
         case PIPE_TYPES.END:
@@ -60,9 +56,12 @@ export function createPipeToSnap(snapshot, customFuncDefinition) {
         case PIPE_TYPES.CONDITION:
             return new ConditionPipe();
         case PIPE_TYPES.CUSTOM:
-            if(!customFuncDefinition) return null;
-            const def = customFuncDefinition.get(snapshot.name);
-            return def ? new CustomFuncPipe(snapshot.name, def.inTypes, def.outType, def.metadata, def.icon) : null;
+            const {dir} = snapshot;
+            const inTypes = dirToInTypes(dir);
+            const outType = dir.bottom;
+            const metadata = snapshot.body
+            const icon = snapshot. icon;
+            return CustomFuncPipe(snapshot.name, inTypes, outType, metadata, icon)
     }
 }
 

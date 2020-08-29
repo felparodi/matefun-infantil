@@ -170,6 +170,17 @@ export function editCustomFunction(customFuncSnap) {
     }
 }
 
+export function selectCell(pos) {
+    return (dispatch) => {
+        dispatch(actions.selectCell(pos));
+    }
+}
+
+export function unselectCell() {
+    return (dispatch) => {
+        dispatch(actions.unselectCell());
+    }
+}
 
 export function getCompiler() {
     return compiler;

@@ -188,8 +188,10 @@ export class Compiler {
         return { matrix:snap,  isFunction, canProcess, canSaveFunction, lastEvalValue };
     }
 
-    setCustomFunctionsDefinition(definition) {
-        this.customFunctionsMap = definition;
+    setCustomFunctionsDefinition(customFunctions) {
+        this.customFunctionsMap = customFunctions.reduce((map, cf) => {
+            return map.set(cf.getName(), cf);
+        }, new Map());
     }
 
     setMateFunValue(value) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addPipe, movePipe, removePipe, addWorkingPipe, join} from '../../api/board';
+import { addPipe, movePipe, removePipe, addWorkingPipe, join, selectCell, unselectCell} from '../../api/board';
 import Cell from './Cell'
 import './Board.scss';
 
@@ -12,6 +12,7 @@ export class Board extends React.Component {
         this.onDrop = this.onDrop.bind(this);
         this.addWPipe = this.addWPipe.bind(this);
         this.displayResult= this.displayResult.bind(this);
+        this.handlerSelectCell = this.handlerSelectCell.bind(this);
     }
 
     displayResult(pipe){
@@ -33,6 +34,14 @@ export class Board extends React.Component {
         }
     }
 
+    handlerSelectCell(x, y, select) {
+        if(select) {
+            this.props.selectCell({x, y});
+        } else {
+            this.props.unselectCell();
+        }
+    }
+
     createRows() {
         const { content, selectedCell } = this.props;
         let rows = [];
@@ -48,6 +57,7 @@ export class Board extends React.Component {
                         posX={i}
                         posY={j}
                         onDoubleClick={() => this.addWPipe(i, j)}
+                        onSelect={(select) => this.handlerSelectCell(i, j, select)}
                         displayResult={this.displayResult}
                         onDrop={this.onDrop}>
                     </Cell>
@@ -79,6 +89,8 @@ const mapDispatchToProps = {
     removePipe,
     addWorkingPipe,
     join,
+    selectCell,
+    unselectCell
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board);
