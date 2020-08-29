@@ -14,7 +14,7 @@ function updateWorkspace(dispatch, data) {
     dispatch(envActions.setWorkspaceFileData(data));
 }
 
-export function loadFunctionDefinition(userData, workspaceFileData, myFunctionsFileData) {
+function loadFunctionDefinition(userData, workspaceFileData, myFunctionsFileData) {
     return (dispatch) => {
         const functionDefinition = board.getFunctionDefinition();
         workspaceFileData.contenido = `incluir ${MY_FUNCTIONS_FILE_NAME}\n\n${functionDefinition.body}`;

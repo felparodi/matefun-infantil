@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import ReactTooltip from 'react-tooltip';
 import { clean, cancelEdit } from '../api/board';
 import CreateFunction from './modal/CreateFunction';
-import { loadFunctionDefinition, evaluate, editMyFunction } from '../api/matefun';
+import { evaluate, editMyFunction } from '../api/matefun';
 import Icon from './icons/Icon';
 import * as icons from '../constants/icons';
 import './Actions.scss';
@@ -16,13 +16,8 @@ export class Actions extends React.Component {
             evaluationResult: '',
             openSaveFunction: false,
         };
-        this.loadFunctionDefinition = this.loadFunctionDefinition.bind(this);
         this.evaluate = this.evaluate.bind(this);
         this.clean = this.clean.bind(this);
-    }
-
-    loadFunctionDefinition() {
-        this.props.loadFunctionDefinition(this.props.userData, this.props.workspaceFileData, this.props.myFunctionsFileData);
     }
 
     evaluate() {
@@ -114,7 +109,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchFunction = {
-    loadFunctionDefinition, evaluate, clean, editMyFunction, cancelEdit
+    evaluate, clean, editMyFunction, cancelEdit
 }
 
 export default connect(mapStateToProps, mapDispatchFunction)(Actions);

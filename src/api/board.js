@@ -28,7 +28,6 @@ export function addPipe(pos, pipe) {
         compiler.addSnapPipeToMatrix(pos.x, pos.y, pipe);
         updateMatrix(dispatch);
         dispatch({type: matrixAction.CLEAN_JOIN});
-        dispatch(actions.selectCell(pos));
     }
 }
 
@@ -45,7 +44,6 @@ export function movePipe(pos, pipe) {
         compiler.getMatrix().moverPipe(pos.x, pos.y, pipe.pos);
         updateMatrix(dispatch);
         dispatch({type: matrixAction.CLEAN_JOIN});
-        dispatch(actions.selectCell(pos));
     }
 }
 
@@ -122,7 +120,6 @@ export function joinOutput(j2) {
             joinList.end = null;
             dispatch({type: matrixAction.SET_END_JOIN, payload: null })
         }
-        dispatch(actions.unselectCell());
         dispatch({type: matrixAction.SET_START_JOIN, payload: joinList.start })
         tryJoin(dispatch);
     }
@@ -132,7 +129,6 @@ export function setMateFunValue(value) {
     return (dispatch) => {
         compiler.setMateFunValue(value);
         dispatch({type: matrixAction.CLEAN_JOIN});
-        dispatch(actions.unselectCell());
         updateMatrix(dispatch);
     }
 }
@@ -174,17 +170,6 @@ export function editCustomFunction(customFuncSnap) {
     }
 }
 
-export function selectCell(pos) {
-    return (dispatch) => {
-        dispatch(actions.selectCell(pos));
-    }
-}
-
-export function unselectCell() {
-    return (dispatch) => {
-        dispatch(actions.unselectCell());
-    }
-}
 
 export function getCompiler() {
     return compiler;

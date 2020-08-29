@@ -27,16 +27,3 @@ export const setEditMode = (value, name) => {
         payload: { value, name }
     }
 }
-
-export const selectCell = (pos) => {
-    return {
-        type: actionType.SELECT_CELL,
-        payload: pos
-    }
-}
-
-export const unselectCell = () => {
-    return {
-        type: actionType.UNSELECT_CELL
-    }
-}

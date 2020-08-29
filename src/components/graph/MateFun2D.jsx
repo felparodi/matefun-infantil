@@ -9,7 +9,7 @@ import SpeedMore from '../../icons/speedMore.svg';
 import SpeedLest from '../../icons/speedLest.svg';
 import SpeedNormal from '../../icons/speedNormal.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDownload, faArrowsAlt, faSearchMinus, faSearchPlus, faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
+import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons'
 import './MateFun2D.scss';
 import Icon from '../icons/Icon';
 import * as icon from '../../constants/icons';
