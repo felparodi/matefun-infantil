@@ -21,6 +21,8 @@ export const CANCEL = 'cancel';
 export const CONFIG = 'config';
 export const LOGOUT = 'logout';
 export const FOLDER = 'folder';
+export const EXPORT = 'export';
+export const IMPORT = 'import';
 
 //color button
 export const PALETTE = 'palette';

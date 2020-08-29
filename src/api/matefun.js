@@ -9,6 +9,7 @@ import * as matrixAction from '../redux/matrix/matrixAction';
 import * as envActions from '../redux/environment/environmentAction';
 import store from '../redux/store';
 import * as toast from './toast';
+import { saveAs } from 'file-saver';
 
 function updateWorkspace(dispatch, data) {
     dispatch(envActions.setWorkspaceFileData(data));
@@ -262,4 +263,20 @@ export function deleteMyFunction(name) {
     }
 }
 
-
+export function exportFunction(name) {
+    return (dispatch) => {
+        const { myFunctionsFileData } = store.getState().environment
+        const contenido = myFunctionsFileData.contenido;
+        const functionOpenBlock = contenido.match(/{-FS:([\w\d]+)-}/g);
+        const functionNames = functionOpenBlock ? functionOpenBlock.map((name) => /{-FS:([\w\d]+)-}/.exec(name)[1]) : [];
+        if(name && functionNames.indexOf(name) !== -1) {
+            const regexBlock = regexFunctionBlock(name);
+            const oldBlock = regexBlock.exec(contenido)[0];
+            const funcIconLine = oldBlock.match(ICON_REGEX)
+            const oldIcon = funcIconLine ? ICON_REGEX.exec(funcIconLine[0])[1] : '';
+            const newBlock = newFunctionBlock(name, oldIcon);
+            var blob = new Blob([newBlock], {type: "text/plain;charset=utf-8"});
+            saveAs(blob, name+".mf");
+        }
+    }
+}

@@ -54,6 +54,10 @@ function getFontAwesomeIcon(icon) {
             return fas.faPowerOff;
         case icons.FOLDER:
             return fas.faFolder;
+        case icons.EXPORT:
+            return fas.faDownload;
+        case icons.IMPORT:
+            return fas.faUpload;
         // color button
         case icons.PALETTE:
             return fas.faPalette;
