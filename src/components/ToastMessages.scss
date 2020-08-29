@@ -3,6 +3,7 @@
     top: 5px;
     left: 25vw;
     width: 50vw;
+    z-index: 1000000;
     .fade.toast {
         height: 0;
         transition: height 0.1s, margin 0.1s;
@@ -16,8 +17,9 @@
             b {
                 margin: 0 0.5rem;
             }
-            svg {
+            p {
                 color: black;
+                margin: 0;
             }
         }
     }
@@ -29,11 +31,28 @@
     }
     .error {
         background-color: rgb(253, 129, 129);
+        .toast-body {
+            background-color: rgb(255, 185, 185);
+        }
     }
     .warn {
         background-color: rgb(255, 255, 147);
+        .toast-body {
+            background-color: rgb(255, 255, 147);
+        }
     }
     .success {
         background-color: rgb(83, 180, 83);
+        .toast-body {
+            background-color: rgb(83, 180, 83);
+        }
+    }
+    .toast-body {
+        padding-left: 1rem;
+        padding-top: 0.1rem;
+        > p {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
     }
 }

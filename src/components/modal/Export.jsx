@@ -34,6 +34,11 @@ export class Export extends React.Component {
             const selected = pipes.map(() => false);
             this.setState({ pipes, selected });
         }
+        if(prevProp.open != this.props.open) {
+            const {pipes} = this.state;
+            const selected = pipes.map(() => false);
+            this.setState({  selected, name: 'matefun' });
+        }
     }
 
     onSelect(selectedIndex) {

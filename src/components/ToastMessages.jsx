@@ -31,10 +31,10 @@ const ToastMessage = ({toast, onClose}) => {
         }, 200);
     }
     useEffect(() => {
-        setTimeout(handlerClose, 5000)
+      setTimeout(handlerClose, 5000);
     })
-    const icon = iconToast(toast.type)
-
+    const icon = iconToast(toast.type);
+    const texts = toast.text.split('\n');
     return (
         <Toast show={show} onClose={handlerClose}
             className={classNames({
@@ -44,8 +44,13 @@ const ToastMessage = ({toast, onClose}) => {
                 'success': toast.type === toastType.SUCCESS
             })}>
             <Toast.Header>
-                <span>{icon}<b>{toast.title}:</b> {toast.text}</span>
+                <p>{icon}<b>{toast.title}:</b> {texts[0]}</p>
             </Toast.Header>
+            {texts.length > 1 &&
+                <div className='toast-body'>
+                    {[...texts].splice(1).map((text, index) => <p key={index}>{text}</p>)}
+                </div>
+            }
         </Toast>
     )
 }

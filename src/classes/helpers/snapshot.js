@@ -56,11 +56,12 @@ export function createPipeToSnap(snapshot) {
         case PIPE_TYPES.CONDITION:
             return new ConditionPipe();
         case PIPE_TYPES.CUSTOM:
+            debugger
             const {dir} = snapshot;
             const inTypes = dirToInTypes(dir);
             const outType = dir.bottom;
             const metadata = snapshot.body
-            const icon = snapshot. icon;
+            const icon = snapshot.icon;
             return CustomFuncPipe(snapshot.name, inTypes, outType, metadata, icon)
     }
 }

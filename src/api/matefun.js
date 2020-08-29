@@ -175,6 +175,12 @@ function getFunctionBlockByCustomSnapFunction(customSnap) {
     return getFunctionBlockByComplier(name, icon, compiler);
 }
 
+function filterErrorSystem(message) {
+    return message.resultado.startsWith('OUT ') 
+        && !message.resultado.startsWith('OUT -') 
+        && !message.resultado.startsWith('OUTError:')
+}
+
 function editMyFunctionFile(newMyFunctionsFileData, dispatch) {
     const { myFunctionsFileData } = store.getState().environment;
     return services.editFile(newMyFunctionsFileData)
@@ -183,17 +189,18 @@ function editMyFunctionFile(newMyFunctionsFileData, dispatch) {
             return webSocket.loadFile(userData, data.id)
                 .then((messages) => {
                     if(messages.find((message) => message.resultado.startsWith('OUTError:'))) {
-                        console.error(messages)
+                        const errorMessage = messages.filter((message) => filterErrorSystem(message))
+                            .map(message => message.resultado.replace('OUT ', '').replace(/\..*/, ''));
                         return services.editFile(myFunctionsFileData)
-                            .then(data => ({data, success:false}));
+                            .then(data => ({data, success:false, errorMessage}));
                     } else {
                         return { data, success: true }
                     }
                 })
             })
-            .then(({data, success}) => {
+            .then(({data, success, errorMessage}) => {
                 updateMyFunction(dispatch, data);
-                return success ? Promise.resolve(data) : Promise.reject(data);
+                return success ? Promise.resolve(data) : Promise.reject(errorMessage);
             })
 }
 
@@ -321,8 +328,11 @@ export function amendMyFunctions(name, text) {
             .then(() => {
                 toast.createSuccessMessage('Se cargo con exito', name);
             })
-            .catch(() => {
-                toast.createErrorMessage('No se pudo cargar el archivo', name);
+            .catch((errorMessage) => {
+                toast.createErrorMessage(
+                    errorMessage.reduce((acc, message) => acc +'\n' + message, 'No se pudo cargar el archivo'), 
+                    name
+                );
             }) 
     }
 }

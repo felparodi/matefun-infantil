@@ -63,6 +63,12 @@ export class Import extends React.Component {
         this.onImport = this.onImport.bind(this);
     }
 
+    componentDidUpdate(prevProp) {
+        if(prevProp.open != this.props.open) {
+            this.setState({  pipes: [], textFile: '', name: '' });
+        }
+    }
+
     onImport() {
         const { textFile, name } = this.state;
         this.props.amendMyFunctions(name, textFile);
