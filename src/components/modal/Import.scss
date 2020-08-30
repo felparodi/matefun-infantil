@@ -13,5 +13,19 @@
                 border-radius: 10px;
             }
         }
+        .uploaded-file {
+            border: dashed grey;
+            border-radius: 5px;
+            text-align: center;
+            padding: 2rem;
+            background-color: lightgray;
+            cursor: pointer;
+            p {
+                svg {
+                    height: 3rem;
+                    width: 3rem;
+                }
+            }
+        }
     }
 }

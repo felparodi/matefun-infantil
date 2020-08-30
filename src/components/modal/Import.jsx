@@ -41,8 +41,9 @@ const UploadFile = ({onUpload}) => (
     <Dropzone onDrop={onUpload}>
         {({getRootProps, getInputProps}) => (
             <section>
-                <div className="uploaded-file" {...getRootProps()}>
+                <div className="uploaded-file drop-zone" {...getRootProps()}>
                     <input {...getInputProps()} />
+                        <p><Icon icon={icon.IMPORT}/></p>
                         <p className="uploaded-file-text">Subir archivo</p>
                 </div>
             </section>
