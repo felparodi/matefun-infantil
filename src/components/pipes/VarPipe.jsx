@@ -35,7 +35,7 @@ const JoinOutput = (props) => (
 const DoorsOpen = ({onClick}) => (
     <g>
         <path onClick={onClick} d="M 5 5 L 0 10 L 0 35 L 5 30 Z" style={{'fill': 'saddlebrown', 'stroke': 'black', 'strokeWidth': 0.3 }}/>
-        <path class="pipe-base" d="M 5 5 L 5 30 L 35 30 L 35 5 Z" style={{'stroke': 'black', 'strokeWidth': 0.3 }}/>
+        <path className="pipe-base" d="M 5 5 L 5 30 L 35 30 L 35 5 Z" style={{'stroke': 'black', 'strokeWidth': 0.3 }}/>
         <path onClick={onClick} d="M 35 5 L 40 10 L 40 35 L 35 30 Z" style={{ 'fill': 'saddlebrown', 'stroke': 'black', 'strokeWidth' :0.3 }}/>
     </g>
 )
