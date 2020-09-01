@@ -176,10 +176,17 @@ export class Compiler {
         
         const hasGeneric = vars.reduce((hasG, pipe) => hasG || !typeHelper.isDefined(pipe.getValueType()), false);
         
+        const endPipes = matrix.getEndPipes();
+        const code =  endPipes[0] ? endPipes[0].toCode() : '';
+
         if(hasGeneric) {
             errors.push('has-generic');
         }
 
+        if(code.indexOf('()') >= 0) {
+            errors.push('incomplete');
+        }
+    
         const isFunction = this.isFunction();
 
         const canSaveFunction = vars.length > 0 && errors.length === 0;
