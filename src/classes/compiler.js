@@ -34,7 +34,7 @@ export class Compiler {
     }
 
     loadSnapMatrix(snapMatrix) {
-        this.matrix.clean();
+        this.newMatrix(snapMatrix.size.x, snapMatrix.size.y);
         const pipesBulk = snapMatrix.pipes.map((snapPipe) => ({
             pos: snapPipe.pos,
             pipe: snapHelper.createPipeToSnap(snapPipe, this.customFunctionsMap)

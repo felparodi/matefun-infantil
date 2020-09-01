@@ -109,6 +109,7 @@ export class CreateFunction extends React.Component {
                     <Form.Group>
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control type="text" maxLength={10} value={name} onChange={this.onChangeName}/>
+                        { !validName && <p>El nombre de la funcion debe ser una palbra...</p> }
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Seleccionar ícono</Form.Label>

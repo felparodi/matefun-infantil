@@ -171,7 +171,6 @@ function getFunctionBlockByCustomSnapFunction(customSnap) {
     const customMatrix = JSON.parse(customSnap.body);
     compiler.loadSnapMatrix(customMatrix);
     compiler.cleanLastValue();
-
     return getFunctionBlockByComplier(name, icon, compiler);
 }
 

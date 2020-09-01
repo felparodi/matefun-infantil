@@ -56,7 +56,6 @@ export function createPipeToSnap(snapshot) {
         case PIPE_TYPES.CONDITION:
             return new ConditionPipe();
         case PIPE_TYPES.CUSTOM:
-            debugger
             const {dir} = snapshot;
             const inTypes = dirToInTypes(dir);
             const outType = dir.bottom;
