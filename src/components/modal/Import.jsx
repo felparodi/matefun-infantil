@@ -18,7 +18,8 @@ const PipeDisplay = ({pipes}) => (
                     <button key={`${index}-custom`}
                         className={'pipe-button'}
                         data-tip={`${pipe.name}`}
-                        data-for='pipe-export-custom'>
+                        data-for='pipe-export-custom'
+                        disabled>
                         <Pipe pipe={pipe}/>
                     </button>
                 ) 
