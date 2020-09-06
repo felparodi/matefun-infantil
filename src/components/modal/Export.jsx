@@ -96,7 +96,7 @@ export class Export extends React.Component {
                     <Button variant="primary"
                         className="mf-primary-button"
                         onClick={this.onExport}
-                        disabled={!name}> Export
+                        disabled={!name}> Exportar
                     </Button>
                 </Modal.Footer>
             </Modal>
