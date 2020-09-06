@@ -95,7 +95,8 @@ export class Toolbox extends React.Component {
                         onDrop={this.onDrop}
                         group={pipeToolsGroup.find((toolbar) => toolbar.value === select)}/>
                 </div>
-                <Trash deletePipe={deletePipe}/>
+                <Trash deletePipe={deletePipe} 
+                    onDelete={() => this.setState({deletePipe: null})}/>
             </div>
         )
     }

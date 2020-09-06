@@ -52,6 +52,7 @@ export class DeleteFunction extends React.Component {
             <Modal 
                 {...modalProps}
                 show={open}
+                onHide={this.cancel}
                 className="DeleteFunction">
                 <Modal.Header closeButton>
                     <h5 style={{marginBottom: '0px'}}><Icon icon={icons.TRASH}/> Borrar función</h5>

@@ -13,13 +13,15 @@ export class Trash extends React.Component {
     }
 
     render() {
-        const { isOver, deletePipe, connectDropTarget } = this.props;
+        const { isOver, deletePipe, connectDropTarget, onDelete } = this.props;
         return connectDropTarget(
             <div className={classNames('Trash drop-zone', { 'over': isOver })}>
                 <FontAwesomeIcon icon={fas.faTrash}/>
                 { deletePipe && 
-                    <DeleteModal pipe={deletePipe} show={!!deletePipe}
-                        onHide={() => this.setState({deletePipe: null})}/> 
+                    <DeleteModal 
+                        pipe={deletePipe} 
+                        show={!!deletePipe}
+                        onHide={() => onDelete && onDelete() }/> 
                 }
             </div>
         );
