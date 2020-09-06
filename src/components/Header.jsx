@@ -35,9 +35,9 @@ export class Header extends React.Component {
                             <Icon icon={icon.USER}/> {(this.props.userData) ? this.props.userData.nombre + " " + this.props.userData.apellido : ""}
                         </Dropdown.Toggle> 
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={this.props.openExportModal}><Icon icon={icon.EXPORT}/>Exportar Tuberias</Dropdown.Item>
-                            <Dropdown.Item onClick={this.props.openImportModal}><Icon icon={icon.IMPORT}/>Importart Tuberias</Dropdown.Item>
-                            <Dropdown.Item onClick={this.props.openConfig}><Icon icon={icon.CONFIG}/>Configuracion</Dropdown.Item>
+                            <Dropdown.Item onClick={this.props.openExportModal}><Icon icon={icon.EXPORT}/>Exportar funciones</Dropdown.Item>
+                            <Dropdown.Item onClick={this.props.openImportModal}><Icon icon={icon.IMPORT}/>Importar funciones</Dropdown.Item>
+                            <Dropdown.Item onClick={this.props.openConfig}><Icon icon={icon.CONFIG}/>Configuración</Dropdown.Item>
                             <Dropdown.Item onClick={this.props.logout}><Icon icon={icon.LOGOUT}/>Cerrar sesión</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>

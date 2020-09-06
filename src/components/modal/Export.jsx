@@ -60,7 +60,7 @@ export class Export extends React.Component {
                 show={open}
                 onHide={() => this.props.closeExportModal()}>
                 <Modal.Header closeButton>
-                    <h5><Icon icon={icon.EXPORT}/> Export</h5>
+                    <h5><Icon icon={icon.EXPORT}/> Exportar funciones</h5>
                 </Modal.Header>
                 <div className="body">
                     <div className="pipes">
@@ -96,8 +96,7 @@ export class Export extends React.Component {
                     <Button variant="primary"
                         className="mf-primary-button"
                         onClick={this.onExport}
-                        disabled={!name}>
-                            <Icon icon={icon.EXPORT}/> Export
+                        disabled={!name}> Export
                     </Button>
                 </Modal.Footer>
             </Modal>

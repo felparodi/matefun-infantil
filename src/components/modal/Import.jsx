@@ -95,7 +95,7 @@ export class Import extends React.Component {
                 show={open}
                 onHide={() => this.props.closeImportModal()}>
                 <Modal.Header closeButton>
-                    <h5><Icon icon={icon.IMPORT}/> Importar</h5>
+                    <h5><Icon icon={icon.IMPORT}/> Importar funciones</h5>
                 </Modal.Header>
                 <div className="body">
                     {pipes.length == 0 ? 
@@ -109,7 +109,7 @@ export class Import extends React.Component {
                         className="mf-primary-button"
                         onClick={this.onImport}
                         disabled={!pipes.length}>
-                            <Icon icon={icon.IMPORT}/> Importar
+                            Importar
                     </Button>
                 </Modal.Footer>
             </Modal>

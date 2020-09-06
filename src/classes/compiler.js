@@ -218,6 +218,4 @@ export class Compiler {
     }
 }
 
-
-
 export default Compiler;
