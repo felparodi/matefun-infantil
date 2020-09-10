@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 import ReactTooltip from 'react-tooltip';
 import { Modal, Button } from 'react-bootstrap';
-import { closeImportModal, getCustomFunctionsByText, amendMyFunctions } from '../../api/matefun';
+import { closeImportModal, getCustomFunctionsByText, appendMyFunctions } from '../../api/matefun';
 import './Import.scss';
 import Icon from '../icons/Icon';
 import Pipe from '../pipes/Pipe';
@@ -73,7 +73,7 @@ export class Import extends React.Component {
 
     onImport() {
         const { textFile, name } = this.state;
-        this.props.amendMyFunctions(name, textFile);
+        this.props.appendMyFunctions(name, textFile);
     }
 
     onUpload(acceptedFiles) {
@@ -124,7 +124,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchFunction = {
     closeImportModal,
-    amendMyFunctions
+    appendMyFunctions
 }
 
 export default connect(mapStateToProps, mapDispatchFunction)(Import);

@@ -286,13 +286,6 @@ export function exportFunctions(name, snapCFuncs) {
     }
 }
 
-export function importFunctions(file) {
-    return (dispatch) => {
-
-    }
-}
-
-
 export function openImportModal() {
     return (dispatch) => {
         dispatch(envActions.openImportModal());
@@ -317,7 +310,7 @@ export function closeExportModal() {
     }
 }
 
-export function amendMyFunctions(name, text) {
+export function appendMyFunctions(name, text) {
     return (dispatch) => {
         const { myFunctionsFileData } = store.getState().environment
         const contenido = myFunctionsFileData.contenido;
