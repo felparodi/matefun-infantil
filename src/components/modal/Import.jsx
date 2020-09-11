@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 import ReactTooltip from 'react-tooltip';
 import { Modal, Button } from 'react-bootstrap';
+import {createErrorMessage} from '../../api/toast';
 import { closeImportModal, getCustomFunctionsByText, appendMyFunctions } from '../../api/matefun';
 import './Import.scss';
 import Icon from '../icons/Icon';
@@ -15,20 +16,19 @@ const PipeDisplay = ({pipes}) => (
         <div className='pipes'>
             {
                 pipes.map((pipe, index) => 
-                    <button key={`${index}-custom`}
-                        className={'pipe-button'}
+                    <div key={`${index}-custom`}
+                        className='pipe-button'
                         data-tip={`${pipe.name}`}
-                        data-for='pipe-export-custom'
-                        disabled>
+                        data-for='pipe-import-custom'>
                         <Pipe pipe={pipe}/>
-                    </button>
+                    </div>
                 ) 
             }
         </div>
         { pipes.length > 0 && 
             <ReactTooltip
                 key={pipes.reduce((p, c) => `${p}-${c}`, '')}
-                id='pipe-export-custom' 
+                id='pipe-import-custom' 
                 effect='solid'
                 place='bottom'
                 className='pipe-button-tooltip'
@@ -78,13 +78,17 @@ export class Import extends React.Component {
 
     onUpload(acceptedFiles) {
         acceptedFiles.forEach((file) => {
-            const reader = new FileReader()
-            reader.onload = (event) => {    
-              const textFile = reader.result;
-              const pipes = getCustomFunctionsByText(textFile).map(pipe => pipe.snapshot());
-              this.setState({ textFile,  pipes, name: file.name});
+            if(file.name.endsWith('.mf')) {
+                const reader = new FileReader()
+                reader.onload = (event) => {    
+                const textFile = reader.result;
+                const pipes = getCustomFunctionsByText(textFile).map(pipe => pipe.snapshot());
+                this.setState({ textFile,  pipes, name: file.name});
+                }
+                reader.readAsText(file);
+            } else {
+                createErrorMessage(file.name, 'No contiene la extensión .mf de los archivos matefun')
             }
-            reader.readAsText(file);
         });
     }
 
