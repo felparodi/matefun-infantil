@@ -7,7 +7,7 @@ module.exports = merge(common, {
    mode: 'production',
    devtool: 'source-map',
    output: {
-       publicPath: 'matefun/matefun-infantil',
+       publicPath: '/matefun/matefun-infantil',
    },
    plugins: [
       ...common.plugins,
