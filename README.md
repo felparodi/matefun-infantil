@@ -20,3 +20,22 @@ Las demás herramientas se encarga de instalar sus paquetes NPM
 * `npm start`: Para levantar el servidor de desarrollo en el puerto 8081 y consumiendo los servicios en el puerto 8080.
 * `npm run stage`: Para levantar el servidor de desarrollo en el puerto 8081 y consumir los servicos en https://matefun.math.psico.edu.uy/.
 * `npm run build`: Para generar el `war` en la carpeta `dist/`y este consume los servicios en el mismo servidor en el que fue levantado, además de correr sobre la sub dirección `/matefun-infantil/`.
+
+
+### Configurar Webpack
+
+Con webpack configuramos distinas cosa, las mas relevantes son url de los servicios de matefun y la endpoint del domino donde se levanta la aplicacion.
+<br/>
+Para cambiar la url del servicio es con el siguiente plugin
+```
+  new webpack.DefinePlugin({
+      'process.env.MATEFUN_SERVER': JSON.stringify('<url servicio>')
+  })
+```
+<br/>
+Para seleccionar el endpoint en el dominio es con el atributo 'publicPath' del output, ejemplo
+```
+  output: {
+    publicPath: '<endpoint>',
+  }
+```
