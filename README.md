@@ -27,6 +27,7 @@ Las demás herramientas se encarga de instalar sus paquetes NPM
 Con webpack configuramos distinas cosa, las mas relevantes son url de los servicios de matefun y la endpoint del domino donde se levanta la aplicacion.
 <br/>
 Para cambiar la url del servicio es con el siguiente plugin
+
 ```
   new webpack.DefinePlugin({
       'process.env.MATEFUN_SERVER': JSON.stringify('<url servicio>')
@@ -34,8 +35,13 @@ Para cambiar la url del servicio es con el siguiente plugin
 ```
 <br/>
 Para seleccionar el endpoint en el dominio es con el atributo 'publicPath' del output, ejemplo
+
 ```
   output: {
     publicPath: '<endpoint>',
   }
 ```
+
+Tambien utlizamos webpack para crear los distintos archivos que se pueden deployar como levantarlos en modo local, las varianetes de esto estan en los archivos webpack.\<tipo\>.js que estan en la carpeta raiz.
+
+Ver los ejemplo de como correr dichas configuraciones en el package.json para los distintos comandos.
