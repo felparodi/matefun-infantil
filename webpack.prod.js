@@ -12,7 +12,7 @@ module.exports = merge(common, {
    plugins: [
       ...common.plugins,
       new webpack.DefinePlugin({
-          'process.env.MATEFUN_SERVER': JSON.stringify('origin/matefun')
+          'process.env.MATEFUN_SERVER': JSON.stringify('origin/proyectos/matefun')
       }),
       new WebpackWarPlugin({
         archiveName: 'matefun-infantil',
