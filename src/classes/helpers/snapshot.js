@@ -61,7 +61,7 @@ export function createPipeToSnap(snapshot) {
             const outType = dir.bottom;
             const metadata = snapshot.body
             const icon = snapshot.icon;
-            return CustomFuncPipe(snapshot.name, inTypes, outType, metadata, icon)
+            return new CustomFuncPipe(snapshot.name, inTypes, outType, metadata, icon);
     }
 }
 
@@ -88,7 +88,8 @@ export function cleanSnapshotMatrixInfo(snapshot) {
                     dir: pipe.originDir ? pipe.originDir : pipe.dir,
                     name: pipe.name,
                     value: pipe.type === PIPE_TYPES.CONST ? pipe.value : undefined,
-                    pos: pipe.pos
+                    pos: pipe.pos,
+                    icon: pipe.icon
                 })  
             }
         })

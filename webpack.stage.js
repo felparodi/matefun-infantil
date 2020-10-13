@@ -14,7 +14,7 @@ module.exports = merge(common, {
     plugins: [
         ...common.plugins,
         new webpack.DefinePlugin({
-            'process.env.MATEFUN_SERVER': JSON.stringify('https://matefun.math.psico.edu.uy')
+            'process.env.MATEFUN_SERVER': JSON.stringify('https://www.fing.edu.uy/proyectos/matefun')
         })
     ]
 });

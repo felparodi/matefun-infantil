@@ -10,5 +10,6 @@ export default {
     'no-valid-type-assign': 'No es un valor válido para la asignación por el tipo',
     'no-boolean': 'A esta tubería no se le puede asignar un valor de tipo Verdadero o Falso',
     'more-than-tree-var-pipes': 'Hay más de tres variables',
-    'more-than-on-end-pipe': 'Hay más de un resultado'
+    'more-than-on-end-pipe': 'Hay más de un resultado',
+    'invalid-position': 'No es una posicion valida'
 }

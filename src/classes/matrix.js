@@ -114,7 +114,7 @@ export class MatrixPipe {
     */
     addWorkPipe(pos) {
         const {x, y} = pos;
-        if (this.isInvalidRange(x,y)) { throw new Error("Exist pipe in this position") }
+        if (this.isInvalidRange(x,y)) { throw new Error("invalid-position") }
         const act = this.value(x, y)
         if(act && (act.isWorking || act.getType() !== PIPE_TYPES.DUMMY)) {
             this.endWork();
@@ -225,7 +225,7 @@ export class MatrixPipe {
     *   @scope: public
     */
     value(x, y) {
-        if (this.isInvalidRange(x,y)) { throw new Error("Exist pipe in this position")} 
+        if (this.isInvalidRange(x,y)) { throw new Error("invalid-position")} 
         return this.values[x][y];
     }
 
@@ -278,7 +278,7 @@ export class MatrixPipe {
     *   @scope: public
     */
     addPipe(x, y, pipe) {
-        if (this.isInvalidRange(x,y)) { throw new Error("Exist pipe in this position") }
+        if (this.isInvalidRange(x,y)) { throw new Error("invalid-position") }
         this.endWork();
         this.addPipeSpeed({x, y}, pipe)
         this.cleanEndValues();
