@@ -1,6 +1,7 @@
 import { MatrixPipe } from './matrix';
 import * as snapHelper from './helpers/snapshot';
 import * as typeHelper from './helpers/type';
+import { MATEFUN_TYPE } from '../constants/constants';
 import { getMateFunType } from './helpers/type';
 
 const DEFAULT_FUNCTION_NAME = 'func';
@@ -106,10 +107,19 @@ export class Compiler {
     */
     getFunctionSignature(name) {
         const { matrix } = this;
-        const varsPipes = matrix.getAllVars();
+        const varsTypePipes = matrix.getAllVars()
+            .map(v => ({
+                type : getMateFunType(v.getValueType())
+            }));
+        //Agregar una variable ciega en caso de no haber
+        if(varsTypePipes.length == 0) {
+            varsTypePipes.push({
+                type: MATEFUN_TYPE.NUMBER
+            });
+        }
         const endPipe = matrix.getEndPipes()[0];
-        const varsType = varsPipes.reduce(
-            (prev, v, index) => index > 0 ? `${prev} X ${getMateFunType(v.getValueType())}` :`${getMateFunType(v.getValueType())}`, ''
+        const varsType = varsTypePipes.reduce(
+            (prev, v, index) => index > 0 ? `${prev} X ${ v.type }` :`${v.type}`, ''
         );
         const endType = getMateFunType(endPipe.getValueType());
         return `${name} :: ${varsType} -> ${endType}`;
@@ -123,10 +133,15 @@ export class Compiler {
     */
     getFunctionEquation(name) {
         const { matrix } = this;
-        const varsPipes = matrix.getAllVars();
+        const varsNamePipes = matrix.getAllVars()
+            .map(pipe => pipe.getName());
+        //Agregar una variable ciega en caso de no haber
+        if(varsNamePipes.length == 0) {
+            varsNamePipes.push('n');
+        }
         const endPipe = matrix.getEndPipes();
         const code = endPipe[0].toCode();
-        return `${name}(${varsPipes.map(pipe => pipe.getName()).join(', ')}) = ${code}`
+        return `${name}(${varsNamePipes.join(', ')}) = ${code}`
     }
 
     /*
@@ -142,6 +157,10 @@ export class Compiler {
             const { matrix } = this;
             const varsPipes = matrix.getAllVars();
             const varValueList = varsPipes.map((pipe) => pipe.getValueEval());
+            //Agregar una variable ciega en caso de no haber
+            if(varValueList.length == 0) {
+                varValueList.push('0');
+            }
             command = `${name}(${varValueList.join(', ')})`;
         } else {
             command = this.processInstruction();
