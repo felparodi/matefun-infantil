@@ -1,4 +1,5 @@
 import * as services from '../server_connection/services';
+import * as webSocket from '../server_connection/webSocket';
 import * as action from '../redux/user/userAction';
 import * as board from './board';
 import {createErrorMessage} from './toast';
@@ -25,6 +26,7 @@ export function logout() {
     return (dispatch) => {
         board.restartCompiler(dispatch);
         dispatch(action.logout());
+        webSocket.disconnect();
         sessionStorage.clear();
     }
 }

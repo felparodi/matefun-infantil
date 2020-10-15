@@ -4,6 +4,7 @@ import {DOMAIN_URL} from './config'
 const WEB_SOCKET_URL = `${DOMAIN_URL.replace(/^http/, 'ws')}/endpoint`;
 
 let ws = null;
+let lastUserData = null;
 const listResponseHandlers = [];
 let pendingMessage = []; 
 
@@ -37,11 +38,14 @@ function onOpenHandler(resolve) {
 
 function onCloseHandler() {
     console.warn('disconnected')
+    openConnection(lastUserData);
     // automatically try to reconnect on connection loss
 }
 
 export function openConnection(userData) {
+    if(!userData) return Promise.reject('Not User data');
     return new Promise((resolve) => {
+        lastUserData = userData;
         ws = new WebSocket(`${WEB_SOCKET_URL}/${userData.cedula}/${userData.token}/es`);
         ws.onopen = onOpenHandler(resolve);
         ws.onmessage = onMessageHandler;
@@ -76,4 +80,11 @@ export function evalExpression(userData, command) {
         listResponseHandlers.push(resolve);
         ws.send(createCommand(userData, command))
     });
-} 
+}
+
+export function disconnect() {
+    lastUserData = null;
+    listResponseHandlers.length = 0;
+    pendingMessage = [];
+    ws.close();
+}
