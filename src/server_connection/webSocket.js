@@ -36,8 +36,8 @@ function onOpenHandler(resolve) {
     }
 }
 
-function onCloseHandler() {
-    console.warn('disconnected')
+function onCloseHandler(e) {
+    console.warn('disconnected', e);
     openConnection(lastUserData);
     // automatically try to reconnect on connection loss
 }

@@ -7,11 +7,13 @@ import store from '../redux/store';
 
 const USER_SESSION_STORAGE = 'USER_SESSION_STORAGE';
 
+
 export function login(username, password) {
     return (dispatch) => {
         services.login(username, password)
         .then((userData)=> {
             if(userData) {
+                board.restartCompiler(dispatch);
                 sessionStorage.setItem(USER_SESSION_STORAGE, JSON.stringify(userData));
                 dispatch(action.login(userData));
             }
@@ -24,10 +26,7 @@ export function login(username, password) {
 
 export function logout() {
     return (dispatch) => {
-        board.restartCompiler(dispatch);
-        dispatch(action.logout());
-        webSocket.disconnect();
-        sessionStorage.clear();
+        services.logout();
     }
 }
 

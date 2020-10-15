@@ -25,7 +25,7 @@ function loadFunctionDefinition(userData, workspaceFileData, myFunctionsFileData
                 dispatch(matrixAction.setWorkspaceFunctionBody({ body: data.contenido }));
                 updateWorkspace(dispatch, data);
                 return webSocket.loadFile(userData, workspaceFileData.id, myFunctionsFileData.id)
-            });
+            })
     }
 }
 

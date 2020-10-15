@@ -1,4 +1,7 @@
 import axios from 'axios';
+import store from '../redux/store';
+import * as webSocket from './webSocket';
+import * as action from '../redux/user/userAction';
 import {DOMAIN_URL} from './config'
 
 const SERVICES_URL = `${DOMAIN_URL}/servicios`;
@@ -31,9 +34,22 @@ export function createFile(user, name, padreId=5) {
     .catch((e) => {
         console.warn("Error: Crear Archivo", e)
         throw e;
-    });
+    })
+    .catch(authMiddleWare);
 }
 
+function authMiddleWare(e) {
+    if(e.request.status === 401) {
+        logout();
+    }
+    throw e;
+}
+
+export function logout() {
+    store.dispatch(action.logout());
+    webSocket.disconnect();
+    sessionStorage.clear();
+}
 
 export function editFile(fileData) {
    return axios.put(`/archivo/` + fileData.id, fileData)
@@ -41,7 +57,8 @@ export function editFile(fileData) {
         .catch((e) => {
             console.warn("Error: Editar Archivo", e)
             throw e;
-        }); 
+        })
+        .catch(authMiddleWare);; 
 }
 
 export function getFiles(user) {
@@ -50,5 +67,6 @@ export function getFiles(user) {
         .catch((e) => {
             console.warn("Error: Get Archivos", e);
             throw e;
-        });
+        })
+        .catch(authMiddleWare);;
 }
